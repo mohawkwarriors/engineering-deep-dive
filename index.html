@@ -3,29 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Engineering Deep Dive — Archive</title>
+  <title>ENGINEERING DEEP DIVE — Hardware & First-Principles Archive</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: Instrument Serif, Inter, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            serif: ['Instrument Serif', 'Georgia', 'serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          colors: {
+            paper: '#F9F8F6',
+            surface: '#EFECE6',
+            surfacehover: '#E6E2DA',
+            ink: '#141413',
+            muted: '#6B6A65',
+            hairline: '#E3E0D6',
+            accent: '#D97757',
+            darkbg: '#191918',
+            darksurface: '#232220',
+            darksurfacehover: '#2C2B28',
+            darkink: '#ECECEC',
+            darkmuted: '#9E9C96',
+            darkborder: '#33322F',
+            darkaccent: '#D97757'
+          }
+        }
+      }
+    };
+  </script>
   <style>
     :root {
-      --bg: #FAF9F5;
-      --surface: #F2F0E8;
+      --bg: #F9F8F6;
+      --surface: #EFECE6;
+      --surface-hover: #E6E2DA;
       --text: #141413;
-      --muted: #66655F;
-      --border: #E4E2DA;
-      --accent: #C84B31;
-      --max-w: 740px;
+      --muted: #6B6A65;
+      --border: #E3E0D6;
+      --accent: #D97757;
+      --accent-soft: rgba(217, 119, 87, 0.12);
     }
-    [data-theme="dark"] {
-      --bg: #121211;
-      --surface: #1C1C1A;
-      --text: #EDEDEC;
-      --muted: #9A9992;
-      --border: #2A2A27;
-      --accent: #E06D53;
+    html.dark, [data-theme="dark"] {
+      --bg: #191918;
+      --surface: #232220;
+      --surface-hover: #2C2B28;
+      --text: #ECECEC;
+      --muted: #9E9C96;
+      --border: #33322F;
+      --accent: #D97757;
+      --accent-soft: rgba(217, 119, 87, 0.16);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background-color: var(--bg);
       color: var(--text);
@@ -35,362 +72,1515 @@
       -webkit-font-smoothing: antialiased;
       transition: background-color 0.2s ease, color 0.2s ease;
     }
-    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px 104px; }
-    header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 28px 0; border-bottom: 1px solid var(--border); margin-bottom: 36px;
+    html.dark body {
+      background-color: var(--bg);
+      color: var(--text);
     }
-    .brand {
-      font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500;
-      letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); text-decoration: none; cursor: pointer;
+    .prose-article h2 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 2.05rem;
+      font-weight: 400;
+      line-height: 1.18;
+      margin-top: 3.1rem;
+      margin-bottom: 1rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
     }
-    .nav-actions { display: flex; gap: 20px; align-items: center; }
-    .nav-btn {
-      background: none; border: none; font-family: 'JetBrains Mono', monospace;
-      font-size: 12px; color: var(--muted); cursor: pointer; padding: 4px 0; transition: color 0.15s;
+    html.dark .prose-article h2 {
+      border-top-color: var(--border);
     }
-    .nav-btn:hover, .nav-btn.active { color: var(--text); }
-    .subjects-bar {
-      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 44px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
+    .prose-article h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-top: 2rem;
+      margin-bottom: 0.65rem;
+      letter-spacing: -0.01em;
     }
-    .subject-pill {
-      background: transparent; border: 1px solid var(--border); color: var(--muted);
-      font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 5px 10px; border-radius: 4px; cursor: pointer; transition: all 0.15s ease;
+    .prose-article p {
+      margin-bottom: 1.25rem;
     }
-    .subject-pill:hover, .subject-pill.active { border-color: var(--text); color: var(--text); background: var(--surface); }
-    .meta-line {
-      font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent);
-      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: flex; gap: 12px; align-items: center;
+    .prose-article ul {
+      list-style-type: disc;
+      padding-left: 1.35rem;
+      margin-bottom: 1.5rem;
     }
-    h1 { font-family: 'Instrument Serif', Georgia, serif; font-size: 46px; font-weight: 400; line-height: 1.12; letter-spacing: -0.01em; margin-bottom: 18px; }
-    .subtitle { font-size: 18.5px; color: var(--muted); line-height: 1.55; margin-bottom: 36px; font-weight: 400; }
-    h2 { font-family: 'Instrument Serif', Georgia, serif; font-size: 32px; font-weight: 400; margin: 52px 0 16px; line-height: 1.2; border-top: 1px solid var(--border); padding-top: 32px; }
-    h3 { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 600; margin: 32px 0 10px; letter-spacing: -0.01em; display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; }
-    .price-tag { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); font-weight: 500; background: var(--surface); padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border); }
-    p { margin-bottom: 20px; }
-    ul { margin: 0 0 24px 22px; }
-    li { margin-bottom: 12px; }
-    strong { font-weight: 600; }
-    .callout-box {
-      background: var(--surface);
-      border-left: 3px solid var(--accent);
-      padding: 18px 22px;
-      margin: 28px 0;
-      font-size: 15.5px;
-      border-radius: 0 6px 6px 0;
+    .prose-article li {
+      margin-bottom: 0.65rem;
     }
-    .callout-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--accent);
-      margin-bottom: 6px;
-      font-weight: 500;
+    /* Subtle architectural dot grid for self-created / interactive graphics */
+    .blueprint-surface {
+      background-color: var(--surface);
+      background-image: radial-gradient(#D5D0C5 1px, transparent 1px);
+      background-size: 16px 16px;
     }
-    figure.product-figure { margin: 38px 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: var(--surface); }
-    .img-wrapper { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: #141413; }
-    .img-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    figcaption {
-      padding: 14px 18px; font-family: 'JetBrains Mono', monospace; font-size: 12px;
-      color: var(--muted); border-top: 1px solid var(--border); line-height: 1.5; display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+    html.dark .blueprint-surface {
+      background-color: var(--surface);
+      background-image: radial-gradient(#33322F 1px, transparent 1px);
+      background-size: 16px 16px;
     }
-    .source-tag { white-space: nowrap; font-size: 11px; opacity: 0.85; }
-    .spec-table-wrap { overflow-x: auto; margin: 28px 0 36px; border: 1px solid var(--border); border-radius: 6px; }
-    .spec-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    .spec-table th, .spec-table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
-    .spec-table tr:last-child td { border-bottom: none; }
-    .spec-table th { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; color: var(--muted); font-weight: 500; background: var(--surface); }
-    .archive-item { padding: 20px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; gap: 16px; cursor: pointer; }
-    .archive-item:hover .archive-title { color: var(--accent); }
-    .archive-title { font-weight: 500; font-size: 16px; transition: color 0.15s; }
-    .archive-meta { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); white-space: nowrap; }
-    .hidden { display: none; }
+    /* Animated pulse for self-created schematic GIF simulation */
+    @keyframes pulseStroke {
+      0%, 100% { stroke-dashoffset: 0; opacity: 0.95; }
+      50% { stroke-dashoffset: 12; opacity: 0.45; }
+    }
+    .anim-flow {
+      stroke-dasharray: 6 4;
+      animation: pulseStroke 2.2s infinite linear;
+    }
+
+    /* Smooth scroll offset for sticky header */
+    .prose-article h1,
+    .prose-article h2,
+    .prose-article h3,
+    .archive-scroll-target {
+      scroll-margin-top: 92px;
+    }
+
+    /* Desktop Left-Hand Section Outline Sidebar (@media min-width: 1080px) */
+    .desktop-layout-shell {
+      max-width: 740px;
+      margin: 0 auto;
+    }
+    .left-outline-rail {
+      display: none;
+    }
+    @media (min-width: 1080px) {
+      .desktop-layout-shell {
+        max-width: 1060px;
+        display: grid;
+        grid-template-columns: 230px minmax(0, 740px);
+        gap: 48px;
+        align-items: start;
+      }
+      .left-outline-rail {
+        display: block;
+        position: sticky;
+        top: 84px;
+        width: 230px;
+        max-height: calc(100vh - 108px);
+        overflow-y: auto;
+        padding-right: 8px;
+      }
+    }
+
+    /* Outline Link States */
+    .toc-link {
+      display: block;
+      border-left: 2px solid var(--border);
+      padding: 5px 0 5px 12px;
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--muted);
+      transition: all 0.15s ease;
+      text-align: left;
+      width: 100%;
+    }
+    html.dark .toc-link {
+      border-left-color: var(--border);
+      color: var(--muted);
+    }
+    .toc-link:hover {
+      color: var(--text);
+      border-left-color: var(--muted);
+    }
+    html.dark .toc-link:hover {
+      color: var(--text);
+      border-left-color: var(--muted);
+    }
+    .toc-link.toc-h3 {
+      padding-left: 22px;
+      font-size: 11.5px;
+    }
+    .toc-link.active {
+      border-left-color: var(--accent);
+      color: var(--text);
+      font-weight: 600;
+      background: var(--accent-soft);
+    }
+    html.dark .toc-link.active {
+      border-left-color: var(--accent);
+      color: var(--text);
+      background: var(--accent-soft);
+    }
   </style>
 </head>
-<body>
-  <div class="container">
-    <header>
-      <a class="brand" onclick="showView('article')">ENGINEERING DEEP DIVE</a>
-      <div class="nav-actions">
-        <button class="nav-btn active" id="btn-article" onclick="showView('article')">Issue #001</button>
-        <button class="nav-btn" id="btn-archive" onclick="showView('archive')">Archive (10)</button>
-        <button class="nav-btn" onclick="toggleTheme()" id="theme-btn">Dark</button>
-      </div>
-    </header>
+<body class="min-h-screen selection:bg-accent/15 selection:text-accent dark:selection:bg-darkaccent/20 dark:selection:text-darkaccent">
 
-    <div class="subjects-bar" id="subjects-bar"></div>
-
-    <main id="view-article">
-      <div class="meta-line">
-        <span>ISSUE #001</span><span>•</span><span>PRODUCT DIVES</span><span>•</span><span>10 MIN READ</span>
-      </div>
-
-      <h1>Inside the Apple HomeView & Apple Home Collection: The Complete Hardware Breakdown</h1>
-      <p class="subtitle">
-        Everything Apple just unveiled at its "Welcome Home" event—from the $299 Liquid Retina command hub to the co-engineered lineup of UWB locks, motorized privacy cameras, and radar thermostats built with LG Electronics and Schneider Electric.
-      </p>
-
-      <figure class="product-figure">
-        <div class="img-wrapper">
-          <img referrerpolicy="no-referrer" src="https://www.apple.com/newsroom/images/2026/10/meet-apple-homeview-a-new-way-to-enjoy-entertainment-and-manage-the-home/article/Apple-HomeView-lineup-261013_Full-Bleed-Image.jpg.large.jpg" onerror="this.src='https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=1400&q=85'" alt="Apple HomeView 7-inch Smart Display Lineup" />
-        </div>
-        <figcaption>
-          <span><strong>FIG 01 — APPLE HOMEVIEW:</strong> The 7-inch Liquid Retina display connected to a domed speaker base via an articulated stainless-steel tilt hinge, shown in Silver, Starlight, Rose Pink, and Space Gray.</span>
-          <span class="source-tag">IMAGE: APPLE NEWSROOM</span>
-        </figcaption>
-      </figure>
-
-      <h2>1. The Big Picture: What Apple Just Announced</h2>
-      <p>
-        For the past decade, Apple’s smart home strategy relied on a fragmented "bring-your-own-accessory" model. While Apple built the brains—Apple TV and HomePod—it left security cameras, doorbells, smart locks, and thermostats entirely to third-party manufacturers. That meant buyers had to juggle five different companion apps, create separate cloud accounts, scan tiny setup QR codes, and live with mismatched white-plastic hardware on their walls.
-      </p>
-      <p>
-        At its October "Welcome Home" event in New York, Apple overhauled that entire model with a two-part hardware offensive:
-      </p>
-      <ul>
-        <li><strong>First-Party Command Hubs:</strong> Apple unveiled <strong>Apple HomeView</strong> ($299, shipping November 13), its first dedicated 7-inch smart display and household command center powered by Siri AI and Apple Intelligence, alongside an updated <strong>HomePod mini 2</strong> and <strong>Apple TV 4K</strong>.</li>
-        <li><strong>The Apple Home Collection:</strong> Simultaneously, Apple introduced a unified suite of <strong>seven residential hardware accessories</strong>—four security cameras, a smart deadbolt, and two smart thermostats with wireless room sensors—co-designed from the ground up with <strong>LG Electronics</strong> and <strong>Schneider Electric</strong>, launching in December 2026 and early 2027 through the Apple Store.</li>
-      </ul>
-
-      <div class="spec-table-wrap">
-        <table class="spec-table">
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th>Hardware Partner</th>
-              <th>Price (US)</th>
-              <th>Finishes</th>
-              <th>Headline Engineering Specs</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Apple HomeView (Tabletop & Wall)</strong></td>
-              <td>Apple (First-Party)</td>
-              <td>$299.00</td>
-              <td>Silver, Starlight, Rose Pink, Space Gray</td>
-              <td>7" Liquid Retina (500 nits down to 0.3 nits), stainless steel hinge or wall mount, 6-user Face ID recognition, Center Stage camera, Siri AI, Thread Border Router.</td>
-            </tr>
-            <tr>
-              <td><strong>LG Smart Deadbolt Lock</strong></td>
-              <td>LG Electronics</td>
-              <td>$349.95</td>
-              <td>Essence Silver, Essence Graphite</td>
-              <td>Ultra-Wideband (UWB) hands-free approach unlocking, Aliro + Matter-over-Thread, NFC Home Key tap, PIN pad, hidden key cylinder, local offline operation.</td>
-            </tr>
-            <tr>
-              <td><strong>LG Video Doorbell (Wired)</strong></td>
-              <td>LG Electronics</td>
-              <td>$249.95</td>
-              <td>Essence Silver, Essence Graphite</td>
-              <td>Dual-camera optical split (2.5K front visitor camera + 1080p downward package camera), built-in motion spotlight, HomePod/HomeView chime, on-device storage buffer.</td>
-            </tr>
-            <tr>
-              <td><strong>LG Indoor Cam (Plug-In)</strong></td>
-              <td>LG Electronics</td>
-              <td>$199.95</td>
-              <td>Essence White</td>
-              <td>2.5K HDR sensor, motorized pan/tilt gimbal that physically pitches down to block the lens when family members arrive home, local Apple Intelligence recognition.</td>
-            </tr>
-            <tr>
-              <td><strong>LG Outdoor Cam (Plug-In)</strong></td>
-              <td>LG Electronics</td>
-              <td>$299.95</td>
-              <td>Essence Silver, Essence Graphite</td>
-              <td>2.5K resolution, low-light color night vision, weather-sealed articulated wall mount, on-device Wi-Fi outage backup storage.</td>
-            </tr>
-            <tr>
-              <td><strong>LG Floodlight Cam</strong></td>
-              <td>LG Electronics</td>
-              <td>$399.95</td>
-              <td>Essence Silver, Essence Graphite</td>
-              <td>2.5K camera core flanked by dual motion-activated adaptive floodlights, low-light color night vision, hardwired junction-box mount.</td>
-            </tr>
-            <tr>
-              <td><strong>LG Smart Thermostat & Sensor</strong></td>
-              <td>LG Electronics</td>
-              <td>\$199.95 <br><span style="color:var(--muted);font-size:12px;">(\$39.95 sensor)</span></td>
-              <td>Essence White (Circular Dial)</td>
-              <td>Matter compatible, on-device wire detection for DIY install, iPhone Adaptive Temperature, Clean Energy Guidance, C-Wire adapter (\$24.95).</td>
-            </tr>
-            <tr>
-              <td><strong>Schneider Home Smart Thermostat & Sensor</strong></td>
-              <td>Schneider Electric</td>
-              <td>\$199.95 <br><span style="color:var(--muted);font-size:12px;">(\$39.95 sensor)</span></td>
-              <td>Silver + White (Square Profile)</td>
-              <td>Matter compatible, native integration with Schneider Home energy panels, on-device wire detection, Trim Plate (\$14.95) & C-Wire adapter (\$24.95).</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h2>2. How the JDM Partnership Worked Between Apple, LG, and Schneider</h2>
-      <p>
-        To understand why the <strong>Apple Home Collection</strong> is a major shift for Apple Hardware Engineering, you have to distinguish between a standard certification program (<em>"Works with Apple Home"</em>) and a true <strong>Joint Design Manufacturing (JDM)</strong> collaboration.
-      </p>
-      <p>
-        With standard Matter or HomeKit accessories, a company like Aqara, Ecobee, or Yale designs its own product, writes its own app, and simply passes Apple's compatibility test suite. With the Apple Home Collection, Apple VP of Hardware Engineering Matthew Costello noted that Apple worked directly alongside LG Electronics and Schneider Electric on the <strong>industrial design, mechanical mounting, feature architecture, and firmware integration</strong>—mirroring how Apple previously co-engineered the LG UltraFine 5K displays.
-      </p>
-
-      <div class="callout-box">
-        <div class="callout-title">Why Apple Partnered Instead of Building In-House</div>
-        Building door locks, high-voltage floodlights, and 24V HVAC thermostats requires decades of domain-specific tooling, UL burglary/electrical certifications, and residential field-service infrastructure. By partnering with LG (a powerhouse in cameras, motors, and consumer appliances) and Schneider Electric (a global leader in residential electrical panels and climate control), Apple got custom-designed hardware that looks and behaves like a first-party Apple product—while LG and Schneider handle manufacturing, regional electrical compliance, and even nationwide professional installation via ADT in the U.S.
-      </div>
-
-      <p>
-        Here is what Apple enforced across the JDM engineering pipeline to make these products feel native:
-      </p>
-      <ul>
-        <li><strong>Unified "Essence" Industrial Design & CMF:</strong> Every exterior product shares a cohesive visual language: bead-blasted anodized aluminum and matte UV-stabilized enclosures in <strong>Essence Silver</strong>, <strong>Essence Graphite</strong>, and <strong>Essence White</strong>. Mounting brackets, screw-concealing trim plates, and cable routing were co-designed so there are no exposed fasteners or clunky plastic wall warts.</li>
-        <li><strong>Zero Third-Party Apps or Cloud Accounts:</strong> You never download an LG ThinQ or Schneider app, and you never create a third-party login. Out of the box, you tap your iPhone to the accessory via NFC (just like pairing AirPods), and 100% of setup, firmware updates, and daily controls happen inside the native Apple Home app.</li>
-        <li><strong>Automatic Wi-Fi Credential Roaming & Thread Mesh:</strong> Every accessory in the collection incorporates a Thread radio and automatic Wi-Fi credential syncing. If a household changes its Wi-Fi router or password, the Home Hub pushes the updated credentials across the lineup automatically without requiring users to climb a ladder to reset an outdoor camera.</li>
-        <li><strong>End-to-End Encrypted Architecture:</strong> Neither LG, Schneider Electric, nor Apple can view camera feeds or home state data. Video is analyzed locally on the user's Apple Home hub (or via Private Cloud Compute) and stored end-to-end encrypted in iCloud+ for 10 days without requiring a separate \$10/month camera subscription.</li>
-      </ul>
-
-      <figure class="product-figure">
-        <div class="img-wrapper">
-          <img referrerpolicy="no-referrer" src="https://www.apple.com/newsroom/images/2026/10/introducing-apple-home-collection-a-new-lineup-of-smart-home-accessories/article/Apple-Home-Collection-lineup-261013_big.jpg.large.jpg" onerror="this.src='https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=1400&q=85'" alt="Apple Home Collection Lineup by LG and Schneider Electric" />
-        </div>
-        <figcaption>
-          <span><strong>FIG 02 — THE APPLE HOME COLLECTION:</strong> Co-engineered with LG and Schneider Electric, spanning the Smart Deadbolt, Video Doorbell, Floodlight Cam, Outdoor/Indoor Cams, and Smart Thermostats.</span>
-          <span class="source-tag">IMAGE: APPLE NEWSROOM</span>
-        </figcaption>
-      </figure>
-
-      <h2>3. Product-by-Product Deep Dive: What Makes Each Device Unique</h2>
-
-      <h3>1. Apple HomeView (Tabletop & Wall-Mounted Hub) <span class="price-tag">\$299.00</span></h3>
-      <p>
-        <strong>Apple HomeView</strong> is the centerpiece that ties the entire collection together. Rather than slapping an iPad onto a speaker dock, Apple engineered two purpose-built hardware variants at the exact same \$299 price point:
-      </p>
-      <ul>
-        <li><strong>Two Distinct Mechanical Form Factors:</strong> The <strong>Tabletop Model</strong> (available in Silver, Starlight, Rose Pink, and Space Gray with color-matched woven cables) pairs a 7-inch aluminum display enclosure to a compact, domed acoustic speaker base via a precision-machined <strong>stainless steel hinge</strong>, offering smooth tilt adjustment for kitchen counters or high nightstands. The <strong>Wall-Mounted Model</strong> (Space Gray and Silver) packs the same display and acoustic drivers into a flush rear profile that snaps onto three purpose-built <strong>Schneider Home Power Mounts</strong>: a USB-C Wall Connector (\$59.95), a hardwired AC gang-box mount (\$79.95), or an enterprise-grade <strong>Power-over-Ethernet (PoE) Wired Mount</strong> (\$129.95).</li>
-        <li><strong>500-Nit to 0.3-Nit Dynamic Display Pipeline:</strong> A smart display on a bedroom nightstand usually glows like a flashlight at 2:00 AM. Apple engineered HomeView’s 7-inch Liquid Retina panel with True Tone and an ultra-wide dimming controller that scales from a sunlight-readable <strong>500 nits</strong> all the way down to an almost imperceptible <strong>0.3 nits</strong> in dark rooms.</li>
-        <li><strong>Proximity-Adaptive UI & 6-User Face Recognition:</strong> Using its front-facing camera (which also powers Center Stage FaceTime calls) and proximity sensing, HomeView dynamically changes its information density based on how far away you are—showing high-contrast glanceable status from across the kitchen, and expanding into detailed controls as you walk up. Better yet, on-device facial recognition identifies up to <strong>six individual household members</strong>, seamlessly shifting from a shared family dashboard to your personal Messages, Calendar, Reminders, and Apple Music profile the moment it sees your face.</li>
-        <li><strong>Built-In Safety Acoustic Detection:</strong> HomeView continuously listens locally for the specific acoustic frequencies of standard UL smoke and carbon monoxide alarms, immediately pushing critical alerts (with live camera verification) to every iPhone, iPad, and Apple Watch in the family.</li>
-      </ul>
-
-      <h3>2. LG Smart Deadbolt Lock <span class="price-tag">\$349.95</span></h3>
-      <p>
-        Most smart locks on the market today feel sluggish or unreliable when trying to unlock hands-free because they rely on Bluetooth signal strength, which bounces off walls and can accidentally unlock the door while you are walking around inside your hallway.
-      </p>
-      <ul>
-        <li><strong>Ultra-Wideband (UWB) + Aliro Spatial Ranging:</strong> The LG Smart Deadbolt is one of the first flagship locks built around the new <strong>Aliro</strong> access standard and Apple’s spatial <strong>Ultra-Wideband</strong> radio. Instead of guessing distance from signal strength, UWB measures the exact time-of-flight and angle of radio pulses between the lock and your iPhone or Apple Watch. It knows your exact approach trajectory—automatically throwing the deadbolt open just as you reach for the handle from the outside, while never false-triggering when you walk past the door inside.</li>
-        <li><strong>Four-Way Redundant Access:</strong> Beyond hands-free UWB approach unlocking, you can tap a dead iPhone/Apple Watch via NFC Home Key (using power reserve), punch a code into the capacitive exterior keypad (including temporary guest codes managed in the Home app), or flip open a concealed mechanical cover to use a physical backup key.</li>
-        <li><strong>100% Local Offline Execution & Tamper Sensing:</strong> Because it runs over Matter-over-Thread and Aliro locally, every core access function continues working even if your home internet goes down. Integrated hall-effect and accelerometer sensors also alert your phone if someone tampers with the exterior housing or if the door is left ajar while the bolt is extended.</li>
-      </ul>
-
-      <h3>3. LG Video Doorbell (Wired) <span class="price-tag">\$249.95</span></h3>
-      <p>
-        Single-lens video doorbells suffer from an unavoidable optical compromise: if you angle the lens high enough to see a tall visitor's face, you create a blind spot right against the base of the door where couriers drop packages.
-      </p>
-      <ul>
-        <li><strong>Dual-Camera Optical Split (2.5K + 1080p):</strong> LG solved the fisheye distortion problem by embedding two distinct camera modules into the chassis: a primary <strong>2.5K resolution front camera</strong> tuned for eye-level visitor identification, and a dedicated downward-angled <strong>1080p Full HD bottom camera</strong> aimed squarely at the welcome mat. Inside the Apple Home app (or on HomeView), users can toggle seamlessly between the visitor view and the package view.</li>
-        <li><strong>Integrated Spotlight & Ecosystem Chime:</strong> When a visitor approaches at night, an integrated downward spotlight illuminates the porch for full-color identification, while pressing the button rings across every HomeView, HomePod, and HomePod mini in the house while popping up a live interactive video feed on Apple TV 4K.</li>
-      </ul>
-
-      <figure class="product-figure">
-        <div class="img-wrapper">
-          <img referrerpolicy="no-referrer" src="https://www.apple.com/newsroom/images/2026/10/introducing-apple-home-collection-a-new-lineup-of-smart-home-accessories/article/Apple-Home-Collection-LG-Floodlight-Cam-Plug-In-261013_big.jpg.large.jpg" onerror="this.src='https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&w=1400&q=85'" alt="LG Floodlight Cam in Essence Graphite" />
-        </div>
-        <figcaption>
-          <span><strong>FIG 03 — PERIMETER SECURITY:</strong> The LG Floodlight Cam in Essence Graphite combines a 2.5K low-light color night vision camera with dual adaptive motion floodlights.</span>
-          <span class="source-tag">IMAGE: APPLE NEWSROOM</span>
-        </figcaption>
-      </figure>
-
-      <h3>4. LG Indoor Cam, Outdoor Cam & Floodlight Cam <span class="price-tag">\$199.95 – \$399.95</span></h3>
-      <p>
-        Across all four LG cameras in the collection, Apple combined clever mechanical hardware with new Apple Intelligence video capabilities:
-      </p>
-      <ul>
-        <li><strong>Motorized Physical Privacy Tilt (LG Indoor Cam, \$199.95):</strong> Nobody wants an indoor security camera staring at them while they are relaxing on the couch—and a tiny LED status light doesn't inspire confidence. The LG Indoor Cam is built on a motorized pan-and-tilt gimbal. The moment the first family member arrives home (or via a "Good Morning" Siri scene), the camera <strong>physically pitches its lens downward into its base housing</strong>, mechanically blinding the optics so it cannot see the room. When you leave the house and check in remotely, it smoothly tilts back up.</li>
-        <li><strong>Low-Light Color Night Vision (Outdoor Cam \$299.95 & Floodlight Cam \$399.95):</strong> Instead of immediately dropping into grainy black-and-white infrared video at dusk, the outdoor cameras use high-sensitivity 2.5K sensors to preserve full-color night vision in low ambient light. The Floodlight Cam pairs this with dual articulated LED floodlights that automatically ramp brightness when motion is detected.</li>
-        <li><strong>On-Device Outage Buffer + Apple Intelligence Search:</strong> A major flaw of cloud-only cameras is that a brief Wi-Fi drop blinds your security system. Every LG camera includes <strong>local on-device flash storage</strong> to buffer recordings if the Wi-Fi network goes offline, automatically syncing to HomeKit Secure Video once connectivity returns. Furthermore, with a supported iCloud+ plan, <strong>Apple Intelligence</strong> generates written summaries of what happened in every clip—allowing you to search your 10-day video history using natural language (e.g., <em>"Show me when the brown delivery truck dropped off a package yesterday"</em>) without watching hours of footage.</li>
-      </ul>
-
-      <h3>5. LG & Schneider Electric Smart Thermostats <span class="price-tag">\$199.95</span></h3>
-      <p>
-        Rather than forcing a single thermostat design on every home, Apple partnered with both LG and Schneider Electric to offer two distinct industrial designs at the exact same \$199.95 price point:
-      </p>
-      <ul>
-        <li><strong>Two Form Factors, One Ecosystem:</strong> The <strong>LG Smart Thermostat</strong> features a soft, minimalist circular dial in Essence White, while the <strong>Schneider Home Smart Thermostat</strong> uses a crisp square silhouette in Silver + White that integrates natively with Schneider Home smart electrical panels, solar inverters, and backup batteries.</li>
-        <li><strong>On-Device Wire Detection for Foolproof DIY Installs:</strong> Installing a thermostat usually means deciphering a rat's nest of unlabeled low-voltage wires (`R`, `Rc`, `Rh`, `C`, `W`, `Y`, `G`, `O/B`). Both thermostats feature hardware <strong>on-device wire sensing</strong> that automatically detects which HVAC terminals are connected and guides the user step-by-step in the Apple Home app. For older homes missing a common wire, matching LG and Schneider C-Wire Power Adapters (\$24.95) are sold right alongside them.</li>
-        <li><strong>Sensor Fusion Across HomePods & Room Sensors:</strong> Most homes have hot and cold spots where the hallway thermostat reads 70°F while the upstairs bedroom is 76°F. Instead of forcing you to buy proprietary pucks for every room, the LG and Schneider thermostats can pull multi-room temperature and humidity readings directly from the <strong>sensors already built into your Apple HomeView, HomePod, and HomePod mini</strong>—or from optional wireless LG/Schneider Room Sensors (\$39.95).</li>
-        <li><strong>iPhone Adaptive Temperature & Clean Energy Guidance:</strong> Using on-device presence intelligence from your iPhone, the Home app's <em>Adaptive Temperature</em> automatically pre-cools or heats the house as you head home, scales back when everyone is away, and drops into a sleep profile at night—while <em>Clean Energy Guidance</em> shifts heavy HVAC runs to off-peak hours when renewable grid power is cleanest and cheapest.</li>
-      </ul>
-    </main>
-
-    <section id="view-archive" class="hidden">
-      <h1>Archive & Queue</h1>
-      <p class="subtitle">Filter published dispatches and upcoming topics across all 8 core subjects.</p>
-      <div id="archive-list"></div>
-    </section>
+  <!-- ========================================================================
+       TOAST NOTIFICATION BANNER
+  ========================================================================= -->
+  <div id="toast-banner" class="hidden fixed bottom-5 right-5 z-50 max-w-md rounded-lg border border-hairline dark:border-darkborder bg-surface dark:bg-darksurface px-4 py-3 shadow-lg transition-all">
+    <div class="flex items-start gap-2.5">
+      <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent"></span>
+      <p id="toast-message" class="font-mono text-xs text-ink dark:text-darkink leading-relaxed"></p>
+    </div>
   </div>
 
+  <!-- ========================================================================
+       STICKY HEADER (ALIGNED TO EDITORIAL SHELL)
+  ========================================================================= -->
+  <header class="sticky top-0 z-40 border-b border-hairline dark:border-darkborder bg-paper/95 dark:bg-darkbg/95 backdrop-blur-md">
+    <div class="mx-auto flex max-w-[1060px] items-center justify-between px-5 py-4 sm:px-6">
+      <button onclick="switchView('article')" class="text-left group focus:outline-none">
+        <div class="flex items-center gap-2.5">
+          <span class="h-2 w-2 rounded-full bg-accent dark:bg-darkaccent"></span>
+          <span class="font-mono text-xs sm:text-[13px] font-semibold tracking-widest uppercase text-ink dark:text-darkink">
+            ENGINEERING DEEP DIVE
+          </span>
+        </div>
+      </button>
+
+      <div class="flex items-center gap-4 sm:gap-5">
+        <nav class="flex items-center gap-4 sm:gap-5 font-mono text-xs">
+          <button
+            id="nav-btn-article"
+            onclick="switchView('article')"
+            class="border-b-2 border-accent pb-0.5 font-medium text-ink dark:text-darkink transition-colors"
+          >
+            Current Issue
+          </button>
+          <button
+            id="nav-btn-archive"
+            onclick="switchView('archive')"
+            class="border-b-2 border-transparent pb-0.5 text-muted dark:text-darkmuted hover:text-ink dark:hover:text-darkink transition-colors"
+          >
+            7-Day Queue &amp; Archive
+          </button>
+          <button
+            id="nav-btn-telemetry"
+            onclick="toggleTelemetryDrawer()"
+            class="flex items-center gap-1.5 rounded border border-hairline dark:border-darkborder bg-surface/70 dark:bg-darksurface px-2.5 py-1 text-[11px] text-ink dark:text-darkink hover:border-accent dark:hover:border-darkaccent transition-colors"
+            title="Inspect Topic Generation Algorithm Weights"
+          >
+            <i data-lucide="sliders-horizontal" class="h-3 w-3 text-accent dark:text-darkaccent"></i>
+            <span>Algo Trainer</span>
+            <span id="telemetry-vote-counter" class="rounded bg-accent/15 dark:bg-darkaccent/20 px-1.5 py-0.2 text-[10px] font-semibold text-accent dark:text-darkaccent">0</span>
+          </button>
+        </nav>
+
+        <!-- Sun / Moon Theme Toggle Button -->
+        <button
+          onclick="toggleTheme()"
+          class="flex h-8 w-8 items-center justify-center rounded-md border border-hairline dark:border-darkborder bg-surface/60 dark:bg-darksurface text-muted dark:text-darkmuted hover:bg-surfacehover dark:hover:bg-darksurfacehover hover:text-ink dark:hover:text-darkink hover:border-accent/50 transition-colors"
+          id="theme-toggle-btn"
+          aria-label="Switch to Dark Mode"
+          title="Switch to Dark Mode"
+        >
+          <!-- Moon Icon (Shown in Light Mode to switch to Dark) -->
+          <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+          <!-- Sun Icon (Shown in Dark Mode to switch to Light) -->
+          <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2"/>
+            <path d="M12 20v2"/>
+            <path d="m4.93 4.93 1.41 1.41"/>
+            <path d="m17.66 17.66 1.41 1.41"/>
+            <path d="M2 12h2"/>
+            <path d="M20 12h2"/>
+            <path d="m6.34 17.66-1.41 1.41"/>
+            <path d="m19.07 4.93-1.41 1.41"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- COLLAPSIBLE ALGORITHM TELEMETRY BAR -->
+    <div id="telemetry-drawer" class="hidden border-t border-hairline dark:border-darkborder bg-surface/90 dark:bg-darksurface/95">
+      <div class="mx-auto max-w-[740px] px-5 py-4 sm:px-6 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="font-mono text-[11px] uppercase tracking-wider text-ink dark:text-darkink font-semibold flex items-center gap-2">
+            <span class="inline-block h-2 w-2 rounded-full bg-emerald-600"></span>
+            Topic Selection Algorithm Weights (07:00 AM PST Cron)
+          </div>
+          <button onclick="resetAlgorithmWeights()" class="font-mono text-[11px] text-muted dark:text-darkmuted underline hover:text-ink dark:hover:text-darkink">
+            Reset Weights &amp; Restore Default Queue
+          </button>
+        </div>
+        <p class="text-xs text-muted dark:text-darkmuted leading-relaxed">
+          Every <code class="font-mono text-[11px]">👍 Good Topic</code> boosts that subject's selection probability and archetype weight. Every <code class="font-mono text-[11px]">👎 Bad Topic</code> penalizes the archetype and <strong>immediately swaps the rejected article or queue slot</strong> with the next highest-scored standby deep dive.
+        </p>
+        <!-- Subject Weights Pill Grid -->
+        <div id="subject-weights-grid" class="flex flex-wrap gap-1.5 pt-1"></div>
+        <!-- Replacement History Log -->
+        <div id="algo-log-container" class="hidden pt-2 border-t border-hairline dark:border-darkborder font-mono text-[11px] text-muted dark:text-darkmuted space-y-1"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       MAIN DESKTOP SHELL (230PX STICKY LEFT OUTLINE + 740PX EDITORIAL COLUMN)
+  ========================================================================= -->
+  <div class="desktop-layout-shell px-5 pt-7 pb-28 sm:px-6">
+
+    <!-- STICKY LEFT-HAND SECTION OUTLINE SIDEBAR (1080PX+ DESKTOP) -->
+    <aside id="left-outline-aside" class="left-outline-rail" aria-label="Section Outline">
+      <div class="mb-2.5 flex items-center justify-between">
+        <span id="toc-header-label" class="font-mono text-[10px] font-semibold uppercase tracking-widest text-muted dark:text-darkmuted">
+          ON THIS PAGE // OUTLINE
+        </span>
+        <span id="toc-issue-tag" class="font-mono text-[10px] text-accent dark:text-darkaccent font-medium">
+          #001
+        </span>
+      </div>
+
+      <nav id="toc-nav-list" class="space-y-0.5"></nav>
+
+      <!-- Quick Back-to-Top & Trainer Shortcut -->
+      <div class="mt-5 pt-3.5 border-t border-hairline dark:border-darkborder flex items-center justify-between font-mono text-[10px] text-muted dark:text-darkmuted">
+        <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="hover:text-ink dark:hover:text-darkink transition-colors">
+          ↑ Top of Page
+        </button>
+        <button onclick="voteActiveArticle('down')" class="text-accent dark:text-darkaccent hover:underline" title="Reject current article and load next standby">
+          👎 Swap Topic
+        </button>
+      </div>
+    </aside>
+
+    <!-- RIGHT/MAIN 740PX EDITORIAL CONTENT COLUMN -->
+    <div class="min-w-0 max-w-[740px] w-full">
+
+      <!-- ======================================================================
+           VIEW 1: ACTIVE ARTICLE READER (WITH TOP & BOTTOM 👍/👎 TRAINER)
+      ======================================================================= -->
+      <main id="view-article">
+        <!-- TOP ALGORITHM TRAINER BAR -->
+        <div class="mb-7 rounded-lg border border-hairline dark:border-darkborder bg-surface/65 dark:bg-darksurface/70 p-3.5 sm:px-4">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-accent"></span>
+              <span class="font-mono text-[11px] uppercase tracking-wider text-ink dark:text-darkink font-medium">
+                Topic Quality Trainer:
+              </span>
+              <span class="text-xs text-muted dark:text-darkmuted hidden sm:inline">
+                Rate this topic to train your 7:00 AM daily generator
+              </span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                id="btn-up-top"
+                onclick="voteActiveArticle('up')"
+                class="inline-flex items-center gap-1.5 rounded border border-hairline dark:border-darkborder bg-paper dark:bg-darkbg px-3 py-1.5 font-mono text-xs font-medium text-ink dark:text-darkink hover:border-emerald-600 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
+                title="Boost this subject and topic style in the daily generator"
+              >
+                <span>👍</span>
+                <span>Good Topic</span>
+              </button>
+              <button
+                id="btn-down-top"
+                onclick="voteActiveArticle('down')"
+                class="inline-flex items-center gap-1.5 rounded border border-hairline dark:border-darkborder bg-paper dark:bg-darkbg px-3 py-1.5 font-mono text-xs font-medium text-ink dark:text-darkink hover:border-accent hover:bg-accent/10 hover:text-accent dark:hover:border-darkaccent dark:hover:text-darkaccent transition-colors"
+                title="Immediately reject this topic and replace with the next standby article"
+              >
+                <span>👎</span>
+                <span>Bad Topic — Replace Immediately</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- DYNAMIC ARTICLE CONTAINER -->
+        <article id="article-content-mount" class="prose-article"></article>
+
+        <!-- BOTTOM ALGORITHM FEEDBACK BAR -->
+        <div class="mt-12 rounded-lg border border-hairline dark:border-darkborder bg-surface/65 dark:bg-darksurface/70 p-4 sm:p-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div class="font-mono text-[11px] uppercase tracking-wider text-accent dark:text-darkaccent font-semibold">
+                End of Dispatch • Train Topic Generator
+              </div>
+              <p class="text-xs text-muted dark:text-darkmuted mt-0.5 mb-0">
+                Upvote to prioritize more deep dives like this, or downvote to discard and immediately load the next standby engineering article.
+              </p>
+            </div>
+            <div class="flex items-center gap-2.5 shrink-0">
+              <button
+                onclick="voteActiveArticle('up')"
+                class="inline-flex items-center gap-1.5 rounded border border-hairline dark:border-darkborder bg-paper dark:bg-darkbg px-3.5 py-2 font-mono text-xs font-medium text-ink dark:text-darkink hover:border-emerald-600 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
+              >
+                <span>👍 Good Topic (+1)</span>
+              </button>
+              <button
+                onclick="voteActiveArticle('down')"
+                class="inline-flex items-center gap-1.5 rounded border border-accent/40 bg-accent/10 dark:bg-darkaccent/15 px-3.5 py-2 font-mono text-xs font-medium text-accent dark:text-darkaccent hover:bg-accent hover:text-white transition-colors"
+              >
+                <span>👎 Bad Topic — Replace Now</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ======================================================================
+           VIEW 2: 7-DAY SCHEDULE & ARCHIVE (WITH 8-SUBJECT FILTER, BADGES & 👍/👎)
+      ======================================================================= -->
+      <section id="view-archive" class="hidden space-y-8">
+        <!-- 8-Subject Taxonomy Filter Bar (Shown ONLY in Archive View) -->
+        <div>
+          <div class="font-mono text-[10px] uppercase tracking-widest text-muted dark:text-darkmuted mb-2.5">
+            Filter Archive &amp; Queue by Engineering Discipline (8 Core Subjects)
+          </div>
+          <div id="subjects-bar" class="flex flex-wrap items-center gap-1.5 pb-5 border-b border-hairline dark:border-darkborder"></div>
+        </div>
+
+        <div id="archive-overview-top" class="archive-scroll-target border-b border-hairline dark:border-darkborder pb-6">
+          <div class="font-mono text-xs uppercase tracking-wider text-accent dark:text-darkaccent mb-2">
+            07:00 AM PST Automated Pipeline • Topic Queue &amp; Visual Modalities
+          </div>
+          <h1 class="font-serif text-4xl sm:text-[44px] font-normal tracking-tight text-ink dark:text-darkink leading-[1.12]">
+            Next 7 Days &amp; Archive Queue
+          </h1>
+          <p class="mt-3 text-base text-muted dark:text-darkmuted leading-relaxed">
+            Every queued dispatch below outlines its exact <strong>Visualization Modality</strong> (<code class="font-mono text-xs">SCRAPED STATIC IMAGE / GIF</code>, <code class="font-mono text-xs">INTERACTIVE GRAPHIC</code>, or <code class="font-mono text-xs">SELF-CREATED IMAGE / GIF</code>). Click <strong>👍</strong> to lock and boost a topic, or click <strong>👎</strong> to discard it and immediately pull a replacement from the standby pool.
+          </p>
+
+          <!-- 3-Tier Visualization Legend -->
+          <div id="archive-vis-legend" class="archive-scroll-target mt-5 grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2">
+            <div class="rounded border border-hairline dark:border-darkborder bg-surface/50 dark:bg-darksurface/50 p-2.5">
+              <span class="inline-block rounded bg-sky-500/15 text-sky-800 dark:text-sky-300 border border-sky-500/30 px-2 py-0.5 font-mono text-[10px] font-semibold">
+                SCRAPED STATIC IMAGE / GIF
+              </span>
+              <p class="mt-1.5 text-[11.5px] text-muted dark:text-darkmuted leading-snug">
+                Verified press photos, Wikimedia Commons macros, or iFixit teardown imagery auto-fetched via <code class="font-mono text-[10px]">fetch-media.mjs</code>.
+              </p>
+            </div>
+            <div class="rounded border border-hairline dark:border-darkborder bg-surface/50 dark:bg-darksurface/50 p-2.5">
+              <span class="inline-block rounded bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 px-2 py-0.5 font-mono text-[10px] font-semibold">
+                INTERACTIVE GRAPHIC
+              </span>
+              <p class="mt-1.5 text-[11.5px] text-muted dark:text-darkmuted leading-snug">
+                Live code-driven physics, kinematics, or stress-life ($S$-$N$) simulator embedded directly in the article.
+              </p>
+            </div>
+            <div class="rounded border border-hairline dark:border-darkborder bg-surface/50 dark:bg-darksurface/50 p-2.5">
+              <span class="inline-block rounded bg-amber-500/15 text-amber-900 dark:text-amber-300 border border-amber-500/30 px-2 py-0.5 font-mono text-[10px] font-semibold">
+                SELF-CREATED IMAGE / GIF
+              </span>
+              <p class="mt-1.5 text-[11.5px] text-muted dark:text-darkmuted leading-snug">
+                Custom-authored vector cross-section schematic or animated SVG kinematic loop created specifically for the dispatch.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Queue List Mount -->
+        <div id="archive-queue-list" class="divide-y divide-hairline dark:divide-darkborder border-t border-hairline dark:border-darkborder"></div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       COMPLETE APPLICATION LOGIC, 3 FULL ARTICLES & STANDBY REPLACEMENT POOL
+  ========================================================================= -->
   <script>
-    const SUBJECTS = ["All", "Product Dives", "Manufacturing", "Design", "Materials", "Mechanisms", "Thermal", "Fluids", "Electromechanical"];
-    const TOPICS = [
-      { id: "#001", subject: "Product Dives", title: "Inside the Apple HomeView & Apple Home Collection: The Complete Hardware Breakdown", status: "Published" },
-      { id: "#002", subject: "Manufacturing", title: "Additive Technologies: The True Difference Between SLA, SLS, and FDM", status: "Queued" },
-      { id: "#003", subject: "Fluids", title: "Espresso Extraction: How 9-Bar Vibratory Pumps Generate Pressure", status: "Queued" },
-      { id: "#004", subject: "Design", title: "Surface Treatments: What Actually Happens During Anodizing?", status: "Queued" },
-      { id: "#005", subject: "Materials", title: "Fatigue & S-N Curves: Why Steel Has an Endurance Limit and Aluminum Doesn't", status: "Queued" },
-      { id: "#006", subject: "Mechanisms", title: "Ballpoint Pen Clickers: The Genius of Continuous Rotational Cam Tracks", status: "Queued" },
-      { id: "#007", subject: "Thermal", title: "Steam Deck Cooling: Vapor Chambers vs. Sintered Heat Pipes", status: "Queued" },
-      { id: "#008", subject: "Electromechanical", title: "Webcam Autofocus: Voice Coil Motors vs. Piezoelectric Actuators", status: "Queued" },
-      { id: "#009", subject: "Manufacturing", title: "LEGO's 2-Micron Secret: How Injection Molds Hold Precision", status: "Queued" },
-      { id: "#010", subject: "Fluids", title: "F1 Ground Effect: Venturi Tunnels and Downforce Generation", status: "Queued" }
+    const SUBJECTS = [
+      "All", "Product Dives", "Manufacturing", "Design",
+      "Materials", "Mechanisms", "Thermal", "Fluids", "Electromechanical"
     ];
 
-    let activeSubject = "All";
+    // Subject weights adjusted by thumbs up / thumbs down
+    let subjectWeights = {
+      "Product Dives": 1.0,
+      "Manufacturing": 1.0,
+      "Design": 1.0,
+      "Materials": 1.0,
+      "Mechanisms": 1.0,
+      "Thermal": 1.0,
+      "Fluids": 1.0,
+      "Electromechanical": 1.0
+    };
 
-    function renderSubjects() {
-      const bar = document.getElementById("subjects-bar");
-      bar.innerHTML = SUBJECTS.map(sub => `
-        <button class="subject-pill ${sub === activeSubject ? 'active' : ''}" onclick="filterSubject('${sub}')">
-          ${sub}
+    let voteCount = 0;
+    let replacementLogs = [];
+    let activeSubjectFilter = "All";
+
+    // Visual Modality Badge Helper
+    function renderVisBadge(type) {
+      if (type === "SCRAPED STATIC IMAGE / GIF") {
+        return `<span class="inline-flex items-center gap-1 rounded bg-sky-500/15 text-sky-800 dark:text-sky-300 border border-sky-500/30 px-2 py-0.5 font-mono text-[10px] font-semibold tracking-tight">SCRAPED STATIC IMAGE / GIF</span>`;
+      }
+      if (type === "INTERACTIVE GRAPHIC") {
+        return `<span class="inline-flex items-center gap-1 rounded bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 px-2 py-0.5 font-mono text-[10px] font-semibold tracking-tight">INTERACTIVE GRAPHIC</span>`;
+      }
+      return `<span class="inline-flex items-center gap-1 rounded bg-amber-500/15 text-amber-900 dark:text-amber-300 border border-amber-500/30 px-2 py-0.5 font-mono text-[10px] font-semibold tracking-tight">SELF-CREATED IMAGE / GIF</span>`;
+    }
+
+    // ========================================================================
+    // 3 FULL PUBLICATION-GRADE ARTICLES FOR INSTANT ON-THE-SPOT REPLACEMENT
+    // ========================================================================
+    const FULL_ARTICLES = [
+      {
+        key: "apple-home-001",
+        issue: "ISSUE #001",
+        date: "WED, OCT 14",
+        subject: "Product Dives",
+        readTime: "10 MIN READ",
+        title: "Inside the Apple HomeView & Apple Home Collection: The Complete Hardware Breakdown",
+        subtitle: "Everything Apple just unveiled at its 'Welcome Home' event—from the $299 Liquid Retina command hub to the co-engineered lineup of UWB locks, motorized privacy cameras, and radar thermostats built with LG Electronics and Schneider Electric.",
+        visualModalities: ["SCRAPED STATIC IMAGE / GIF", "SELF-CREATED IMAGE / GIF"],
+        html: `
+          <!-- FIG 01: SCRAPED STATIC IMAGE -->
+          <figure class="my-9 rounded-md border border-hairline dark:border-darkborder bg-surface dark:bg-darksurface overflow-hidden">
+            <div class="aspect-[16/10] w-full bg-neutral-900 overflow-hidden">
+              <img
+                referrerpolicy="no-referrer"
+                src="https://www.apple.com/newsroom/images/2026/10/meet-apple-homeview-a-new-way-to-enjoy-entertainment-and-manage-the-home/article/Apple-HomeView-lineup-261013_Full-Bleed-Image.jpg.large.jpg"
+                onerror="this.src='https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=1400&q=85'"
+                alt="Apple HomeView 7-inch Smart Display Lineup"
+                class="h-full w-full object-cover"
+              />
+            </div>
+            <figcaption class="p-3.5 sm:px-4 border-t border-hairline dark:border-darkborder font-mono text-xs text-muted dark:text-darkmuted flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <span><strong class="text-ink dark:text-darkink">FIG 01 — APPLE HOMEVIEW:</strong> 7-inch Liquid Retina display on its counterbalanced speaker base with stainless-steel tilt hinge.</span>
+              <div class="flex items-center gap-2 shrink-0">
+                ${renderVisBadge("SCRAPED STATIC IMAGE / GIF")}
+              </div>
+            </figcaption>
+          </figure>
+
+          <h2>1. The Big Picture: What Apple Just Announced</h2>
+          <p>
+            For the past decade, Apple’s smart home strategy relied on a fragmented "bring-your-own-accessory" model. While Apple built the brains—Apple TV and HomePod—it left security cameras, doorbells, smart locks, and thermostats entirely to third-party manufacturers. That meant buyers had to juggle five different companion apps, create separate cloud accounts, scan tiny setup QR codes, and live with mismatched white-plastic hardware on their walls.
+          </p>
+          <p>
+            At its October "Welcome Home" event in New York, Apple overhauled that entire model with a two-part hardware offensive:
+          </p>
+          <ul>
+            <li><strong>First-Party Command Hubs:</strong> Apple unveiled <strong>Apple HomeView</strong> ($299, shipping November 13), its first dedicated 7-inch smart display and household command center powered by Siri AI and Apple Intelligence, alongside an updated <strong>HomePod mini 2</strong> and <strong>Apple TV 4K</strong>.</li>
+            <li><strong>The Apple Home Collection:</strong> Simultaneously, Apple introduced a unified suite of <strong>seven residential hardware accessories</strong>—four security cameras, a smart deadbolt, and two smart thermostats with wireless room sensors—co-designed from the ground up with <strong>LG Electronics</strong> and <strong>Schneider Electric</strong>, launching in December 2026 and early 2027 through the Apple Store.</li>
+          </ul>
+
+          <div class="my-7 overflow-x-auto rounded-md border border-hairline dark:border-darkborder">
+            <table class="w-full border-collapse text-left text-[13.5px]">
+              <thead>
+                <tr class="border-b border-hairline dark:border-darkborder bg-surface dark:bg-darksurface font-mono text-[11px] uppercase text-muted dark:text-darkmuted">
+                  <th class="p-3">Product</th>
+                  <th class="p-3">Partner</th>
+                  <th class="p-3">Price</th>
+                  <th class="p-3">Finishes</th>
+                  <th class="p-3">Headline Engineering Specs</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-hairline dark:divide-darkborder">
+                <tr>
+                  <td class="p-3 font-semibold">Apple HomeView (Tabletop &amp; Wall)</td>
+                  <td class="p-3">Apple (1P)</td>
+                  <td class="p-3 font-mono">$299.00</td>
+                  <td class="p-3">Silver, Starlight, Rose Pink, Space Gray</td>
+                  <td class="p-3">7" Liquid Retina (500 nits to 0.3 nits), stainless steel hinge or wall mount, 6-user Face ID recognition, Center Stage camera, Siri AI, Thread Border Router.</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-semibold">LG Smart Deadbolt Lock</td>
+                  <td class="p-3">LG Electronics</td>
+                  <td class="p-3 font-mono">$349.95</td>
+                  <td class="p-3">Essence Silver, Essence Graphite</td>
+                  <td class="p-3">Ultra-Wideband (UWB) hands-free approach unlocking, Aliro + Matter-over-Thread, NFC Home Key tap, PIN pad, hidden key cylinder, local offline operation.</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-semibold">LG Video Doorbell (Wired)</td>
+                  <td class="p-3">LG Electronics</td>
+                  <td class="p-3 font-mono">$249.95</td>
+                  <td class="p-3">Essence Silver, Essence Graphite</td>
+                  <td class="p-3">Dual-camera optical split (2.5K front visitor cam + 1080p downward package cam), motion spotlight, HomePod/HomeView chime, local outage buffer.</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-semibold">LG Indoor Cam (Plug-In)</td>
+                  <td class="p-3">LG Electronics</td>
+                  <td class="p-3 font-mono">$199.95</td>
+                  <td class="p-3">Essence White</td>
+                  <td class="p-3">2.5K HDR sensor, motorized pan/tilt gimbal that physically pitches down into the base housing when family members arrive home.</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-semibold">LG Outdoor &amp; Floodlight Cams</td>
+                  <td class="p-3">LG Electronics</td>
+                  <td class="p-3 font-mono">$299.95 / $399.95</td>
+                  <td class="p-3">Essence Silver, Essence Graphite</td>
+                  <td class="p-3">2.5K resolution, low-light color night vision, dual adaptive motion floodlights ($399 model), on-device Wi-Fi outage backup storage.</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-semibold">LG &amp; Schneider Smart Thermostats</td>
+                  <td class="p-3">LG / Schneider</td>
+                  <td class="p-3 font-mono">$199.95</td>
+                  <td class="p-3">Essence White (Round) / Silver+White (Square)</td>
+                  <td class="p-3">Matter compatible, on-device wire detection, iPhone Adaptive Temperature, Clean Energy Guidance, wireless Room Sensors ($39.95).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2>2. How the JDM Partnership Worked Between Apple, LG, and Schneider</h2>
+          <p>
+            To understand why the <strong>Apple Home Collection</strong> is a major shift for Apple Hardware Engineering, you have to distinguish between a standard certification badge (<em>"Works with Apple Home"</em>) and a true <strong>Joint Design Manufacturing (JDM)</strong> collaboration.
+          </p>
+          <p>
+            Apple VP of Hardware Engineering Matthew Costello noted that Apple worked directly alongside LG Electronics and Schneider Electric on the <strong>industrial design, mechanical mounting, feature architecture, and firmware integration</strong>—mirroring how Apple previously co-engineered the LG UltraFine 5K displays:
+          </p>
+          <ul>
+            <li><strong>Unified "Essence" Industrial Design &amp; CMF:</strong> Every exterior product shares bead-blasted anodized aluminum and matte UV-stabilized enclosures in <strong>Essence Silver</strong>, <strong>Essence Graphite</strong>, and <strong>Essence White</strong> with concealed fasteners.</li>
+            <li><strong>Zero Third-Party Apps or Cloud Accounts:</strong> Out of the box, you tap your iPhone to the accessory via NFC (just like pairing AirPods), and 100% of setup, firmware updates, and daily controls happen inside the native Apple Home app.</li>
+            <li><strong>Automatic Wi-Fi Credential Roaming &amp; Thread Mesh:</strong> If a household changes its Wi-Fi router or password, the Home Hub pushes the updated credentials across the lineup automatically without requiring users to climb a ladder to reset an outdoor camera.</li>
+          </ul>
+
+          <!-- FIG 02: SELF-CREATED TECHNICAL SCHEMATIC / ANIMATED SVG -->
+          <figure class="my-9 rounded-md border border-hairline dark:border-darkborder overflow-hidden">
+            <div class="blueprint-surface p-5 sm:p-6">
+              <div class="mb-3 flex items-center justify-between font-mono text-[11px] text-muted dark:text-darkmuted">
+                <span>SCHEMATIC 02 // UWB + ALIRO SPATIAL APPROACH RANGING vs. 95° PRIVACY GIMBAL</span>
+                <span>ANIMATED KINEMATIC VECTOR</span>
+              </div>
+              <svg viewBox="0 0 660 210" class="w-full h-auto text-ink dark:text-darkink">
+                <!-- Left: UWB Time-of-Flight & AoA Deadbolt -->
+                <rect x="24" y="34" width="84" height="142" rx="18" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="66" cy="78" r="14" fill="none" stroke="#D97757" stroke-width="1.5"/>
+                <circle cx="66" cy="138" r="12" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <!-- Animated UWB Wavefronts -->
+                <path d="M122 52 A 48 48 0 0 1 122 104" fill="none" stroke="#D97757" stroke-width="1.5" class="anim-flow"/>
+                <path d="M148 38 A 72 72 0 0 1 148 118" fill="none" stroke="#D97757" stroke-width="1.5" class="anim-flow"/>
+                <line x1="215" y1="78" x2="84" y2="78" stroke="#D97757" stroke-width="1.5" class="anim-flow"/>
+                <rect x="215" y="56" width="32" height="46" rx="6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                <text x="24" y="22" fill="currentColor" font-size="9.5" font-family="JetBrains Mono, monospace">A. LG UWB + ALIRO SPATIAL VECTOR (±3 CM)</text>
+                <text x="122" y="145" fill="#D97757" font-size="9" font-family="JetBrains Mono, monospace">6.5/8 GHz ToF + AoA</text>
+                <text x="122" y="160" fill="currentColor" opacity="0.7" font-size="8.5" font-family="JetBrains Mono, monospace">No Interior False Unlocks</text>
+
+                <line x1="330" y1="16" x2="330" y2="194" stroke="currentColor" stroke-opacity="0.2" stroke-dasharray="4 4"/>
+
+                <!-- Right: LG Indoor Cam 95-deg Privacy Shroud -->
+                <text x="356" y="22" fill="currentColor" font-size="9.5" font-family="JetBrains Mono, monospace">B. LG INDOOR CAM 95° MECHANICAL OCCLUSION</text>
+                <path d="M402 102 L402 172 C402 186, 488 186, 488 172 L488 102 Z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="445" cy="92" r="38" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M474 88 Q 468 122, 445 135" fill="none" stroke="#D97757" stroke-width="1.8" class="anim-flow"/>
+                <circle cx="445" cy="138" r="11" fill="none" stroke="#D97757" stroke-width="2"/>
+                <text x="502" y="88" fill="currentColor" font-size="9.5" font-family="JetBrains Mono, monospace">Arrival Geofence:</text>
+                <text x="502" y="106" fill="#D97757" font-size="9" font-family="JetBrains Mono, monospace">• Lens pitches -95°</text>
+                <text x="502" y="122" fill="#D97757" font-size="9" font-family="JetBrains Mono, monospace">• Blocked by housing</text>
+                <text x="502" y="138" fill="currentColor" opacity="0.7" font-size="9" font-family="JetBrains Mono, monospace">• Local NAND buffer</text>
+              </svg>
+            </div>
+            <figcaption class="p-3.5 sm:px-4 border-t border-hairline dark:border-darkborder bg-surface dark:bg-darksurface font-mono text-xs text-muted dark:text-darkmuted flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <span><strong class="text-ink dark:text-darkink">FIG 02 — KINEMATIC &amp; RF HIGHLIGHTS:</strong> UWB Time-of-Flight approach vectoring on the Smart Deadbolt and 95° downward mechanical lens occlusion on the Indoor Cam.</span>
+              <div class="flex items-center gap-2 shrink-0">
+                ${renderVisBadge("SELF-CREATED IMAGE / GIF")}
+              </div>
+            </figcaption>
+          </figure>
+
+          <h2>3. Product-by-Product Deep Dive: What Makes Each Device Cool &amp; Unique</h2>
+          <h3>1. Apple HomeView ($299.00)</h3>
+          <p>
+            <strong>Apple HomeView</strong> is the centerpiece that ties the entire collection together. Rather than slapping an iPad onto a speaker dock, Apple engineered two purpose-built hardware variants at the exact same $299 price point:
+          </p>
+          <ul>
+            <li><strong>Two Distinct Mechanical Form Factors:</strong> The <strong>Tabletop Model</strong> (available in Silver, Starlight, Rose Pink, and Space Gray with color-matched woven cables) pairs a 7-inch aluminum display enclosure to a compact, domed acoustic speaker base via a precision-machined <strong>stainless steel hinge</strong>, offering smooth tilt adjustment for kitchen counters or high nightstands. The <strong>Wall-Mounted Model</strong> (Space Gray and Silver) packs the same display and acoustic drivers into a flush rear profile that snaps onto three purpose-built <strong>Schneider Home Power Mounts</strong>: a USB-C Wall Connector ($59.95), a hardwired AC gang-box mount ($79.95), or an enterprise-grade <strong>Power-over-Ethernet (PoE) Wired Mount</strong> ($129.95).</li>
+            <li><strong>500-Nit to 0.3-Nit Dynamic Display Pipeline:</strong> A smart display on a bedroom nightstand usually glows like a flashlight at 2:00 AM. Apple engineered HomeView’s 7-inch Liquid Retina panel with True Tone and an ultra-wide dimming controller that scales from a sunlight-readable <strong>500 nits</strong> all the way down to an almost imperceptible <strong>0.3 nits</strong> in dark rooms.</li>
+            <li><strong>Proximity-Adaptive UI &amp; 6-User Face Recognition:</strong> Using its front-facing camera (which also powers Center Stage FaceTime calls) and proximity sensing, HomeView dynamically changes its information density based on how far away you are—showing high-contrast glanceable status from across the kitchen, and expanding into detailed controls as you walk up. On-device facial recognition identifies up to <strong>six individual household members</strong>, seamlessly shifting from a shared family dashboard to your personal Messages, Calendar, Reminders, and Apple Music profile the moment it sees your face.</li>
+          </ul>
+
+          <h3>2. LG Smart Deadbolt Lock ($349.95)</h3>
+          <p>
+            Most smart locks on the market today feel sluggish or unreliable when trying to unlock hands-free because they rely on Bluetooth signal strength, which bounces off walls and can accidentally unlock the door while you are walking around inside your hallway.
+          </p>
+          <ul>
+            <li><strong>Ultra-Wideband (UWB) + Aliro Spatial Ranging:</strong> The LG Smart Deadbolt is built around the new <strong>Aliro</strong> access standard and Apple’s spatial <strong>Ultra-Wideband</strong> radio. Instead of guessing distance from signal strength, UWB measures the exact time-of-flight and angle of radio pulses between the lock and your iPhone or Apple Watch—unlocking automatically as you walk up outside while never false-triggering from inside.</li>
+            <li><strong>Four-Way Redundant Access &amp; Offline Operation:</strong> Beyond hands-free UWB approach unlocking, you can tap via NFC Home Key (even on a dead iPhone using power reserve), punch a code into the exterior keypad, or flip open a concealed mechanical cover to use a physical backup key. Because it runs over Matter-over-Thread locally, all core lock features work even if your home Wi-Fi goes down.</li>
+          </ul>
+
+          <h3>3. LG Video Doorbell (Wired, $249.95)</h3>
+          <p>
+            Single-lens video doorbells suffer from an unavoidable optical compromise: if you angle the lens high enough to see a tall visitor's face, you create a blind spot right against the base of the door where couriers drop packages.
+          </p>
+          <ul>
+            <li><strong>Dual-Camera Optical Split (2.5K + 1080p):</strong> LG embedded two distinct camera modules into the chassis: a primary <strong>2.5K resolution front camera</strong> tuned for eye-level visitor identification, and a dedicated downward-angled <strong>1080p Full HD bottom camera</strong> aimed squarely at the welcome mat.</li>
+            <li><strong>Integrated Spotlight &amp; Ecosystem Chime:</strong> Includes a built-in downward porch spotlight for full-color night vision and chimes natively across every HomeView, HomePod, and Apple TV 4K.</li>
+          </ul>
+
+          <h3>4. LG Indoor Cam, Outdoor Cam &amp; Floodlight Cam ($199.95 – $399.95)</h3>
+          <ul>
+            <li><strong>Motorized Physical Privacy Tilt (LG Indoor Cam, $199.95):</strong> Built on a motorized pan-and-tilt gimbal that automatically <strong>pitches its lens downward into its enclosed base housing</strong> the moment the first family member arrives home, mechanically blocking the camera so it cannot see the room.</li>
+            <li><strong>Low-Light Color Night Vision &amp; Adaptive Floodlights (Outdoor Cam $299.95 &amp; Floodlight Cam $399.95):</strong> High-sensitivity 2.5K sensors preserve full-color night vision in low ambient light, while the Floodlight Cam pairs this with dual motion-activated adaptive floodlights.</li>
+            <li><strong>On-Device Outage Buffer + Apple Intelligence Search:</strong> Every LG camera includes local flash storage to keep recording if Wi-Fi drops, plus Apple Intelligence clip summaries that let you search your 10-day HomeKit Secure Video history using natural language.</li>
+          </ul>
+
+          <h3>5. LG &amp; Schneider Electric Smart Thermostats ($199.95)</h3>
+          <ul>
+            <li><strong>Round vs. Square Industrial Design + On-Device Wire Sensing:</strong> Choose LG’s circular dial in Essence White or Schneider’s square profile in Silver + White (which integrates natively with Schneider Home electrical panels, solar inverters, and backup batteries). Both feature hardware on-device wire detection to guide DIY installs and fuse multi-room temperature/humidity readings directly from HomePod mini, HomeView, and optional $39.95 wireless room sensors.</li>
+          </ul>
+        `
+      },
+
+      // ======================================================================
+      // STANDBY FULL ARTICLE #2 (INSTANT REPLACEMENT WHEN USER CLICKS 👎)
+      // ======================================================================
+      {
+        key: "additive-sla-sls-fdm-002",
+        issue: "ISSUE #002 (STANDBY REPLACEMENT)",
+        date: "THU, OCT 15",
+        subject: "Manufacturing",
+        readTime: "8 MIN READ",
+        title: "Additive Technologies: The True Mechanical Difference Between SLA, SLS, and FDM",
+        subtitle: "A first-principles look at how polymer chains cross-link, sinter, or diffuse across layer boundaries—and why Z-axis anisotropy breaks functional prototypes.",
+        visualModalities: ["SCRAPED STATIC IMAGE / GIF", "INTERACTIVE GRAPHIC"],
+        html: `
+          <h2>1. The Overview: Three Physics Paths to a Solid Part</h2>
+          <p>
+            To a CAD system, an STL file is a uniform solid volume. On the shop floor, however, the three dominant polymer additive manufacturing processes—<strong>Fused Deposition Modeling (FDM)</strong>, <strong>Stereolithography (SLA)</strong>, and <strong>Selective Laser Sintering (SLS)</strong>—rely on completely different physical mechanisms to bond layer $n$ to layer $n+1$.
+          </p>
+
+          <div class="my-7 overflow-x-auto rounded-md border border-hairline dark:border-darkborder">
+            <table class="w-full border-collapse text-left text-[13.5px]">
+              <thead>
+                <tr class="border-b border-hairline dark:border-darkborder bg-surface dark:bg-darksurface font-mono text-[11px] uppercase text-muted dark:text-darkmuted">
+                  <th class="p-3">Process</th>
+                  <th class="p-3">Bonding Mechanism</th>
+                  <th class="p-3">Z-Axis Strength Retention</th>
+                  <th class="p-3">Typical Tolerance</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-hairline dark:divide-darkborder">
+                <tr>
+                  <td class="p-3 font-semibold">FDM / FFF</td>
+                  <td class="p-3">Thermoplastic reptation &amp; thermal diffusion across extruded roads</td>
+                  <td class="p-3 font-mono text-accent dark:text-darkaccent">45% – 65% of XY</td>
+                  <td class="p-3 font-mono">±0.20 mm (or ±0.5%)</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-semibold">SLA (Resin)</td>
+                  <td class="p-3">UV free-radical covalent photopolymerization across unreacted monomer groups</td>
+                  <td class="p-3 font-mono text-emerald-700 dark:text-emerald-400">92% – 98% of XY</td>
+                  <td class="p-3 font-mono">±0.05 mm (or ±0.15%)</td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-semibold">SLS (Nylon PA12)</td>
+                  <td class="p-3">CO₂ laser coalescence inside a heated semi-crystalline powder bed window</td>
+                  <td class="p-3 font-mono text-emerald-700 dark:text-emerald-400">85% – 93% of XY</td>
+                  <td class="p-3 font-mono">±0.15 mm (or ±0.3%)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- INTERACTIVE GRAPHIC: ANISOTROPY & LAYER LOAD SIMULATOR -->
+          <figure class="my-9 rounded-md border border-hairline dark:border-darkborder overflow-hidden">
+            <div class="blueprint-surface p-5 sm:p-6 space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="font-mono text-xs font-semibold text-ink dark:text-darkink">
+                  INTERACTIVE SIMULATOR // Z-AXIS LAYER DELAMINATION vs. XY TENSILE LOAD
+                </span>
+                <div class="inline-flex rounded border border-hairline dark:border-darkborder bg-paper dark:bg-darkbg p-0.5 font-mono text-[11px]">
+                  <button onclick="updateAdditiveSim('FDM')" id="sim-btn-FDM" class="rounded px-2.5 py-1 bg-ink text-paper dark:bg-darkink dark:text-darkbg">FDM (ABS/ASA)</button>
+                  <button onclick="updateAdditiveSim('SLS')" id="sim-btn-SLS" class="rounded px-2.5 py-1 text-muted">SLS (PA12 Nylon)</button>
+                  <button onclick="updateAdditiveSim('SLA')" id="sim-btn-SLA" class="rounded px-2.5 py-1 text-muted">SLA (Tough Resin)</button>
+                </div>
+              </div>
+
+              <div id="additive-sim-readout" class="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+                <div class="rounded border border-hairline dark:border-darkborder bg-paper/90 dark:bg-darkbg/90 p-3">
+                  <div class="text-[10px] text-muted">XY IN-PLANE TENSILE</div>
+                  <div class="text-lg font-semibold mt-0.5" id="sim-xy-val">42 MPa</div>
+                </div>
+                <div class="rounded border border-hairline dark:border-darkborder bg-paper/90 dark:bg-darkbg/90 p-3">
+                  <div class="text-[10px] text-muted">Z-AXIS INTERLAYER</div>
+                  <div class="text-lg font-semibold mt-0.5 text-accent dark:text-darkaccent" id="sim-z-val">23 MPa (55%)</div>
+                </div>
+                <div class="rounded border border-hairline dark:border-darkborder bg-paper/90 dark:bg-darkbg/90 p-3">
+                  <div class="text-[10px] text-muted">MICRO-VOID POROSITY</div>
+                  <div class="text-lg font-semibold mt-0.5" id="sim-void-val">6.8% (Inter-bead)</div>
+                </div>
+              </div>
+              <p id="sim-explanation" class="text-xs text-muted dark:text-darkmuted mb-0">
+                <strong>FDM Physics:</strong> Extruded oval filaments cool below glass transition ($T_g$) rapidly, leaving diamond-shaped interstitial voids that act as stress-concentration notches under Z-axis bending.
+              </p>
+            </div>
+            <figcaption class="p-3.5 sm:px-4 border-t border-hairline dark:border-darkborder bg-surface dark:bg-darksurface font-mono text-xs text-muted dark:text-darkmuted flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <span><strong class="text-ink dark:text-darkink">FIG 01 — ANISOTROPY COMPARATOR:</strong> Toggle between FDM, SLS, and SLA to compare XY vs. Z-axis tensile strength and void fraction.</span>
+              <div class="flex items-center gap-2 shrink-0">
+                ${renderVisBadge("INTERACTIVE GRAPHIC")}
+              </div>
+            </figcaption>
+          </figure>
+
+          <h2>2. Why SLA Is Isotropic While FDM Delaminates</h2>
+          <p>
+            In <strong>FDM</strong>, molten polymer exits the nozzle at 210°C–260°C and is pressed onto a previously cooled layer. Polymer chains can only entangle across the boundary (reptation) while the interface stays above the glass transition temperature ($T_g$). Because conduction cools the interface in milliseconds, entanglement is incomplete—and the rounded geometry of adjacent extruded beads leaves continuous triangular micro-voids along every layer plane.
+          </p>
+          <p>
+            In <strong>SLA</strong>, the UV laser or masked LCD cures each layer to ~75%–85% conversion ("green state"). When the next layer is exposed, free radicals propagate directly across the boundary into unreacted acrylate groups on the previous layer, forming primary <strong>covalent chemical bonds</strong> in $Z$ that are virtually identical to the bonds in $X$ and $Y$.
+          </p>
+        `
+      },
+
+      // ======================================================================
+      // STANDBY FULL ARTICLE #3 (INSTANT REPLACEMENT WHEN USER CLICKS 👎 AGAIN)
+      // ======================================================================
+      {
+        key: "espresso-pump-003",
+        issue: "ISSUE #003 (STANDBY REPLACEMENT)",
+        date: "FRI, OCT 16",
+        subject: "Fluids",
+        readTime: "7 MIN READ",
+        title: "Espresso Extraction: How a $15 Half-Wave Solenoid Vibratory Pump Generates 9 Bars",
+        subtitle: "Inside the Ulka EP5 electromagnetic piston pump—how a 1N4007 diode chops 60 Hz AC mains into 3,600 hydraulic strokes per minute and why an Over-Pressure Valve (OPV) is required.",
+        visualModalities: ["INTERACTIVE GRAPHIC", "SELF-CREATED IMAGE / GIF"],
+        html: `
+          <h2>1. The 9-Bar Packaging Problem</h2>
+          <p>
+            Extracting espresso requires forcing $93^\circ\text{C}$ water through a compacted $18\text{ g}$ bed of finely ground coffee at **9 bar ($900\text{ kPa}$ or $130.5\text{ psi}$)**—nearly 4.5 times the pressure of a car tire. Commercial cafe machines use heavy brass rotary vane pumps driven by induction motors, but home machines accomplish this inside a $60\text{ mm}$ plastic-and-brass cylinder that costs less than $18: the **Ulka E-Series vibratory pump**.
+          </p>
+
+          <!-- INTERACTIVE GRAPHIC: OPV BYPASS & VIBRATORY PUMP FLOW SIMULATOR -->
+          <figure class="my-9 rounded-md border border-hairline dark:border-darkborder overflow-hidden">
+            <div class="blueprint-surface p-5 sm:p-6 space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="font-mono text-xs font-semibold text-ink dark:text-darkink">
+                  INTERACTIVE SIMULATOR // COFFEE PUCKS RESISTANCE vs. OPV PRESSURE-FLOW CURVE
+                </span>
+                <span class="font-mono text-xs text-accent dark:text-darkaccent font-semibold" id="pump-pressure-label">
+                  Puck Resistance: 9.0 Bar (Ideal Extraction)
+                </span>
+              </div>
+
+              <input
+                id="pump-slider"
+                type="range"
+                min="2"
+                max="15"
+                step="0.5"
+                value="9"
+                oninput="updatePumpSimulator(this.value)"
+                class="w-full accent-[#D97757] cursor-pointer"
+              />
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+                <div class="rounded border border-hairline dark:border-darkborder bg-paper/90 dark:bg-darkbg/90 p-3">
+                  <div class="text-[10px] text-muted">RAW PUMP HEAD PRESSURE</div>
+                  <div class="text-lg font-semibold mt-0.5" id="pump-raw-bar">9.0 Bar</div>
+                </div>
+                <div class="rounded border border-hairline dark:border-darkborder bg-paper/90 dark:bg-darkbg/90 p-3">
+                  <div class="text-[10px] text-muted">DELIVERED GROUP PRESSURE</div>
+                  <div class="text-lg font-semibold mt-0.5 text-emerald-700 dark:text-emerald-400" id="pump-clamped-bar">9.0 Bar (OPV Cracking)</div>
+                </div>
+                <div class="rounded border border-hairline dark:border-darkborder bg-paper/90 dark:bg-darkbg/90 p-3">
+                  <div class="text-[10px] text-muted">FLOW RATE AT GROUPHEAD</div>
+                  <div class="text-lg font-semibold mt-0.5" id="pump-flow-val">4.2 mL/s</div>
+                </div>
+              </div>
+            </div>
+            <figcaption class="p-3.5 sm:px-4 border-t border-hairline dark:border-darkborder bg-surface dark:bg-darksurface font-mono text-xs text-muted dark:text-darkmuted flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <span><strong class="text-ink dark:text-darkink">FIG 01 — HYDRAULIC LOAD EXPLORER:</strong> Drag the grind resistance slider to see how the spring-loaded OPV clamps group pressure at 9.0 bar while bypassing excess flow.</span>
+              <div class="flex items-center gap-2 shrink-0">
+                ${renderVisBadge("INTERACTIVE GRAPHIC")}
+              </div>
+            </figcaption>
+          </figure>
+
+          <h2>2. Half-Wave Rectification &amp; Dual Check-Valve Kinematics</h2>
+          <ul>
+            <li><strong>The 60 Hz Diode Trick:</strong> An integrated diode blocks the negative half of the AC sine wave. For 8.33 ms, the coil pulls the ferromagnetic plunger backward against a return spring, drawing water into the bore. For the next 8.33 ms (zero current), the spring slams the plunger forward, pressurizing the small bore ($F / A$) up to 15 bar peak.</li>
+            <li><strong>Why You Need an Over-Pressure Valve (OPV):</strong> Because a vibratory pump is a positive-displacement piston whose dead-head pressure reaches 15 bar, brewing without an OPV compacts the coffee puck and causes channeling. A spring-loaded brass OPV cracks open at exactly 9 bar, bleeding excess water back to the reservoir.</li>
+          </ul>
+        `
+      }
+    ];
+
+    let currentArticleIndex = 0;
+    let currentViewMode = "article";
+    let tocObserver = null;
+
+    // ========================================================================
+    // 7-DAY ACTIVE SCHEDULE QUEUE
+    // ========================================================================
+    let activeQueue = [
+      {
+        id: "Q-001",
+        issue: "ISSUE #001",
+        day: "Wed, Oct 14 (Today)",
+        subject: "Product Dives",
+        title: "Inside the Apple HomeView & Apple Home Collection: The Complete Hardware Breakdown",
+        focus: "Dual-pronged smart home architecture: first-party 7\" Liquid Retina command hub ($299) paired with LG & Schneider Electric co-engineered UWB locks, motorized privacy cameras, and radar thermostats.",
+        visType: "SCRAPED STATIC IMAGE / GIF",
+        visSecondary: "SELF-CREATED IMAGE / GIF",
+        visNote: "Verified Apple Newsroom press imagery + animated UWB & 95° privacy gimbal schematic",
+        status: "Published Live",
+        articleIndex: 0,
+        vote: null
+      },
+      {
+        id: "Q-002",
+        issue: "ISSUE #002",
+        day: "Thu, Oct 15 (07:00 AM)",
+        subject: "Manufacturing",
+        title: "Additive Technologies: The True Mechanical Difference Between SLA, SLS, and FDM",
+        focus: "Photopolymerization cross-linking vs. laser sintering necking vs. thermoplastic interlayer diffusion, Z-axis anisotropy, and dimensional tolerance limits.",
+        visType: "INTERACTIVE GRAPHIC",
+        visSecondary: "SCRAPED STATIC IMAGE / GIF",
+        visNote: "Interactive Z-Axis Layer Delamination vs. XY Tensile Simulator + process macro imagery",
+        status: "Queued Next",
+        articleIndex: 1,
+        vote: null
+      },
+      {
+        id: "Q-003",
+        issue: "ISSUE #003",
+        day: "Fri, Oct 16 (07:00 AM)",
+        subject: "Fluids",
+        title: "Espresso Extraction: How a $15 Half-Wave Solenoid Vibratory Pump Generates 9 Bars",
+        focus: "Oscillating ferromagnetic piston kinematics, 1N4007 diode half-wave rectification (60 Hz), spring-check valves, and Over-Pressure Valve (OPV) bypass curves.",
+        visType: "INTERACTIVE GRAPHIC",
+        visSecondary: "SELF-CREATED IMAGE / GIF",
+        visNote: "Interactive 60 Hz Solenoid & 9-Bar OPV Pressure-Flow Curve Simulator",
+        status: "Scheduled",
+        articleIndex: 2,
+        vote: null
+      },
+      {
+        id: "Q-004",
+        issue: "ISSUE #004",
+        day: "Sat, Oct 17 (07:00 AM)",
+        subject: "Design",
+        title: "Surface Treatments: What Actually Happens During Aluminum Anodizing?",
+        focus: "Electrochemical conversion of 6061/7075 aluminum, hexagonal porous Al2O3 crystal growth (Type II vs. Type III hardcoat), 50% inward / 50% outward dimensional growth, and hydrothermal dye sealing.",
+        visType: "SELF-CREATED IMAGE / GIF",
+        visSecondary: "INTERACTIVE GRAPHIC",
+        visNote: "Self-created hexagonal pore cross-section schematic + Threaded Hole Tolerance Calculator",
+        status: "Scheduled",
+        vote: null
+      },
+      {
+        id: "Q-005",
+        issue: "ISSUE #005",
+        day: "Sun, Oct 18 (07:00 AM)",
+        subject: "Materials",
+        title: "Fatigue & S-N Curves: Why Steel Has an Endurance Limit and Aluminum Doesn't",
+        focus: "BCC vs. FCC crystal lattice interstitial pinning (Cottrell atmospheres) in carbon steel vs. continuous planar dislocation slip in 6061/7075 aluminum alloys under cyclic loading.",
+        visType: "INTERACTIVE GRAPHIC",
+        visSecondary: null,
+        visNote: "Interactive Stress-Life (S-N) Curve Explorer comparing 4140 Steel vs. 6061-T6 Aluminum",
+        status: "Scheduled",
+        vote: null
+      },
+      {
+        id: "Q-006",
+        issue: "ISSUE #006",
+        day: "Mon, Oct 19 (07:00 AM)",
+        subject: "Mechanisms",
+        title: "Ballpoint Pen Clickers: The Genius of Continuous Rotational Cam Tracks",
+        focus: "Sawtooth axial cam-and-follower kinematics, indexing plunger splines, return spring preload, and why the mechanism never reverses rotation direction.",
+        visType: "INTERACTIVE GRAPHIC",
+        visSecondary: "SELF-CREATED IMAGE / GIF",
+        visNote: "Interactive Step-by-Step Unrolled Cam Track Kinematic Simulator",
+        status: "Scheduled",
+        vote: null
+      },
+      {
+        id: "Q-007",
+        issue: "ISSUE #007",
+        day: "Tue, Oct 20 (07:00 AM)",
+        subject: "Thermal",
+        title: "Steam Deck Cooling: Vapor Chambers vs. Sintered Copper Heat Pipes",
+        focus: "Two-phase latent heat of vaporization, capillary wick permeability, dry-out limits, and 2D planar spreading resistance vs. 1D linear heat transport.",
+        visType: "SCRAPED STATIC IMAGE / GIF",
+        visSecondary: "SELF-CREATED IMAGE / GIF",
+        visNote: "Verified teardown photography (iFixit/Wikimedia) + 2-phase capillary loop diagram",
+        status: "Scheduled",
+        vote: null
+      },
+      {
+        id: "Q-008",
+        issue: "ISSUE #008",
+        day: "Wed, Oct 21 (07:00 AM)",
+        subject: "Electromechanical",
+        title: "Webcam & Smartphone Autofocus: Voice Coil Motors (VCM) vs. Piezoelectric Actuators",
+        focus: "Lorentz force (F = BIl) spring-suspended lens barrels vs. ultrasonic piezo slip-stick stages, hysteresis, power draw, and settling time.",
+        visType: "SCRAPED STATIC IMAGE / GIF",
+        visSecondary: "INTERACTIVE GRAPHIC",
+        visNote: "Scraped VCM teardown macro + Interactive Lorentz Force Spring-Mass Step Response",
+        status: "Scheduled",
+        vote: null
+      }
+    ];
+
+    // Reserve Standby Pool (Used immediately when any topic is downvoted 👎)
+    let reservePool = [
+      {
+        id: "R-009",
+        subject: "Manufacturing",
+        title: "LEGO's 2-Micron Secret: How Injection Molds Hold Interference Clutch Power",
+        focus: "ABS shrinkage compensation, H13 tool steel EDM surface finish, draft angles, and 3-point rib interference math.",
+        visType: "SELF-CREATED IMAGE / GIF",
+        visSecondary: "INTERACTIVE GRAPHIC",
+        visNote: "Self-created ABS stud-and-tube interference cross-section + Shrinkage Calculator"
+      },
+      {
+        id: "R-010",
+        subject: "Fluids",
+        title: "F1 Ground Effect: Venturi Tunnels, Diffuser Expansion Ratios & Porpoising Stall",
+        focus: "Bernoulli throat acceleration, floor edge vortex sealing, and aerodynamic boundary-layer separation oscillated by ride height.",
+        visType: "INTERACTIVE GRAPHIC",
+        visSecondary: "SELF-CREATED IMAGE / GIF",
+        visNote: "Interactive Ride-Height vs. Downforce Stall Simulator + animated Venturi streamlines"
+      },
+      {
+        id: "R-011",
+        subject: "Product Dives",
+        title: "Inside the DJI Osmo Pocket 3 Gimbal: 3-Axis Brushless Direct-Drive Packaging",
+        focus: "Hollow-shaft BLDC torque motors, Hall-effect magnetic encoders, flex-PCB slip rings, and passive magnesium heat dissipation.",
+        visType: "SCRAPED STATIC IMAGE / GIF",
+        visSecondary: "SELF-CREATED IMAGE / GIF",
+        visNote: "Scraped press/teardown imagery + 3-axis orthogonal gimbal schematic"
+      },
+      {
+        id: "R-012",
+        subject: "Design",
+        title: "Holding It Together: Why the 50-40-10 Bolt Torque Rule Governs Structural Joints",
+        focus: "Why 50% of wrench torque is lost under the bolt head, 40% in thread friction, and only 10% generates elastic clamp preload.",
+        visType: "INTERACTIVE GRAPHIC",
+        visSecondary: null,
+        visNote: "Interactive Bolt Preload & Friction Coefficient Breakdown Simulator"
+      },
+      {
+        id: "R-013",
+        subject: "Mechanisms",
+        title: "Harmonic Drives (Strain Wave Gearing): Zero-Backlash Robotics Reduction",
+        focus: "Wave generator elliptical bearing, elastic flexspline tooth engagement, and how 100:1 reduction happens in a single stage.",
+        visType: "SELF-CREATED IMAGE / GIF",
+        visSecondary: "INTERACTIVE GRAPHIC",
+        visNote: "Animated SVG elliptical flexspline tooth mesh loop"
+      },
+      {
+        id: "R-014",
+        subject: "Electromechanical",
+        title: "Apple Taptic Engine vs. Eccentric Rotating Mass (ERM): Linear Resonant Actuators",
+        focus: "Moving-magnet Neodymium spring mass tuned to 170 Hz resonant frequency for crisp single-cycle haptic clicks.",
+        visType: "SCRAPED STATIC IMAGE / GIF",
+        visSecondary: "SELF-CREATED IMAGE / GIF",
+        visNote: "Scraped iFixit X-ray/teardown + animated LRA spring-mass resonance schematic"
+      }
+    ];
+
+    // ========================================================================
+    // STICKY LEFT-HAND SECTION OUTLINE BUILDER & SCROLL SPY
+    // ========================================================================
+    function slugifyHeading(text, index) {
+      const base = text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+      return `sec-${index}-${base || "heading"}`;
+    }
+
+    function cleanHeadingLabel(rawText) {
+      return rawText.replace(/\s*\$[0-9.,]+(\s*–\s*\$[0-9.,]+)?/g, "").trim();
+    }
+
+    function buildArticleOutline() {
+      const nav = document.getElementById("toc-nav-list");
+      const headerLabel = document.getElementById("toc-header-label");
+      const issueTag = document.getElementById("toc-issue-tag");
+      if (!nav) return;
+
+      if (tocObserver) {
+        tocObserver.disconnect();
+        tocObserver = null;
+      }
+
+      // If in Archive & Queue mode, render quick jump links for the 7-day queue
+      if (currentViewMode === "archive") {
+        headerLabel.textContent = "QUEUE // QUICK JUMP";
+        issueTag.textContent = `${activeQueue.length} SLOTS`;
+
+        const archiveTargets = [
+          { id: "archive-overview-top", label: "Overview & Modality Legend", level: "h2" },
+          ...activeQueue.map((item) => ({
+            id: `queue-row-${item.id}`,
+            label: `${item.issue} · ${item.subject}`,
+            sublabel: item.title,
+            level: "h3"
+          }))
+        ];
+
+        nav.innerHTML = archiveTargets.map((t, i) => `
+          <button
+            type="button"
+            data-target="${t.id}"
+            onclick="scrollToOutlineTarget('${t.id}')"
+            class="toc-link ${t.level === 'h3' ? 'toc-h3' : ''} ${i === 0 ? 'active' : ''}"
+          >
+            <div class="truncate">${t.label}</div>
+            ${t.sublabel ? `<div class="truncate text-[10.5px] opacity-75">${t.sublabel}</div>` : ''}
+          </button>
+        `).join("");
+
+        setupScrollSpy(archiveTargets.map(t => document.getElementById(t.id)).filter(Boolean));
+        return;
+      }
+
+      // Active Article Mode: Parse H1, H2, and H3 inside #article-content-mount
+      const art = FULL_ARTICLES[currentArticleIndex];
+      headerLabel.textContent = "ON THIS PAGE // OUTLINE";
+      issueTag.textContent = art.issue.replace("ISSUE ", "").split(" ")[0];
+
+      const mount = document.getElementById("article-content-mount");
+      const headings = Array.from(mount.querySelectorAll("h1, h2, h3"));
+
+      const items = headings.map((el, idx) => {
+        const id = slugifyHeading(el.textContent, idx);
+        el.id = id;
+        const tag = el.tagName.toLowerCase();
+        const label = tag === "h1" ? "Overview & Introduction" : cleanHeadingLabel(el.textContent);
+        return { id, label, tag, el };
+      });
+
+      nav.innerHTML = items.map((item, idx) => `
+        <button
+          type="button"
+          id="toc-btn-${item.id}"
+          data-target="${item.id}"
+          onclick="scrollToOutlineTarget('${item.id}')"
+          class="toc-link ${item.tag === 'h3' ? 'toc-h3' : ''} ${idx === 0 ? 'active' : ''}"
+          title="${item.label.replace(/"/g, '&quot;')}"
+        >
+          ${item.label}
         </button>
       `).join("");
+
+      setupScrollSpy(items.map(i => i.el));
     }
 
-    function renderArchive() {
-      const list = document.getElementById("archive-list");
-      const filtered = activeSubject === "All" ? TOPICS : TOPICS.filter(t => t.subject === activeSubject);
-      list.innerHTML = filtered.map(item => `
-        <div class="archive-item" onclick="showView('article')">
-          <div>
-            <div class="archive-title">${item.title}</div>
-            <div class="archive-meta">${item.subject}</div>
+    function scrollToOutlineTarget(targetId) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+
+      document.querySelectorAll("#toc-nav-list .toc-link").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-target") === targetId);
+      });
+
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function setupScrollSpy(elements) {
+      if (!elements || elements.length === 0) return;
+
+      tocObserver = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter(e => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+          if (visible.length > 0) {
+            const activeId = visible[0].target.id;
+            document.querySelectorAll("#toc-nav-list .toc-link").forEach(btn => {
+              btn.classList.toggle("active", btn.getAttribute("data-target") === activeId);
+            });
+          }
+        },
+        {
+          root: null,
+          rootMargin: "-85px 0px -68% 0px",
+          threshold: [0, 1.0]
+        }
+      );
+
+      elements.forEach(el => tocObserver.observe(el));
+    }
+
+    // ========================================================================
+    // RENDER CURRENT FULL ARTICLE
+    // ========================================================================
+    function renderCurrentArticle() {
+      const art = FULL_ARTICLES[currentArticleIndex];
+      const mount = document.getElementById("article-content-mount");
+
+      const badgesHtml = art.visualModalities.map(m => renderVisBadge(m)).join(" ");
+
+      mount.innerHTML = `
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div class="font-mono text-xs uppercase tracking-wider text-accent dark:text-darkaccent font-medium flex items-center gap-2.5">
+            <span>${art.issue}</span>
+            <span>•</span>
+            <span>${art.subject}</span>
+            <span>•</span>
+            <span>${art.readTime}</span>
           </div>
-          <div class="archive-meta">${item.id} · ${item.status}</div>
+          <div class="flex flex-wrap items-center gap-1.5">
+            ${badgesHtml}
+          </div>
         </div>
-      `).join("");
+
+        <h1 class="font-serif text-4xl sm:text-[46px] font-normal tracking-tight text-ink dark:text-darkink leading-[1.12] mb-4">
+          ${art.title}
+        </h1>
+
+        <p class="text-lg sm:text-[18.5px] text-muted dark:text-darkmuted leading-relaxed mb-8">
+          ${art.subtitle}
+        </p>
+
+        ${art.html}
+      `;
+
+      buildArticleOutline();
     }
 
-    function filterSubject(sub) {
-      activeSubject = sub;
-      renderSubjects();
-      renderArchive();
-      if (sub !== "All") showView("archive");
+    // ========================================================================
+    // VOTE ON CURRENTLY OPEN ARTICLE (👍 BOOST OR 👎 IMMEDIATE SWAP)
+    // ========================================================================
+    function voteActiveArticle(direction) {
+      const currentArt = FULL_ARTICLES[currentArticleIndex];
+      voteCount++;
+      document.getElementById("telemetry-vote-counter").textContent = voteCount;
+
+      if (direction === "up") {
+        subjectWeights[currentArt.subject] = +(subjectWeights[currentArt.subject] + 0.25).toFixed(2);
+        replacementLogs.unshift(`👍 Boosted [${currentArt.subject}] weight to ${subjectWeights[currentArt.subject]}x via "${currentArt.title.slice(0, 48)}..."`);
+        showToast(`👍 Trained +1 on ${currentArt.subject}. Prioritizing similar deep-dive teardowns in the 07:00 AM generator.`);
+      } else {
+        // Penalize weight and immediately replace article on screen!
+        subjectWeights[currentArt.subject] = Math.max(0.25, +(subjectWeights[currentArt.subject] - 0.30).toFixed(2));
+        const rejectedTitle = currentArt.title;
+        currentArticleIndex = (currentArticleIndex + 1) % FULL_ARTICLES.length;
+        const replacementArt = FULL_ARTICLES[currentArticleIndex];
+
+        // Also update the top slot in the queue so Archive reflects the swap
+        activeQueue[0] = {
+          ...activeQueue[0],
+          subject: replacementArt.subject,
+          title: replacementArt.title,
+          visType: replacementArt.visualModalities[0],
+          visSecondary: replacementArt.visualModalities[1] || null,
+          status: "Replaced Live (Standby Loaded)",
+          articleIndex: currentArticleIndex
+        };
+
+        replacementLogs.unshift(`👎 Discarded "${rejectedTitle.slice(0, 42)}..." → Immediately swapped in "${replacementArt.title.slice(0, 44)}..."`);
+        renderCurrentArticle();
+        renderArchiveQueue();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        showToast(`👎 Rejected topic discarded. Immediately swapped in standby article: "${replacementArt.title}"`);
+      }
+
+      renderTelemetryWeights();
     }
 
-    function showView(view) {
-      document.getElementById("view-article").classList.toggle("hidden", view !== "article");
-      document.getElementById("view-archive").classList.toggle("hidden", view !== "archive");
-      document.getElementById("btn-article").classList.toggle("active", view === "article");
-      document.getElementById("btn-archive").classList.toggle("active", view === "archive");
+    // ========================================================================
+    // VOTE ON ANY QUEUED TOPIC IN THE 7-DAY SCHEDULE (👎 SWAPS IMMEDIATELY)
+    // ========================================================================
+    function voteQueueItem(index, direction, event) {
+      event.stopPropagation();
+      const item = activeQueue[index];
+      voteCount++;
+      document.getElementById("telemetry-vote-counter").textContent = voteCount;
+
+      if (direction === "up") {
+        item.vote = "up";
+        subjectWeights[item.subject] = +(subjectWeights[item.subject] + 0.25).toFixed(2);
+        replacementLogs.unshift(`👍 Locked & boosted ${item.issue} [${item.subject}]: "${item.title.slice(0, 45)}..."`);
+        showToast(`👍 Locked "${item.title}" in the ${item.day} slot and boosted ${item.subject} weight.`);
+      } else {
+        // Immediate replacement from reservePool
+        subjectWeights[item.subject] = Math.max(0.25, +(subjectWeights[item.subject] - 0.30).toFixed(2));
+        const oldTitle = item.title;
+
+        // Pull highest-weighted topic from reservePool
+        reservePool.sort((a, b) => (subjectWeights[b.subject] || 1) - (subjectWeights[a.subject] || 1));
+        const nextStandby = reservePool.shift();
+
+        // Recycle rejected topic to the back of reservePool so user can test endlessly
+        reservePool.push({
+          id: item.id,
+          subject: item.subject,
+          title: item.title,
+          focus: item.focus,
+          visType: item.visType,
+          visSecondary: item.visSecondary,
+          visNote: item.visNote
+        });
+
+        activeQueue[index] = {
+          ...item,
+          id: nextStandby.id,
+          subject: nextStandby.subject,
+          title: nextStandby.title,
+          focus: nextStandby.focus,
+          visType: nextStandby.visType,
+          visSecondary: nextStandby.visSecondary,
+          visNote: nextStandby.visNote,
+          status: "Auto-Replaced via 👎",
+          vote: null
+        };
+
+        replacementLogs.unshift(`👎 Replaced ${item.issue} ("${oldTitle.slice(0, 34)}...") → Swapped in "${nextStandby.title.slice(0, 42)}..."`);
+        showToast(`👎 Discarded "${oldTitle}". Swapped in standby topic: "${nextStandby.title}"`);
+      }
+
+      renderTelemetryWeights();
+      renderArchiveQueue();
+    }
+
+    // ========================================================================
+    // RENDER 7-DAY SCHEDULE & ARCHIVE QUEUE
+    // ========================================================================
+    function renderArchiveQueue() {
+      const list = document.getElementById("archive-queue-list");
+      const filtered = activeSubjectFilter === "All"
+        ? activeQueue
+        : activeQueue.filter(item => item.subject === activeSubjectFilter);
+
+      if (filtered.length === 0) {
+        list.innerHTML = `<div class="py-10 font-mono text-xs text-muted dark:text-darkmuted">No scheduled topics in this filter. Click "All" above to view the full 7-day schedule.</div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map((item) => {
+        const realIdx = activeQueue.indexOf(item);
+        const isLockedUp = item.vote === "up";
+        return `
+          <div
+            id="queue-row-${item.id}"
+            onclick="openQueueArticle(${realIdx})"
+            class="archive-scroll-target py-5 flex flex-col gap-3 group cursor-pointer hover:bg-black/[0.015] dark:hover:bg-white/[0.02] -mx-3 px-3 rounded-md transition-colors"
+          >
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex flex-wrap items-center gap-2 font-mono text-[11px] text-muted dark:text-darkmuted">
+                <span class="font-semibold text-ink dark:text-darkink">${item.issue}</span>
+                <span>•</span>
+                <span>${item.day}</span>
+                <span>•</span>
+                <span class="text-accent dark:text-darkaccent font-medium">${item.subject}</span>
+                <span>•</span>
+                <span class="rounded bg-surface dark:bg-darksurface px-2 py-0.5 text-[10px]">${item.status}</span>
+              </div>
+
+              <!-- 👍 / 👎 Trainer Buttons per Queue Row -->
+              <div class="flex items-center gap-1.5">
+                <button
+                  onclick="voteQueueItem(${realIdx}, 'up', event)"
+                  class="rounded border px-2.5 py-1 font-mono text-[11px] transition-colors ${
+                    isLockedUp
+                      ? 'border-emerald-600 bg-emerald-600/15 text-emerald-800 dark:text-emerald-300 font-semibold'
+                      : 'border-hairline dark:border-darkborder bg-paper dark:bg-darkbg text-muted hover:text-emerald-700 hover:border-emerald-600'
+                  }"
+                  title="Approve & boost subject weight"
+                >
+                  👍 ${isLockedUp ? 'Approved (+1)' : 'Good'}
+                </button>
+                <button
+                  onclick="voteQueueItem(${realIdx}, 'down', event)"
+                  class="rounded border border-hairline dark:border-darkborder bg-paper dark:bg-darkbg px-2.5 py-1 font-mono text-[11px] text-muted hover:border-accent hover:bg-accent/10 hover:text-accent dark:hover:text-darkaccent transition-colors"
+                  title="Reject topic and replace immediately from standby pool"
+                >
+                  👎 Replace Now
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="font-sans text-base sm:text-[17px] font-semibold text-ink dark:text-darkink group-hover:text-accent dark:group-hover:text-darkaccent transition-colors">
+                ${item.title}
+              </h3>
+              <p class="mt-1 text-xs sm:text-[13.5px] text-muted dark:text-darkmuted leading-relaxed mb-0">
+                ${item.focus}
+              </p>
+            </div>
+
+            <!-- Visualization Classification Row -->
+            <div class="flex flex-wrap items-center gap-2 pt-1">
+              <span class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkmuted">Planned Visuals:</span>
+              ${renderVisBadge(item.visType)}
+              ${item.visSecondary ? renderVisBadge(item.visSecondary) : ''}
+              <span class="font-mono text-[11px] text-muted dark:text-darkmuted">— ${item.visNote}</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      if (currentViewMode === "archive") {
+        buildArticleOutline();
+      }
+    }
+
+    function openQueueArticle(index) {
+      const item = activeQueue[index];
+      if (typeof item.articleIndex === "number") {
+        currentArticleIndex = item.articleIndex;
+      }
+      renderCurrentArticle();
+      switchView("article");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // ========================================================================
+    // INTERACTIVE GRAPHIC SIMULATORS (FOR ARTICLES #002 & #003)
+    // ========================================================================
+    function updateAdditiveSim(proc) {
+      const data = {
+        FDM: {
+          xy: "42 MPa",
+          z: "23 MPa (55%)",
+          voids: "6.8% (Inter-bead)",
+          desc: "FDM Physics: Extruded oval filaments cool below glass transition (Tg) rapidly, leaving diamond-shaped interstitial voids that act as stress-concentration notches under Z-axis bending."
+        },
+        SLS: {
+          xy: "48 MPa",
+          z: "43 MPa (90%)",
+          voids: "1.9% (Sinter neck)",
+          desc: "SLS Physics: The PA12 powder bed is held just below melting temperature (172°C) while a CO2 laser coalesces particles across layers, yielding near-isotropic mechanical strength without support structures."
+        },
+        SLA: {
+          xy: "55 MPa",
+          z: "53 MPa (96%)",
+          voids: "< 0.2% (Solid)",
+          desc: "SLA Physics: UV photopolymerization forms primary covalent cross-links across unreacted acrylate groups on the previous green layer, making Z-axis tensile strength nearly indistinguishable from XY."
+        }
+      };
+      ["FDM", "SLS", "SLA"].forEach(k => {
+        const btn = document.getElementById("sim-btn-" + k);
+        if (btn) {
+          btn.className = k === proc
+            ? "rounded px-2.5 py-1 bg-ink text-paper dark:bg-darkink dark:text-darkbg font-medium"
+            : "rounded px-2.5 py-1 text-muted";
+        }
+      });
+      const d = data[proc];
+      document.getElementById("sim-xy-val").textContent = d.xy;
+      document.getElementById("sim-z-val").textContent = d.z;
+      document.getElementById("sim-void-val").textContent = d.voids;
+      document.getElementById("sim-explanation").innerHTML = `<strong>${d.desc.split(':')[0]}:</strong>${d.desc.split(':')[1]}`;
+    }
+
+    function updatePumpSimulator(val) {
+      const raw = parseFloat(val);
+      const clamped = Math.min(9.0, raw).toFixed(1);
+      const flow = raw <= 9 ? (9.5 - raw * 0.58).toFixed(1) : Math.max(0.4, (4.2 - (raw - 9) * 0.65)).toFixed(1);
+      const status = raw < 9 ? "Sub-OPV (Channeling Risk)" : raw === 9 ? "Ideal 9.0 Bar Extraction" : `OPV Bypassing (${(raw - 9).toFixed(1)} Bar Bled)`;
+
+      document.getElementById("pump-pressure-label").textContent = `Puck Resistance: ${raw.toFixed(1)} Bar (${status})`;
+      document.getElementById("pump-raw-bar").textContent = `${raw.toFixed(1)} Bar`;
+      document.getElementById("pump-clamped-bar").textContent = `${clamped} Bar ${raw >= 9 ? '(OPV Active)' : '(OPV Closed)'}`;
+      document.getElementById("pump-flow-val").textContent = `${flow} mL/s`;
+    }
+
+    // ========================================================================
+    // TELEMETRY, FILTERS, THEME & TOAST HELPERS
+    // ========================================================================
+    function renderSubjectsBar() {
+      const bar = document.getElementById("subjects-bar");
+      if (!bar) return;
+      bar.innerHTML = SUBJECTS.map(sub => {
+        const isActive = sub === activeSubjectFilter;
+        const w = subjectWeights[sub];
+        const weightBadge = w && w !== 1.0 ? `<span class="ml-1 opacity-75">(${w}x)</span>` : "";
+        return `
+          <button
+            onclick="filterBySubject('${sub}')"
+            class="rounded px-2.5 py-1 font-mono text-[11px] border transition-colors ${
+              isActive
+                ? 'border-accent bg-accent/15 text-ink dark:text-darkink font-semibold'
+                : 'border-hairline dark:border-darkborder bg-surface/50 dark:bg-darksurface/50 text-muted dark:text-darkmuted hover:text-ink dark:hover:text-darkink hover:border-accent/50'
+            }"
+          >
+            ${sub}${weightBadge}
+          </button>
+        `;
+      }).join("");
+    }
+
+    function renderTelemetryWeights() {
+      renderSubjectsBar();
+      const grid = document.getElementById("subject-weights-grid");
+      grid.innerHTML = Object.entries(subjectWeights).map(([sub, w]) => {
+        const color = w > 1 ? "border-emerald-600/40 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300"
+                    : w < 1 ? "border-accent/40 bg-accent/10 text-accent dark:text-darkaccent"
+                    : "border-hairline dark:border-darkborder bg-paper dark:bg-darkbg text-muted dark:text-darkmuted";
+        return `<span class="rounded border px-2.5 py-1 font-mono text-[11px] ${color}">${sub}: <strong>${w.toFixed(2)}x</strong></span>`;
+      }).join("");
+
+      const logBox = document.getElementById("algo-log-container");
+      if (replacementLogs.length > 0) {
+        logBox.classList.remove("hidden");
+        logBox.innerHTML = replacementLogs.slice(0, 4).map(l => `<div>• ${l}</div>`).join("");
+      } else {
+        logBox.classList.add("hidden");
+      }
+    }
+
+    function resetAlgorithmWeights() {
+      Object.keys(subjectWeights).forEach(k => subjectWeights[k] = 1.0);
+      voteCount = 0;
+      replacementLogs = [];
+      currentArticleIndex = 0;
+      document.getElementById("telemetry-vote-counter").textContent = "0";
+      renderCurrentArticle();
+      renderTelemetryWeights();
+      renderArchiveQueue();
+      showToast("Algorithm weights and topic queue reset to baseline defaults.");
+    }
+
+    function filterBySubject(sub) {
+      activeSubjectFilter = sub;
+      renderSubjectsBar();
+      renderArchiveQueue();
+      if (sub !== "All") {
+        switchView("archive");
+      }
+    }
+
+    function switchView(view) {
+      currentViewMode = view;
+      const isArticle = view === "article";
+      document.getElementById("view-article").classList.toggle("hidden", !isArticle);
+      document.getElementById("view-archive").classList.toggle("hidden", isArticle);
+
+      document.getElementById("nav-btn-article").className = isArticle
+        ? "border-b-2 border-accent pb-0.5 font-medium text-ink dark:text-darkink transition-colors"
+        : "border-b-2 border-transparent pb-0.5 text-muted dark:text-darkmuted hover:text-ink dark:hover:text-darkink transition-colors";
+
+      document.getElementById("nav-btn-archive").className = !isArticle
+        ? "border-b-2 border-accent pb-0.5 font-medium text-ink dark:text-darkink transition-colors"
+        : "border-b-2 border-transparent pb-0.5 text-muted dark:text-darkmuted hover:text-ink dark:hover:text-darkink transition-colors";
+
+      buildArticleOutline();
+    }
+
+    function toggleTelemetryDrawer() {
+      document.getElementById("telemetry-drawer").classList.toggle("hidden");
     }
 
     function toggleTheme() {
-      const isDark = document.body.getAttribute("data-theme") === "dark";
-      document.body.setAttribute("data-theme", isDark ? "light" : "dark");
-      document.getElementById("theme-btn").textContent = isDark ? "Dark" : "Light";
+      const isDark = document.documentElement.classList.toggle("dark");
+      document.body.setAttribute("data-theme", isDark ? "dark" : "light");
+
+      const moonIcon = document.getElementById("icon-moon");
+      const sunIcon = document.getElementById("icon-sun");
+      const btn = document.getElementById("theme-toggle-btn");
+
+      if (moonIcon && sunIcon) {
+        moonIcon.classList.toggle("hidden", isDark);
+        sunIcon.classList.toggle("hidden", !isDark);
+      }
+      if (btn) {
+        const nextLabel = isDark ? "Switch to Light Mode" : "Switch to Dark Mode";
+        btn.setAttribute("aria-label", nextLabel);
+        btn.setAttribute("title", nextLabel);
+      }
     }
 
-    renderSubjects();
-    renderArchive();
+    let toastTimer = null;
+    function showToast(msg) {
+      const banner = document.getElementById("toast-banner");
+      document.getElementById("toast-message").textContent = msg;
+      banner.classList.remove("hidden");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => banner.classList.add("hidden"), 4800);
+    }
+
+    // Initialize on load
+    window.addEventListener("DOMContentLoaded", () => {
+      renderCurrentArticle();
+      renderTelemetryWeights();
+      renderArchiveQueue();
+      if (window.lucide) lucide.createIcons();
+    });
   </script>
 </body>
 </html>
