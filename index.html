@@ -96,3 +96,301 @@
       color: var(--muted); border-top: 1px solid var(--border); line-height: 1.5; display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
     }
     .source-tag { white-space: nowrap; font-size: 11px; opacity: 0.85; }
+    .spec-table-wrap { overflow-x: auto; margin: 28px 0 36px; border: 1px solid var(--border); border-radius: 6px; }
+    .spec-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .spec-table th, .spec-table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .spec-table tr:last-child td { border-bottom: none; }
+    .spec-table th { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; color: var(--muted); font-weight: 500; background: var(--surface); }
+    .archive-item { padding: 20px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; gap: 16px; cursor: pointer; }
+    .archive-item:hover .archive-title { color: var(--accent); }
+    .archive-title { font-weight: 500; font-size: 16px; transition: color 0.15s; }
+    .archive-meta { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); white-space: nowrap; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a class="brand" onclick="showView('article')">ENGINEERING DEEP DIVE</a>
+      <div class="nav-actions">
+        <button class="nav-btn active" id="btn-article" onclick="showView('article')">Issue #001</button>
+        <button class="nav-btn" id="btn-archive" onclick="showView('archive')">Archive (10)</button>
+        <button class="nav-btn" onclick="toggleTheme()" id="theme-btn">Dark</button>
+      </div>
+    </header>
+
+    <div class="subjects-bar" id="subjects-bar"></div>
+
+    <main id="view-article">
+      <div class="meta-line">
+        <span>ISSUE #001</span><span>•</span><span>PRODUCT DIVES</span><span>•</span><span>10 MIN READ</span>
+      </div>
+
+      <h1>Inside the Apple HomeView & Apple Home Collection: The Complete Hardware Breakdown</h1>
+      <p class="subtitle">
+        Everything Apple just unveiled at its "Welcome Home" event—from the $299 Liquid Retina command hub to the co-engineered lineup of UWB locks, motorized privacy cameras, and radar thermostats built with LG Electronics and Schneider Electric.
+      </p>
+
+      <figure class="product-figure">
+        <div class="img-wrapper">
+          <img referrerpolicy="no-referrer" src="https://www.apple.com/newsroom/images/2026/10/meet-apple-homeview-a-new-way-to-enjoy-entertainment-and-manage-the-home/article/Apple-HomeView-lineup-261013_Full-Bleed-Image.jpg.large.jpg" onerror="this.src='https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=1400&q=85'" alt="Apple HomeView 7-inch Smart Display Lineup" />
+        </div>
+        <figcaption>
+          <span><strong>FIG 01 — APPLE HOMEVIEW:</strong> The 7-inch Liquid Retina display connected to a domed speaker base via an articulated stainless-steel tilt hinge, shown in Silver, Starlight, Rose Pink, and Space Gray.</span>
+          <span class="source-tag">IMAGE: APPLE NEWSROOM</span>
+        </figcaption>
+      </figure>
+
+      <h2>1. The Big Picture: What Apple Just Announced</h2>
+      <p>
+        For the past decade, Apple’s smart home strategy relied on a fragmented "bring-your-own-accessory" model. While Apple built the brains—Apple TV and HomePod—it left security cameras, doorbells, smart locks, and thermostats entirely to third-party manufacturers. That meant buyers had to juggle five different companion apps, create separate cloud accounts, scan tiny setup QR codes, and live with mismatched white-plastic hardware on their walls.
+      </p>
+      <p>
+        At its October "Welcome Home" event in New York, Apple overhauled that entire model with a two-part hardware offensive:
+      </p>
+      <ul>
+        <li><strong>First-Party Command Hubs:</strong> Apple unveiled <strong>Apple HomeView</strong> ($299, shipping November 13), its first dedicated 7-inch smart display and household command center powered by Siri AI and Apple Intelligence, alongside an updated <strong>HomePod mini 2</strong> and <strong>Apple TV 4K</strong>.</li>
+        <li><strong>The Apple Home Collection:</strong> Simultaneously, Apple introduced a unified suite of <strong>seven residential hardware accessories</strong>—four security cameras, a smart deadbolt, and two smart thermostats with wireless room sensors—co-designed from the ground up with <strong>LG Electronics</strong> and <strong>Schneider Electric</strong>, launching in December 2026 and early 2027 through the Apple Store.</li>
+      </ul>
+
+      <div class="spec-table-wrap">
+        <table class="spec-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Hardware Partner</th>
+              <th>Price (US)</th>
+              <th>Finishes</th>
+              <th>Headline Engineering Specs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Apple HomeView (Tabletop & Wall)</strong></td>
+              <td>Apple (First-Party)</td>
+              <td>$299.00</td>
+              <td>Silver, Starlight, Rose Pink, Space Gray</td>
+              <td>7" Liquid Retina (500 nits down to 0.3 nits), stainless steel hinge or wall mount, 6-user Face ID recognition, Center Stage camera, Siri AI, Thread Border Router.</td>
+            </tr>
+            <tr>
+              <td><strong>LG Smart Deadbolt Lock</strong></td>
+              <td>LG Electronics</td>
+              <td>$349.95</td>
+              <td>Essence Silver, Essence Graphite</td>
+              <td>Ultra-Wideband (UWB) hands-free approach unlocking, Aliro + Matter-over-Thread, NFC Home Key tap, PIN pad, hidden key cylinder, local offline operation.</td>
+            </tr>
+            <tr>
+              <td><strong>LG Video Doorbell (Wired)</strong></td>
+              <td>LG Electronics</td>
+              <td>$249.95</td>
+              <td>Essence Silver, Essence Graphite</td>
+              <td>Dual-camera optical split (2.5K front visitor camera + 1080p downward package camera), built-in motion spotlight, HomePod/HomeView chime, on-device storage buffer.</td>
+            </tr>
+            <tr>
+              <td><strong>LG Indoor Cam (Plug-In)</strong></td>
+              <td>LG Electronics</td>
+              <td>$199.95</td>
+              <td>Essence White</td>
+              <td>2.5K HDR sensor, motorized pan/tilt gimbal that physically pitches down to block the lens when family members arrive home, local Apple Intelligence recognition.</td>
+            </tr>
+            <tr>
+              <td><strong>LG Outdoor Cam (Plug-In)</strong></td>
+              <td>LG Electronics</td>
+              <td>$299.95</td>
+              <td>Essence Silver, Essence Graphite</td>
+              <td>2.5K resolution, low-light color night vision, weather-sealed articulated wall mount, on-device Wi-Fi outage backup storage.</td>
+            </tr>
+            <tr>
+              <td><strong>LG Floodlight Cam</strong></td>
+              <td>LG Electronics</td>
+              <td>$399.95</td>
+              <td>Essence Silver, Essence Graphite</td>
+              <td>2.5K camera core flanked by dual motion-activated adaptive floodlights, low-light color night vision, hardwired junction-box mount.</td>
+            </tr>
+            <tr>
+              <td><strong>LG Smart Thermostat & Sensor</strong></td>
+              <td>LG Electronics</td>
+              <td>\$199.95 <br><span style="color:var(--muted);font-size:12px;">(\$39.95 sensor)</span></td>
+              <td>Essence White (Circular Dial)</td>
+              <td>Matter compatible, on-device wire detection for DIY install, iPhone Adaptive Temperature, Clean Energy Guidance, C-Wire adapter (\$24.95).</td>
+            </tr>
+            <tr>
+              <td><strong>Schneider Home Smart Thermostat & Sensor</strong></td>
+              <td>Schneider Electric</td>
+              <td>\$199.95 <br><span style="color:var(--muted);font-size:12px;">(\$39.95 sensor)</span></td>
+              <td>Silver + White (Square Profile)</td>
+              <td>Matter compatible, native integration with Schneider Home energy panels, on-device wire detection, Trim Plate (\$14.95) & C-Wire adapter (\$24.95).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>2. How the JDM Partnership Worked Between Apple, LG, and Schneider</h2>
+      <p>
+        To understand why the <strong>Apple Home Collection</strong> is a major shift for Apple Hardware Engineering, you have to distinguish between a standard certification program (<em>"Works with Apple Home"</em>) and a true <strong>Joint Design Manufacturing (JDM)</strong> collaboration.
+      </p>
+      <p>
+        With standard Matter or HomeKit accessories, a company like Aqara, Ecobee, or Yale designs its own product, writes its own app, and simply passes Apple's compatibility test suite. With the Apple Home Collection, Apple VP of Hardware Engineering Matthew Costello noted that Apple worked directly alongside LG Electronics and Schneider Electric on the <strong>industrial design, mechanical mounting, feature architecture, and firmware integration</strong>—mirroring how Apple previously co-engineered the LG UltraFine 5K displays.
+      </p>
+
+      <div class="callout-box">
+        <div class="callout-title">Why Apple Partnered Instead of Building In-House</div>
+        Building door locks, high-voltage floodlights, and 24V HVAC thermostats requires decades of domain-specific tooling, UL burglary/electrical certifications, and residential field-service infrastructure. By partnering with LG (a powerhouse in cameras, motors, and consumer appliances) and Schneider Electric (a global leader in residential electrical panels and climate control), Apple got custom-designed hardware that looks and behaves like a first-party Apple product—while LG and Schneider handle manufacturing, regional electrical compliance, and even nationwide professional installation via ADT in the U.S.
+      </div>
+
+      <p>
+        Here is what Apple enforced across the JDM engineering pipeline to make these products feel native:
+      </p>
+      <ul>
+        <li><strong>Unified "Essence" Industrial Design & CMF:</strong> Every exterior product shares a cohesive visual language: bead-blasted anodized aluminum and matte UV-stabilized enclosures in <strong>Essence Silver</strong>, <strong>Essence Graphite</strong>, and <strong>Essence White</strong>. Mounting brackets, screw-concealing trim plates, and cable routing were co-designed so there are no exposed fasteners or clunky plastic wall warts.</li>
+        <li><strong>Zero Third-Party Apps or Cloud Accounts:</strong> You never download an LG ThinQ or Schneider app, and you never create a third-party login. Out of the box, you tap your iPhone to the accessory via NFC (just like pairing AirPods), and 100% of setup, firmware updates, and daily controls happen inside the native Apple Home app.</li>
+        <li><strong>Automatic Wi-Fi Credential Roaming & Thread Mesh:</strong> Every accessory in the collection incorporates a Thread radio and automatic Wi-Fi credential syncing. If a household changes its Wi-Fi router or password, the Home Hub pushes the updated credentials across the lineup automatically without requiring users to climb a ladder to reset an outdoor camera.</li>
+        <li><strong>End-to-End Encrypted Architecture:</strong> Neither LG, Schneider Electric, nor Apple can view camera feeds or home state data. Video is analyzed locally on the user's Apple Home hub (or via Private Cloud Compute) and stored end-to-end encrypted in iCloud+ for 10 days without requiring a separate \$10/month camera subscription.</li>
+      </ul>
+
+      <figure class="product-figure">
+        <div class="img-wrapper">
+          <img referrerpolicy="no-referrer" src="https://www.apple.com/newsroom/images/2026/10/introducing-apple-home-collection-a-new-lineup-of-smart-home-accessories/article/Apple-Home-Collection-lineup-261013_big.jpg.large.jpg" onerror="this.src='https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=1400&q=85'" alt="Apple Home Collection Lineup by LG and Schneider Electric" />
+        </div>
+        <figcaption>
+          <span><strong>FIG 02 — THE APPLE HOME COLLECTION:</strong> Co-engineered with LG and Schneider Electric, spanning the Smart Deadbolt, Video Doorbell, Floodlight Cam, Outdoor/Indoor Cams, and Smart Thermostats.</span>
+          <span class="source-tag">IMAGE: APPLE NEWSROOM</span>
+        </figcaption>
+      </figure>
+
+      <h2>3. Product-by-Product Deep Dive: What Makes Each Device Unique</h2>
+
+      <h3>1. Apple HomeView (Tabletop & Wall-Mounted Hub) <span class="price-tag">\$299.00</span></h3>
+      <p>
+        <strong>Apple HomeView</strong> is the centerpiece that ties the entire collection together. Rather than slapping an iPad onto a speaker dock, Apple engineered two purpose-built hardware variants at the exact same \$299 price point:
+      </p>
+      <ul>
+        <li><strong>Two Distinct Mechanical Form Factors:</strong> The <strong>Tabletop Model</strong> (available in Silver, Starlight, Rose Pink, and Space Gray with color-matched woven cables) pairs a 7-inch aluminum display enclosure to a compact, domed acoustic speaker base via a precision-machined <strong>stainless steel hinge</strong>, offering smooth tilt adjustment for kitchen counters or high nightstands. The <strong>Wall-Mounted Model</strong> (Space Gray and Silver) packs the same display and acoustic drivers into a flush rear profile that snaps onto three purpose-built <strong>Schneider Home Power Mounts</strong>: a USB-C Wall Connector (\$59.95), a hardwired AC gang-box mount (\$79.95), or an enterprise-grade <strong>Power-over-Ethernet (PoE) Wired Mount</strong> (\$129.95).</li>
+        <li><strong>500-Nit to 0.3-Nit Dynamic Display Pipeline:</strong> A smart display on a bedroom nightstand usually glows like a flashlight at 2:00 AM. Apple engineered HomeView’s 7-inch Liquid Retina panel with True Tone and an ultra-wide dimming controller that scales from a sunlight-readable <strong>500 nits</strong> all the way down to an almost imperceptible <strong>0.3 nits</strong> in dark rooms.</li>
+        <li><strong>Proximity-Adaptive UI & 6-User Face Recognition:</strong> Using its front-facing camera (which also powers Center Stage FaceTime calls) and proximity sensing, HomeView dynamically changes its information density based on how far away you are—showing high-contrast glanceable status from across the kitchen, and expanding into detailed controls as you walk up. Better yet, on-device facial recognition identifies up to <strong>six individual household members</strong>, seamlessly shifting from a shared family dashboard to your personal Messages, Calendar, Reminders, and Apple Music profile the moment it sees your face.</li>
+        <li><strong>Built-In Safety Acoustic Detection:</strong> HomeView continuously listens locally for the specific acoustic frequencies of standard UL smoke and carbon monoxide alarms, immediately pushing critical alerts (with live camera verification) to every iPhone, iPad, and Apple Watch in the family.</li>
+      </ul>
+
+      <h3>2. LG Smart Deadbolt Lock <span class="price-tag">\$349.95</span></h3>
+      <p>
+        Most smart locks on the market today feel sluggish or unreliable when trying to unlock hands-free because they rely on Bluetooth signal strength, which bounces off walls and can accidentally unlock the door while you are walking around inside your hallway.
+      </p>
+      <ul>
+        <li><strong>Ultra-Wideband (UWB) + Aliro Spatial Ranging:</strong> The LG Smart Deadbolt is one of the first flagship locks built around the new <strong>Aliro</strong> access standard and Apple’s spatial <strong>Ultra-Wideband</strong> radio. Instead of guessing distance from signal strength, UWB measures the exact time-of-flight and angle of radio pulses between the lock and your iPhone or Apple Watch. It knows your exact approach trajectory—automatically throwing the deadbolt open just as you reach for the handle from the outside, while never false-triggering when you walk past the door inside.</li>
+        <li><strong>Four-Way Redundant Access:</strong> Beyond hands-free UWB approach unlocking, you can tap a dead iPhone/Apple Watch via NFC Home Key (using power reserve), punch a code into the capacitive exterior keypad (including temporary guest codes managed in the Home app), or flip open a concealed mechanical cover to use a physical backup key.</li>
+        <li><strong>100% Local Offline Execution & Tamper Sensing:</strong> Because it runs over Matter-over-Thread and Aliro locally, every core access function continues working even if your home internet goes down. Integrated hall-effect and accelerometer sensors also alert your phone if someone tampers with the exterior housing or if the door is left ajar while the bolt is extended.</li>
+      </ul>
+
+      <h3>3. LG Video Doorbell (Wired) <span class="price-tag">\$249.95</span></h3>
+      <p>
+        Single-lens video doorbells suffer from an unavoidable optical compromise: if you angle the lens high enough to see a tall visitor's face, you create a blind spot right against the base of the door where couriers drop packages.
+      </p>
+      <ul>
+        <li><strong>Dual-Camera Optical Split (2.5K + 1080p):</strong> LG solved the fisheye distortion problem by embedding two distinct camera modules into the chassis: a primary <strong>2.5K resolution front camera</strong> tuned for eye-level visitor identification, and a dedicated downward-angled <strong>1080p Full HD bottom camera</strong> aimed squarely at the welcome mat. Inside the Apple Home app (or on HomeView), users can toggle seamlessly between the visitor view and the package view.</li>
+        <li><strong>Integrated Spotlight & Ecosystem Chime:</strong> When a visitor approaches at night, an integrated downward spotlight illuminates the porch for full-color identification, while pressing the button rings across every HomeView, HomePod, and HomePod mini in the house while popping up a live interactive video feed on Apple TV 4K.</li>
+      </ul>
+
+      <figure class="product-figure">
+        <div class="img-wrapper">
+          <img referrerpolicy="no-referrer" src="https://www.apple.com/newsroom/images/2026/10/introducing-apple-home-collection-a-new-lineup-of-smart-home-accessories/article/Apple-Home-Collection-LG-Floodlight-Cam-Plug-In-261013_big.jpg.large.jpg" onerror="this.src='https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&w=1400&q=85'" alt="LG Floodlight Cam in Essence Graphite" />
+        </div>
+        <figcaption>
+          <span><strong>FIG 03 — PERIMETER SECURITY:</strong> The LG Floodlight Cam in Essence Graphite combines a 2.5K low-light color night vision camera with dual adaptive motion floodlights.</span>
+          <span class="source-tag">IMAGE: APPLE NEWSROOM</span>
+        </figcaption>
+      </figure>
+
+      <h3>4. LG Indoor Cam, Outdoor Cam & Floodlight Cam <span class="price-tag">\$199.95 – \$399.95</span></h3>
+      <p>
+        Across all four LG cameras in the collection, Apple combined clever mechanical hardware with new Apple Intelligence video capabilities:
+      </p>
+      <ul>
+        <li><strong>Motorized Physical Privacy Tilt (LG Indoor Cam, \$199.95):</strong> Nobody wants an indoor security camera staring at them while they are relaxing on the couch—and a tiny LED status light doesn't inspire confidence. The LG Indoor Cam is built on a motorized pan-and-tilt gimbal. The moment the first family member arrives home (or via a "Good Morning" Siri scene), the camera <strong>physically pitches its lens downward into its base housing</strong>, mechanically blinding the optics so it cannot see the room. When you leave the house and check in remotely, it smoothly tilts back up.</li>
+        <li><strong>Low-Light Color Night Vision (Outdoor Cam \$299.95 & Floodlight Cam \$399.95):</strong> Instead of immediately dropping into grainy black-and-white infrared video at dusk, the outdoor cameras use high-sensitivity 2.5K sensors to preserve full-color night vision in low ambient light. The Floodlight Cam pairs this with dual articulated LED floodlights that automatically ramp brightness when motion is detected.</li>
+        <li><strong>On-Device Outage Buffer + Apple Intelligence Search:</strong> A major flaw of cloud-only cameras is that a brief Wi-Fi drop blinds your security system. Every LG camera includes <strong>local on-device flash storage</strong> to buffer recordings if the Wi-Fi network goes offline, automatically syncing to HomeKit Secure Video once connectivity returns. Furthermore, with a supported iCloud+ plan, <strong>Apple Intelligence</strong> generates written summaries of what happened in every clip—allowing you to search your 10-day video history using natural language (e.g., <em>"Show me when the brown delivery truck dropped off a package yesterday"</em>) without watching hours of footage.</li>
+      </ul>
+
+      <h3>5. LG & Schneider Electric Smart Thermostats <span class="price-tag">\$199.95</span></h3>
+      <p>
+        Rather than forcing a single thermostat design on every home, Apple partnered with both LG and Schneider Electric to offer two distinct industrial designs at the exact same \$199.95 price point:
+      </p>
+      <ul>
+        <li><strong>Two Form Factors, One Ecosystem:</strong> The <strong>LG Smart Thermostat</strong> features a soft, minimalist circular dial in Essence White, while the <strong>Schneider Home Smart Thermostat</strong> uses a crisp square silhouette in Silver + White that integrates natively with Schneider Home smart electrical panels, solar inverters, and backup batteries.</li>
+        <li><strong>On-Device Wire Detection for Foolproof DIY Installs:</strong> Installing a thermostat usually means deciphering a rat's nest of unlabeled low-voltage wires (`R`, `Rc`, `Rh`, `C`, `W`, `Y`, `G`, `O/B`). Both thermostats feature hardware <strong>on-device wire sensing</strong> that automatically detects which HVAC terminals are connected and guides the user step-by-step in the Apple Home app. For older homes missing a common wire, matching LG and Schneider C-Wire Power Adapters (\$24.95) are sold right alongside them.</li>
+        <li><strong>Sensor Fusion Across HomePods & Room Sensors:</strong> Most homes have hot and cold spots where the hallway thermostat reads 70°F while the upstairs bedroom is 76°F. Instead of forcing you to buy proprietary pucks for every room, the LG and Schneider thermostats can pull multi-room temperature and humidity readings directly from the <strong>sensors already built into your Apple HomeView, HomePod, and HomePod mini</strong>—or from optional wireless LG/Schneider Room Sensors (\$39.95).</li>
+        <li><strong>iPhone Adaptive Temperature & Clean Energy Guidance:</strong> Using on-device presence intelligence from your iPhone, the Home app's <em>Adaptive Temperature</em> automatically pre-cools or heats the house as you head home, scales back when everyone is away, and drops into a sleep profile at night—while <em>Clean Energy Guidance</em> shifts heavy HVAC runs to off-peak hours when renewable grid power is cleanest and cheapest.</li>
+      </ul>
+    </main>
+
+    <section id="view-archive" class="hidden">
+      <h1>Archive & Queue</h1>
+      <p class="subtitle">Filter published dispatches and upcoming topics across all 8 core subjects.</p>
+      <div id="archive-list"></div>
+    </section>
+  </div>
+
+  <script>
+    const SUBJECTS = ["All", "Product Dives", "Manufacturing", "Design", "Materials", "Mechanisms", "Thermal", "Fluids", "Electromechanical"];
+    const TOPICS = [
+      { id: "#001", subject: "Product Dives", title: "Inside the Apple HomeView & Apple Home Collection: The Complete Hardware Breakdown", status: "Published" },
+      { id: "#002", subject: "Manufacturing", title: "Additive Technologies: The True Difference Between SLA, SLS, and FDM", status: "Queued" },
+      { id: "#003", subject: "Fluids", title: "Espresso Extraction: How 9-Bar Vibratory Pumps Generate Pressure", status: "Queued" },
+      { id: "#004", subject: "Design", title: "Surface Treatments: What Actually Happens During Anodizing?", status: "Queued" },
+      { id: "#005", subject: "Materials", title: "Fatigue & S-N Curves: Why Steel Has an Endurance Limit and Aluminum Doesn't", status: "Queued" },
+      { id: "#006", subject: "Mechanisms", title: "Ballpoint Pen Clickers: The Genius of Continuous Rotational Cam Tracks", status: "Queued" },
+      { id: "#007", subject: "Thermal", title: "Steam Deck Cooling: Vapor Chambers vs. Sintered Heat Pipes", status: "Queued" },
+      { id: "#008", subject: "Electromechanical", title: "Webcam Autofocus: Voice Coil Motors vs. Piezoelectric Actuators", status: "Queued" },
+      { id: "#009", subject: "Manufacturing", title: "LEGO's 2-Micron Secret: How Injection Molds Hold Precision", status: "Queued" },
+      { id: "#010", subject: "Fluids", title: "F1 Ground Effect: Venturi Tunnels and Downforce Generation", status: "Queued" }
+    ];
+
+    let activeSubject = "All";
+
+    function renderSubjects() {
+      const bar = document.getElementById("subjects-bar");
+      bar.innerHTML = SUBJECTS.map(sub => `
+        <button class="subject-pill ${sub === activeSubject ? 'active' : ''}" onclick="filterSubject('${sub}')">
+          ${sub}
+        </button>
+      `).join("");
+    }
+
+    function renderArchive() {
+      const list = document.getElementById("archive-list");
+      const filtered = activeSubject === "All" ? TOPICS : TOPICS.filter(t => t.subject === activeSubject);
+      list.innerHTML = filtered.map(item => `
+        <div class="archive-item" onclick="showView('article')">
+          <div>
+            <div class="archive-title">${item.title}</div>
+            <div class="archive-meta">${item.subject}</div>
+          </div>
+          <div class="archive-meta">${item.id} · ${item.status}</div>
+        </div>
+      `).join("");
+    }
+
+    function filterSubject(sub) {
+      activeSubject = sub;
+      renderSubjects();
+      renderArchive();
+      if (sub !== "All") showView("archive");
+    }
+
+    function showView(view) {
+      document.getElementById("view-article").classList.toggle("hidden", view !== "article");
+      document.getElementById("view-archive").classList.toggle("hidden", view !== "archive");
+      document.getElementById("btn-article").classList.toggle("active", view === "article");
+      document.getElementById("btn-archive").classList.toggle("active", view === "archive");
+    }
+
+    function toggleTheme() {
+      const isDark = document.body.getAttribute("data-theme") === "dark";
+      document.body.setAttribute("data-theme", isDark ? "light" : "dark");
+      document.getElementById("theme-btn").textContent = isDark ? "Dark" : "Light";
+    }
+
+    renderSubjects();
+    renderArchive();
+  </script>
+</body>
+</html>
