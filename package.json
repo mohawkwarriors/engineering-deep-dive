@@ -1,0 +1,9 @@
+{
+  "name": "engineering-deep-dive",
+  "version": "1.0.0",
+  "description": "Daily mechanical engineering deep dives and archive",
+  "main": "index.html",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}

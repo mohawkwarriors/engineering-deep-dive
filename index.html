@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Engineering Deep Dive — Archive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FAF9F5;
+      --surface: #F2F0E8;
+      --text: #141413;
+      --muted: #66655F;
+      --border: #E4E2DA;
+      --accent: #C84B31;
+      --max-w: 700px;
+    }
+    [data-theme="dark"] {
+      --bg: #121211;
+      --surface: #1C1C1A;
+      --text: #EDEDEC;
+      --muted: #9A9992;
+      --border: #2A2A27;
+      --accent: #E06D53;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.68;
+      font-size: 16.5px;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px 96px; }
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 28px 0; border-bottom: 1px solid var(--border); margin-bottom: 36px;
+    }
+    .brand {
+      font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); text-decoration: none; cursor: pointer;
+    }
+    .nav-actions { display: flex; gap: 20px; align-items: center; }
+    .nav-btn {
+      background: none; border: none; font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; color: var(--muted); cursor: pointer; padding: 4px 0; transition: color 0.15s;
+    }
+    .nav-btn:hover, .nav-btn.active { color: var(--text); }
+    .subjects-bar {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 44px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
+    }
+    .subject-pill {
+      background: transparent; border: 1px solid var(--border); color: var(--muted);
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 5px 10px; border-radius: 4px; cursor: pointer; transition: all 0.15s ease;
+    }
+    .subject-pill:hover, .subject-pill.active { border-color: var(--text); color: var(--text); background: var(--surface); }
+    .meta-line {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: flex; gap: 12px; align-items: center;
+    }
+    h1 { font-family: 'Instrument Serif', Georgia, serif; font-size: 44px; font-weight: 400; line-height: 1.12; letter-spacing: -0.01em; margin-bottom: 18px; }
+    .subtitle { font-size: 18px; color: var(--muted); line-height: 1.5; margin-bottom: 32px; font-weight: 400; }
+    h2 { font-family: 'Instrument Serif', Georgia, serif; font-size: 29px; font-weight: 400; margin: 44px 0 14px; line-height: 1.2; }
+    p { margin-bottom: 20px; }
+    ul { margin: 0 0 24px 20px; }
+    li { margin-bottom: 10px; }
+    strong { font-weight: 600; }
+    figure.product-figure { margin: 36px 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: var(--surface); }
+    .img-wrapper { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: #141413; }
+    .img-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    figcaption {
+      padding: 14px 18px; font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      color: var(--muted); border-top: 1px solid var(--border); line-height: 1.5; display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+    }
+    .source-tag { white-space: nowrap; font-size: 11px; opacity: 0.85; }
+    .spec-table { width: 100%; border-collapse: collapse; margin: 28px 0 36px; font-size: 14px; }
+    .spec-table th, .spec-table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+    .spec-table th { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+    .archive-item { padding: 20px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; gap: 16px; cursor: pointer; }
+    .archive-item:hover .archive-title { color: var(--accent); }
+    .archive-title { font-weight: 500; font-size: 16px; transition: color 0.15s; }
+    .archive-meta { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); white-space: nowrap; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a class="brand" onclick="showView('article')">ENGINEERING DEEP DIVE</a>
+      <div class="nav-actions">
+        <button class="nav-btn active" id="btn-article" onclick="showView('article')">Issue #001</button>
+        <button class="nav-btn" id="btn-archive" onclick="showView('archive')">Archive (10)</button>
+        <button class="nav-btn" onclick="toggleTheme()" id="theme-btn">Dark</button>
+      </div>
+    </header>
+
+    <div class="subjects-bar" id="subjects-bar"></div>
+
+    <main id="view-article">
+      <div class="meta-line">
+        <span>ISSUE #001</span><span>•</span><span>PRODUCT DIVES</span><span>•</span><span>6 MIN READ</span>
+      </div>
+
+      <h1>Inside the Apple Home Collection: Why Apple Let LG Build Its Smart Home Hardware</h1>
+      <p class="subtitle">
+        A teardown of Apple's dual-pronged smart home architecture—pairing a first-party Liquid Retina command hub with co-engineered residential hardware built by LG Electronics and Schneider Electric.
+      </p>
+
+      <figure class="product-figure">
+        <div class="img-wrapper">
+          <img referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=1400&q=85" alt="Apple Smart Home Hub" />
+        </div>
+        <figcaption>
+          <span><strong>FIG 01 — COMMAND ARCHITECTURE:</strong> Apple's 7-inch display interface with adaptive ambient dimming, Thread border routing, and tabletop/wall-mount form factors.</span>
+          <span class="source-tag">STUDIO ASSET</span>
+        </figcaption>
+      </figure>
+
+      <h2>1. The Two-Pronged Hardware Strategy</h2>
+      <p>
+        Rather than manufacturing low-margin, high-liability residential fixtures in-house, Apple split its smart home ecosystem at the drywall boundary. Apple retains complete ownership of the silicon and display layer—the <strong>HomeView</strong> 7-inch smart display, Apple TV 4K, and HomePod mini—while partnering with <strong>LG Electronics</strong> and <strong>Schneider Electric</strong> to manufacture the physical sensors, actuators, and high-voltage wall hardware.
+      </p>
+
+      <figure class="product-figure">
+        <div class="img-wrapper">
+          <img referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=1400&q=85" alt="Smart Deadbolt and Entry Hardware" />
+        </div>
+        <figcaption>
+          <span><strong>FIG 02 — ENTRY & RF FUSION:</strong> Co-engineered Smart Deadbolt and Dual-Camera Video Doorbell integrating Bluetooth LE, Thread, and Ultra-Wideband (UWB) spatial ranging.</span>
+          <span class="source-tag">STUDIO ASSET</span>
+        </figcaption>
+      </figure>
+
+      <h2>2. What Makes the Engineering Unique</h2>
+      <ul>
+        <li><strong>UWB + Aliro Spatial Unlocking:</strong> Standard smart locks rely on 2.4 GHz Bluetooth RSSI signal strength, which struggles with multipath reflections. By fusing Bluetooth handshakes with Ultra-Wideband Time-of-Flight (ToF) ranging and angle-of-arrival (AoA), the deadbolt resolves exterior vs. interior approach vectors within ±5 cm.</li>
+        <li><strong>Hardware-Enforced Privacy Kinematics:</strong> Instead of relying on a software LED indicator or a thin plastic slider, the indoor camera pitches its optical barrel 95° downward into an enclosed aluminum cup via a micro-stepping actuator, physically blocking the CMOS sensor while breaking the microphone circuit through a leaf switch.</li>
+        <li><strong>60 GHz Radar & Local Edge Compute:</strong> The thermostat embeds a 60 GHz millimeter-wave radar sensor behind its cover glass to detect micro-movements and room occupancy without an optical camera.</li>
+      </ul>
+
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th>Subsystem</th>
+            <th>Primary Hardware Partner</th>
+            <th>Key Engineering Spec</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>HomeView 7" Hub</td>
+            <td>Apple (First-Party)</td>
+            <td>0.3-nit minimum luminance, Thread Border Router, local Neural Engine</td>
+          </tr>
+          <tr>
+            <td>Smart Deadbolt</td>
+            <td>LG Electronics</td>
+            <td>Aliro + Matter-over-Thread, UWB ToF spatial ranging, high-torque planetary gearbox</td>
+          </tr>
+          <tr>
+            <td>Indoor Security Cam</td>
+            <td>LG Electronics</td>
+            <td>2.5K HDR sensor, 95° motorized occlusion gimbal, physical mic cutoff</td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+
+    <section id="view-archive" class="hidden">
+      <h1>Archive & Queue</h1>
+      <p class="subtitle">Filter published dispatches and upcoming topics across all 8 core subjects.</p>
+      <div id="archive-list"></div>
+    </section>
+  </div>
+
+  <script>
+    const SUBJECTS = ["All", "Product Dives", "Manufacturing", "Design", "Materials", "Mechanisms", "Thermal", "Fluids", "Electromechanical"];
+    const TOPICS = [
+      { id: "#001", subject: "Product Dives", title: "Inside the Apple Home Collection: Why Apple Let LG Build Its Smart Home Hardware", status: "Published" },
+      { id: "#002", subject: "Manufacturing", title: "Additive Technologies: The True Difference Between SLA, SLS, and FDM", status: "Queued" },
+      { id: "#003", subject: "Fluids", title: "Espresso Extraction: How 9-Bar Vibratory Pumps Generate Pressure", status: "Queued" },
+      { id: "#004", subject: "Design", title: "Surface Treatments: What Actually Happens During Anodizing?", status: "Queued" },
+      { id: "#005", subject: "Materials", title: "Fatigue & S-N Curves: Why Steel Has an Endurance Limit and Aluminum Doesn't", status: "Queued" }
+    ];
+
+    let activeSubject = "All";
+
+    function renderSubjects() {
+      const bar = document.getElementById("subjects-bar");
+      bar.innerHTML = SUBJECTS.map(sub => `
+        <button class="subject-pill ${sub === activeSubject ? 'active' : ''}" onclick="filterSubject('${sub}')">
+          ${sub}
+        </button>
+      `).join("");
+    }
+
+    function renderArchive() {
+      const list = document.getElementById("archive-list");
+      const filtered = activeSubject === "All" ? TOPICS : TOPICS.filter(t => t.subject === activeSubject);
+      list.innerHTML = filtered.map(item => `
+        <div class="archive-item" onclick="showView('article')">
+          <div>
+            <div class="archive-title">${item.title}</div>
+            <div class="archive-meta">${item.subject}</div>
+          </div>
+          <div class="archive-meta">${item.id} · ${item.status}</div>
+        </div>
+      `).join("");
+    }
+
+    function filterSubject(sub) {
+      activeSubject = sub;
+      renderSubjects();
+      renderArchive();
+      if (sub !== "All") showView("archive");
+    }
+
+    function showView(view) {
+      document.getElementById("view-article").classList.toggle("hidden", view !== "article");
+      document.getElementById("view-archive").classList.toggle("hidden", view !== "archive");
+      document.getElementById("btn-article").classList.toggle("active", view === "article");
+      document.getElementById("btn-archive").classList.toggle("active", view === "archive");
+    }
+
+    function toggleTheme() {
+      const isDark = document.body.getAttribute("data-theme") === "dark";
+      document.body.setAttribute("data-theme", isDark ? "light" : "dark");
+      document.getElementById("theme-btn").textContent = isDark ? "Dark" : "Light";
+    }
+
+    renderSubjects();
+    renderArchive();
+  </script>
+</body>
+</html>
