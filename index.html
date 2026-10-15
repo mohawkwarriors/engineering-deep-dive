@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Engineering Deep Dive — Archive</title>
-  <!-- Tolerance Frame Favicon (Data URI) -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23D97757%22 stroke-width=%221.75%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%225%22 width=%2218%22 height=%2214%22 rx=%221.5%22/><line x1=%2212%22 y1=%225%22 x2=%2212%22 y2=%2219%22/><circle cx=%227.5%22 cy=%2212%22 r=%222%22/><line x1=%2215%22 y1=%2212%22 x2=%2218%22 y2=%2212%22/></svg>">
+  <!-- Diameter Symbol Favicon (Data URI) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23D97757%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><circle cx=%2212%22 cy=%2212%22 r=%228%22/><line x1=%225.5%22 y1=%2218.5%22 x2=%2218.5%22 y2=%225.5%22/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -52,10 +52,9 @@
     .brand-logo {
       width: 34px; height: 34px; background: var(--surface); border: 1px solid var(--border);
       border-radius: 6px; display: flex; align-items: center; justify-content: center;
-      color: var(--accent); transition: border-color 0.15s;
+      color: var(--accent); transition: border-color 0.15s; font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 600;
     }
     .brand-group:hover .brand-logo { border-color: var(--accent); }
-    .brand-logo svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
     .brand {
       font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500;
       letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); text-decoration: none;
@@ -146,10 +145,7 @@
   <div class="layout-wrapper">
     <header>
       <a class="brand-group" onclick="showView('article')">
-        <div class="brand-logo">
-          <!-- Precise Tolerance Frame SVG Icon -->
-          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1.5"/><line x1="12" y1="5" x2="12" y2="19"/><circle cx="7.5" cy="12" r="2"/><line x1="15" y1="12" x2="18" y2="12"/></svg>
-        </div>
+        <div class="brand-logo">⌀</div>
         <span class="brand">Engineering Deep Dive</span>
       </a>
       <div class="nav-actions">
@@ -208,31 +204,31 @@
                 <tr>
                   <td><strong>Apple HomeView</strong></td>
                   <td>Apple</td>
-                  <td>$299.00</td>
+                  <td>\$299.00</td>
                   <td>A18 chip, 7" Liquid Retina (500 to 0.3 nits), stainless steel hinge, 4-mic array, Thread router.</td>
                 </tr>
                 <tr>
                   <td><strong>LG Smart Deadbolt</strong></td>
                   <td>LG</td>
-                  <td>$349.95</td>
+                  <td>\$349.95</td>
                   <td>IEEE 802.15.4z UWB time-of-flight ranging, Aliro + Matter-over-Thread, planetary geartrain.</td>
                 </tr>
                 <tr>
                   <td><strong>LG Video Doorbell</strong></td>
                   <td>LG</td>
-                  <td>$249.95</td>
+                  <td>\$249.95</td>
                   <td>Dual optical split (2.5K visitor cam + 1080p downward package lens).</td>
                 </tr>
                 <tr>
                   <td><strong>LG Indoor Security Cam</strong></td>
                   <td>LG</td>
-                  <td>$199.95</td>
+                  <td>\$199.95</td>
                   <td>Motorized gimbal with 95° downward pitch and physical leaf-switch microphone cutout.</td>
                 </tr>
                 <tr>
                   <td><strong>LG & Schneider Thermostats</strong></td>
                   <td>LG / Schneider</td>
-                  <td>$199.95</td>
+                  <td>\$199.95</td>
                   <td>Active MOSFET zero-crossing power stealing for 2-wire loops, 60 GHz radar sensing.</td>
                 </tr>
               </tbody>
@@ -246,36 +242,36 @@
 
           <h2 id="section-product-teardowns">3. Product-by-Product Engineering Teardowns</h2>
 
-          <h3 id="product-homeview">Apple HomeView (Hub & Audio Base) <span class="price-tag">$299.00</span></h3>
+          <h3 id="product-homeview">Apple HomeView (Hub & Audio Base) <span class="price-tag">\$299.00</span></h3>
           <p>
             Powered by the <strong>A18 chip</strong> and an isolated Secure Exclave, HomeView balances thermal dissipation with high-fidelity acoustics. The display module scales from 500 nits down to <strong>0.3 nits</strong> via a precision PWM backlight driver. In the acoustic base, a down-firing custom woofer and dual force-canceling passive radiators are mechanically isolated from the compute PCB to eliminate harmonic distortion during Siri playback.
           </p>
           <p>
-            <strong>Thermal & Mechanical Architecture:</strong> Because the enclosure relies entirely on passive natural convection without active fan cooling, thermal management is governed by Fourier's law of thermal conduction: $$q = -k A \frac{dT}{dx}$$. The A18 silicon die package is bonded directly to custom graphite spreaders and an internal aluminum chassis extrusion via high-conductivity phase-change thermal interface material (TIM). This spreads thermal loads evenly across the rear enclosure, capping maximum surface temperatures at $38^\circ\text{C}$ during continuous 500-nit video streaming and local Face ID neural inference.
+            <strong>Thermal & Mechanical Architecture:</strong> Because the enclosure relies entirely on passive natural convection without active fan cooling, thermal management is governed by Fourier's law of thermal conduction: <em>q = -k A (dT/dx)</em>. The A18 silicon die package is bonded directly to custom graphite spreaders and an internal aluminum chassis extrusion via high-conductivity phase-change thermal interface material (TIM). This spreads thermal loads evenly across the rear enclosure, capping maximum surface temperatures at 38°C during continuous 500-nit video streaming and local Face ID neural inference.
           </p>
 
-          <h3 id="product-deadbolt">LG Smart Deadbolt (UWB & Kinematics) <span class="price-tag">$349.95</span></h3>
+          <h3 id="product-deadbolt">LG Smart Deadbolt (UWB & Kinematics) <span class="price-tag">\$349.95</span></h3>
           <p>
             Standard Bluetooth RSSI locking suffers from multipath reflections and false indoor triggers. The LG Deadbolt uses <strong>UWB impulse radio (6.5/8.0 GHz channels)</strong> to measure nanosecond-level time-of-flight, verifying approach vectors within ±3 cm. 
           </p>
           <p>
-            <strong>Drivetrain Mechanics & Stall Loads:</strong> In field conditions, warped wooden door frames exert normal forces that spike deadbolt throw friction above 30 N. To overcome this from a 4x AA battery pack without browning out the logic rail, the lock uses a high-reduction multi-stage planetary gearbox (approx. 120:1 ratio). The output torque is calculated as $$\tau = F_{\text{throw}} \cdot r_{\text{cam}} \cdot \eta_{\text{gear}}$$, where $\eta_{\text{gear}}$ represents the cumulative mechanical efficiency of the planetary stages. A integrated magnetic encoder monitors rotor position, instantly reversing motor drive if back-EMF spikes indicate a mechanical jam against a misaligned strike plate.
+            <strong>Drivetrain Mechanics & Stall Loads:</strong> In field conditions, warped wooden door frames exert normal forces that spike deadbolt throw friction above 30 N. To overcome this from a 4x AA battery pack without browning out the logic rail, the lock uses a high-reduction multi-stage planetary gearbox (approx. 120:1 ratio). The output torque is calculated as <em>τ = F<sub>throw</sub> · r<sub>cam</sub> / η<sub>gear</sub></em>, where <em>η<sub>gear</sub></em> represents the cumulative mechanical efficiency of the planetary stages. An integrated magnetic encoder monitors rotor position, instantly reversing motor drive if back-EMF spikes indicate a mechanical jam against a misaligned strike plate.
           </p>
 
-          <h3 id="product-cameras">LG Security Cams (Gimbal Shutter & Dual Optics) <span class="price-tag">$199.95 – $399.95</span></h3>
+          <h3 id="product-cameras">LG Security Cams (Gimbal Shutter & Dual Optics) <span class="price-tag">\$199.95 – \$399.95</span></h3>
           <p>
             The <strong>Indoor Cam</strong> eliminates software privacy vulnerabilities via a physical mechanism: when occupied, a micro-stepping motor pitches the lens <strong>95° downward</strong> into an opaque, light-absorbing elastomer cup, simultaneously tripping a mechanical leaf switch that breaks the microphone's <code>VDD</code> circuit. 
           </p>
           <p>
-            <strong>Optical & Stepper Precision:</strong> The micro-stepping motor drives the trunnion at $0.9^\circ$ per full step, subdivided into 16 micro-steps to achieve ultra-smooth, silent positioning. The gold-plated mechanical leaf switch uses a wiping contact design with a contact resistance under 30 m$\Omega$, ensuring an absolute physical air-gap separation on the MEMS microphone power rail that software exploits cannot bypass. The <strong>Video Doorbell</strong> solves the ground-blindspot problem by mounting two separate CMOS sensors in parallel (2.5K visitor cam + 1080p package cam), each paired with custom-molded 130° wide-angle glass lenses corrected for chromatic aberration.
+            <strong>Optical & Stepper Precision:</strong> The micro-stepping motor drives the trunnion at 0.9° per full step, subdivided into 16 micro-steps to achieve ultra-smooth, silent positioning. The gold-plated mechanical leaf switch uses a wiping contact design with a contact resistance under 30 mΩ, ensuring an absolute physical air-gap separation on the MEMS microphone power rail that software exploits cannot bypass. The <strong>Video Doorbell</strong> solves the ground-blindspot problem by mounting two separate CMOS sensors in parallel (2.5K visitor cam + 1080p package cam), each paired with custom-molded 130° wide-angle glass lenses corrected for chromatic aberration.
           </p>
 
-          <h3 id="product-thermostats">LG & Schneider Thermostats (Power-Stealing & Radar) <span class="price-tag">$199.95</span></h3>
+          <h3 id="product-thermostats">LG & Schneider Thermostats (Power-Stealing & Radar) <span class="price-tag">\$199.95</span></h3>
           <p>
             In older homes missing a Common (C) wire, the thermostat must harvest power in series through the furnace relay without chattering the contacts. 
           </p>
           <p>
-            <strong>Active MOSFET Zero-Crossing Harvesting:</strong> The board utilizes back-to-back power MOSFETs instead of mechanical relays. Near the 60 Hz AC zero-crossing (where voltage $v(t) = V_{\text{peak}}\sin(\omega t)$ crosses zero), the MOSFETs briefly open for microsecond windows. This allows a controlled current pulse to charge an internal supercapacitor bank without pulling enough current through the furnace relay coil to trigger its magnetic pull-in threshold (keeping coil current well below the 40 mA dropout limit). Simultaneously, the 60 GHz FMCW radar transceiver emits millimeter waves through the aluminosilicate cover glass, tuned precisely to a half-wavelength thickness ($t = \frac{\lambda}{4n}$) to eliminate dielectric surface reflection loss.
+            <strong>Active MOSFET Zero-Crossing Harvesting:</strong> The board utilizes back-to-back power MOSFETs instead of mechanical relays. Near the 60 Hz AC zero-crossing (where voltage <em>v(t) = V<sub>peak</sub> sin(ωt)</em> crosses zero), the MOSFETs briefly open for microsecond windows. This allows a controlled current pulse to charge an internal supercapacitor bank without pulling enough current through the furnace relay coil to trigger its magnetic pull-in threshold (keeping coil current well below the 40 mA dropout limit). Simultaneously, the 60 GHz FMCW radar transceiver emits millimeter waves through the aluminosilicate cover glass, tuned precisely to a half-wavelength thickness (<em>t = λ / 4n</em>) to eliminate dielectric surface reflection loss.
           </p>
 
           <div class="telemetry-bar">
