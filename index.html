@@ -56,7 +56,7 @@
       background-color: var(--bg);
       color: var(--text);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      line-height: 1.72;
+      line-height: 1.74;
       font-size: 16.5px;
       -webkit-font-smoothing: antialiased;
       transition: background-color 0.2s ease, color 0.2s ease;
@@ -84,7 +84,7 @@
       background: none; border: none; font-family: 'JetBrains Mono', monospace;
       font-size: 12px; color: var(--muted); cursor: pointer; padding: 4px 0; transition: color 0.15s;
     }
-    .nav-btn:hover, .nav-btn.active { color: var(--text); }
+    .nav-btn:hover, .nav-btn.active { color: var(--text); font-weight: 600; }
     .theme-toggle-btn {
       background: var(--surface); border: 1px solid var(--border); color: var(--text);
       width: 34px; height: 34px; border-radius: 6px; display: flex; align-items: center; justify-content: center;
@@ -114,10 +114,41 @@
 
     .subjects-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
     .subject-pill {
-      background: transparent; border: 1px solid var(--border); color: var(--muted);
+      background: var(--surface); border: 1px solid var(--border); color: var(--muted);
       font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 6px 12px; border-radius: 4px; cursor: pointer; transition: all 0.15s ease;
     }
-    .subject-pill:hover, .subject-pill.active { border-color: var(--text); color: var(--text); background: var(--surface); }
+    .subject-pill:hover { opacity: 0.85; transform: translateY(-1px); }
+    .subject-pill.active {
+      box-shadow: 0 0 0 1px var(--text);
+    }
+
+    /* Distinct Filter Button Colors Matching Article Badges */
+    .btn-sub-all { background: var(--surface); color: var(--text); border-color: var(--border); }
+    .btn-sub-all.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    .btn-sub-product-dives { background: rgba(217, 119, 87, 0.1); color: var(--sub-product-dives); border-color: rgba(217, 119, 87, 0.35); }
+    .btn-sub-product-dives.active { background: var(--sub-product-dives); color: #FFF; border-color: var(--sub-product-dives); }
+
+    .btn-sub-manufacturing { background: rgba(37, 99, 235, 0.1); color: var(--sub-manufacturing); border-color: rgba(37, 99, 235, 0.35); }
+    .btn-sub-manufacturing.active { background: var(--sub-manufacturing); color: #FFF; border-color: var(--sub-manufacturing); }
+
+    .btn-sub-design { background: rgba(124, 58, 237, 0.1); color: var(--sub-design); border-color: rgba(124, 58, 237, 0.35); }
+    .btn-sub-design.active { background: var(--sub-design); color: #FFF; border-color: var(--sub-design); }
+
+    .btn-sub-materials { background: rgba(5, 150, 105, 0.1); color: var(--sub-materials); border-color: rgba(5, 150, 105, 0.35); }
+    .btn-sub-materials.active { background: var(--sub-materials); color: #FFF; border-color: var(--sub-materials); }
+
+    .btn-sub-mechanisms { background: rgba(217, 119, 6, 0.1); color: var(--sub-mechanisms); border-color: rgba(217, 119, 6, 0.35); }
+    .btn-sub-mechanisms.active { background: var(--sub-mechanisms); color: #FFF; border-color: var(--sub-mechanisms); }
+
+    .btn-sub-thermal { background: rgba(225, 29, 72, 0.1); color: var(--sub-thermal); border-color: rgba(225, 29, 72, 0.35); }
+    .btn-sub-thermal.active { background: var(--sub-thermal); color: #FFF; border-color: var(--sub-thermal); }
+
+    .btn-sub-fluids { background: rgba(8, 145, 178, 0.1); color: var(--sub-fluids); border-color: rgba(8, 145, 178, 0.35); }
+    .btn-sub-fluids.active { background: var(--sub-fluids); color: #FFF; border-color: var(--sub-fluids); }
+
+    .btn-sub-electromechanical { background: rgba(79, 70, 229, 0.1); color: var(--sub-electromechanical); border-color: rgba(79, 70, 229, 0.35); }
+    .btn-sub-electromechanical.active { background: var(--sub-electromechanical); color: #FFF; border-color: var(--sub-electromechanical); }
 
     .meta-line { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
     h1 { font-family: 'Instrument Serif', Georgia, serif; font-size: 46px; font-weight: 400; line-height: 1.12; letter-spacing: -0.01em; margin-bottom: 18px; }
@@ -129,6 +160,106 @@
     ul { margin: 0 0 24px 22px; }
     li { margin-bottom: 12px; }
     strong { font-weight: 600; }
+
+    /* Interactive Deep-Dive Tangent Triggers */
+    .tangent-term {
+      border-bottom: 1.5px dotted var(--accent);
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 500;
+      position: relative;
+      transition: background-color 0.15s, color 0.15s;
+      padding: 1px 2px;
+      border-radius: 3px;
+    }
+    .tangent-term:hover {
+      background-color: var(--surface);
+      color: var(--accent);
+    }
+
+    /* Modal / Pop-up Dialog for Mini Deep Dives */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(3px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      max-width: 540px;
+      width: 100%;
+      padding: 24px 28px;
+      position: relative;
+      transform: translateY(12px);
+      transition: transform 0.2s ease;
+    }
+    .modal-overlay.active .modal-card {
+      transform: translateY(0);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .modal-close-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 18px;
+      padding: 4px;
+      line-height: 1;
+      transition: color 0.15s;
+    }
+    .modal-close-btn:hover { color: var(--text); }
+    .modal-title {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 26px;
+      font-weight: 400;
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+    .modal-body {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text);
+    }
+    .modal-equation-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin: 16px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13.5px;
+      color: var(--text);
+    }
 
     .callout-box { background: var(--surface); border-left: 3px solid var(--accent); padding: 18px 22px; margin: 28px 0; font-size: 15.5px; border-radius: 0 6px 6px 0; }
     .callout-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 6px; font-weight: 500; }
@@ -156,64 +287,53 @@
     .score-btn.active-up { background: #E1F5FE; border-color: #0288D1; color: #01579B; }
     .score-btn.active-down { background: #FFEBEE; border-color: #C62828; color: #B71C1C; }
 
-    /* Archive Items */
-    #archive-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0px;
-    }
-    .archive-item {
-      padding: 24px 0;
-      border-bottom: 1px solid var(--border);
+    /* Previous Issue Navigation Bar */
+    .issue-nav-bar {
+      margin-top: 48px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 24px;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .prev-issue-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      padding: 10px 18px;
+      border-radius: 6px;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      font-weight: 500;
+    }
+    .prev-issue-btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateX(-2px);
+    }
+
+    /* Archive Items */
+    #archive-list { display: flex; flex-direction: column; gap: 0px; }
+    .archive-item {
+      padding: 24px 0; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; cursor: pointer;
     }
     .archive-item:hover .archive-title { color: var(--accent); }
-    .archive-main {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      flex: 1;
-    }
-    .archive-title {
-      font-weight: 500;
-      font-size: 17px;
-      line-height: 1.4;
-      transition: color 0.15s;
-    }
-    .archive-details {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-    }
-    .archive-subject-tag {
-      font-weight: 500;
-      padding: 3px 9px;
-      border-radius: 4px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .archive-viz {
-      color: var(--muted);
-    }
-    .archive-right {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 4px;
-      padding-top: 2px;
-    }
+    .archive-main { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .archive-title { font-weight: 500; font-size: 17px; line-height: 1.4; transition: color 0.15s; }
+    .archive-details { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+    .archive-subject-tag { font-weight: 500; padding: 3px 9px; border-radius: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .archive-viz { color: var(--muted); }
+    .archive-right { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); white-space: nowrap; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding-top: 2px; }
 
     /* Distinct Subject Tag Colors */
     .tag-product-dives { background: rgba(217, 119, 87, 0.12); color: var(--sub-product-dives); border: 1px solid rgba(217, 119, 87, 0.25); }
@@ -236,8 +356,7 @@
         <span class="brand">Engineering Deep Dive</span>
       </a>
       <div class="nav-actions">
-        <button class="nav-btn active" id="btn-article" onclick="showView('article')">Issue #001</button>
-        <button class="nav-btn" id="btn-archive" onclick="showView('archive')">Archive (10)</button>
+        <button class="nav-btn" id="btn-archive" onclick="showView('archive')">Archive</button>
         <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme">
           <svg id="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
           <svg id="sun-icon" style="display:none;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -254,12 +373,12 @@
       <main class="editorial-column" id="main-container">
         <article id="view-article">
           <div class="meta-line">
-            <span>ISSUE #001</span><span>•</span><span>PRODUCT DIVES</span><span>•</span><span>15 MIN READ</span>
+            <span>ISSUE #001</span><span>•</span><span>PRODUCT DIVES</span><span>•</span><span id="read-time-badge">12 MIN READ</span>
           </div>
 
           <h1>Inside the Apple HomeView & Apple Home Collection: The Complete Hardware Breakdown</h1>
           <p class="subtitle">
-            A rigorous engineering teardown of Apple's smart home hardware ecosystem—analyzing A18 thermal dissipation paths, UWB time-of-flight error budgets, planetary gearbox stall torque, and active MOSFET power-stealing circuits.
+            A comprehensive, 12-minute teardown of Apple's unified smart home offensive—analyzing why Apple adopted a JDM supply chain model, how spatial UWB prevents false unlocks, and what makes each of the eight new devices unique.
           </p>
 
           <figure class="product-figure">
@@ -267,14 +386,24 @@
               <img referrerpolicy="no-referrer" src="https://www.apple.com/newsroom/images/2026/10/meet-apple-homeview-a-new-way-to-enjoy-entertainment-and-manage-the-home/article/Apple-HomeView-lineup-261013_Full-Bleed-Image.jpg.large.jpg" onerror="this.src='https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=1400&q=85'" alt="Apple HomeView 7-inch Smart Display" />
             </div>
             <figcaption>
-              <span><span class="viz-badge">Scraped Static Image / GIF</span> <strong>FIG 01 — HOMEVIEW ARCHITECTURE:</strong> 7-inch Liquid Retina panel coupled via a stainless steel tilt hinge to a domed acoustic woofer base.</span>
+              <span><span class="viz-badge">Scraped Static Image / GIF</span> <strong>FIG 01 — THE COMMAND HUB:</strong> Apple's first-party 7-inch HomeView on its counterbalanced tabletop acoustic stand.</span>
               <span class="source-tag">IMAGE: APPLE NEWSROOM</span>
             </figcaption>
           </figure>
 
-          <h2 id="section-news-overview">1. The Big Picture: What Apple Announced</h2>
+          <h2 id="section-news-overview">1. The Big Picture: What Apple Just Announced</h2>
           <p>
-            Apple's October 2026 hardware event introduced a unified smart home architecture divided into first-party command hubs (<strong>Apple HomeView</strong>, \$299) and the <strong>Apple Home Collection</strong>—a suite of seven accessories co-developed with LG Electronics and Schneider Electric.
+            For more than a decade, Apple’s smart home strategy suffered from a fatal hardware gap: Apple controlled the brains (Apple TV, HomePod, and the Apple Home app), but left physical accessories entirely to third-party manufacturers. This fragmented ecosystem forced customers into a frustrating labyrinth of separate companion apps, mandatory third-party cloud logins, unreliable QR-code setups, and mismatched plastic aesthetics. While Google acquired Nest and Amazon acquired Ring and Blink to control their physical hardware footprint, Apple remained confined to the software orchestration layer.
+          </p>
+          <p>
+            At its October 2026 hardware event, Apple completely dismantled that model by launching two complementary product tiers that bridge the drywall divide:
+          </p>
+          <ul>
+            <li><strong>First-Party Command Silicon:</strong> The new <strong>Apple HomeView</strong> ($299, shipping November 2026)—Apple’s first dedicated 7-inch smart display and ambient home dashboard powered by the A18 chip and local Apple Intelligence, alongside an upgraded <strong>HomePod mini 2</strong> and <strong>Apple TV 4K</strong>.</li>
+            <li><strong>The Apple Home Collection:</strong> A coordinated lineup of seven residential hardware peripherals—spanning smart deadbolts, dual-camera video doorbells, indoor/outdoor security cameras, and smart climate controls—co-engineered from the silicon to the enclosure with <strong>LG Electronics</strong> and <strong>Schneider Electric</strong>.</li>
+          </ul>
+          <p>
+            This dual-pronged launch addresses the two biggest pain points in the residential IoT sector: setup friction and architectural fragmentation. By integrating Apple's custom silicon, Secure Enclave cryptography, and industrial design sensibilities directly with established tier-one appliance and electrical manufacturers, Apple has eliminated the traditional barrier between consumer gadgets and permanent home infrastructure.
           </p>
 
           <div class="spec-table-wrap">
@@ -282,83 +411,153 @@
               <thead>
                 <tr>
                   <th>Product</th>
-                  <th>Partner</th>
-                  <th>Price</th>
-                  <th>Key Architectural Spec</th>
+                  <th>Hardware Partner</th>
+                  <th>Price (US)</th>
+                  <th>Finishes</th>
+                  <th>Headline Hardware Innovations</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><strong>Apple HomeView</strong></td>
-                  <td>Apple</td>
-                  <td>\$299.00</td>
-                  <td>A18 chip, 7" Liquid Retina (500 to 0.3 nits), stainless steel hinge, 4-mic array, Thread router.</td>
+                  <td>Apple (First-Party)</td>
+                  <td>$299.00</td>
+                  <td>Silver, Starlight, Rose, Space Gray</td>
+                  <td>A18 chip, 7" Liquid Retina (500 to 0.3 nits), 6-user local Face ID, stainless steel tilt hinge, Thread router.</td>
                 </tr>
                 <tr>
-                  <td><strong>LG Smart Deadbolt</strong></td>
-                  <td>LG</td>
-                  <td>\$349.95</td>
-                  <td>IEEE 802.15.4z UWB time-of-flight ranging, Aliro + Matter-over-Thread, planetary geartrain.</td>
+                  <td><strong>LG Smart Deadbolt Lock</strong></td>
+                  <td>LG Electronics</td>
+                  <td>$349.95</td>
+                  <td>Essence Silver, Essence Graphite</td>
+                  <td>Aliro + Matter-over-Thread, UWB spatial approach unlock, 4-way access redundancy, offline execution.</td>
                 </tr>
                 <tr>
-                  <td><strong>LG Video Doorbell</strong></td>
-                  <td>LG</td>
-                  <td>\$249.95</td>
-                  <td>Dual optical split (2.5K visitor cam + 1080p downward package lens).</td>
+                  <td><strong>LG Video Doorbell (Wired)</strong></td>
+                  <td>LG Electronics</td>
+                  <td>$249.95</td>
+                  <td>Essence Silver, Essence Graphite</td>
+                  <td>Dual optical split (2.5K visitor cam + 1080p downward package cam), integrated LED spotlight, zero blind spot.</td>
                 </tr>
                 <tr>
                   <td><strong>LG Indoor Security Cam</strong></td>
-                  <td>LG</td>
-                  <td>\$199.95</td>
-                  <td>Motorized gimbal with 95° downward pitch and physical leaf-switch microphone cutout.</td>
+                  <td>LG Electronics</td>
+                  <td>$199.95</td>
+                  <td>Essence White</td>
+                  <td>Motorized pan/tilt gimbal with 95° downward privacy pitch, physical microphone air-gap cut switch.</td>
                 </tr>
                 <tr>
-                  <td><strong>LG & Schneider Thermostats</strong></td>
-                  <td>LG / Schneider</td>
-                  <td>\$199.95</td>
-                  <td>Active MOSFET zero-crossing power stealing for 2-wire loops, 60 GHz radar sensing.</td>
+                  <td><strong>LG Outdoor & Floodlight Cams</strong></td>
+                  <td>LG Electronics</td>
+                  <td>$299.95 – $399.95</td>
+                  <td>Essence Silver, Essence Graphite</td>
+                  <td>2.5K HDR sensor, low-light color night vision, dual adaptive articulated floodlights (Floodlight model).</td>
+                </tr>
+                <tr>
+                  <td><strong>LG & Schneider Smart Thermostats</strong></td>
+                  <td>LG / Schneider Electric</td>
+                  <td>$199.95</td>
+                  <td>Circular Dial (LG) / Square Panel (Schneider)</td>
+                  <td>Active 2-wire zero-crossing power stealing, through-glass 60 GHz radar occupancy, automated wire sensing.</td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-          <h2 id="section-jdm-architecture">2. JDM Manufacturing & Supply Chain Alignment</h2>
+          <h2 id="section-jdm-architecture">2. JDM Manufacturing: Why Apple Partnered with LG & Schneider</h2>
           <p>
-            Unlike standard "Works with Apple Home" accessories, the Home Collection is a true <strong>Joint Design Manufacturing (JDM)</strong> partnership. Apple's Industrial Design group dictated the CMF (<strong>Essence Silver</strong>, <strong>Graphite</strong>, and <strong>White</strong>) and zero-app NFC commissioning, while LG and Schneider engineered the high-voltage UL compliance, mechanical locking durability, and HVAC power electronics.
+            To understand the manufacturing logic of this release, engineers must examine the structural differences between <strong>OEM</strong> (Original Equipment Manufacturer), <strong>ODM</strong> (Original Design Manufacturer), and <strong>JDM</strong> (Joint Design Manufacturer):
           </p>
+          <ul>
+            <li><strong>OEM (Contract Assembly):</strong> In Apple's traditional OEM relationships (such as Foxconn, Pegatron, and Luxshare assembling iPhones, iPads, and MacBooks), Apple's internal operations and engineering teams design and specify literally everything. Apple controls the internal silicon architecture, mechanical cad, injection mold tooling, CNC toolpaths, PCB stack-ups, firmware drivers, and supply chain vendors down to individual screws. The OEM partner provides clean-room floor space, automated assembly lines, and labor execution.</li>
+            <li><strong>ODM (White-Label Sourcing):</strong> In an ODM model—predominantly used by discount consumer electronics brands—a manufacturing vendor designs, tools, and builds a generic product entirely on their own balance sheet. A brand then licenses the finished hardware, applies cosmetic silk-screening or plastic resin pigmentation, bundles branded companion software, and distributes it. ODMs minimize upfront R&D costs but sacrifice architectural uniqueness and quality control.</li>
+            <li><strong>The JDM Compromise:</strong> With the Apple Home Collection, Apple adopted a true <strong>Joint Design Manufacturing (JDM)</strong> model—mirroring their historic technical partnership with LG on the UltraFine 4K and 5K monitor displays. In a JDM workflow, the architectural ownership is cleanly partitioned based on core competencies. Apple’s Industrial Design and Hardware Engineering groups authored the industrial form factors, bead-blasting surface finishes, CMF color limits, NFC one-tap commissioning, and end-to-end cryptographic protocols. In parallel, LG and Schneider Electric handled high-voltage power electronics, physical deadbolt gearboxes, ANSI/BHMA testing, and global electrical compliance.</li>
+          </ul>
+
+          <div class="callout-box">
+            <div class="callout-title">The Engineering & Business Tradeoffs of Apple's JDM Strategy</div>
+            <p style="margin-bottom:8px;"><strong>Why JDM Made Sense for Apple (The Pros):</strong></p>
+            <ul style="margin-bottom:12px;">
+              <li><strong>The Drywall Boundary & High-Voltage Liability:</strong> Consumer electronics live in low-voltage DC regimes (5V to 20V USB-PD). The moment hardware crosses the drywall boundary into 120V/240V AC mains or 24V AC legacy HVAC transformers, electrical codes (NFPA 70 / NEC, UL 1034, CE, and IEC 60335) impose severe safety margins, creepage/clearance rules, and fire liabilities. Schneider Electric has specialized in high-voltage circuit breakers and residential panels for over a century, providing instant regulatory immunity and tested reliability.</li>
+              <li><strong>Mechanical Longevity and Warped Interfaces:</strong> Unlike an iPhone designed for a 3-year replacement cycle, residential fixtures must survive 10 to 15 years in unforgiving conditions. Exterior door locks must withstand extreme seasonal thermal shock (-30°C to +65°C), sledgehammer impact attacks, and swollen door jambs. Offloading physical actuator assembly to LG insulates Apple from mechanical warranty headaches.</li>
+              <li><strong>Nationwide Certified Installation Logistics:</strong> Most consumers are terrified of opening their home circuit breakers or rewiring furnace control boards. Apple could not realistically turn Apple Store Geniuses into licensed residential electricians. The JDM partnership directly incorporates certified white-glove professional installation across the United States through ADT.</li>
+            </ul>
+            <p style="margin-bottom:8px;"><strong>The Tradeoffs and Engineering Friction Points (The Cons):</strong></p>
+            <ul>
+              <li><strong>Stacked Margin Markup:</strong> In a JDM partnership, both Apple and the manufacturing partner must capture gross margins on each unit sold. This dual-margin stack inevitably pushes the final retail price point into premium territory—$350 for a smart deadbolt and $250 for a video doorbell—limiting immediate mass-market volume.</li>
+              <li><strong>Cross-Vendor CMF & Tooling Synchronization:</strong> Ensuring that an LG die-cast aluminum lock body in "Essence Silver" perfectly matches the exact L*a*b* color coordinates, gloss levels, and bead-blasting tactile texture of an Apple CNC-machined HomeView chassis requires immense QA effort across separate chemical anodizing baths and disparate overseas suppliers.</li>
+            </ul>
+          </div>
 
           <h2 id="section-product-teardowns">3. Product-by-Product Engineering Teardowns</h2>
 
-          <h3 id="product-homeview">Apple HomeView (Hub & Audio Base) <span class="price-tag">\$299.00</span></h3>
+          <h3 id="product-homeview">Apple HomeView (Hub & Audio Base) <span class="price-tag">$299.00</span></h3>
           <p>
-            Powered by the <strong>A18 chip</strong> and an isolated Secure Exclave, HomeView balances thermal dissipation with high-fidelity acoustics. The display module scales from 500 nits down to <strong>0.3 nits</strong> via a precision PWM backlight driver. In the acoustic base, a down-firing custom woofer and dual force-canceling passive radiators are mechanically isolated from the compute PCB to eliminate harmonic distortion during Siri playback.
+            Apple HomeView is the central intelligence node that orchestrates the entire household. Rather than marketing a stripped-down iPad mounted to a charging dock, Apple engineered two distinct hardware configurations at the exact same $299 price:
           </p>
           <p>
-            <strong>Thermal & Mechanical Architecture:</strong> Because the enclosure relies entirely on passive natural convection without active fan cooling, thermal management is governed by Fourier's law of thermal conduction: <em>q = -k A (dT/dx)</em>. The A18 silicon die package is bonded directly to custom graphite spreaders and an internal aluminum chassis extrusion via high-conductivity phase-change thermal interface material (TIM). This spreads thermal loads evenly across the rear enclosure, capping maximum surface temperatures at 38°C during continuous 500-nit video streaming and local Face ID neural inference.
-          </p>
-
-          <h3 id="product-deadbolt">LG Smart Deadbolt (UWB & Kinematics) <span class="price-tag">\$349.95</span></h3>
-          <p>
-            Standard Bluetooth RSSI locking suffers from multipath reflections and false indoor triggers. The LG Deadbolt uses <strong>UWB impulse radio (6.5/8.0 GHz channels)</strong> to measure nanosecond-level time-of-flight, verifying approach vectors within ±3 cm. 
+            The <strong>Tabletop Model</strong> features a counterbalanced, domed acoustic speaker base connected to the display through an articulated, friction-tuned <strong>stainless-steel tilt hinge</strong> that allows smooth vertical angle adjustment for kitchen islands or high bedside tables. The <strong>Wall-Mounted Model</strong> eliminates the acoustic dome in favor of a clean, flush-mount rear chassis designed to lock into three modular <strong>Schneider Home Power Mounts</strong>: a standard low-profile USB-C wall connector ($59.95), an integrated 120V AC gang-box transformer mount ($79.95), and an enterprise-grade Power-over-Ethernet (PoE) wired mount ($129.95).
           </p>
           <p>
-            <strong>Drivetrain Mechanics & Stall Loads:</strong> In field conditions, warped wooden door frames exert normal forces that spike deadbolt throw friction above 30 N. To overcome this from a 4x AA battery pack without browning out the logic rail, the lock uses a high-reduction multi-stage planetary gearbox (approx. 120:1 ratio). The output torque is calculated as <em>τ = F<sub>throw</sub> · r<sub>cam</sub> / η<sub>gear</sub></em>, where <em>η<sub>gear</sub></em> represents the cumulative mechanical efficiency of the planetary stages. An integrated magnetic encoder monitors rotor position, instantly reversing motor drive if back-EMF spikes indicate a mechanical jam against a misaligned strike plate.
+            <strong>Display & Thermal Engineering:</strong> The 7-inch Liquid Retina display (1,088 × 1,088 resolution at 220 ppi) addresses a common flaw of smart displays: bedroom glare. While standard panels bottom out at around 10 to 15 nits, HomeView utilizes an advanced ultra-wide PWM dimming backlight driver that throttles luminance from a daylight-readable <strong>500 nits</strong> all the way down to <strong>0.3 nits</strong> in pitch darkness. To keep the device silent in quiet rooms, the powerful 3nm A18 system-on-chip operates entirely via <span class="tangent-term" onclick="openTangent('convection')">passive natural convection</span>. Internal heat flux is conducted away from the silicon die package through pyrolytic graphite thermal spreaders and coupled to an extruded structural aluminum chassis frame, keeping exterior rear skin temperatures comfortably below 38°C without active cooling fans.
+          </p>
+          <p>
+            <strong>Acoustics & Facial Recognition:</strong> Inside the acoustic base, Apple decoupled a custom down-firing woofer and dual force-canceling passive radiators from the compute PCB using vibration-damping silicone isolators. This structural isolation prevents powerful acoustic excursions from vibrating the 12MP Center Stage camera or injecting harmonic distortion into the four-microphone beamforming array. The on-device A18 Neural Engine securely stores 3D facial embeddings in an isolated Secure Exclave, instantly recognizing up to <strong>six household members</strong> as they approach and tailoring widgets, reminders, and calendar appointments to that specific person without sending personal biometric telemetry to cloud servers.
           </p>
 
-          <h3 id="product-cameras">LG Security Cams (Gimbal Shutter & Dual Optics) <span class="price-tag">\$199.95 – \$399.95</span></h3>
+          <h3 id="product-deadbolt">LG Smart Deadbolt Lock <span class="price-tag">$349.95</span></h3>
           <p>
-            The <strong>Indoor Cam</strong> eliminates software privacy vulnerabilities via a physical mechanism: when occupied, a micro-stepping motor pitches the lens <strong>95° downward</strong> into an opaque, light-absorbing elastomer cup, simultaneously tripping a mechanical leaf switch that breaks the microphone's <code>VDD</code> circuit. 
+            First-generation smart locks relied on 2.4 GHz Bluetooth Low Energy (BLE) Received Signal Strength Indicator (RSSI) thresholds to trigger hands-free auto-unlocking. Because 2.4 GHz RF waves suffer from multipath reflection off metal doors, stucco lath, and human tissue, signal attenuation is a terrible indicator of actual distance. This caused dangerous false unlocks when a homeowner was simply walking around inside their living room or upstairs hallway.
           </p>
           <p>
-            <strong>Optical & Stepper Precision:</strong> The micro-stepping motor drives the trunnion at 0.9° per full step, subdivided into 16 micro-steps to achieve ultra-smooth, silent positioning. The gold-plated mechanical leaf switch uses a wiping contact design with a contact resistance under 30 mΩ, ensuring an absolute physical air-gap separation on the MEMS microphone power rail that software exploits cannot bypass. The <strong>Video Doorbell</strong> solves the ground-blindspot problem by mounting two separate CMOS sensors in parallel (2.5K visitor cam + 1080p package cam), each paired with custom-molded 130° wide-angle glass lenses corrected for chromatic aberration.
+            <strong>Spatial Ranging Physics:</strong> The LG Smart Deadbolt solves this using the newly standardized <strong>Aliro</strong> protocol coupled with an IEEE 802.15.4z <span class="tangent-term" onclick="openTangent('uwb')">UWB spatial ranging</span> radio. Operating across 6.5 GHz and 8.0 GHz channels, UWB emits sub-nanosecond pulses. By measuring the physical Time-of-Flight (ToF) of these pulses and calculating the phase difference of arrival across a dual-antenna array, the deadbolt resolves the user's approach angle and exterior distance within ±3 cm. It unlocks automatically when you approach from the porch, but remains rigidly locked when you walk past the door inside.
+          </p>
+          <p>
+            <strong>Actuator Mechanics & Stall Torque:</strong> In field conditions, seasonal humidity and building settling cause wooden doors to warp, forcing the deadbolt's beveled tongue to cam the entire door leaf against compressed rubber weatherstripping. This side load can spike bolt-throw resistance above 30 N. To drive through this friction from a compact 4x AA alkaline battery pack, LG engineered a miniature <span class="tangent-term" onclick="openTangent('gearbox')">planetary gearbox</span> that achieves a high reduction ratio while fitting within a standard 25.4 mm (1-inch) cylindrical door bore. The geartrain drives an asymmetric lost-motion slotted cam: once the throw cycle finishes, the motor backs off slightly, centering the pin in an open track so the interior thumbturn can be rotated manually with zero geartrain resistance. For complete peace of mind, the lock provides four redundant entry methods: hands-free UWB, an NFC Apple Home Key tap (which functions for hours after an iPhone battery dies via power reserve), a capacitive backlit exterior keypad, and a concealed physical key cylinder behind a spring-loaded magnetic trim plate.
           </p>
 
-          <h3 id="product-thermostats">LG & Schneider Thermostats (Power-Stealing & Radar) <span class="price-tag">\$199.95</span></h3>
+          <h3 id="product-doorbell">LG Video Doorbell (Wired) <span class="price-tag">$249.95</span></h3>
           <p>
-            In older homes missing a Common (C) wire, the thermostat must harvest power in series through the furnace relay without chattering the contacts. 
+            Single-lens video doorbells suffer from an unavoidable optical tradeoff: tilt the camera up to identify tall visitors, and you create a blind spot directly beneath the lens where couriers drop packages; tilt it down, and you cut off visitors' faces.
           </p>
           <p>
-            <strong>Active MOSFET Zero-Crossing Harvesting:</strong> The board utilizes back-to-back power MOSFETs instead of mechanical relays. Near the 60 Hz AC zero-crossing (where voltage <em>v(t) = V<sub>peak</sub> sin(ωt)</em> crosses zero), the MOSFETs briefly open for microsecond windows. This allows a controlled current pulse to charge an internal supercapacitor bank without pulling enough current through the furnace relay coil to trigger its magnetic pull-in threshold (keeping coil current well below the 40 mA dropout limit). Simultaneously, the 60 GHz FMCW radar transceiver emits millimeter waves through the aluminosilicate cover glass, tuned precisely to a half-wavelength thickness (<em>t = λ / 4n</em>) to eliminate dielectric surface reflection loss.
+            <strong>Dual-Sensor Optical Architecture:</strong> LG resolved this geometric problem by implementing a custom <span class="tangent-term" onclick="openTangent('optics')">dual-lens optical split</span> inside a weather-sealed IP65 housing. The primary upper camera uses a 2.5K HDR CMOS sensor paired with an f/2.0 aperture lens tuned for optimal human facial MTF (Modulation Transfer Function) and high dynamic range under harsh backlit porch conditions. Mounted directly beneath it is an independent 1080p camera tilted 45° downward to monitor the doorstep mat. Both streams are processed simultaneously by an on-device image signal processor (ISP), feeding panoramic package and visitor views into the Apple Home app without the extreme spherical barrel distortion inherent to 180° single-lens fisheye optics.
+          </p>
+          <p>
+            <strong>Reliability & Lighting:</strong> When motion is detected after sunset, an integrated warm-white downward LED spotlight illuminates the threshold, transitioning the camera from infrared into full color night vision. To solve the vulnerability of cloud-dependent doorbells that go blind during broadband outages, the unit integrates 4GB of local high-endurance flash storage. Event clips are captured locally and seamlessly synced to iCloud+ HomeKit Secure Video once Wi-Fi reconnects.
+          </p>
+
+          <h3 id="product-indoor-cam">LG Indoor Security Cam <span class="price-tag">$199.95</span></h3>
+          <p>
+            Most indoor security cameras rely on "software privacy modes" where firmware merely halts the digital video stream while the image sensor and MEMS microphones remain fully powered on the PCB rails. For privacy-conscious engineers, this represents an unacceptable attack surface.
+          </p>
+          <p>
+            <strong>Hardware-Enforced Privacy Kinematics:</strong> The LG Indoor Cam is built around an articulated dual-axis pan/tilt motorized gimbal. When the camera enters Privacy Mode (triggered automatically via geofencing when family members arrive home, or via a Siri command), a precision micro-stepping motor drives the optical barrel <strong>95° downward</strong>, burying the lens assembly completely inside a cast aluminum lower shroud lined with an opaque, light-absorbing elastomer cup.
+          </p>
+          <p>
+            <strong>Mechanical Air-Gap Disconnect:</strong> During the final 5° of downward travel, an eccentric cam lobe on the gimbal trunnion mechanically pushes open a gold-plated <span class="tangent-term" onclick="openTangent('leafswitch')">mechanical leaf switch</span> soldered directly to the main rigid PCB. This switch physically severs the DC power supply (VDD) line feeding the MEMS microphone array, creating a true electrical air gap. When the camera is closed, eavesdropping is physically and electrically impossible, regardless of firmware exploits or network attacks.
+          </p>
+
+          <h3 id="product-outdoor-cams">LG Outdoor Cam & Floodlight Cam <span class="price-tag">$299.95 – $399.95</span></h3>
+          <p>
+            Outdoor residential security cameras face intense thermal and optical hurdles: daytime solar loading causes sensor junction temperatures to skyrocket (generating thermal dark-current shot noise), while nighttime infrared LEDs can cause milky internal glare if optical reflections bounce inside the front cover glass.
+          </p>
+          <p>
+            <strong>Thermal & Optical Packaging:</strong> Both outdoor models are enclosed within heavy-gauge die-cast aluminum enclosures that double as convective heatsinks. In the Floodlight Cam ($399.95), the dual 2,000-lumen COB LED floodlights are mounted on articulated aluminum outriggers, physically isolating high-wattage LED driver heat from the central 2.5K HDR camera core. The front optical stack uses a dual-durometer black silicone boot that compresses tightly against the interior of the cover glass, mechanically isolating the central camera aperture from the outer 850 nm infrared ring to eliminate internal Fresnel back-scatter reflections.
+          </p>
+          <p>
+            <strong>Apple Intelligence Video Summaries:</strong> Working in conjunction with a home Apple TV 4K or HomeView hub, video feeds are analyzed on-device using local Apple Intelligence neural models. Instead of forcing users to scrub through hours of false motion alerts caused by windblown branches or passing cars, the system generates natural-language text summaries of daily events and enables semantic search queries (e.g., <em>"Show me when a courier in a blue shirt left a box by the side gate yesterday"</em>).
+          </p>
+
+          <h3 id="product-thermostats">LG & Schneider Smart Thermostats <span class="price-tag">$199.95</span></h3>
+          <p>
+            Smart thermostat adoption in North America has long been hampered by the legacy electrical wiring of older homes, where furnaces were installed with only two wires—<code>R</code> (24V AC power hot) and <code>W</code> (heat call)—lacking a dedicated <code>C</code> (Common) neutral return wire.
+          </p>
+          <p>
+            <strong>Power Electronics & Active Harvesting:</strong> When a thermostat is installed without a C-wire, it must draw operating power in series through the furnace relay coil while the furnace is idle. If current exceeds approximately 20 to 30 mA, the furnace relay will falsely pull in, causing furnace burners to cycle uncontrollably. The LG and Schneider thermostats solve this through an advanced power supply incorporating <span class="tangent-term" onclick="openTangent('powerstealing')">active MOSFET power stealing</span>. By using back-to-back MOSFET switches that open briefly near the 60 Hz AC voltage zero-crossings, the thermostat harvests controlled microsecond pulses of energy into an internal supercapacitor bank without ever passing enough current to trigger the furnace contactor.
+          </p>
+          <p>
+            <strong>Through-Glass mmWave Respiration Radar:</strong> Traditional thermostats use passive infrared (PIR) sensors that require a faceted plastic Fresnel lens window on the front cover. PIR sensors only register gross thermal displacement; if a person sits motionless in an armchair reading a book, the sensor reports an empty room and lowers the temperature. The LG and Schneider thermostats eliminate the ugly plastic window by embedding an invisible <strong>60 GHz FMCW millimeter-wave radar</strong> transceiver directly behind the cover glass. By measuring phase shifts across reflected radar chirps, the sensor detects sub-millimeter chest wall movements from human respiration, maintaining accurate room occupancy telemetry even when occupants are completely still. Furthermore, the thermostats natively fuse telemetry from the temperature and humidity sensors already built into Apple HomeView, HomePod, and HomePod mini devices throughout the home, averaging multi-room climate zones without requiring proprietary wall pucks.
           </p>
 
           <div class="telemetry-bar">
@@ -377,11 +576,22 @@
               </button>
             </div>
           </div>
+
+          <!-- Bottom Navigation: View Previous Issue -->
+          <div class="issue-nav-bar">
+            <button class="prev-issue-btn" onclick="showPreviousIssueNotification()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              View Previous Issue (10/13)
+            </button>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted);">
+              Current Dispatch: Issue #001 &middot; Oct 14, 2026
+            </span>
+          </div>
         </article>
 
         <section id="view-archive" class="hidden">
-          <h1>Archive & Queue</h1>
-          <p class="subtitle" style="margin-bottom: 28px;">Filter published dispatches and upcoming topics across all 8 core subjects.</p>
+          <h1>Archive</h1>
+          <p class="subtitle" style="margin-bottom: 28px;">Explore published dispatches across all 8 core engineering disciplines.</p>
           <div class="subjects-bar" id="subjects-bar"></div>
           <div id="archive-list"></div>
         </section>
@@ -389,18 +599,134 @@
     </div>
   </div>
 
+  <!-- Interactive Pop-up Modal for Mini Deep Dives -->
+  <div class="modal-overlay" id="tangent-modal" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-tag" id="modal-tag">MINI DEEP DIVE</span>
+        <button class="modal-close-btn" onclick="closeModal()">✕</button>
+      </div>
+      <h3 class="modal-title" id="modal-title">Engineering Concept</h3>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
   <script>
     const SUBJECTS = ["All", "Product Dives", "Manufacturing", "Design", "Materials", "Mechanisms", "Thermal", "Fluids", "Electromechanical"];
+    
+    // Topics database: only published articles are shown in the public archive
     const TOPICS = [
-      { id: "#001", subject: "Product Dives", title: "Inside the Apple HomeView & Apple Home Collection: The Complete Hardware Breakdown", status: "Published", viz: "Scraped Static Image / GIF" },
-      { id: "#002", subject: "Manufacturing", title: "Additive Technologies: The True Difference Between SLA, SLS, and FDM", status: "Queued (Oct 15)", viz: "Interactive Graphic" },
-      { id: "#003", subject: "Fluids", title: "Espresso Extraction: How 9-Bar Vibratory Pumps Generate Pressure", status: "Queued (Oct 16)", viz: "Interactive Graphic" },
-      { id: "#004", subject: "Design", title: "Surface Treatments: What Actually Happens During Anodizing?", status: "Queued (Oct 17)", viz: "Scraped Static Image / GIF" },
-      { id: "#005", subject: "Materials", title: "Fatigue & S-N Curves: Why Steel Has an Endurance Limit and Aluminum Doesn't", status: "Queued (Oct 18)", viz: "Interactive Graphic" },
-      { id: "#006", subject: "Mechanisms", title: "Ballpoint Pen Clickers: The Genius of Continuous Rotational Cam Tracks", status: "Queued (Oct 19)", viz: "Interactive Graphic" },
-      { id: "#007", subject: "Thermal", title: "Steam Deck Cooling: Vapor Chambers vs. Sintered Heat Pipes", status: "Queued (Oct 20)", viz: "Scraped Static Image / GIF" },
-      { id: "#008", subject: "Electromechanical", title: "Webcam Autofocus: Voice Coil Motors vs. Piezoelectric Actuators", status: "Queued (Oct 21)", viz: "Scraped Static Image / GIF" }
+      { id: "#001", subject: "Product Dives", title: "Inside the Apple HomeView & Apple Home Collection: The Complete Hardware Breakdown", status: "Published", date: "Oct 14, 2026", viz: "Scraped Static Image / GIF" },
+      { id: "#000", subject: "Electromechanical", title: "Apple Vision Pro Actuators: Interpupillary Voice Coil Motors and Custom Encoders", status: "Published", date: "Oct 13, 2026", viz: "Scraped Static Image / GIF" }
     ];
+
+    // Mini Deep Dive Tangent Database
+    const TANGENTS = {
+      convection: {
+        tag: "THERMAL PHYSICS // CONDUCTION & CONVECTION",
+        title: "Passive Natural Convection in Compute Displays",
+        body: `
+          <p>Smart displays on nightstands cannot use active cooling fans due to acoustic noise, dust accumulation, and motor wear over a 10-year lifespan. Dissipating heat from the 3nm A18 silicon die package requires a continuous thermal conduction chain into the rear housing.</p>
+          <div class="modal-equation-box">
+            Conduction: q = -k · A · (dT/dx)<br>
+            Natural Convection: q_conv = h · A · (T_surface - T_ambient)
+          </div>
+          <p>Thermal energy moves from the silicon die package through a high-conductivity phase-change thermal interface material (TIM) into anisotropic pyrolytic graphite sheets. These graphite spreaders disperse the concentrated heat flux horizontally across an internal structural aluminum chassis extrusion, keeping peak rear-enclosure skin temperatures safely under 38°C during full-screen video playback and local neural network execution.</p>
+        `
+      },
+      uwb: {
+        tag: "RF PHYSICS // SPATIAL RANGING",
+        title: "Ultra-Wideband (UWB) Time-of-Flight vs. BLE RSSI",
+        body: `
+          <p>Standard Bluetooth Low Energy measures signal strength (RSSI) to estimate distance. However, multipath RF reflections bouncing off metal door frames and stucco wire mesh create ±12 dB swings—making someone inside the foyer look closer than someone standing on the porch.</p>
+          <div class="modal-equation-box">
+            Range: d = (c · Δt) / 2<br>
+            Pulse Width: τ_pulse ≈ 2 nanoseconds (500 MHz Bandwidth)
+          </div>
+          <p>UWB transmits short nanosecond-duration pulses across 6.5 GHz and 8.0 GHz channels. Because the pulses are ultra-narrow in the time domain, the receiver easily separates the direct line-of-sight wavefront from reflected echoes, measuring physical Time-of-Flight (ToF) down to ±3 cm accuracy and resolving exterior vs. interior approach vectors.</p>
+        `
+      },
+      gearbox: {
+        tag: "MECHANICAL KINEMATICS // DRIVETRAIN",
+        title: "Why Planetary Gearheads Fit High Torque in Door Bores",
+        body: `
+          <p>A smart deadbolt must fit inside a standard 25.4 mm (1-inch) edge bore while producing enough torque to cam a warped, sticking wooden door against compressed weatherstripping (>30 N force).</p>
+          <div class="modal-equation-box">
+            Gear Ratio: i = 1 + (Z_ring / Z_sun)<br>
+            Output Torque: τ_out = F_throw · r_cam · η_gear
+          </div>
+          <p>Spur gear trains require wide center-to-center distances between parallel shafts, making them far too bulky for cylindrical lock bores. In contrast, planetary gearheads share loads across three planet gears orbiting a central sun gear along a common coaxial centerline. This delivers high gear reduction (approx. 120:1) and exceptional volumetric torque density in a tiny cylindrical envelope.</p>
+        `
+      },
+      optics: {
+        tag: "OPTICAL DESIGN // PARALLAX & FOV",
+        title: "Dual-Lens Optical Split vs. Wide Fisheye Distortion",
+        body: `
+          <p>A single extreme ultra-wide fisheye lens (>180° FOV) creates severe barrel distortion at the image perimeter, stretching human faces at eye level and rendering package shipping labels unreadable on the floor.</p>
+          <div class="modal-equation-box">
+            Camera 1 (Visitor): 2.5K HDR, f/2.0, 130° FOV (Optimized for facial MTF)<br>
+            Camera 2 (Package): 1080p, f/2.4, 110° Downward Tilt (Canted at 45°)
+          </div>
+          <p>By splitting the optical pipeline into two dedicated glass lens modules, each sensor is optical-bench calibrated for its exact focal distance, providing crystal-clear facial recognition while simultaneously monitoring packages touching the door threshold.</p>
+        `
+      },
+      leafswitch: {
+        tag: "ELECTROMECHANICAL // AIR-GAP PRIVACY",
+        title: "Mechanical Air-Gap Disconnect vs. Firmware Muting",
+        body: `
+          <p>Modern MEMS microphones are powered by a DC supply line (VDD) from the power management IC. When cameras use "software privacy mode", firmware merely stops recording the I2S digital audio stream—meaning the physical microphone membrane remains powered and susceptible to software exploits.</p>
+          <div class="modal-equation-box">
+            Mechanism: Dual-axis gimbal pitches barrel 95° downward<br>
+            Electrical Cutoff: Eccentric cam lobe opens gold-plated NC leaf switch<br>
+            Isolation: Complete physical air-gap on VDD microphone power rail
+          </div>
+          <p>At the bottom 5° of downward tilt, the gimbal mechanically pushes an internal spring-loaded leaf switch open. This severs the physical circuit supplying power to the microphone hardware itself, guaranteeing hardware-enforced privacy.</p>
+        `
+      },
+      powerstealing: {
+        tag: "POWER ELECTRONICS // ZERO-CROSSING HARVESTING",
+        title: "Active MOSFET Power Stealing in 2-Wire HVAC Loops",
+        body: `
+          <p>Older North American HVAC systems only provide two wires: R (24V AC power) and W (heat call). There is no Common (C) wire return loop. If a smart thermostat draws too much current while the heat is off, the furnace relay will falsely pull in and ignite the burner.</p>
+          <div class="modal-equation-box">
+            AC Waveform: v(t) = V_peak · sin(ωt)<br>
+            Harvest Window: Δt ≈ 300 μs at Zero-Voltage Crossing (v(t) ≈ 0V)<br>
+            Current Threshold: I_leak < 20 mA (Well below 40 mA relay pull-in)
+          </div>
+          <p>To survive without dropping offline, the thermostat board uses back-to-back power MOSFETs. Near the 60 Hz AC zero-crossing, the MOSFETs briefly open for microsecond windows to siphon short current pulses into an internal supercapacitor bank—providing continuous power for its 60 GHz radar and Thread mesh radio.</p>
+        `
+      }
+    };
+
+    function openTangent(key) {
+      const data = TANGENTS[key];
+      if (!data) return;
+      document.getElementById('modal-tag').textContent = data.tag;
+      document.getElementById('modal-title').textContent = data.title;
+      document.getElementById('modal-body').innerHTML = data.body;
+      document.getElementById('tangent-modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('tangent-modal').classList.remove('active');
+    }
+
+    function closeModalOnBackdrop(e) {
+      if (e.target.id === 'tangent-modal') closeModal();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Dynamic Read Time Calculation (~210 words per minute)
+    function calculateReadTime() {
+      const articleEl = document.getElementById("view-article");
+      const text = articleEl.innerText || articleEl.textContent;
+      const wordCount = text.trim().split(/\\s+/).length;
+      const readMinutes = Math.max(1, Math.round(wordCount / 210));
+      document.getElementById("read-time-badge").textContent = `${readMinutes} MIN READ`;
+    }
 
     let activeSubject = "All";
 
@@ -418,10 +744,25 @@
       }
     }
 
+    function getBtnClass(sub) {
+      switch(sub) {
+        case "All": return "btn-sub-all";
+        case "Product Dives": return "btn-sub-product-dives";
+        case "Manufacturing": return "btn-sub-manufacturing";
+        case "Design": return "btn-sub-design";
+        case "Materials": return "btn-sub-materials";
+        case "Mechanisms": return "btn-sub-mechanisms";
+        case "Thermal": return "btn-sub-thermal";
+        case "Fluids": return "btn-sub-fluids";
+        case "Electromechanical": return "btn-sub-electromechanical";
+        default: return "";
+      }
+    }
+
     function renderSubjects() {
       const bar = document.getElementById("subjects-bar");
       bar.innerHTML = SUBJECTS.map(sub => `
-        <button class="subject-pill ${sub === activeSubject ? 'active' : ''}" onclick="filterSubject('${sub}')">
+        <button class="subject-pill ${getBtnClass(sub)} ${sub === activeSubject ? 'active' : ''}" onclick="filterSubject('${sub}')">
           ${sub}
         </button>
       `).join("");
@@ -429,7 +770,15 @@
 
     function renderArchive() {
       const list = document.getElementById("archive-list");
-      const filtered = activeSubject === "All" ? TOPICS : TOPICS.filter(t => t.subject === activeSubject);
+      // ONLY SHOW PUBLISHED ARTICLES (Filter out queued/standby)
+      const published = TOPICS.filter(t => t.status === "Published");
+      const filtered = activeSubject === "All" ? published : published.filter(t => t.subject === activeSubject);
+      
+      if(filtered.length === 0) {
+        list.innerHTML = `<div style="padding:48px 0; color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:13px;">No published dispatches under this subject yet.</div>`;
+        return;
+      }
+
       list.innerHTML = filtered.map(item => `
         <div class="archive-item" onclick="showView('article')">
           <div class="archive-main">
@@ -441,7 +790,7 @@
           </div>
           <div class="archive-right">
             <span style="font-weight:600; color:var(--text);">${item.id}</span>
-            <span>${item.status}</span>
+            <span>${item.date}</span>
           </div>
         </div>
       `).join("");
@@ -456,7 +805,6 @@
     function showView(view) {
       document.getElementById("view-article").classList.toggle("hidden", view !== "article");
       document.getElementById("view-archive").classList.toggle("hidden", view !== "archive");
-      document.getElementById("btn-article").classList.toggle("active", view === "article");
       document.getElementById("btn-archive").classList.toggle("active", view === "archive");
       
       const grid = document.getElementById("content-grid");
@@ -468,11 +816,17 @@
         grid.style.gridTemplateColumns = "240px 1fr";
         mainContainer.className = "editorial-column";
         buildOutline();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         outline.style.display = "none";
         grid.style.gridTemplateColumns = "1fr";
         mainContainer.className = "archive-column";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+    }
+
+    function showPreviousIssueNotification() {
+      showView('archive');
     }
 
     function toggleTheme() {
@@ -504,7 +858,7 @@
       headings.forEach((h, index) => {
         if(!h.id) h.id = "heading-" + index;
         const isSub = h.tagName === "H3";
-        html += `<li class="outline-item ${isSub ? 'sub-item' : ''}"><a href="#${h.id}" data-target="${h.id}">${h.textContent.replace(/\s*\$[\d\.]+$/, '')}</a></li>`;
+        html += `<li class="outline-item ${isSub ? 'sub-item' : ''}"><a href="#${h.id}" data-target="${h.id}">${h.textContent.replace(/\\s*\\$[\\d\\.]+\\s*$/, '')}</a></li>`;
       });
       outlineList.innerHTML = html;
 
@@ -524,6 +878,7 @@
     renderSubjects();
     renderArchive();
     buildOutline();
+    calculateReadTime();
   </script>
 </body>
 </html>
