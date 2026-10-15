@@ -95,8 +95,8 @@
 
     .content-grid { display: grid; grid-template-columns: 240px 1fr; gap: 56px; align-items: start; }
     @media (max-width: 1023px) {
-      .content-grid { grid-template-columns: 1fr; }
-      .sidebar-outline { display: none; }
+      .content-grid { grid-template-columns: 1fr !important; }
+      .sidebar-outline { display: none !important; }
     }
 
     .sidebar-outline {
@@ -110,6 +110,8 @@
     .outline-item.sub-item a { padding-left: 22px; font-size: 12.5px; }
 
     .editorial-column { max-width: 740px; width: 100%; }
+    .archive-column { max-width: 100%; width: 100%; grid-column: 1 / -1; }
+
     .subjects-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
     .subject-pill {
       background: transparent; border: 1px solid var(--border); color: var(--muted);
@@ -154,7 +156,7 @@
     .score-btn.active-up { background: #E1F5FE; border-color: #0288D1; color: #01579B; }
     .score-btn.active-down { background: #FFEBEE; border-color: #C62828; color: #B71C1C; }
 
-    /* Archive Items - Fixed spacing & un-bunched layout */
+    /* Archive Items */
     #archive-list {
       display: flex;
       flex-direction: column;
@@ -243,13 +245,13 @@
       </div>
     </header>
 
-    <div class="content-grid">
+    <div class="content-grid" id="content-grid">
       <aside class="sidebar-outline" id="sidebar-outline">
         <div class="outline-title" id="outline-title-text">On This Page</div>
         <ul class="outline-list" id="outline-list"></ul>
       </aside>
 
-      <main class="editorial-column">
+      <main class="editorial-column" id="main-container">
         <article id="view-article">
           <div class="meta-line">
             <span>ISSUE #001</span><span>•</span><span>PRODUCT DIVES</span><span>•</span><span>15 MIN READ</span>
@@ -272,7 +274,7 @@
 
           <h2 id="section-news-overview">1. The Big Picture: What Apple Announced</h2>
           <p>
-            Apple's October 2026 hardware event introduced a unified smart home architecture divided into first-party command hubs (<strong>Apple HomeView</strong>, $299) and the <strong>Apple Home Collection</strong>—a suite of seven accessories co-developed with LG Electronics and Schneider Electric.
+            Apple's October 2026 hardware event introduced a unified smart home architecture divided into first-party command hubs (<strong>Apple HomeView</strong>, \$299) and the <strong>Apple Home Collection</strong>—a suite of seven accessories co-developed with LG Electronics and Schneider Electric.
           </p>
 
           <div class="spec-table-wrap">
@@ -456,8 +458,21 @@
       document.getElementById("view-archive").classList.toggle("hidden", view !== "archive");
       document.getElementById("btn-article").classList.toggle("active", view === "article");
       document.getElementById("btn-archive").classList.toggle("active", view === "archive");
-      document.getElementById("sidebar-outline").style.display = view === "article" ? "block" : "none";
-      if(view === "article") buildOutline();
+      
+      const grid = document.getElementById("content-grid");
+      const outline = document.getElementById("sidebar-outline");
+      const mainContainer = document.getElementById("main-container");
+
+      if(view === "article") {
+        outline.style.display = "block";
+        grid.style.gridTemplateColumns = "240px 1fr";
+        mainContainer.className = "editorial-column";
+        buildOutline();
+      } else {
+        outline.style.display = "none";
+        grid.style.gridTemplateColumns = "1fr";
+        mainContainer.className = "archive-column";
+      }
     }
 
     function toggleTheme() {
