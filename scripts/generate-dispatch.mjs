@@ -57,7 +57,16 @@ STRICT EDITORIAL REQUIREMENTS:
 5. EQUATIONS: Include explicit quantitative formulas (heat flux, stress, flow, clearance).
 6. COMPARISON TABLE: Include an HTML <table> with class="spec-table" inside a <div class="spec-table-wrap"> comparing 4-5 engineering architectures across 5 technical metrics.
 7. TANGENT ANNOTATIONS: Wrap 4-6 specialized technical terms in <span class="tangent-term" data-tangent="key">.
-8. VISUALS & CROSS-SECTIONS: When cutaways, cross-sections, or mechanical figures are generated or described, strictly specify Industrial Design (ID) or CAD-style cross-sections (clean 3D CAD solid model section cutaways, uniform engineering materials rendering, cross-section hatching on cut walls). Enforce strictly: NO background grid, NO background color (must be transparent PNG), NO dimension lines unless specifically required to show a part's exact measurement, and maintain a uniform, cohesive rendering aesthetic across all dispatches. Real-life photos are strictly reserved for actual scraped images.
+8. VISUALS & CROSS-SECTIONS (ZERO-TEXT ENFORCEMENT):
+   - When cutaways, cross-sections, or mechanical figures are generated or described, strictly specify Industrial Design (ID) or CAD-style cross-sections (clean 3D CAD solid model section cutaways, uniform engineering materials rendering, cross-section hatching on cut walls).
+   - MANDATORY TRANSPARENCY: Zero background grid, zero background color (must be transparent RGBA PNG).
+   - MANDATORY ZERO-TEXT IN GENERATED IMAGES: Absolute ZERO text, letters, numbers, dimension lines, or leader lines inside the generated image asset. AI diffusion models hallucinate characters and fill enclosed loops/counters with solid blob artifacts. Generate ONLY the clean 3D physical CAD assembly. All callout labels, leader lines, and telemetry MUST be overlaid externally via HTML/SVG or TrueType typography.
+   - Uniform cohesive rendering aesthetic across all dispatches. Real-life photography is strictly reserved for verified scraped images.
+
+9. INLINE SVG SCHEMATICS & DIAGRAM ARCHITECTURE (ZERO-COLLISION RULES):
+   - Dedicated Coordinate Bands: Never place two <text> elements on the same or adjacent vertical coordinate (minimum 24px vertical separation between distinct text nodes).
+   - Background Knockout Shielding: Every text label, tag, or port callout MUST have an opaque background knockout pill (<rect rx="4" fill="#141413" stroke="..." />) behind it so fluid lines, pipes, and vessel boundaries never cut through or obscure characters.
+   - Logical Physical Routing: Route all flow pipes and connectors in orthogonal, non-overlapping channels following the logical fluidic path, preventing lines from slicing through unrelated components.
 
 RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other text):
 {
