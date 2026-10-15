@@ -4,6 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>Engineering Deep Dive — Archive</title>
+  <meta name="description" content="A daily intelligence digest delivering rigorous first-principles mechanical engineering deep-dives, electromechanical teardowns, and interactive physics." />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Engineering Deep Dive" />
+  <meta property="og:description" content="Rigorous first-principles engineering teardowns, manufacturing analysis, and interactive physics popovers." />
+  <meta property="og:site_name" content="Engineering Deep Dive" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Engineering Deep Dive" />
+  <meta name="twitter:description" content="Daily hardware engineering deep-dives and electromechanical teardowns." />
   <!-- Diameter Symbol Favicon (Data URI) -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23D97757%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><circle cx=%2212%22 cy=%2212%22 r=%228%22/><line x1=%225.5%22 y1=%2218.5%22 x2=%2218.5%22 y2=%225.5%22/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -108,6 +116,24 @@
     .theme-toggle-btn:hover { background: var(--surface-hover); border-color: var(--muted); }
     .theme-toggle-btn svg { width: 16px; height: 16px; fill: currentColor; }
 
+    /* Reading Progress Bar */
+    .reading-progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      z-index: 3000;
+      pointer-events: none;
+      background: transparent;
+    }
+    .reading-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      transition: width 0.08s ease-out;
+    }
+
     /* Desktop Grid: Sticky Left Rail Navigation */
     .content-grid {
       display: grid;
@@ -173,6 +199,15 @@
     }
     .subject-pill:hover { opacity: 0.85; transform: translateY(-1px); }
     .subject-pill.active { box-shadow: 0 0 0 1px var(--text); }
+    .subject-pill.disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+      border-style: dashed;
+    }
+    .subject-pill.disabled:hover {
+      transform: none;
+      opacity: 0.42;
+    }
 
     /* Filter Button Colors */
     .btn-sub-all { background: var(--surface); color: var(--text); border-color: var(--border); }
@@ -194,120 +229,137 @@
     .btn-sub-electromechanical { background: rgba(79, 70, 229, 0.1); color: var(--sub-electromechanical); border-color: rgba(79, 70, 229, 0.35); }
     .btn-sub-electromechanical.active { background: var(--sub-electromechanical); color: #FFF; border-color: var(--sub-electromechanical); }
 
-    /* Metadata Bar */
-    .meta-line {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 12px;
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    /* Article Main Title */
-    h1 {
-      font-family: 'Instrument Serif', Georgia, serif;
-      font-size: 46px;
-      font-weight: 400;
-      line-height: 1.12;
-      letter-spacing: -0.01em;
-      margin-bottom: 20px;
-      word-break: break-word;
-      overflow-wrap: break-word;
-    }
-
-    /* Reading Progress Bar */
-    .reading-progress-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      z-index: 3000;
-      pointer-events: none;
-      background: transparent;
-    }
-    .reading-progress-bar {
-      height: 100%;
-      width: 0%;
-      background: var(--accent);
-      transition: width 0.08s ease-out;
-    }
-
-    /* Article Subtitle / Opening Hook (Clean & Natural) */
-    .subtitle {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      font-size: 18.5px;
-      color: var(--muted);
-      line-height: 1.55;
-      margin-bottom: 36px;
-      font-weight: 400;
-      word-break: break-word;
-      overflow-wrap: break-word;
-    }
-
-    /* Major Section Titles (H2 - Clean, No Divider) */
-    h2 {
-      font-family: 'Instrument Serif', Georgia, serif;
-      font-size: 34px;
-      font-weight: 600;
-      margin: 56px 0 18px;
-      line-height: 1.18;
-      letter-spacing: -0.01em;
-      color: var(--text);
-      scroll-margin-top: 56px;
-      word-break: break-word;
-      overflow-wrap: break-word;
-    }
-
-    /* Section Lead Paragraph */
-    h2 + p {
-      font-size: 17.5px;
-      line-height: 1.72;
-      color: var(--text);
-      margin-bottom: 22px;
-    }
-
-    /* Product Subheadings & Subsections (H3) */
-    h3 {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      font-size: 21px;
-      font-weight: 700;
-      margin: 44px 0 14px;
-      letter-spacing: -0.015em;
-      line-height: 1.3;
-      padding-left: 12px;
-      border-left: 3px solid var(--accent);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 10px;
-      scroll-margin-top: 56px;
-    }
-
-    /* Product Price Tag Badge */
-    .price-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
-      color: var(--accent);
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      background: var(--surface);
-      padding: 3px 9px;
-      border-radius: 4px;
-      border: 1px solid rgba(217, 119, 87, 0.3);
-      white-space: nowrap;
-    }
-
+    .meta-line { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    h1 { font-family: 'Instrument Serif', Georgia, serif; font-size: 46px; font-weight: 400; line-height: 1.12; letter-spacing: -0.01em; margin-bottom: 20px; word-break: break-word; overflow-wrap: break-word; }
+    .subtitle { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 18.5px; color: var(--muted); line-height: 1.55; margin-bottom: 36px; font-weight: 400; word-break: break-word; overflow-wrap: break-word; }
+    h2 { font-family: 'Instrument Serif', Georgia, serif; font-size: 34px; font-weight: 600; margin: 56px 0 18px; line-height: 1.18; letter-spacing: -0.01em; color: var(--text); scroll-margin-top: 56px; word-break: break-word; overflow-wrap: break-word; }
+    h2 + p { font-size: 17.5px; line-height: 1.72; color: var(--text); margin-bottom: 22px; }
+    h3 { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 21px; font-weight: 700; margin: 44px 0 14px; letter-spacing: -0.015em; line-height: 1.3; padding-left: 12px; border-left: 3px solid var(--accent); display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 10px; scroll-margin-top: 56px; }
+    .price-tag { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--accent); font-weight: 600; letter-spacing: 0.02em; background: var(--surface); padding: 3px 9px; border-radius: 4px; border: 1px solid rgba(217, 119, 87, 0.3); white-space: nowrap; }
     p { margin-bottom: 20px; word-break: break-word; overflow-wrap: break-word; }
     ul { margin: 0 0 24px 22px; }
     li { margin-bottom: 12px; word-break: break-word; overflow-wrap: break-word; }
     strong { font-weight: 600; }
+
+    /* Mobile Floating TOC Drawer Button */
+    .mobile-toc-fab {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      right: 20px;
+      z-index: 1500;
+      background: var(--text);
+      color: var(--bg);
+      border: 1px solid var(--border);
+      padding: 10px 16px;
+      border-radius: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+    .mobile-toc-fab:active { transform: scale(0.96); }
+
+    /* Mobile TOC Modal Drawer */
+    .mobile-toc-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2500;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .mobile-toc-modal.open {
+      display: flex;
+      opacity: 1;
+      pointer-events: auto;
+      justify-content: flex-end;
+      flex-direction: column;
+    }
+    .mobile-toc-sheet {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      border-radius: 16px 16px 0 0;
+      padding: 20px 20px 36px;
+      max-height: 75vh;
+      overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 -8px 32px rgba(0,0,0,0.25);
+    }
+    .mobile-toc-modal.open .mobile-toc-sheet { transform: translateY(0); }
+    .mobile-toc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .mobile-toc-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .mobile-toc-close {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
+    /* Popover Mobile Backdrop */
+    .popover-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .popover-backdrop.active {
+      display: block;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Share Toast Notification */
+    .toast-pill {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--text);
+      color: var(--bg);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      z-index: 3500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+    .toast-pill.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
 
     /* Interactive Deep-Dive Tangent Triggers */
     .tangent-term {
@@ -485,7 +537,7 @@
     .score-btn.active-up { background: #E1F5FE; border-color: #0288D1; color: #01579B; }
     .score-btn.active-down { background: #FFEBEE; border-color: #C62828; color: #B71C1C; }
 
-    /* Bottom Issue Navigation */
+    /* Dynamic Issue Navigation Bar */
     .issue-nav-bar {
       margin-top: 48px;
       padding-top: 28px;
@@ -496,13 +548,13 @@
       flex-wrap: wrap;
       gap: 16px;
     }
-    .prev-issue-btn {
+    .issue-nav-btn {
       background: var(--surface);
       border: 1px solid var(--border);
       color: var(--text);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      padding: 10px 18px;
+      font-size: 12.5px;
+      padding: 9px 16px;
       border-radius: 6px;
       cursor: pointer;
       display: inline-flex;
@@ -512,11 +564,15 @@
       transition: all 0.15s ease;
       font-weight: 500;
     }
-    .prev-issue-btn:hover {
+    .issue-nav-btn:hover {
       background: var(--surface-hover);
       border-color: var(--accent);
       color: var(--accent);
-      transform: translateX(-2px);
+    }
+    .issue-nav-btn.disabled {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: default;
     }
 
     /* Archive Items */
@@ -553,6 +609,7 @@
         gap: 0 !important;
       }
       .sidebar-outline { display: none !important; }
+      .mobile-toc-fab { display: flex !important; }
       .editorial-column { max-width: 100% !important; }
     }
 
@@ -665,7 +722,7 @@
         margin-top: 36px !important;
         padding-top: 20px !important;
       }
-      .prev-issue-btn {
+      .issue-nav-btn {
         width: 100% !important;
         justify-content: center !important;
       }
@@ -700,13 +757,36 @@
   <div class="reading-progress-container" aria-hidden="true">
     <div class="reading-progress-bar" id="reading-progress-bar"></div>
   </div>
+
+  <!-- Mobile Floating Table of Contents Button & Modal -->
+  <button class="mobile-toc-fab" id="mobile-toc-fab" onclick="openMobileToc()" aria-label="Open Table of Contents">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    TOC
+  </button>
+  <div class="mobile-toc-modal" id="mobile-toc-modal" onclick="closeMobileToc(event)">
+    <div class="mobile-toc-sheet">
+      <div class="mobile-toc-header">
+        <span class="mobile-toc-title">Table of Contents</span>
+        <button class="mobile-toc-close" onclick="closeMobileToc()">✕</button>
+      </div>
+      <ul class="outline-list" id="mobile-outline-list"></ul>
+    </div>
+  </div>
+
+  <!-- Mobile Popover Backdrop -->
+  <div class="popover-backdrop" id="popover-backdrop" onclick="unpinPopover()"></div>
+
+  <!-- Global Toast Notification -->
+  <div class="toast-pill" id="toast-pill">Link copied to clipboard</div>
+
   <div class="layout-wrapper">
     <header>
-      <a class="brand-group" onclick="loadArticle('#001')">
+      <a class="brand-group" onclick="loadArticle('#002')">
         <div class="brand-logo">⌀</div>
         <span class="brand">Engineering Deep Dive</span>
       </a>
       <div class="nav-actions">
+        <button class="nav-btn" id="btn-share" onclick="shareCurrentArticle()" title="Share Dispatch">Share</button>
         <button class="nav-btn" id="btn-archive" onclick="showView('archive')">Archive</button>
         <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme">
           <svg id="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
@@ -754,12 +834,91 @@
     const SUBJECTS = ["All", "Product Dives", "Manufacturing", "Design", "Materials", "Mechanisms", "Thermal", "Fluids", "Electromechanical"];
     
     const TOPICS = [
+      { id: "#002", subject: "Thermal", title: "Thermoblock Flash Heating vs. Dual-Boiler PIDs: The Thermodynamics of Espresso Extraction Stability", status: "Published", date: "Oct 15, 2026" },
       { id: "#001", subject: "Product Dives", title: "Inside the Apple HomeView & Apple Home Collection: The Complete Hardware Breakdown", status: "Published", date: "Oct 14, 2026" },
       { id: "#000", subject: "Electromechanical", title: "Apple Vision Pro Actuators: Interpupillary Voice Coil Motors and Custom Encoders", status: "Published", date: "Oct 13, 2026" }
     ];
 
-    // Mini Deep Dive Tangent Database (26 Specialized Topics)
+    // Mini Deep Dive Tangent Database (32 Specialized Topics)
     const TANGENTS = {
+      "sensible_heat": {
+        "tag": "THERMODYNAMICS // SENSIBLE HEAT EXCHANGE",
+        "title": "Sensible Heat Flux & Transient Drawdown",
+        "body": `
+          <p>Sensible heat is the thermal energy transferred to a fluid resulting in temperature change without a phase transition. When 18°C reservoir water enters a heating block at 9 bar, it continuously absorbs thermal energy.</p>
+          <div class="modal-equation-box">
+            Heat Transfer: q = &dot;m &middot; C_p &middot; (T_brew - T_inlet)<br>
+            Where: &dot;m = 2.0 g/s, C_p &asymp; 4.184 J/(g&middot;&deg;C), &Delta;T = 75&deg;C<br>
+            Instantaneous Power Required: P_min &asymp; 628 Watts (excluding losses)
+          </div>
+          <p>Because flow is non-steady during pre-infusion, heating elements must deliver instantaneous localized heat flux or rely on high conductive thermal mass to prevent water temperature from plummeting.</p>
+        `
+      },
+      "pid_controller": {
+        "tag": "CONTROL SYSTEMS // CLOSED-LOOP REGULATION",
+        "title": "Discrete PID Loop & Anti-Windup Reset",
+        "body": `
+          <p>Bimetallic mechanical thermostats oscillate across a sloppy &plusmn;5°C hysteresis band. Proportional-Integral-Derivative (PID) controllers compute error between setpoint and RTD thermocouple feedback at 10 Hz.</p>
+          <div class="modal-equation-box">
+            Control Output: u(t) = K_p &middot; e(t) + K_i &int; e(&tau;) d&tau; + K_d &middot; (de/dt)<br>
+            Cycle Rate: Solid-State Relay (SSR) pulsed with zero-crossing triac<br>
+            Thermal Stability: &plusmn;0.2&deg;C steady-state group head precision
+          </div>
+          <p>An anti-windup clamping algorithm halts integral accumulation during prolonged shots, preventing severe thermal overshoot when the brew solenoid abruptly closes.</p>
+        `
+      },
+      "thermal_mass": {
+        "tag": "THERMAL INERTIA // CAPACITANCE",
+        "title": "Volumetric Heat Capacity & Mass Damping",
+        "body": `
+          <p>Thermal mass acts as a low-pass thermodynamic filter. High thermal capacitance dampens rapid fluid temperature swings caused by cold water ingestion.</p>
+          <div class="modal-equation-box">
+            Thermal Capacitance: C_th = m &middot; c_p = &rho; &middot; V &middot; c_p<br>
+            Forged Brass Group (4.2 kg): C_th &asymp; 1,600 J/&deg;C<br>
+            Cast Aluminum Thermoblock (0.6 kg): C_th &asymp; 540 J/&deg;C (3x lower inertia)
+          </div>
+          <p>Commercial E61 group heads leverage massive forged brass bodies to passively stabilize brewing water temperature even if incoming boiler water fluctuates.</p>
+        `
+      },
+      "saturated_group": {
+        "tag": "FLUID THERMAL ARCHITECTURE // GROUP HEADS",
+        "title": "Saturated Group Head Geometries",
+        "body": `
+          <p>In semi-saturated or bolt-on group heads, heat transfers solely via conduction across a dry mechanical neck flange, creating a 3°C to 6°C thermal gradient from boiler to portafilter.</p>
+          <div class="modal-equation-box">
+            Conduction Flange: q_cond = -k &middot; A_flange &middot; (dT/dx)<br>
+            Saturated Geometry: Group neck forms a continuous water-jacket chamber<br>
+            Temperature Delta: &Delta;T &lt; 0.15&deg;C between boiler core and puck surface
+          </div>
+          <p>Pioneered by La Marzocco, saturated groups submerge the entire brass dispersion block directly into the brew boiler cavity, ensuring water never encounters a cooler metal surface prior to extraction.</p>
+        `
+      },
+      "calcification": {
+        "tag": "MATERIALS SCIENCE // MINERAL PRECIPITATION",
+        "title": "Calcium Carbonate Scale Deposition Kinetics",
+        "body": `
+          <p>Tap water contains dissolved calcium and bicarbonate ions. Unlike most salts whose solubility increases with heat, calcium carbonate exhibits retrograde (inverse) solubility.</p>
+          <div class="modal-equation-box">
+            Reaction: Ca&sup2;&spplus; + 2HCO_3&minus; &harr; CaCO_3&darr; + CO_2&uarr; + H_2O<br>
+            Solubility: Decreases exponentially above 60&deg;C<br>
+            Thermal Barrier: k_scale &asymp; 1.3 W/(m&middot;K) (vs. Copper k &asymp; 390 W/(m&middot;K))
+          </div>
+          <p>A mere 1.0 mm scale crust on boiler heating coils acts as an insulator, reducing conductive heat transfer by >40% and causing element sheath burnout.</p>
+        `
+      },
+      "thermal_conductivity": {
+        "tag": "METALLURGY // THERMAL TRANSPORT",
+        "title": "Conductivity: Copper vs. Brass vs. 316L Stainless",
+        "body": `
+          <p>Boiler material choice dictates warm-up latency, internal corrosion resistance, and thermal response under heavy cycling.</p>
+          <div class="modal-equation-box">
+            Deoxidized Copper (C12200): k &asymp; 385 W/(m&middot;K)<br>
+            Forged CW617N Lead-Free Brass: k &asymp; 115 W/(m&middot;K)<br>
+            AISI 316L Stainless Steel: k &asymp; 16 W/(m&middot;K) (Corrosion immune, low conduction)
+          </div>
+          <p>Stainless boilers exhibit superior structural burst strength and zero heavy-metal leaching, but require external resistive heat jackets or internal baffles to prevent localized thermal stratifications.</p>
+        `
+      },
       "convection": {
         "tag": "THERMAL PHYSICS // CONDUCTION & BUOYANCY",
         "title": "Passive Natural Convection & Heat Spreading",
@@ -1087,6 +1246,156 @@
 
     // Articles Content Database
     const ARTICLES = {
+      "#002": `
+          <div class="meta-line">
+            <span>ISSUE #002</span><span>•</span><span>THERMAL</span><span>•</span><span id="read-time-badge">12 MIN READ</span>
+          </div>
+
+          <h1>Thermoblock Flash Heating vs. Dual-Boiler PIDs: The Thermodynamics of Espresso Extraction Stability</h1>
+          <p class="subtitle">
+            When 9 bars of cold reservoir water hit a heated manifold at 2 milliliters per second, brewing cafe-grade espresso becomes an uncompromising battle against sensible heat loss and thermal inertia.
+          </p>
+
+          <figure class="product-figure">
+            <div class="img-wrapper">
+              <img referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=1400&q=85" alt="Espresso Machine Boiler Architecture" />
+            </div>
+            <figcaption>
+              <span><strong>FIG 01 — FLUIDIC THERMAL ARCHITECTURE:</strong> Saturated stainless steel boiler assemblies paired with independent steam chambers and closed-loop RTD thermistors.</span>
+              <span class="source-tag">STUDIO TEARDOWN</span>
+            </figcaption>
+          </figure>
+
+          <h2 id="section-thermal-imperative">1. The Thermodynamic Imperative: The 93.3°C Extraction Boundary</h2>
+          <p>
+            In precision espresso extraction, water temperature is not a passive variable; it is a primary chemical solvent rate limiter. Coffee bean solubles—chlorogenic acids, trigonelline, lipids, and aromatic melanoidins—extract across sharply segregated temperature activation bands. At <strong>89°C</strong>, acidic fruit compounds extract while heavier caramelized sugars remain trapped in the cell walls, yielding sour, under-extracted espresso. At <strong>96°C</strong>, harsh phenolic astringency and bitter cellulose tannins dissolve rapidly, destroying delicate floral aromatics. The golden window for specialty Arabica extraction sits within a razor-thin band: <strong>92.5°C to 93.5°C</strong>, with an allowable intra-shot temperature variance of no more than <strong>&plusmn;0.5°C</strong> across the entire 30-second brew cycle.
+          </p>
+          <p>
+            Achieving this stability is an extraordinarily difficult transient heat transfer problem:
+          </p>
+          <ul>
+            <li><strong>Sensible Heat Ingestion:</strong> A vibratory or rotary positive displacement pump forces ambient reservoir water (typically 18°C to 20°C) through a compacted 18-gram coffee puck at a volumetric flow rate of <strong>1.5 to 2.5 mL/s</strong> under 9 bar (130 psi) of hydrostatic pressure.</li>
+            <li><strong>Mass Heat Drawdown:</strong> Over a standard 36 mL double-espresso shot, approximately 60 to 70 mL of total water enters the boiler circuit (accounting for puck absorption and solenoid 3-way exhaust). Bringing 70 mL of cold water from 18°C up to 93.3°C in 30 seconds requires continuous, localized <span class="tangent-term" data-tangent="sensible_heat">sensible heat transfer</span> exceeding 700 Watts, exclusive of conductive chassis losses.</li>
+            <li><strong>Thermal Stratification in Static Volumes:</strong> Inside an un-agitated water boiler, buoyant hot water rises to the top while dense cold inlet water pools at the bottom, creating severe internal vertical temperature gradients (&Delta;T &gt; 4°C) unless hydraulic dispersion baffles or siphon loops are engineered directly into the chamber.</li>
+          </ul>
+
+          <div class="spec-table-wrap">
+            <table class="spec-table">
+              <thead>
+                <tr>
+                  <th>Heating Architecture</th>
+                  <th>Typical Material</th>
+                  <th>Warm-Up Latency</th>
+                  <th>Intra-Shot Thermal Stability</th>
+                  <th>Steam & Brew Concurrency</th>
+                  <th>Primary Failure Mode</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Flash Thermoblock</strong></td>
+                  <td>Die-Cast Aluminum with Stainless Steel Labyrinth</td>
+                  <td>45 – 90 Seconds</td>
+                  <td>&plusmn;2.5°C (High flow sensitivity)</td>
+                  <td>Sequential Only (Boiler repurposing pause)</td>
+                  <td>Labyrinth calcium carbonate scale occlusion</td>
+                </tr>
+                <tr>
+                  <td><strong>Single Boiler Dual-Use (SBDU)</strong></td>
+                  <td>Forged Brass or Copper (0.3 – 0.5 L)</td>
+                  <td>8 – 12 Minutes</td>
+                  <td>&plusmn;1.5°C (Bimetallic) / &plusmn;0.6°C (PID)</td>
+                  <td>Sequential Only (Must vent steam pressure to brew)</td>
+                  <td>Thermostat contact pitting & dry-fire element burnout</td>
+                </tr>
+                <tr>
+                  <td><strong>Heat Exchanger (HX)</strong></td>
+                  <td>Heavy-Gauge Copper or Nickel-Brass (1.5 – 2.0 L)</td>
+                  <td>15 – 20 Minutes</td>
+                  <td>&plusmn;1.0°C (Requires cooling flush)</td>
+                  <td>Simultaneous (Continuous steam pressure)</td>
+                  <td>HX siphon stagnation overheating (&gt;98°C water)</td>
+                </tr>
+                <tr>
+                  <td><strong>Independent Dual Boiler (DB)</strong></td>
+                  <td>Dual AISI 316L Stainless Steel or Copper</td>
+                  <td>12 – 18 Minutes</td>
+                  <td>&plusmn;0.2°C (Dual PID closed-loop)</td>
+                  <td>Simultaneous (Independent pressure regimes)</td>
+                  <td>Vacuum relief valve stiction & probe scale buildup</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="section-thermoblock-mechanics">2. Thermoblock Flash Heating: Fluid Mechanics & Conduction Limits</h2>
+          <p>
+            Entry-level and compact residential espresso appliances rely on <strong>Thermoblocks</strong> (or modern thick-film printed heating elements) to eliminate bulky, water-filled pressure vessels. Instead of storing a standing pool of hot water, a thermoblock is an on-demand heat exchanger consisting of an extruded or die-cast aluminum block embedded with high-wattage resistive calrod heating elements and a spiraling internal fluid conduit.
+          </p>
+          <p>
+            <strong>The Serpentine Fluid Labyrinth:</strong> In first-generation thermoblocks, water was pumped directly through bare cast aluminum channels. However, galvanic corrosion and alkaline water leaching prompted modern designs to cast a continuous <strong>AISI 304 stainless steel helical capillary tube</strong> (typically 4.0 mm outer diameter, 0.8 mm wall thickness) inside a high-conductivity aluminum matrix. As pressurized cold water pulses through the tube, heat conducts from the outer aluminum through the tube wall and into the fluid boundary layer.
+          </p>
+          <p>
+            <strong>The Boundary Layer & Flow-Rate Bottleneck:</strong> While thermoblocks achieve astonishingly fast warm-up times (cold-to-ready in under 60 seconds), their transient thermal stability during extraction is compromised by basic fluid dynamics:
+          </p>
+          <ul>
+            <li><strong>Laminar Boundary Insulation:</strong> At low espresso flow velocities (Re &lt; 2,100), fluid flow through the capillary tube is strictly laminar. A slow-moving thermal boundary layer forms along the inner tube walls, acting as an insulating sheath that impedes heat transfer to the fast-moving fluid core. Unless helical turbulators or dimpled tube geometries are stamped into the inner bore, core water temperatures can emerge 3°C to 5°C below target.</li>
+            <li><strong>Flow-Rate Thermal Inversion:</strong> Because a thermoblock has minimal stored <span class="tangent-term" data-tangent="thermal_mass">thermal mass</span> (~500 to 700 grams of aluminum), fluid exit temperature is directly coupled to volumetric flow rate. If a coffee puck is ground too coarse and flow accelerates from 1.8 mL/s to 3.5 mL/s, water passes through the heated labyrinth faster than heat can conduct through the tube wall, resulting in an immediate 4°C to 6°C thermal drop midway through the extraction.</li>
+            <li><strong>Steam Transition Hysteresis:</strong> Producing 135°C dry steam for milk frothing requires pulsing microscopic water droplets onto the red-hot labyrinth so they flash-vaporize into vapor. Once steaming finishes, the aluminum block sits at 145°C. To pull an espresso shot immediately afterward, the user must run an extensive water purge to dump excess sensible heat, or risk scorching the coffee puck with boiling 100°C steam.</li>
+          </ul>
+
+          <h2 id="section-dual-boiler-architecture">3. Dual Boiler PID Architectures: Closed-Loop Thermal Mass Damping</h2>
+          <p>
+            Commercial cafe machines and prosumer equipment discard flash heating entirely in favor of an <strong>Independent Dual Boiler (DB)</strong> architecture. By isolating the two disparate thermodynamic tasks into separate pressure vessels, each system operates at its optimal thermodynamic equilibrium:
+          </p>
+          <ul>
+            <li><strong>The Dedicated Brew Boiler:</strong> A compact 0.5 to 0.8 L vessel maintained at exactly 93.0°C under 9 bar brew pressure. Because it never generates steam, it remains 100% full of liquid water with zero air pockets.</li>
+            <li><strong>The Dedicated Service/Steam Boiler:</strong> A larger 1.5 to 3.5 L vessel operating at 1.5 to 2.0 bar gauge pressure (126°C to 130°C saturated steam). It operates with a two-phase liquid-vapor boundary, providing immense instantaneous steam enthalpy for milk texturing.</li>
+          </ul>
+          <p>
+            <strong>Algorithmic PID Thermal Regulation:</strong> Rather than relying on mechanical thermostats that drift over time, precision dual-boiler systems incorporate discrete <span class="tangent-term" data-tangent="pid_controller">PID control loops</span> driven by Class-A PT100 platinum RTD sensors or high-sensitivity NTC thermistors submerged directly in the fluid core:
+          </p>
+          <p>
+            The PID controller samples temperature error at 10 Hz, calculating proportional, integral, and derivative corrections to modulate a Solid-State Relay (SSR). By pulse-width modulating heater element wattage at zero-crossing AC cycles, the system prevents temperature cycling, maintaining steady-state boiler core water within an astonishing <strong>&plusmn;0.1°C</strong> of setpoint.
+          </p>
+
+          <h2 id="section-group-head-kinematics">4. Group Head Thermal Mass: Saturated vs. E61 Thermosyphon</h2>
+          <p>
+            Delivering 93°C water out of a boiler is meaningless if that water loses heat as it travels to the coffee puck. The mechanical connection between boiler and portafilter—the <strong>Group Head</strong>—is the single largest thermal sink in the machine.
+          </p>
+          <p>
+            <strong>The Historic E61 Thermosyphon Loop:</strong> Engineered by Ernesto Valente in 1961, the legendary Faema E61 group head uses a passive gravity-driven thermosyphon. Hot water rises from the upper boiler port, circulates through a massive <strong>4.2 kg forged brass group body</strong> via natural convection, and returns to the lower boiler port as it cools. This convective circuit keeps the exterior brass body piping hot. However, the E61 design is vulnerable to thermal stagnation: if the machine idles untouched for 30 minutes, water trapped inside the neck approaches steam boiler temperatures, requiring a mandatory 5-second "cooling flush" before locking in a portafilter.
+          </p>
+          <p>
+            <strong>The Modern Saturated Group Head:</strong> In premier commercial hardware (such as La Marzocco, Synesso, and Slayer), engineers eliminate the conductive neck flange by welding the group head directly into the front wall of the brew boiler—forming a <span class="tangent-term" data-tangent="saturated_group">saturated group architecture</span>. Boiler water directly floods the hollow group neck, surrounding the dispersion screen in liquid water at the exact same temperature as the boiler core. Thermal gradients between water reservoir and puck face are completely eliminated (&Delta;T &lt; 0.15°C).
+          </p>
+
+          <h2 id="section-metallurgy-calcification">5. Metallurgy, DFM, and Scale Deposition Kinetics</h2>
+          <p>
+            Designing residential fluid-thermal appliances requires balancing thermal transport against long-term corrosion and water chemistry:
+          </p>
+          <ul>
+            <li><strong>Thermal Conductivity vs. Heavy Metals:</strong> For decades, forged lead-free brass (CW617N) and deoxidized copper (C12200) were industry standards due to their immense <span class="tangent-term" data-tangent="thermal_conductivity">thermal conductivity</span> (385 W/m&middot;K for copper vs. 16 W/m&middot;K for stainless steel). However, stringent international drinking water regulations (such as California NSF 61 / NSF 372) and consumer demand for zero-lead wet paths have accelerated migration toward <strong>AISI 316L deep-drawn austenitic stainless steel</strong>. While stainless steel has 24x lower thermal conductivity than copper, its immense tensile strength allows thinner boiler walls, reducing total warm-up thermal inertia while providing near-immunity to chloride stress corrosion cracking.</li>
+            <li><strong>The Chemistry of Calcification:</strong> When potable water is heated above 60°C, dissolved calcium and bicarbonate ions undergo retrograde mineral precipitation, forming rigid <span class="tangent-term" data-tangent="calcification">calcium carbonate scale</span>. Scale has an abysmal thermal conductivity of 1.3 W/(m&middot;K)—acting as an insulating blanket over heating elements. A 1.0 mm scale layer forces heating element core temperatures to run over 120°C hotter to achieve the same water heat flux, triggering premature calrod element burnouts and occluding delicate 0.6 mm ruby gicleur flow-restrictor orifices.</li>
+          </ul>
+
+          <div class="telemetry-bar">
+            <div class="telemetry-info">
+              <span class="telemetry-title">Background Quality Telemetry</span>
+              <span class="telemetry-desc">Rate this topic to train the automated curation model for future dispatches.</span>
+            </div>
+            <div class="telemetry-actions">
+              <button class="score-btn" id="telemetry-up" onclick="recordTelemetry('up')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                Good Topic
+              </button>
+              <button class="score-btn" id="telemetry-down" onclick="recordTelemetry('down')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg>
+                Poor Topic
+              </button>
+            </div>
+          </div>
+      `,
       "#001": `
           <div class="meta-line">
             <span>ISSUE #001</span><span>•</span><span>PRODUCT DIVES</span><span>•</span><span id="read-time-badge">12 MIN READ</span>
@@ -1292,17 +1601,6 @@
               </button>
             </div>
           </div>
-
-          <!-- Bottom Navigation: View Previous Issue -->
-          <div class="issue-nav-bar">
-            <button class="prev-issue-btn" onclick="loadArticle('#000')">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-              View Previous Issue (10/13)
-            </button>
-            <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted);">
-              Current Dispatch: Issue #001 &middot; Oct 14, 2026
-            </span>
-          </div>
       `,
       "#000": `
           <div class="meta-line">
@@ -1413,20 +1711,10 @@
               </button>
             </div>
           </div>
-
-          <!-- Bottom Navigation: View Next Issue -->
-          <div class="issue-nav-bar">
-            <button class="prev-issue-btn" onclick="loadArticle('#001')">
-              View Next Issue (10/14) →
-            </button>
-            <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted);">
-              Current Dispatch: Issue #000 &middot; Oct 13, 2026
-            </span>
-          </div>
       `
     };
 
-    let activeArticleId = "#001";
+    let activeArticleId = "#002";
     let activeSubject = "All";
 
     // Floating Popover State & Controller
@@ -1510,6 +1798,10 @@
       const popover = document.getElementById('floating-popover');
       isPinned = true;
       popover.classList.add('pinned');
+      if (window.innerWidth <= 640) {
+        const bd = document.getElementById("popover-backdrop");
+        if (bd) bd.classList.add("active");
+      }
       document.getElementById('popover-footer-text').textContent = 'Pinned · Click outside or ✕ to close';
     }
 
@@ -1517,6 +1809,8 @@
       isPinned = false;
       const popover = document.getElementById('floating-popover');
       popover.classList.remove('pinned', 'active');
+      const bd = document.getElementById("popover-backdrop");
+      if (bd) bd.classList.remove("active");
       if (currentHoveredTerm) currentHoveredTerm.classList.remove('active-hover');
       currentHoveredTerm = null;
       document.getElementById('popover-footer-text').textContent = 'Click or tap to pin';
@@ -1575,7 +1869,10 @@
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') unpinPopover();
+      if (e.key === 'Escape') {
+        unpinPopover();
+        closeMobileToc();
+      }
     });
 
     // Dynamic Read Time Calculation (~220 WPM)
@@ -1590,17 +1887,262 @@
       if (badge) badge.textContent = `${readMinutes} MIN READ`;
     }
 
+    // --- Production Utilities ---
+
+    let toastTimeout = null;
+    function showToast(msg) {
+      const toast = document.getElementById("toast-pill");
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add("show");
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2200);
+    }
+
+    async function shareCurrentArticle() {
+      const current = TOPICS.find(t => t.id === activeArticleId);
+      const shareTitle = current ? `${current.title} — Engineering Deep Dive` : "Engineering Deep Dive";
+      const shareUrl = `${window.location.origin}${window.location.pathname}?issue=${activeArticleId.replace('#', '')}`;
+      
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: shareTitle,
+            text: current ? current.title : "Read this daily engineering deep-dive.",
+            url: shareUrl
+          });
+          return;
+        } catch (err) {
+          if (err.name !== "AbortError") console.error("Share failed:", err);
+        }
+      }
+
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        showToast("Dispatch link copied to clipboard!");
+      } catch (err) {
+        showToast("URL: " + shareUrl);
+      }
+    }
+
+    function openMobileToc() {
+      const modal = document.getElementById("mobile-toc-modal");
+      if (!modal) return;
+      const desktopList = document.getElementById("outline-list");
+      const mobileList = document.getElementById("mobile-outline-list");
+      if (desktopList && mobileList) {
+        mobileList.innerHTML = desktopList.innerHTML;
+        mobileList.querySelectorAll("a").forEach(a => {
+          a.addEventListener("click", () => closeMobileToc());
+        });
+      }
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeMobileToc(e) {
+      if (e && e.target && e.target.closest && e.target.closest(".mobile-toc-sheet") && !e.target.closest(".mobile-toc-close") && !e.target.closest("a")) {
+        return;
+      }
+      const modal = document.getElementById("mobile-toc-modal");
+      if (modal) modal.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    function renderIssueNav() {
+      let navContainer = document.getElementById("dynamic-issue-nav");
+      if (!navContainer) {
+        navContainer = document.createElement("div");
+        navContainer.id = "dynamic-issue-nav";
+        navContainer.className = "issue-nav-bar";
+        const articleView = document.getElementById("view-article");
+        if (articleView) articleView.appendChild(navContainer);
+      }
+
+      const published = TOPICS.filter(t => t.status === "Published");
+      const currentIndex = published.findIndex(t => t.id === activeArticleId);
+      if (currentIndex === -1) return;
+
+      const current = published[currentIndex];
+      const nextItem = currentIndex > 0 ? published[currentIndex - 1] : null;
+      const prevItem = currentIndex < published.length - 1 ? published[currentIndex + 1] : null;
+
+      let navHtml = "";
+      if (prevItem) {
+        navHtml += `<button class="issue-nav-btn" onclick="loadArticle('${prevItem.id}')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Previous (${prevItem.id})
+        </button>`;
+      } else {
+        navHtml += `<span class="issue-nav-btn disabled">First Issue</span>`;
+      }
+
+      navHtml += `<span style="font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--muted); text-align:center;">
+        Issue ${current.id} &middot; ${current.date}
+      </span>`;
+
+      if (nextItem) {
+        navHtml += `<button class="issue-nav-btn" onclick="loadArticle('${nextItem.id}')">
+          Next (${nextItem.id})
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>`;
+      } else {
+        navHtml += `<span class="issue-nav-btn disabled">Latest Dispatch</span>`;
+      }
+
+      navContainer.innerHTML = navHtml;
+    }
+
+    function syncTelemetryUI() {
+      const btnUp = document.getElementById("telemetry-up");
+      const btnDown = document.getElementById("telemetry-down");
+      if (!btnUp || !btnDown) return;
+      btnUp.classList.remove("active-up");
+      btnDown.classList.remove("active-down");
+
+      const saved = localStorage.getItem("edd_telemetry_" + activeArticleId);
+      if (saved === "up") btnUp.classList.add("active-up");
+      else if (saved === "down") btnDown.classList.add("active-down");
+    }
+
+    function recordTelemetry(direction) {
+      const key = "edd_telemetry_" + activeArticleId;
+      const current = localStorage.getItem(key);
+      if (current === direction) {
+        localStorage.removeItem(key);
+      } else {
+        localStorage.setItem(key, direction);
+      }
+      syncTelemetryUI();
+      showToast(direction === "up" ? "Feedback recorded: Helpful topic." : "Feedback recorded: Needs adjustment.");
+    }
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem("edd_theme");
+      const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const theme = savedTheme || (prefersDark ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+      updateThemeIcons(theme === "dark");
+    }
+
+    function updateThemeIcons(isDark) {
+      const moon = document.getElementById("moon-icon");
+      const sun = document.getElementById("sun-icon");
+      if (moon && sun) {
+        moon.style.display = isDark ? "block" : "none";
+        sun.style.display = isDark ? "none" : "block";
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute("data-theme") || "light";
+      const nextTheme = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", nextTheme);
+      localStorage.setItem("edd_theme", nextTheme);
+      updateThemeIcons(nextTheme === "dark");
+    }
+
+    function syncUrlState(id) {
+      if (history.replaceState) {
+        const url = new URL(window.location);
+        url.searchParams.set("issue", id.replace('#', ''));
+        history.replaceState(null, "", url.toString());
+      }
+    }
+
+    function getInitialIssue() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryIssue = urlParams.get("issue");
+      if (queryIssue) {
+        const formatted = queryIssue.startsWith("#") ? queryIssue : "#" + queryIssue;
+        if (ARTICLES[formatted]) return formatted;
+      }
+      const hash = window.location.hash;
+      if (hash && hash.startsWith("#0") && ARTICLES[hash]) {
+        return hash;
+      }
+      return "#002";
+    }
+
+    function updateProgressBar() {
+      const bar = document.getElementById("reading-progress-bar");
+      if (!bar) return;
+
+      const article = document.getElementById("view-article");
+      if (!article || article.classList.contains("hidden")) {
+        bar.style.width = "0%";
+        return;
+      }
+
+      const rect = article.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const totalScrollable = rect.height - windowHeight;
+
+      if (totalScrollable <= 0) {
+        bar.style.width = "100%";
+        return;
+      }
+
+      const scrolled = -rect.top;
+      const progress = Math.min(100, Math.max(0, (scrolled / totalScrollable) * 100));
+      bar.style.width = progress + "%";
+    }
+
+    window.addEventListener("scroll", updateProgressBar, { passive: true });
+    window.addEventListener("resize", updateProgressBar);
+
+    function buildOutline() {
+      const outlineList = document.getElementById("outline-list");
+      const headings = document.querySelectorAll("#view-article h2, #view-article h3");
+      let html = "";
+      headings.forEach((h, index) => {
+        if(!h.id) h.id = "heading-" + index;
+        const isSub = h.tagName === "H3";
+        const clone = h.cloneNode(true);
+        clone.querySelectorAll(".price-tag").forEach(tag => tag.remove());
+        const cleanTitle = clone.textContent.trim();
+        html += `<li class="outline-item ${isSub ? 'sub-item' : ''}"><a href="#${h.id}" data-target="${h.id}">${cleanTitle}</a></li>`;
+      });
+      outlineList.innerHTML = html;
+
+      // Scroll-spy observer with dedicated top margin tracking
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            document.querySelectorAll(".outline-list a").forEach(a => a.classList.remove("active"));
+            const activeLink = document.querySelector(`.outline-list a[data-target="${entry.target.id}"]`);
+            if (activeLink) activeLink.classList.add("active");
+          }
+        });
+      }, { rootMargin: "-15% 0px -70% 0px" });
+
+      headings.forEach(h => observer.observe(h));
+    }
+
     function loadArticle(id) {
-      if (!ARTICLES[id]) id = "#001";
+      if (!ARTICLES[id]) id = "#002";
       activeArticleId = id;
       unpinPopover();
       
       const articleEl = document.getElementById("view-article");
       articleEl.innerHTML = ARTICLES[id];
 
+      const currentTopic = TOPICS.find(t => t.id === id);
+      if (currentTopic) {
+        document.title = `${currentTopic.title} — Engineering Deep Dive`;
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.setAttribute("content", currentTopic.title);
+      }
+
       showView("article");
       calculateReadTime();
       buildOutline();
+      renderIssueNav();
+      syncTelemetryUI();
+      syncUrlState(id);
+      updateProgressBar();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -1635,11 +2177,25 @@
 
     function renderSubjects() {
       const bar = document.getElementById("subjects-bar");
-      bar.innerHTML = SUBJECTS.map(sub => `
-        <button class="subject-pill ${getBtnClass(sub)} ${sub === activeSubject ? 'active' : ''}" onclick="filterSubject('${sub}')">
-          ${sub}
-        </button>
-      `).join("");
+      if (!bar) return;
+      const published = TOPICS.filter(t => t.status === "Published");
+      
+      bar.innerHTML = SUBJECTS.map(sub => {
+        let count = 0;
+        if (sub === "All") count = published.length;
+        else count = published.filter(t => t.subject === sub).length;
+
+        const isDisabled = count === 0;
+        const disabledClass = isDisabled ? "disabled" : "";
+        const activeClass = sub === activeSubject ? "active" : "";
+        const clickAttr = isDisabled ? "" : `onclick="filterSubject('${sub}')"`;
+
+        return `
+          <button class="subject-pill ${getBtnClass(sub)} ${disabledClass} ${activeClass}" ${clickAttr} title="${count} published">
+            ${sub} (${count})
+          </button>
+        `;
+      }).join("");
     }
 
     function renderArchive() {
@@ -1698,93 +2254,16 @@
       updateProgressBar();
     }
 
-    function showPreviousIssueNotification() {
-      showView('archive');
-    }
-
-    function toggleTheme() {
-      const html = document.documentElement;
-      const isDark = html.getAttribute("data-theme") === "dark";
-      html.setAttribute("data-theme", isDark ? "light" : "dark");
-      document.getElementById("moon-icon").style.display = isDark ? "block" : "none";
-      document.getElementById("sun-icon").style.display = isDark ? "none" : "block";
-    }
-
-    function recordTelemetry(direction) {
-      const btnUp = document.getElementById("telemetry-up");
-      const btnDown = document.getElementById("telemetry-down");
-      btnUp.classList.remove("active-up");
-      btnDown.classList.remove("active-down");
-      if(direction === 'up') {
-        btnUp.classList.add("active-up");
-        console.log("[Telemetry] Recorded positive reinforcement for hardware teardown depth.");
-      } else {
-        btnDown.classList.add("active-down");
-        console.log("[Telemetry] Recorded negative reinforcement. Re-weighting curation parameters.");
-      }
-    }
-
-    function buildOutline() {
-      const outlineList = document.getElementById("outline-list");
-      const headings = document.querySelectorAll("#view-article h2, #view-article h3");
-      let html = "";
-      headings.forEach((h, index) => {
-        if(!h.id) h.id = "heading-" + index;
-        const isSub = h.tagName === "H3";
-        // Clone heading to cleanly remove price tag elements before generating sidebar text
-        const clone = h.cloneNode(true);
-        clone.querySelectorAll(".price-tag").forEach(tag => tag.remove());
-        const cleanTitle = clone.textContent.trim();
-        html += `<li class="outline-item ${isSub ? 'sub-item' : ''}"><a href="#${h.id}" data-target="${h.id}">${cleanTitle}</a></li>`;
-      });
-      outlineList.innerHTML = html;
-
-      // Scroll-spy observer with dedicated top margin tracking
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            document.querySelectorAll(".outline-list a").forEach(a => a.classList.remove("active"));
-            const activeLink = document.querySelector(`.outline-list a[data-target="${entry.target.id}"]`);
-            if (activeLink) activeLink.classList.add("active");
-          }
-        });
-      }, { rootMargin: "-15% 0px -70% 0px" });
-
-      headings.forEach(h => observer.observe(h));
-    }
-
+    initTheme();
     renderSubjects();
     renderArchive();
-    
-    // Real-time Reading Progress Bar
-    function updateProgressBar() {
-      const bar = document.getElementById("reading-progress-bar");
-      if (!bar) return;
 
-      const article = document.getElementById("view-article");
-      if (!article || article.classList.contains("hidden")) {
-        bar.style.width = "0%";
-        return;
-      }
-
-      const rect = article.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const totalScrollable = rect.height - windowHeight;
-
-      if (totalScrollable <= 0) {
-        bar.style.width = "100%";
-        return;
-      }
-
-      const scrolled = -rect.top;
-      const progress = Math.min(100, Math.max(0, (scrolled / totalScrollable) * 100));
-      bar.style.width = progress + "%";
+    if (window.location.hash === "#archive") {
+      showView("archive");
+    } else {
+      const startId = getInitialIssue();
+      loadArticle(startId);
     }
-
-    window.addEventListener("scroll", updateProgressBar, { passive: true });
-    window.addEventListener("resize", updateProgressBar);
-
-    loadArticle("#001");
   </script>
 </body>
 </html>
