@@ -1693,7 +1693,7 @@
                 <rect width="880" height="440" rx="8" fill="url(#grid)" opacity="0.6"/>
 
                 <!-- 1. Ambient Reservoir & Cold Intake -->
-                <g id="node-reservoir" transform="translate(30, 260)">
+                <g id="node-reservoir" transform="translate(25, 260)">
                   <rect x="0" y="0" width="85" height="120" rx="6" fill="#1E293B" stroke="#334155" stroke-width="2"/>
                   <rect x="4" y="30" width="77" height="86" rx="3" fill="#0284C7" opacity="0.35"/>
                   <text x="12" y="20" font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#94A3B8">RESERVOIR</text>
@@ -1702,129 +1702,163 @@
                 </g>
 
                 <!-- Pipe 1: Reservoir to Pump -->
-                <path d="M 115 320 L 160 320" stroke="#38BDF8" stroke-width="4" stroke-linecap="round"/>
+                <path d="M 110 320 L 145 320" stroke="#38BDF8" stroke-width="4" stroke-linecap="round"/>
 
                 <!-- 2. Rotary Vane Pump & Motor -->
-                <g id="node-pump" transform="translate(160, 280)">
-                  <circle cx="40" cy="40" r="36" fill="#232220" stroke="#3B82F6" stroke-width="2.5"/>
-                  <!-- Rotary Vanes Graphic -->
-                  <circle cx="40" cy="40" r="14" fill="#3B82F6" opacity="0.3"/>
-                  <line x1="15" y1="40" x2="65" y2="40" stroke="#60A5FA" stroke-width="2"/>
-                  <line x1="40" y1="15" x2="40" y2="65" stroke="#60A5FA" stroke-width="2"/>
-                  <text x="12" y="-10" font-family="JetBrains Mono" font-size="10.5" font-weight="600" fill="#60A5FA">ROTARY PUMP</text>
-                  <text x="15" y="88" font-family="JetBrains Mono" font-size="8.5" fill="#93C5FD">9.0 BAR / 2.0 mL/s</text>
+                <g id="node-pump" transform="translate(145, 275)">
+                  <circle cx="35" cy="45" r="32" fill="#232220" stroke="#3B82F6" stroke-width="2.5"/>
+                  <circle cx="35" cy="45" r="12" fill="#3B82F6" opacity="0.3"/>
+                  <line x1="15" y1="45" x2="55" y2="45" stroke="#60A5FA" stroke-width="2"/>
+                  <line x1="35" y1="25" x2="35" y2="65" stroke="#60A5FA" stroke-width="2"/>
+                  
+                  <g transform="translate(-10, -5)">
+                    <rect x="0" y="-12" width="95" height="18" rx="3" fill="#141413" stroke="#3B82F6" stroke-width="0.8"/>
+                    <text x="6" y="1" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#60A5FA">ROTARY PUMP</text>
+                  </g>
+                  <g transform="translate(-18, 92)">
+                    <rect x="0" y="-10" width="115" height="16" rx="3" fill="#141413" stroke="#334155" stroke-width="0.8"/>
+                    <text x="6" y="2" font-family="JetBrains Mono" font-size="8" fill="#93C5FD">9.0 BAR · 2.0 mL/s</text>
+                  </g>
                 </g>
 
-                <!-- Pipe 2: Pump to Overpressure Valve & Split -->
-                <path d="M 236 320 L 290 320" stroke="#38BDF8" stroke-width="4" stroke-linecap="round"/>
+                <!-- Pipe 2: Pump to OPV Valve -->
+                <path d="M 212 320 L 235 320" stroke="#38BDF8" stroke-width="4" stroke-linecap="round"/>
                 
                 <!-- OPV Valve -->
-                <rect x="270" y="308" width="24" height="24" rx="4" fill="#D97706" stroke="#F59E0B"/>
-                <text x="274" y="324" font-family="JetBrains Mono" font-size="8" font-weight="600" fill="#FFF">OPV</text>
+                <rect x="235" y="308" width="24" height="24" rx="4" fill="#D97706" stroke="#F59E0B"/>
+                <text x="239" y="324" font-family="JetBrains Mono" font-size="8" font-weight="600" fill="#FFF">OPV</text>
 
                 <!-- Pipe 3: High Pressure Cold Ingress to Pre-Heat Tube inside Steam Boiler -->
-                <path d="M 294 320 L 350 320 L 350 200 L 400 200" stroke="#38BDF8" stroke-width="4" stroke-linecap="round"/>
-                <circle cx="350" cy="200" r="3" fill="#38BDF8"/>
+                <path d="M 259 320 L 285 320 L 285 230 L 310 230" stroke="#38BDF8" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="285" cy="230" r="3" fill="#38BDF8"/>
 
-                <!-- 3. Dedicated Steam / Service Boiler (Right Chamber) -->
-                <g id="node-steam" transform="translate(390, 60)">
+                <!-- 3. Dedicated Steam / Service Boiler -->
+                <g id="node-steam" transform="translate(310, 50)">
                   <!-- Boiler Vessel -->
-                  <rect x="0" y="0" width="200" height="260" rx="14" fill="url(#steamGradient)" stroke="#E11D48" stroke-width="2.5"/>
-                  <text x="20" y="26" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#FECDD3">2.0L STEAM BOILER</text>
-                  <text x="20" y="42" font-family="JetBrains Mono" font-size="9" fill="#FDA4AF">130.0°C · 1.5 - 2.0 BAR STEAM</text>
+                  <rect x="0" y="0" width="220" height="270" rx="14" fill="url(#steamGradient)" stroke="#E11D48" stroke-width="2.5"/>
+                  <text x="18" y="26" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#FECDD3">2.0L STEAM BOILER</text>
+                  <text x="18" y="42" font-family="JetBrains Mono" font-size="9" fill="#FDA4AF">130.0°C · 1.5 - 2.0 BAR STEAM</text>
 
                   <!-- Steam-Water Phase Boundary Line -->
-                  <line x1="4" y1="110" x2="196" y2="110" stroke="#F43F5E" stroke-width="1.5" stroke-dasharray="4 3"/>
-                  <text x="20" y="102" font-family="JetBrains Mono" font-size="8.5" fill="#FDA4AF">SATURATED STEAM VAPOR PHASE</text>
-                  <text x="20" y="125" font-family="JetBrains Mono" font-size="8.5" fill="#93C5FD">SUBMERGED LIQUID BOILER WATER</text>
-
-                  <!-- Calrod Element Bottom -->
-                  <path d="M 25 220 L 175 220 C 185 220, 185 235, 175 235 L 25 235" stroke="#EF4444" stroke-width="4" fill="none"/>
-                  <text x="35" y="249" font-family="JetBrains Mono" font-size="8" fill="#FCA5A5">2,000W Incoloy Immersion Heater</text>
-
-                  <!-- Safety Components on Top Dome -->
-                  <!-- Vacuum Breaker Valve -->
-                  <rect x="40" y="-18" width="18" height="18" rx="2" fill="#D97706" stroke="#F59E0B"/>
-                  <text x="26" y="-24" font-family="JetBrains Mono" font-size="7.5" fill="#FBBF24">Anti-Vacuum</text>
-
-                  <!-- 2.5 Bar Safety Relief Valve -->
-                  <rect x="135" y="-22" width="20" height="22" rx="2" fill="#DC2626" stroke="#EF4444"/>
-                  <text x="125" y="-28" font-family="JetBrains Mono" font-size="7.5" fill="#F87171">2.5 Bar OPV</text>
+                  <line x1="4" y1="95" x2="216" y2="95" stroke="#F43F5E" stroke-width="1.5" stroke-dasharray="4 3"/>
+                  
+                  <g transform="translate(14, 84)">
+                    <rect x="0" y="-8" width="165" height="15" rx="3" fill="#141413" stroke="#E11D48" stroke-width="0.5"/>
+                    <text x="5" y="3" font-family="JetBrains Mono" font-size="7.5" fill="#FDA4AF">SATURATED STEAM VAPOR PHASE</text>
+                  </g>
+                  
+                  <g transform="translate(14, 112)">
+                    <rect x="0" y="-8" width="170" height="15" rx="3" fill="#141413" stroke="#1E3A8A" stroke-width="0.5"/>
+                    <text x="5" y="3" font-family="JetBrains Mono" font-size="7.5" fill="#93C5FD">SUBMERGED LIQUID BOILER WATER</text>
+                  </g>
 
                   <!-- Internal Pre-Heat Heat Exchanger Tube Coil -->
-                  <path d="M 10 140 C 70 140, 140 150, 170 160 C 190 170, 190 190, 170 200 C 130 215, 60 180, 20 185 L -30 185" fill="none" stroke="url(#preheatFlow)" stroke-width="6" stroke-linecap="round"/>
-                  <text x="18" y="172" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#FEF08A">PRE-HEAT HX TUBE</text>
-                  <text x="18" y="186" font-family="JetBrains Mono" font-size="8" fill="#FFF">Passive Heating: 18°C → 90°C</text>
+                  <path d="M 0 180 C 45 180, 70 150, 110 150 C 145 150, 175 170, 185 195 C 195 215, 160 230, 130 230 C 95 230, 70 205, 70 160 L 70 135 L 220 135" fill="none" stroke="url(#preheatFlow)" stroke-width="6" stroke-linecap="round"/>
+                  
+                  <g transform="translate(14, 148)">
+                    <rect x="0" y="-8" width="125" height="16" rx="3" fill="#1C1917" stroke="#F59E0B" stroke-width="0.75"/>
+                    <text x="6" y="3" font-family="JetBrains Mono" font-size="8" font-weight="600" fill="#FEF08A">PRE-HEAT HX TUBE</text>
+                  </g>
+                  <g transform="translate(14, 168)">
+                    <rect x="0" y="-8" width="145" height="15" rx="3" fill="#1C1917" stroke="#EA580C" stroke-width="0.75"/>
+                    <text x="5" y="3" font-family="JetBrains Mono" font-size="7.5" fill="#FED7AA">18°C → 90°C Pre-Warming</text>
+                  </g>
+
+                  <!-- Calrod Element Bottom -->
+                  <path d="M 25 248 L 195 248" stroke="#EF4444" stroke-width="4" stroke-linecap="round"/>
+                  <g transform="translate(20, 256)">
+                    <rect x="0" y="-8" width="175" height="15" rx="3" fill="#141413" stroke="#B91C1C" stroke-width="0.5"/>
+                    <text x="5" y="3" font-family="JetBrains Mono" font-size="7.5" fill="#FCA5A5">2,000W Incoloy Immersion Heater</text>
+                  </g>
+
+                  <!-- Safety Components on Top Dome -->
+                  <rect x="35" y="-18" width="18" height="18" rx="2" fill="#D97706" stroke="#F59E0B"/>
+                  <g transform="translate(18, -22)">
+                    <rect x="0" y="-8" width="62" height="14" rx="2" fill="#141413" stroke="#F59E0B" stroke-width="0.6"/>
+                    <text x="4" y="3" font-family="JetBrains Mono" font-size="7" fill="#FBBF24">Anti-Vacuum</text>
+                  </g>
+
+                  <rect x="150" y="-22" width="20" height="22" rx="2" fill="#DC2626" stroke="#EF4444"/>
+                  <g transform="translate(132, -26)">
+                    <rect x="0" y="-8" width="62" height="14" rx="2" fill="#141413" stroke="#EF4444" stroke-width="0.6"/>
+                    <text x="4" y="3" font-family="JetBrains Mono" font-size="7" fill="#F87171">2.5 Bar OPV</text>
+                  </g>
                 </g>
 
-                <!-- Pipe 4: Pre-Heated 90°C Water Out of Steam Boiler to Brew Boiler -->
-                <path d="M 360 245 L 300 245 L 300 150 L 250 150" stroke="#F59E0B" stroke-width="5" stroke-linecap="round"/>
-                <polygon points="252,150 262,145 262,155" fill="#F59E0B"/>
-                <text x="260" y="235" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#F59E0B">Pre-Heated 90°C</text>
+                <!-- Pipe 4: Pre-Heated 90°C Water Out of Steam Boiler directly to Brew Boiler -->
+                <path d="M 530 185 L 575 185" stroke="#F59E0B" stroke-width="5" stroke-linecap="round"/>
+                <g transform="translate(520, 162)">
+                  <rect x="0" y="-8" width="75" height="16" rx="3" fill="#141413" stroke="#F59E0B" stroke-width="0.75"/>
+                  <text x="4" y="3" font-family="JetBrains Mono" font-size="7.5" font-weight="600" fill="#F59E0B">Pre-Heat 90°C</text>
+                </g>
 
-                <!-- 4. Dedicated Brew Boiler (Left Chamber) -->
-                <g id="node-brew" transform="translate(80, 50)">
-                  <rect x="0" y="0" width="170" height="180" rx="12" fill="url(#brewGradient)" stroke="#EF4444" stroke-width="2.5"/>
-                  <text x="15" y="26" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#FEE2E2">0.8L BREW BOILER</text>
-                  <text x="15" y="42" font-family="JetBrains Mono" font-size="9" fill="#FECDD3">93.3°C · 9.0 BAR HYDROSTATIC</text>
-                  <text x="15" y="55" font-family="JetBrains Mono" font-size="8" fill="#FCA5A5">100% Liquid Water (Zero Steam)</text>
-
-                  <!-- 800W Brew Element -->
-                  <path d="M 20 130 L 150 130 C 160 130, 160 142, 150 142 L 20 142" stroke="#FCA5A5" stroke-width="3" fill="none"/>
-                  <text x="25" y="156" font-family="JetBrains Mono" font-size="8" fill="#FEE2E2">800W Incoloy Element (SSR-PID)</text>
+                <!-- 4. Dedicated Brew Boiler -->
+                <g id="node-brew" transform="translate(575, 60)">
+                  <rect x="0" y="0" width="140" height="190" rx="12" fill="url(#brewGradient)" stroke="#EF4444" stroke-width="2.5"/>
+                  <text x="12" y="24" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#FEE2E2">0.8L BREW BOILER</text>
+                  <text x="12" y="38" font-family="JetBrains Mono" font-size="8" fill="#FECDD3">93.3°C · 9.0 BAR</text>
+                  <text x="12" y="50" font-family="JetBrains Mono" font-size="7.5" fill="#FCA5A5">100% Liquid Water</text>
 
                   <!-- PT100 RTD Sensor Probe -->
-                  <rect x="15" y="70" width="10" height="35" rx="2" fill="#E2E8F0" stroke="#94A3B8"/>
-                  <line x1="20" y1="105" x2="20" y2="120" stroke="#10B981" stroke-width="2"/>
-                  <text x="32" y="84" font-family="JetBrains Mono" font-size="8" font-weight="600" fill="#6EE7B7">PT100 RTD PROBE</text>
-                  <text x="32" y="96" font-family="JetBrains Mono" font-size="7.5" fill="#A7F3D0">10 Hz Closed-Loop ±0.1°C</text>
+                  <rect x="12" y="65" width="8" height="28" rx="2" fill="#E2E8F0" stroke="#94A3B8"/>
+                  <g transform="translate(25, 75)">
+                    <rect x="0" y="-7" width="98" height="15" rx="2" fill="#141413" stroke="#10B981" stroke-width="0.5"/>
+                    <text x="4" y="4" font-family="JetBrains Mono" font-size="7" font-weight="600" fill="#6EE7B7">PT100 RTD ±0.1°C</text>
+                  </g>
+
+                  <!-- 800W Brew Element -->
+                  <path d="M 15 135 L 125 135" stroke="#FCA5A5" stroke-width="3" stroke-linecap="round"/>
+                  <g transform="translate(14, 145)">
+                    <rect x="0" y="-7" width="112" height="15" rx="2" fill="#141413" stroke="#EF4444" stroke-width="0.5"/>
+                    <text x="4" y="4" font-family="JetBrains Mono" font-size="7" fill="#FEE2E2">800W Incoloy PID</text>
+                  </g>
                 </g>
 
-                <!-- 5. Direct-Weld Saturated Group Neck Extension -->
-                <g id="node-group" transform="translate(640, 130)">
-                  <!-- Welded Neck Flange to Brew Boiler (represented bridging right) -->
-                  <path d="M -390 120 L 0 120" stroke="#DC2626" stroke-width="12" stroke-linecap="round"/>
-                  <text x="-240" y="112" font-family="JetBrains Mono" font-size="9.5" font-weight="600" fill="#EF4444">DIRECT WATER-JACKET COUPLING (93.3°C)</text>
+                <!-- 5. Direct Water-Jacket Flange Coupling between Brew Boiler and Saturated Group -->
+                <path d="M 715 130 L 740 130" stroke="#DC2626" stroke-width="14" stroke-linecap="square"/>
+                <g transform="translate(680, 42)">
+                  <rect x="0" y="-8" width="175" height="17" rx="3" fill="#141413" stroke="#DC2626" stroke-width="0.75"/>
+                  <text x="5" y="4" font-family="JetBrains Mono" font-size="7.5" font-weight="600" fill="#EF4444">DIRECT WATER-JACKET COUPLING</text>
+                </g>
 
+                <!-- 6. Direct-Weld Saturated Group -->
+                <g id="node-group" transform="translate(740, 75)">
                   <!-- Group Head Body Housing -->
-                  <rect x="0" y="20" width="160" height="150" rx="10" fill="#292524" stroke="#D97757" stroke-width="2.5"/>
-                  <text x="14" y="44" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#FDBA74">SATURATED GROUP</text>
-                  <text x="14" y="58" font-family="JetBrains Mono" font-size="8.5" fill="#D6D3D1">Flooded Dispersion Chamber</text>
-                  <text x="14" y="72" font-family="JetBrains Mono" font-size="8" fill="#10B981">ΔT &lt; 0.15°C puck interface</text>
+                  <rect x="0" y="10" width="115" height="175" rx="8" fill="#292524" stroke="#D97757" stroke-width="2.5"/>
+                  <text x="10" y="28" font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#FDBA74">SATURATED GROUP</text>
+                  <text x="10" y="42" font-family="JetBrains Mono" font-size="7.5" fill="#D6D3D1">Flooded Chamber</text>
+                  <text x="10" y="54" font-family="JetBrains Mono" font-size="7.5" fill="#10B981">ΔT &lt; 0.15°C puck</text>
 
                   <!-- Solenoid 3-Way Valve -->
-                  <rect x="110" y="-16" width="30" height="36" rx="4" fill="#0284C7" stroke="#38BDF8"/>
-                  <text x="96" y="-22" font-family="JetBrains Mono" font-size="8" font-weight="600" fill="#38BDF8">3-WAY SOLENOID</text>
+                  <rect x="70" y="-14" width="26" height="26" rx="3" fill="#0284C7" stroke="#38BDF8"/>
+                  <g transform="translate(48, -20)">
+                    <rect x="0" y="-7" width="65" height="14" rx="2" fill="#141413" stroke="#38BDF8" stroke-width="0.5"/>
+                    <text x="4" y="3" font-family="JetBrains Mono" font-size="6.5" font-weight="600" fill="#38BDF8">3-WAY VALVE</text>
+                  </g>
 
                   <!-- Dispersion Screen & Coffee Puck -->
-                  <rect x="20" y="110" width="120" height="8" fill="#78716C"/>
-                  <text x="35" y="106" font-family="JetBrains Mono" font-size="7.5" fill="#A8A29E">Stainless Dispersion Screen</text>
+                  <rect x="12" y="95" width="91" height="6" fill="#78716C"/>
+                  <text x="15" y="90" font-family="JetBrains Mono" font-size="7" fill="#A8A29E">Dispersion Screen</text>
 
                   <!-- Portafilter & Coffee Puck -->
-                  <rect x="25" y="125" width="110" height="26" rx="3" fill="#451A03" stroke="#78350F" stroke-width="1.5"/>
-                  <text x="36" y="142" font-family="JetBrains Mono" font-size="8.5" font-weight="600" fill="#FDE68A">18g COFFEE PUCK</text>
+                  <rect x="15" y="108" width="85" height="22" rx="3" fill="#451A03" stroke="#78350F" stroke-width="1.5"/>
+                  <text x="22" y="123" font-family="JetBrains Mono" font-size="7.5" font-weight="600" fill="#FDE68A">18g COFFEE PUCK</text>
 
                   <!-- Extracted Espresso Stream -->
-                  <path d="M 80 152 L 80 195" stroke="#D97706" stroke-width="3" stroke-dasharray="3 2"/>
-                  <text x="38" y="210" font-family="JetBrains Mono" font-size="9" font-weight="600" fill="#F59E0B">36g ESPRESSO (93°C)</text>
+                  <path d="M 57 130 L 57 160" stroke="#D97706" stroke-width="3" stroke-dasharray="3 2"/>
+                  <g transform="translate(15, 172)">
+                    <rect x="0" y="-8" width="85" height="16" rx="3" fill="#141413" stroke="#D97706" stroke-width="0.75"/>
+                    <text x="4" y="3" font-family="JetBrains Mono" font-size="7.5" font-weight="600" fill="#F59E0B">36g ESPRESSO</text>
+                  </g>
                 </g>
               </svg>
             </div>
 
-            <!-- Dynamic Interactive Inspector Readout -->
-            <div class="schematic-readout" id="schematic-readout-panel">
-              <div style="display:flex; flex-direction:column; gap:2px;">
-                <span id="readout-title" style="font-weight:600; color:var(--accent);">Pre-Heat Heat Exchanger Loop</span>
-                <span id="readout-stats" style="font-size:11.5px; color:var(--muted);">18°C Ingress → 90°C Pre-Warmed at 9.0 Bar (Drawdown Shock Completely Neutralized)</span>
-              </div>
-              <span style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em;">SYSTEM INTERACTION ACTIVE</span>
-            </div>
-
             <div class="schematic-caption">
-              <span><strong>THERMODYNAMIC DECOUPLING:</strong> Cold pump water is pre-heated through the 130°C steam boiler HX before entering the 0.8L brew boiler, eliminating thermal drawdown shock and maintaining &plusmn;0.1°C extraction stability.</span>
-              <span>FIGURE 02</span>
+              <span id="readout-title" style="font-weight:600; color:var(--accent);">PRE-HEAT LOOP (HX): 18°C Reservoir &rarr; 90°C Brew Feed</span>
+              <span id="readout-stats">Flow Rate: 2.0 mL/s · Hydrostatic Pressure: 9.0 Bar · Steam HX Temp: 130°C</span>
             </div>
-          </div>
+          </div></div>
 
           <p>
             Commercial cafe machines and high-end prosumer appliances discard on-demand flash heating in favor of an <strong>Independent Dual Boiler (DB)</strong> architecture. By isolating the two disparate thermodynamic tasks into separate pressure vessels, each system operates at its optimal thermodynamic equilibrium:
@@ -1872,24 +1906,36 @@
                   <text x="20" y="30" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#FDBA74">BOILER / HX CHAMBER</text>
                   <text x="20" y="48" font-family="JetBrains Mono" font-size="9.5" fill="#FED7AA">Water Temperature: 105°C - 120°C</text>
 
-                  <!-- Upper Port Hot Water -->
-                  <circle cx="220" cy="50" r="12" fill="#EF4444"/>
-                  <text x="130" y="44" font-family="JetBrains Mono" font-size="9" fill="#FCA5A5">UPPER PORT</text>
+                  <!-- Upper Port Hot Water (With Knockout Pill & Dedicated Y Band) -->
+                  <g transform="translate(118, 62)">
+                    <rect x="0" y="-10" width="88" height="18" rx="4" fill="#141413" stroke="#EF4444" stroke-width="0.8"/>
+                    <text x="7" y="3" font-family="JetBrains Mono" font-size="8.5" font-weight="600" fill="#FCA5A5">UPPER PORT</text>
+                  </g>
+                  <circle cx="220" cy="70" r="10" fill="#EF4444" stroke="#FEE2E2" stroke-width="2"/>
 
-                  <!-- Lower Port Cold Return -->
-                  <circle cx="220" cy="250" r="12" fill="#3B82F6"/>
-                  <text x="130" y="254" font-family="JetBrains Mono" font-size="9" fill="#93C5FD">LOWER PORT</text>
-                  
-                  <rect x="20" y="110" width="180" height="70" rx="6" fill="#292524"/>
-                  <text x="30" y="132" font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#FB923C">BUOYANCY DRIVER:</text>
-                  <text x="30" y="148" font-family="JetBrains Mono" font-size="8.5" fill="#D6D3D1">Hot fluid density: &rho; &asymp; 943 kg/m&sup3;</text>
-                  <text x="30" y="164" font-family="JetBrains Mono" font-size="8.5" fill="#D6D3D1">Cool fluid density: &rho; &asymp; 965 kg/m&sup3;</text>
+                  <!-- Buoyancy Driver Telemetry Box -->
+                  <rect x="20" y="115" width="180" height="70" rx="6" fill="#292524" stroke="#44403C" stroke-width="1"/>
+                  <text x="30" y="137" font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#FB923C">BUOYANCY DRIVER:</text>
+                  <text x="30" y="153" font-family="JetBrains Mono" font-size="8.5" fill="#D6D3D1">Hot fluid density: &rho; &asymp; 943 kg/m&sup3;</text>
+                  <text x="30" y="169" font-family="JetBrains Mono" font-size="8.5" fill="#D6D3D1">Cool fluid density: &rho; &asymp; 965 kg/m&sup3;</text>
+
+                  <!-- Lower Port Cold Return (With Knockout Pill & Dedicated Y Band) -->
+                  <g transform="translate(118, 222)">
+                    <rect x="0" y="-10" width="88" height="18" rx="4" fill="#141413" stroke="#3B82F6" stroke-width="0.8"/>
+                    <text x="7" y="3" font-family="JetBrains Mono" font-size="8.5" font-weight="600" fill="#93C5FD">LOWER PORT</text>
+                  </g>
+                  <circle cx="220" cy="230" r="10" fill="#3B82F6" stroke="#DBEAFE" stroke-width="2"/>
                 </g>
 
                 <!-- Upper Convective Supply Tube (Hot Water Rising) -->
-                <path d="M 280 100 L 520 100" stroke="#EF4444" stroke-width="12" stroke-linecap="round"/>
-                <path id="flow-hot" class="flow-line-hot" d="M 280 100 L 520 100" stroke="#FEE2E2" stroke-width="4" stroke-linecap="round"/>
-                <text x="340" y="85" font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#EF4444">HOT CONVECTIVE INGRESS (→)</text>
+                <path d="M 280 120 L 520 120" stroke="#EF4444" stroke-width="12" stroke-linecap="round"/>
+                <path id="flow-hot" class="flow-line-hot" d="M 280 120 L 520 120" stroke="#FEE2E2" stroke-width="4" stroke-linecap="round"/>
+                
+                <!-- Flow Label with Shield Pill -->
+                <g transform="translate(320, 88)">
+                  <rect x="0" y="-11" width="190" height="20" rx="4" fill="#141413" stroke="#EF4444" stroke-width="0.8"/>
+                  <text x="8" y="3" font-family="JetBrains Mono" font-size="9.5" font-weight="600" fill="#F87171">HOT CONVECTIVE INGRESS (→)</text>
+                </g>
 
                 <!-- 4.2 kg Forged Brass E61 Group Body (Right) -->
                 <g id="siphon-group" transform="translate(520, 40)">
@@ -1898,8 +1944,8 @@
                   <text x="24" y="55" font-family="JetBrains Mono" font-size="9" fill="#FEF3C7">Thermal Mass Filter · C_th &asymp; 1,600 J/°C</text>
 
                   <!-- Internal Flow Circuit inside Group -->
-                  <path d="M 0 60 C 80 60, 140 100, 140 170 C 140 240, 80 270, 0 270" fill="none" stroke="#B45309" stroke-width="18"/>
-                  <path id="flow-group" class="flow-line-hot" d="M 0 60 C 80 60, 140 100, 140 170 C 140 240, 80 270, 0 270" fill="none" stroke="#FDE68A" stroke-width="5"/>
+                  <path d="M 0 80 C 80 80, 140 120, 140 180 C 140 240, 80 240, 0 240" fill="none" stroke="#B45309" stroke-width="18"/>
+                  <path id="flow-group" class="flow-line-hot" d="M 0 80 C 80 80, 140 120, 140 180 C 140 240, 80 240, 0 240" fill="none" stroke="#FDE68A" stroke-width="5"/>
 
                   <!-- Heat Loss Radiation to Air -->
                   <g stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="2 2">
@@ -1921,26 +1967,22 @@
                 </g>
 
                 <!-- Lower Convective Return Tube (Cooled Dense Water Returning) -->
-                <path d="M 520 310 L 280 310" stroke="#2563EB" stroke-width="12" stroke-linecap="round"/>
-                <path id="flow-cold" class="flow-line-cold" d="M 520 310 L 280 310" stroke="#93C5FD" stroke-width="4" stroke-linecap="round"/>
-                <text x="330" y="335" font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#60A5FA">(←) COOLED WATER RETURN</text>
+                <path d="M 520 280 L 280 280" stroke="#2563EB" stroke-width="12" stroke-linecap="round"/>
+                <path id="flow-cold" class="flow-line-cold" d="M 520 280 L 280 280" stroke="#93C5FD" stroke-width="4" stroke-linecap="round"/>
+                
+                <!-- Return Label with Shield Pill -->
+                <g transform="translate(320, 305)">
+                  <rect x="0" y="-11" width="190" height="20" rx="4" fill="#141413" stroke="#3B82F6" stroke-width="0.8"/>
+                  <text x="8" y="3" font-family="JetBrains Mono" font-size="9.5" font-weight="600" fill="#60A5FA">(←) COOLED WATER RETURN</text>
+                </g>
               </svg>
             </div>
 
-            <!-- Dynamic Thermosyphon Status Readout -->
-            <div class="schematic-readout" id="siphon-readout-panel">
-              <div style="display:flex; flex-direction:column; gap:2px;">
-                <span id="siphon-status-title" style="font-weight:600; color:#059669;">Continuous Buoyancy Equilibrium</span>
-                <span id="siphon-status-desc" style="font-size:11.5px; color:var(--muted);">Fluid circulating at ~0.15 m/s. Group head locked at 93.3°C.</span>
-              </div>
-              <span style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em;">DYNAMIC FLOW SIMULATOR</span>
-            </div>
-
             <div class="schematic-caption">
-              <span><strong>BUOYANCY-DRIVEN THERMOSYPHON:</strong> Hot water rises through the top neck to heat the 4.2 kg brass block, densifies as it sheds thermal energy to the room, and sinks through the lower pipe. Long idle times trigger thermal stagnation.</span>
-              <span>FIGURE 03</span>
+              <span><strong>THERMOSYPHON CONVECTIVE DRIVER:</strong> Hot water rises due to buoyancy (&Delta;&rho; &asymp; 22 kg/m&sup3;), circulates through the 4.2 kg forged brass group head, sheds sensible heat, and sinks back to the boiler.</span>
+              <span id="siphon-status-title" style="color:var(--accent); font-weight:600;">ACTIVE CIRCULATION: 0.15 m/s</span>
             </div>
-          </div>
+          </div></div>
 
 <p><strong>The Modern Saturated Group Head:</strong> In premier commercial hardware (such as La Marzocco, Synesso, and Slayer), engineers eliminate the conductive neck flange by welding the group head directly into the front wall of the brew boiler—forming a <span class="tangent-term" data-tangent="saturated_group">saturated group architecture</span>. Boiler water directly floods the hollow group neck, surrounding the dispersion screen in liquid water at the exact same temperature as the boiler core. Thermal gradients between water reservoir and puck face are completely eliminated (&Delta;T &lt; 0.15°C).</p>
 
