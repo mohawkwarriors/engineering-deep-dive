@@ -1,8 +1,11 @@
 {
   "name": "engineering-deep-dive",
   "version": "1.0.0",
-  "description": "Daily mechanical engineering deep dives and archive",
-  "main": "index.html",
+  "description": "Daily automated mechanical engineering deep dive dispatches.",
+  "type": "module",
+  "scripts": {
+    "generate": "node scripts/generate-dispatch.mjs"
+  },
   "dependencies": {
     "node-fetch": "^3.3.2"
   }
