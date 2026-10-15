@@ -57,6 +57,7 @@ STRICT EDITORIAL REQUIREMENTS:
 5. EQUATIONS: Include explicit quantitative formulas (heat flux, stress, flow, clearance).
 6. COMPARISON TABLE: Include an HTML <table> with class="spec-table" inside a <div class="spec-table-wrap"> comparing 4-5 engineering architectures across 5 technical metrics.
 7. TANGENT ANNOTATIONS: Wrap 4-6 specialized technical terms in <span class="tangent-term" data-tangent="key">.
+8. VISUALS & CROSS-SECTIONS: When cutaways, cross-sections, or mechanical figures are generated or described, strictly specify Industrial Design (ID) or CAD-style cross-sections (clean 3D CAD solid model section cutaways, uniform engineering materials rendering, cross-section hatching on cut walls). Enforce strictly: NO background grid, NO background color (must be transparent PNG), NO dimension lines unless specifically required to show a part's exact measurement, and maintain a uniform, cohesive rendering aesthetic across all dispatches. Real-life photos are strictly reserved for actual scraped images.
 
 RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other text):
 {
