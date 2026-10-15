@@ -122,7 +122,7 @@
       box-shadow: 0 0 0 1px var(--text);
     }
 
-    /* Distinct Filter Button Colors Matching Article Badges */
+    /* Filter Button Colors */
     .btn-sub-all { background: var(--surface); color: var(--text); border-color: var(--border); }
     .btn-sub-all.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 
@@ -719,13 +719,16 @@
       if (e.key === 'Escape') closeModal();
     });
 
-    // Dynamic Read Time Calculation (~210 words per minute)
+    // Dynamic Read Time Calculation (~220 words per minute for technical teardowns)
     function calculateReadTime() {
       const articleEl = document.getElementById("view-article");
-      const text = articleEl.innerText || articleEl.textContent;
-      const wordCount = text.trim().split(/\\s+/).length;
-      const readMinutes = Math.max(1, Math.round(wordCount / 210));
-      document.getElementById("read-time-badge").textContent = `${readMinutes} MIN READ`;
+      if (!articleEl) return;
+      const text = articleEl.innerText || articleEl.textContent || "";
+      const words = text.match(/\S+/g) || [];
+      const wordCount = words.length;
+      const readMinutes = Math.max(1, Math.round(wordCount / 220));
+      const badge = document.getElementById("read-time-badge");
+      if (badge) badge.textContent = `${readMinutes} MIN READ`;
     }
 
     let activeSubject = "All";
@@ -770,7 +773,6 @@
 
     function renderArchive() {
       const list = document.getElementById("archive-list");
-      // ONLY SHOW PUBLISHED ARTICLES (Filter out queued/standby)
       const published = TOPICS.filter(t => t.status === "Published");
       const filtered = activeSubject === "All" ? published : published.filter(t => t.subject === activeSubject);
       
@@ -858,7 +860,7 @@
       headings.forEach((h, index) => {
         if(!h.id) h.id = "heading-" + index;
         const isSub = h.tagName === "H3";
-        html += `<li class="outline-item ${isSub ? 'sub-item' : ''}"><a href="#${h.id}" data-target="${h.id}">${h.textContent.replace(/\\s*\\$[\\d\\.]+\\s*$/, '')}</a></li>`;
+        html += `<li class="outline-item ${isSub ? 'sub-item' : ''}"><a href="#${h.id}" data-target="${h.id}">${h.textContent.replace(/\s*\$[\d.]+\s*$/, '')}</a></li>`;
       });
       outlineList.innerHTML = html;
 
