@@ -44,9 +44,19 @@
       display: flex; justify-content: space-between; align-items: center;
       padding: 28px 0; border-bottom: 1px solid var(--border); margin-bottom: 44px;
     }
+    .brand-group {
+      display: flex; align-items: center; gap: 12px; text-decoration: none; cursor: pointer;
+    }
+    .brand-logo {
+      width: 32px; height: 32px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 6px; display: flex; align-items: center; justify-content: center;
+      color: var(--accent); transition: border-color 0.15s;
+    }
+    .brand-group:hover .brand-logo { border-color: var(--accent); }
+    .brand-logo svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
     .brand {
       font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500;
-      letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); text-decoration: none; cursor: pointer;
+      letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); text-decoration: none;
     }
     .nav-actions { display: flex; gap: 20px; align-items: center; }
     .nav-btn {
@@ -133,7 +143,13 @@
 <body>
   <div class="layout-wrapper">
     <header>
-      <a class="brand" onclick="showView('article')">ENGINEERING DEEP DIVE</a>
+      <a class="brand-group" onclick="showView('article')">
+        <div class="brand-logo">
+          <!-- Tolerance Frame / Datum Mark SVG Icon -->
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/></svg>
+        </div>
+        <span class="brand">Engineering Deep Dive</span>
+      </a>
       <div class="nav-actions">
         <button class="nav-btn active" id="btn-article" onclick="showView('article')">Issue #001</button>
         <button class="nav-btn" id="btn-archive" onclick="showView('archive')">Archive (10)</button>
@@ -230,22 +246,22 @@
 
           <h3 id="product-homeview">Apple HomeView (Hub & Audio Base) <span class="price-tag">$299.00</span></h3>
           <p>
-            Powered by the **A18 chip** and an isolated Secure Exclave, HomeView balances thermal dissipation with high-fidelity acoustics. The display module scales from 500 nits down to **0.3 nits** via a precision PWM backlight driver. In the acoustic base, a down-firing custom woofer and dual force-canceling passive radiators are mechanically isolated from the compute PCB to eliminate harmonic distortion during Siri playback.
+            Powered by the <strong>A18 chip</strong> and an isolated Secure Exclave, HomeView balances thermal dissipation with high-fidelity acoustics. The display module scales from 500 nits down to <strong>0.3 nits</strong> via a precision PWM backlight driver. In the acoustic base, a down-firing custom woofer and dual force-canceling passive radiators are mechanically isolated from the compute PCB to eliminate harmonic distortion during Siri playback.
           </p>
 
           <h3 id="product-deadbolt">LG Smart Deadbolt (UWB & Kinematics) <span class="price-tag">$349.95</span></h3>
           <p>
-            Standard Bluetooth RSSI locking suffers from multipath reflections and false indoor triggers. The LG Deadbolt uses **UWB impulse radio (6.5/8.0 GHz channels)** to measure nanosecond-level time-of-flight, verifying approach vectors within ±3 cm. Mechanically, it uses a high-reduction planetary gearbox paired with a lost-motion cam slot to overcome warped-door side loads exceeding 30 N without stalling on battery power.
+            Standard Bluetooth RSSI locking suffers from multipath reflections and false indoor triggers. The LG Deadbolt uses <strong>UWB impulse radio (6.5/8.0 GHz channels)</strong> to measure nanosecond-level time-of-flight, verifying approach vectors within ±3 cm. Mechanically, it uses a high-reduction planetary gearbox paired with a lost-motion cam slot to overcome warped-door side loads exceeding 30 N without stalling on battery power.
           </p>
 
           <h3 id="product-cameras">LG Security Cams (Gimbal Shutter & Dual Optics) <span class="price-tag">$199.95 – $399.95</span></h3>
           <p>
-            The **Indoor Cam** eliminates software privacy vulnerabilities via a physical mechanism: when occupied, a micro-stepping motor pitches the lens **95° downward** into an opaque, light-absorbing elastomer cup, simultaneously tripping a mechanical leaf switch that breaks the microphone's `VDD` circuit. The **Video Doorbell** solves the ground-blindspot problem by mounting two separate CMOS sensors in parallel (2.5K visitor cam + 1080p package cam).
+            The <strong>Indoor Cam</strong> eliminates software privacy vulnerabilities via a physical mechanism: when occupied, a micro-stepping motor pitches the lens <strong>95° downward</strong> into an opaque, light-absorbing elastomer cup, simultaneously tripping a mechanical leaf switch that breaks the microphone's <code>VDD</code> circuit. The <strong>Video Doorbell</strong> solves the ground-blindspot problem by mounting two separate CMOS sensors in parallel (2.5K visitor cam + 1080p package cam).
           </p>
 
           <h3 id="product-thermostats">LG & Schneider Thermostats (Power-Stealing & Radar) <span class="price-tag">$199.95</span></h3>
           <p>
-            In older homes missing a Common (C) wire, the thermostat must harvest power in series through the furnace relay without chattering the contacts. Using **active MOSFET zero-crossing phase switching**, the board siphons microsecond pulses of current into an internal supercapacitor bank during 60 Hz AC zero-crosses, sustaining its 60 GHz radar occupancy sensor and Thread radio without dropping the heating call.
+            In older homes missing a Common (C) wire, the thermostat must harvest power in series through the furnace relay without chattering the contacts. Using <strong>active MOSFET zero-crossing phase switching</strong>, the board siphons microsecond pulses of current into an internal supercapacitor bank during 60 Hz AC zero-crosses, sustaining its 60 GHz radar occupancy sensor and Thread radio without dropping the heating call.
           </p>
 
           <div class="telemetry-bar">
