@@ -2,7 +2,9 @@ name: Daily Engineering Deep Dive
 
 on:
   schedule:
-    # 4:00 AM PST (UTC-8) is 12:00 UTC (runs at 5:00 AM PDT during Daylight Saving Time)
+    # 4:00 AM PST (Pacific Standard Time, UTC-8) is 12:00 UTC.
+    # Note: During Daylight Saving Time (PDT, UTC-7), 12:00 UTC corresponds to 5:00 AM PDT.
+    # To run at 4:00 AM PDT during daylight saving, use '0 11 * * *'.
     - cron: '0 12 * * *'
   workflow_dispatch:
 
