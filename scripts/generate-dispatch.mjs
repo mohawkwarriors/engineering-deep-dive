@@ -63,9 +63,9 @@ STRICT EDITORIAL REQUIREMENTS:
    - MANDATORY ZERO-TEXT IN GENERATED IMAGES: Absolute ZERO text, letters, numbers, dimension lines, or leader lines inside the generated image asset. AI diffusion models hallucinate characters and fill enclosed loops/counters with solid blob artifacts. Generate ONLY the clean 3D physical CAD assembly. All callout labels, leader lines, and telemetry MUST be overlaid externally via HTML/SVG or TrueType typography.
    - Uniform cohesive rendering aesthetic across all dispatches. Real-life photography is strictly reserved for verified scraped images.
 
-9. INLINE SVG SCHEMATICS & DIAGRAM ARCHITECTURE (ZERO-COLLISION RULES):
+9. INLINE SVG SCHEMATICS & DIAGRAM ARCHITECTURE (ZERO-COLLISION & ZERO-OCCLUSION RULES):
    - Dedicated Coordinate Bands: Never place two <text> elements on the same or adjacent vertical coordinate (minimum 24px vertical separation between distinct text nodes).
-   - Background Knockout Shielding: Every text label, tag, or port callout MUST have an opaque background knockout pill (<rect rx="4" fill="#141413" stroke="..." />) behind it so fluid lines, pipes, and vessel boundaries never cut through or obscure characters.
+   - Zero-Occlusion Spatial Routing (NO BACKGROUND BOXES): Never draw opaque background rectangles or knockout pills behind text that block or occlude the underlying diagram, vessel gradients, or artwork. Instead, maintain legibility purely through negative space—positioning text labels in clear open areas and routing fluid lines and borders around text.
    - Logical Physical Routing: Route all flow pipes and connectors in orthogonal, non-overlapping channels following the logical fluidic path, preventing lines from slicing through unrelated components.
 
 RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other text):
