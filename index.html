@@ -39,11 +39,7 @@
       -webkit-font-smoothing: antialiased;
       transition: background-color 0.2s ease, color 0.2s ease;
     }
-    .layout-wrapper {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 0 24px 104px;
-    }
+    .layout-wrapper { max-width: var(--max-w); margin: 0 auto; padding: 0 24px 104px; }
     header {
       display: flex; justify-content: space-between; align-items: center;
       padding: 28px 0; border-bottom: 1px solid var(--border); margin-bottom: 44px;
@@ -66,83 +62,31 @@
     .theme-toggle-btn:hover { background: var(--surface-hover); border-color: var(--muted); }
     .theme-toggle-btn svg { width: 16px; height: 16px; fill: currentColor; }
 
-    /* Main Grid Layout with Sticky Left Outline */
-    .content-grid {
-      display: grid;
-      grid-template-columns: 240px 1fr;
-      gap: 56px;
-      align-items: start;
-    }
+    .content-grid { display: grid; grid-template-columns: 240px 1fr; gap: 56px; align-items: start; }
     @media (max-width: 1023px) {
       .content-grid { grid-template-columns: 1fr; }
       .sidebar-outline { display: none; }
     }
 
-    /* Sticky Left Outline */
     .sidebar-outline {
-      position: sticky;
-      top: 36px;
-      max-height: calc(100vh - 72px);
-      overflow-y: auto;
-      padding-right: 16px;
-      border-right: 1px solid var(--border);
+      position: sticky; top: 36px; max-height: calc(100vh - 72px); overflow-y: auto; padding-right: 16px; border-right: 1px solid var(--border);
     }
-    .outline-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      margin-bottom: 16px;
-      font-weight: 500;
-    }
-    .outline-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .outline-item a {
-      font-size: 13.5px;
-      color: var(--muted);
-      text-decoration: none;
-      display: block;
-      line-height: 1.4;
-      transition: color 0.15s, transform 0.15s;
-      border-left: 2px solid transparent;
-      padding-left: 10px;
-    }
+    .outline-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 16px; font-weight: 500; }
+    .outline-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .outline-item a { font-size: 13.5px; color: var(--muted); text-decoration: none; display: block; line-height: 1.4; transition: color 0.15s; border-left: 2px solid transparent; padding-left: 10px; }
     .outline-item a:hover { color: var(--text); }
-    .outline-item a.active {
-      color: var(--accent);
-      border-left-color: var(--accent);
-      font-weight: 500;
-    }
-    .outline-item.sub-item a {
-      padding-left: 22px;
-      font-size: 12.5px;
-    }
+    .outline-item a.active { color: var(--accent); border-left-color: var(--accent); font-weight: 500; }
+    .outline-item.sub-item a { padding-left: 22px; font-size: 12.5px; }
 
-    /* Editorial Column */
-    .editorial-column {
-      max-width: 740px;
-    }
-
-    /* Subjects Bar (Archive View Only) */
-    .subjects-bar {
-      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
-    }
+    .editorial-column { max-width: 740px; }
+    .subjects-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
     .subject-pill {
       background: transparent; border: 1px solid var(--border); color: var(--muted);
       font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 5px 10px; border-radius: 4px; cursor: pointer; transition: all 0.15s ease;
     }
     .subject-pill:hover, .subject-pill.active { border-color: var(--text); color: var(--text); background: var(--surface); }
 
-    /* Article Typography */
-    .meta-line {
-      font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent);
-      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
-    }
+    .meta-line { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
     h1 { font-family: 'Instrument Serif', Georgia, serif; font-size: 46px; font-weight: 400; line-height: 1.12; letter-spacing: -0.01em; margin-bottom: 18px; }
     .subtitle { font-size: 18.5px; color: var(--muted); line-height: 1.55; margin-bottom: 36px; font-weight: 400; }
     h2 { font-family: 'Instrument Serif', Georgia, serif; font-size: 32px; font-weight: 400; margin: 52px 0 16px; line-height: 1.2; border-top: 1px solid var(--border); padding-top: 32px; scroll-margin-top: 40px; }
@@ -153,30 +97,14 @@
     li { margin-bottom: 12px; }
     strong { font-weight: 600; }
 
-    /* Callout & Viz Badges */
-    .callout-box {
-      background: var(--surface);
-      border-left: 3px solid var(--accent);
-      padding: 18px 22px;
-      margin: 28px 0;
-      font-size: 15.5px;
-      border-radius: 0 6px 6px 0;
-    }
-    .callout-title {
-      font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 6px; font-weight: 500;
-    }
-    .viz-badge {
-      display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase;
-      letter-spacing: 0.06em; padding: 3px 8px; border-radius: 4px; background: var(--surface); border: 1px solid var(--border); color: var(--muted); margin-bottom: 8px;
-    }
+    .callout-box { background: var(--surface); border-left: 3px solid var(--accent); padding: 18px 22px; margin: 28px 0; font-size: 15.5px; border-radius: 0 6px 6px 0; }
+    .callout-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 6px; font-weight: 500; }
+    .viz-badge { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 4px; background: var(--surface); border: 1px solid var(--border); color: var(--muted); margin-bottom: 8px; }
 
     figure.product-figure { margin: 38px 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: var(--surface); }
     .img-wrapper { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: #141413; }
     .img-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    figcaption {
-      padding: 14px 18px; font-family: 'JetBrains Mono', monospace; font-size: 12px;
-      color: var(--muted); border-top: 1px solid var(--border); line-height: 1.5; display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap;
-    }
+    figcaption { padding: 14px 18px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); line-height: 1.5; display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
     .source-tag { white-space: nowrap; font-size: 11px; opacity: 0.85; }
 
     .spec-table-wrap { overflow-x: auto; margin: 28px 0 36px; border: 1px solid var(--border); border-radius: 6px; }
@@ -185,26 +113,16 @@
     .spec-table tr:last-child td { border-bottom: none; }
     .spec-table th { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; color: var(--muted); font-weight: 500; background: var(--surface); }
 
-    /* Background Telemetry Scoring Bar */
-    .telemetry-bar {
-      display: flex; justify-content: space-between; align-items: center;
-      background: var(--surface); border: 1px solid var(--border); padding: 16px 20px;
-      border-radius: 6px; margin: 48px 0 24px; font-size: 13.5px; flex-wrap: wrap; gap: 12px;
-    }
+    .telemetry-bar { display: flex; justify-content: space-between; align-items: center; background: var(--surface); border: 1px solid var(--border); padding: 16px 20px; border-radius: 6px; margin: 48px 0 24px; font-size: 13.5px; flex-wrap: wrap; gap: 12px; }
     .telemetry-info { display: flex; flex-direction: column; gap: 2px; }
     .telemetry-title { font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
     .telemetry-desc { color: var(--muted); font-size: 13px; }
     .telemetry-actions { display: flex; gap: 10px; }
-    .score-btn {
-      background: var(--bg); border: 1px solid var(--border); color: var(--text);
-      padding: 6px 14px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px;
-      cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s ease;
-    }
+    .score-btn { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 6px 14px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s ease; }
     .score-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--surface); }
     .score-btn.active-up { background: #E1F5FE; border-color: #0288D1; color: #01579B; }
     .score-btn.active-down { background: #FFEBEE; border-color: #C62828; color: #B71C1C; }
 
-    /* Archive Items */
     .archive-item { padding: 20px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; gap: 16px; cursor: pointer; }
     .archive-item:hover .archive-title { color: var(--accent); }
     .archive-title { font-weight: 500; font-size: 16px; transition: color 0.15s; }
@@ -220,50 +138,42 @@
         <button class="nav-btn active" id="btn-article" onclick="showView('article')">Issue #001</button>
         <button class="nav-btn" id="btn-archive" onclick="showView('archive')">Archive (10)</button>
         <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme">
-          <!-- Moon Icon (Default Light Mode) -->
           <svg id="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-          <!-- Sun Icon (Hidden in Light Mode) -->
           <svg id="sun-icon" style="display:none;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
         </button>
       </div>
     </header>
 
     <div class="content-grid">
-      <!-- Sticky Left Sidebar Outline -->
       <aside class="sidebar-outline" id="sidebar-outline">
         <div class="outline-title" id="outline-title-text">On This Page</div>
         <ul class="outline-list" id="outline-list"></ul>
       </aside>
 
-      <!-- Main Editorial Column -->
       <main class="editorial-column">
-        <!-- Article View -->
         <article id="view-article">
           <div class="meta-line">
-            <span>ISSUE #001</span><span>•</span><span>PRODUCT DIVES</span><span>•</span><span>10 MIN READ</span>
+            <span>ISSUE #001</span><span>•</span><span>PRODUCT DIVES</span><span>•</span><span>12 MIN READ</span>
           </div>
 
           <h1>Inside the Apple HomeView & Apple Home Collection: The Complete Hardware Breakdown</h1>
           <p class="subtitle">
-            Everything Apple just unveiled at its "Welcome Home" event—from the $299 Liquid Retina command hub to the co-engineered lineup of UWB locks, motorized privacy cameras, and radar thermostats built with LG Electronics and Schneider Electric.
+            A rigorous engineering teardown of Apple's smart home hardware ecosystem—analyzing the A18 thermal architecture, UWB time-of-flight deadbolt kinematics, motorized camera privacy switches, and MOSFET power-stealing circuits.
           </p>
 
           <figure class="product-figure">
             <div class="img-wrapper">
-              <img referrerpolicy="no-referrer" src="https://www.apple.com/newsroom/images/2026/10/meet-apple-homeview-a-new-way-to-enjoy-entertainment-and-manage-the-home/article/Apple-HomeView-lineup-261013_Full-Bleed-Image.jpg.large.jpg" onerror="this.src='https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=1400&q=85'" alt="Apple HomeView 7-inch Smart Display Lineup" />
+              <img referrerpolicy="no-referrer" src="https://www.apple.com/newsroom/images/2026/10/meet-apple-homeview-a-new-way-to-enjoy-entertainment-and-manage-the-home/article/Apple-HomeView-lineup-261013_Full-Bleed-Image.jpg.large.jpg" onerror="this.src='https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=1400&q=85'" alt="Apple HomeView 7-inch Smart Display" />
             </div>
             <figcaption>
-              <span><span class="viz-badge">Scraped Static Image / GIF</span> <strong>FIG 01 — APPLE HOMEVIEW:</strong> The 7-inch Liquid Retina display connected to a domed speaker base via an articulated stainless-steel tilt hinge.</span>
+              <span><span class="viz-badge">Scraped Static Image / GIF</span> <strong>FIG 01 — HOMEVIEW ARCHITECTURE:</strong> 7-inch Liquid Retina panel coupled via a stainless steel tilt hinge to a domed acoustic woofer base.</span>
               <span class="source-tag">IMAGE: APPLE NEWSROOM</span>
             </figcaption>
           </figure>
 
-          <h2 id="section-news-overview">1. The Big Picture: What Apple Just Announced</h2>
+          <h2 id="section-news-overview">1. The Big Picture: What Apple Announced</h2>
           <p>
-            For the past decade, Apple’s smart home strategy relied on a fragmented "bring-your-own-accessory" model. While Apple built the brains—Apple TV and HomePod—it left security cameras, doorbells, smart locks, and thermostats entirely to third-party manufacturers, forcing users to juggle multiple apps and mismatched white plastics.
-          </p>
-          <p>
-            At its October "Welcome Home" event in New York, Apple overhauled that entire model with a two-part hardware offensive: first-party command hubs (<strong>Apple HomeView</strong>, $299) and the <strong>Apple Home Collection</strong> (seven residential accessories co-developed with LG Electronics and Schneider Electric).
+            Apple's October 2026 hardware event introduced a unified smart home architecture divided into first-party command hubs (<strong>Apple HomeView</strong>, $299) and the <strong>Apple Home Collection</strong>—a suite of seven accessories co-developed with LG Electronics and Schneider Electric.
           </p>
 
           <div class="spec-table-wrap">
@@ -271,87 +181,73 @@
               <thead>
                 <tr>
                   <th>Product</th>
-                  <th>Hardware Partner</th>
-                  <th>Price (US)</th>
-                  <th>Finishes</th>
-                  <th>Headline Engineering Specs</th>
+                  <th>Partner</th>
+                  <th>Price</th>
+                  <th>Key Architectural Spec</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><strong>Apple HomeView</strong></td>
-                  <td>Apple (First-Party)</td>
+                  <td>Apple</td>
                   <td>$299.00</td>
-                  <td>Silver, Starlight, Rose, Space Gray</td>
-                  <td>7" Liquid Retina (500 to 0.3 nits), stainless steel hinge, 6-user Face ID recognition, Center Stage camera, Siri AI, Thread Border Router.</td>
+                  <td>A18 chip, 7" Liquid Retina (500 to 0.3 nits), stainless steel hinge, 4-mic array, Thread router.</td>
                 </tr>
                 <tr>
-                  <td><strong>LG Smart Deadbolt Lock</strong></td>
-                  <td>LG Electronics</td>
+                  <td><strong>LG Smart Deadbolt</strong></td>
+                  <td>LG</td>
                   <td>$349.95</td>
-                  <td>Essence Silver, Graphite</td>
-                  <td>Ultra-Wideband (UWB) hands-free approach unlocking, Aliro + Matter-over-Thread, NFC Home Key tap, offline local operation.</td>
+                  <td>IEEE 802.15.4z UWB time-of-flight ranging, Aliro + Matter-over-Thread, planetary geartrain.</td>
                 </tr>
                 <tr>
-                  <td><strong>LG Video Doorbell (Wired)</strong></td>
-                  <td>LG Electronics</td>
+                  <td><strong>LG Video Doorbell</strong></td>
+                  <td>LG</td>
                   <td>$249.95</td>
-                  <td>Essence Silver, Graphite</td>
-                  <td>Dual-camera optical split (2.5K visitor cam + 1080p downward package cam), built-in spotlight, local storage buffer.</td>
+                  <td>Dual optical split (2.5K visitor cam + 1080p downward package lens).</td>
                 </tr>
                 <tr>
-                  <td><strong>LG Indoor Cam (Plug-In)</strong></td>
-                  <td>LG Electronics</td>
+                  <td><strong>LG Indoor Security Cam</strong></td>
+                  <td>LG</td>
                   <td>$199.95</td>
-                  <td>Essence White</td>
-                  <td>2.5K HDR sensor, motorized pan/tilt gimbal that physically pitches down into the housing when family arrives home.</td>
-                </tr>
-                <tr>
-                  <td><strong>LG Outdoor & Floodlight Cams</strong></td>
-                  <td>LG Electronics</td>
-                  <td>$299.95 - $399.95</td>
-                  <td>Silver, Graphite</td>
-                  <td>2.5K resolution, low-light color night vision, dual adaptive motion floodlights (Floodlight model).</td>
+                  <td>Motorized gimbal with 95° downward pitch and physical leaf-switch microphone cutout.</td>
                 </tr>
                 <tr>
                   <td><strong>LG & Schneider Thermostats</strong></td>
                   <td>LG / Schneider</td>
                   <td>$199.95</td>
-                  <td>Silver / White / Square Dial</td>
-                  <td>Matter compatible, on-device wire detection for DIY install, iPhone Adaptive Temperature, Clean Energy Guidance.</td>
+                  <td>Active MOSFET zero-crossing power stealing for 2-wire loops, 60 GHz radar sensing.</td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-          <h2 id="section-jdm-partnership">2. How the JDM Partnership Worked</h2>
+          <h2 id="section-jdm-architecture">2. JDM Manufacturing & Supply Chain Alignment</h2>
           <p>
-            Unlike standard "Works with Apple Home" accessories where manufacturers design independently, the Apple Home Collection is a true <strong>Joint Design Manufacturing (JDM)</strong> partnership. Apple's Industrial Design group co-engineered the CMF (<strong>Essence Silver</strong>, <strong>Graphite</strong>, and <strong>White</strong>), zero-app NFC commissioning, and end-to-end encrypted iCloud architecture, while LG and Schneider handled high-voltage UL compliance, mechanical lock durability, and HVAC hardware engineering.
+            Unlike standard "Works with Apple Home" accessories, the Home Collection is a true <strong>Joint Design Manufacturing (JDM)</strong> partnership. Apple's Industrial Design group dictated the CMF (<strong>Essence Silver</strong>, <strong>Graphite</strong>, and <strong>White</strong>) and zero-app NFC commissioning, while LG and Schneider engineered the high-voltage UL compliance, mechanical locking durability, and HVAC power electronics.
           </p>
 
-          <h2 id="section-product-deep-dives">3. Product-by-Product Deep Dive</h2>
+          <h2 id="section-product-teardowns">3. Product-by-Product Engineering Teardowns</h2>
 
-          <h3 id="product-homeview">Apple HomeView (Tabletop & Wall Hub) <span class="price-tag">$299.00</span></h3>
+          <h3 id="product-homeview">Apple HomeView (Hub & Audio Base) <span class="price-tag">$299.00</span></h3>
           <p>
-            Available in two mechanical variants at $299: the <strong>Tabletop Model</strong> (featuring a precision stainless-steel tilt hinge mounted on a domed acoustic speaker base) and the <strong>Wall-Mounted Model</strong> which snaps onto Schneider Home Power Mounts (USB-C, AC gang-box, or PoE). Features a 0.3-nit to 500-nit dimming range and 6-user local Face ID profile switching.
+            Powered by the **A18 chip** and an isolated Secure Exclave, HomeView balances thermal dissipation with high-fidelity acoustics. The display module scales from 500 nits down to **0.3 nits** via a precision PWM backlight driver. In the acoustic base, a down-firing custom woofer and dual force-canceling passive radiators are mechanically isolated from the compute PCB to eliminate harmonic distortion during Siri playback.
           </p>
 
-          <h3 id="product-deadbolt">LG Smart Deadbolt Lock <span class="price-tag">$349.95</span></h3>
+          <h3 id="product-deadbolt">LG Smart Deadbolt (UWB & Kinematics) <span class="price-tag">$349.95</span></h3>
           <p>
-            Utilizes IEEE 802.15.4z Ultra-Wideband (UWB) time-of-flight ranging and Aliro standards to verify your exterior approach vector within ±3 cm, preventing false indoor triggers while throwing the bolt open automatically.
+            Standard Bluetooth RSSI locking suffers from multipath reflections and false indoor triggers. The LG Deadbolt uses **UWB impulse radio (6.5/8.0 GHz channels)** to measure nanosecond-level time-of-flight, verifying approach vectors within ±3 cm. Mechanically, it uses a high-reduction planetary gearbox paired with a lost-motion cam slot to overcome warped-door side loads exceeding 30 N without stalling on battery power.
           </p>
 
-          <h3 id="product-cameras">LG Security Camera Lineup <span class="price-tag">$199.95 – $399.95</span></h3>
+          <h3 id="product-cameras">LG Security Cams (Gimbal Shutter & Dual Optics) <span class="price-tag">$199.95 – $399.95</span></h3>
           <p>
-            Features the <strong>Indoor Cam's</strong> motorized privacy gimbal (physically tilting the lens into an opaque housing when occupied) and the <strong>Video Doorbell's</strong> dual-lens optical split for simultaneous visitor and package monitoring.
+            The **Indoor Cam** eliminates software privacy vulnerabilities via a physical mechanism: when occupied, a micro-stepping motor pitches the lens **95° downward** into an opaque, light-absorbing elastomer cup, simultaneously tripping a mechanical leaf switch that breaks the microphone's `VDD` circuit. The **Video Doorbell** solves the ground-blindspot problem by mounting two separate CMOS sensors in parallel (2.5K visitor cam + 1080p package cam).
           </p>
 
-          <h3 id="product-thermostats">LG & Schneider Smart Thermostats <span class="price-tag">$199.95</span></h3>
+          <h3 id="product-thermostats">LG & Schneider Thermostats (Power-Stealing & Radar) <span class="price-tag">$199.95</span></h3>
           <p>
-            Features automated on-device wire detection, multi-room sensor fusion with HomePods and HomeView, and iPhone Adaptive Temperature.
+            In older homes missing a Common (C) wire, the thermostat must harvest power in series through the furnace relay without chattering the contacts. Using **active MOSFET zero-crossing phase switching**, the board siphons microsecond pulses of current into an internal supercapacitor bank during 60 Hz AC zero-crosses, sustaining its 60 GHz radar occupancy sensor and Thread radio without dropping the heating call.
           </p>
 
-          <!-- Background Telemetry Scoring Bar -->
           <div class="telemetry-bar">
             <div class="telemetry-info">
               <span class="telemetry-title">Background Quality Telemetry</span>
@@ -370,7 +266,6 @@
           </div>
         </article>
 
-        <!-- Archive & Queue View -->
         <section id="view-archive" class="hidden">
           <h1>Archive & Queue</h1>
           <p class="subtitle">Filter published dispatches and upcoming topics across all 8 core subjects.</p>
@@ -382,11 +277,7 @@
   </div>
 
   <script>
-    const SUBJECTS = [
-      "All", "Product Dives", "Manufacturing", "Design",
-      "Materials", "Mechanisms", "Thermal", "Fluids", "Electromechanical"
-    ];
-
+    const SUBJECTS = ["All", "Product Dives", "Manufacturing", "Design", "Materials", "Mechanisms", "Thermal", "Fluids", "Electromechanical"];
     const TOPICS = [
       { id: "#001", subject: "Product Dives", title: "Inside the Apple HomeView & Apple Home Collection: The Complete Hardware Breakdown", status: "Published", viz: "Scraped Static Image / GIF" },
       { id: "#002", subject: "Manufacturing", title: "Additive Technologies: The True Difference Between SLA, SLS, and FDM", status: "Queued (Oct 15)", viz: "Interactive Graphic" },
@@ -395,9 +286,7 @@
       { id: "#005", subject: "Materials", title: "Fatigue & S-N Curves: Why Steel Has an Endurance Limit and Aluminum Doesn't", status: "Queued (Oct 18)", viz: "Interactive Graphic" },
       { id: "#006", subject: "Mechanisms", title: "Ballpoint Pen Clickers: The Genius of Continuous Rotational Cam Tracks", status: "Queued (Oct 19)", viz: "Interactive Graphic" },
       { id: "#007", subject: "Thermal", title: "Steam Deck Cooling: Vapor Chambers vs. Sintered Heat Pipes", status: "Queued (Oct 20)", viz: "Scraped Static Image / GIF" },
-      { id: "#008", subject: "Electromechanical", title: "Webcam Autofocus: Voice Coil Motors vs. Piezoelectric Actuators", status: "Queued (Oct 21)", viz: "Scraped Static Image / GIF" },
-      { id: "#009", subject: "Manufacturing", title: "LEGO's 2-Micron Secret: How Injection Molds Hold Precision", status: "Standby", viz: "Self-Created Image / GIF" },
-      { id: "#010", subject: "Fluids", title: "F1 Ground Effect: Venturi Tunnels and Downforce Generation", status: "Standby", viz: "Self-Created Image / GIF" }
+      { id: "#008", subject: "Electromechanical", title: "Webcam Autofocus: Voice Coil Motors vs. Piezoelectric Actuators", status: "Queued (Oct 21)", viz: "Scraped Static Image / GIF" }
     ];
 
     let activeSubject = "All";
@@ -451,24 +340,20 @@
     function recordTelemetry(direction) {
       const btnUp = document.getElementById("telemetry-up");
       const btnDown = document.getElementById("telemetry-down");
-      
       btnUp.classList.remove("active-up");
       btnDown.classList.remove("active-down");
-
       if(direction === 'up') {
         btnUp.classList.add("active-up");
-        console.log("[Telemetry] Recorded positive reinforcement for topic archetype: Product Dives / Hardware Teardowns.");
+        console.log("[Telemetry] Recorded positive reinforcement for hardware teardown depth.");
       } else {
         btnDown.classList.add("active-down");
-        console.log("[Telemetry] Recorded negative score. Queuing immediate topic re-weighting in background model.");
+        console.log("[Telemetry] Recorded negative reinforcement. Re-weighting curation parameters.");
       }
     }
 
-    // Dynamic Left Sidebar Outline Builder & Scroll-Spy
     function buildOutline() {
       const outlineList = document.getElementById("outline-list");
       const headings = document.querySelectorAll("#view-article h2, #view-article h3");
-      
       let html = "";
       headings.forEach((h, index) => {
         if(!h.id) h.id = "heading-" + index;
@@ -477,7 +362,6 @@
       });
       outlineList.innerHTML = html;
 
-      // Scroll observer for active outline state
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
