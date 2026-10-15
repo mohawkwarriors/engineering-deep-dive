@@ -20,6 +20,16 @@
       --accent: #D97757;
       --accent-hover: #C56645;
       --max-w: 1080px;
+
+      /* Subject Tag Colors (Light Mode) */
+      --sub-product-dives: #D97757;
+      --sub-manufacturing: #2563EB;
+      --sub-design: #7C3AED;
+      --sub-materials: #059669;
+      --sub-mechanisms: #D97706;
+      --sub-thermal: #E11D48;
+      --sub-fluids: #0891B2;
+      --sub-electromechanical: #4F46E5;
     }
     [data-theme="dark"] {
       --bg: #191918;
@@ -30,6 +40,16 @@
       --border: #383734;
       --accent: #D97757;
       --accent-hover: #E88868;
+
+      /* Subject Tag Colors (Dark Mode) */
+      --sub-product-dives: #E88868;
+      --sub-manufacturing: #3B82F6;
+      --sub-design: #8B5CF6;
+      --sub-materials: #10B981;
+      --sub-mechanisms: #F59E0B;
+      --sub-thermal: #F43F5E;
+      --sub-fluids: #06B6D4;
+      --sub-electromechanical: #6366F1;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -89,11 +109,11 @@
     .outline-item a.active { color: var(--accent); border-left-color: var(--accent); font-weight: 500; }
     .outline-item.sub-item a { padding-left: 22px; font-size: 12.5px; }
 
-    .editorial-column { max-width: 740px; }
+    .editorial-column { max-width: 740px; width: 100%; }
     .subjects-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
     .subject-pill {
       background: transparent; border: 1px solid var(--border); color: var(--muted);
-      font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 5px 10px; border-radius: 4px; cursor: pointer; transition: all 0.15s ease;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 6px 12px; border-radius: 4px; cursor: pointer; transition: all 0.15s ease;
     }
     .subject-pill:hover, .subject-pill.active { border-color: var(--text); color: var(--text); background: var(--surface); }
 
@@ -134,10 +154,75 @@
     .score-btn.active-up { background: #E1F5FE; border-color: #0288D1; color: #01579B; }
     .score-btn.active-down { background: #FFEBEE; border-color: #C62828; color: #B71C1C; }
 
-    .archive-item { padding: 20px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; gap: 16px; cursor: pointer; }
+    /* Archive Items - Fixed spacing & un-bunched layout */
+    #archive-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0px;
+    }
+    .archive-item {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      cursor: pointer;
+    }
     .archive-item:hover .archive-title { color: var(--accent); }
-    .archive-title { font-weight: 500; font-size: 16px; transition: color 0.15s; }
-    .archive-meta { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); white-space: nowrap; }
+    .archive-main {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+    .archive-title {
+      font-weight: 500;
+      font-size: 17px;
+      line-height: 1.4;
+      transition: color 0.15s;
+    }
+    .archive-details {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+    }
+    .archive-subject-tag {
+      font-weight: 500;
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .archive-viz {
+      color: var(--muted);
+    }
+    .archive-right {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      padding-top: 2px;
+    }
+
+    /* Distinct Subject Tag Colors */
+    .tag-product-dives { background: rgba(217, 119, 87, 0.12); color: var(--sub-product-dives); border: 1px solid rgba(217, 119, 87, 0.25); }
+    .tag-manufacturing { background: rgba(37, 99, 235, 0.12); color: var(--sub-manufacturing); border: 1px solid rgba(37, 99, 235, 0.25); }
+    .tag-design { background: rgba(124, 58, 237, 0.12); color: var(--sub-design); border: 1px solid rgba(124, 58, 237, 0.25); }
+    .tag-materials { background: rgba(5, 150, 105, 0.12); color: var(--sub-materials); border: 1px solid rgba(5, 150, 105, 0.25); }
+    .tag-mechanisms { background: rgba(217, 119, 6, 0.12); color: var(--sub-mechanisms); border: 1px solid rgba(217, 119, 6, 0.25); }
+    .tag-thermal { background: rgba(225, 29, 72, 0.12); color: var(--sub-thermal); border: 1px solid rgba(225, 29, 72, 0.25); }
+    .tag-fluids { background: rgba(8, 145, 178, 0.12); color: var(--sub-fluids); border: 1px solid rgba(8, 145, 178, 0.25); }
+    .tag-electromechanical { background: rgba(79, 70, 229, 0.12); color: var(--sub-electromechanical); border: 1px solid rgba(79, 70, 229, 0.25); }
+
     .hidden { display: none; }
   </style>
 </head>
@@ -294,7 +379,7 @@
 
         <section id="view-archive" class="hidden">
           <h1>Archive & Queue</h1>
-          <p class="subtitle">Filter published dispatches and upcoming topics across all 8 core subjects.</p>
+          <p class="subtitle" style="margin-bottom: 28px;">Filter published dispatches and upcoming topics across all 8 core subjects.</p>
           <div class="subjects-bar" id="subjects-bar"></div>
           <div id="archive-list"></div>
         </section>
@@ -317,6 +402,20 @@
 
     let activeSubject = "All";
 
+    function getTagClass(sub) {
+      switch(sub) {
+        case "Product Dives": return "tag-product-dives";
+        case "Manufacturing": return "tag-manufacturing";
+        case "Design": return "tag-design";
+        case "Materials": return "tag-materials";
+        case "Mechanisms": return "tag-mechanisms";
+        case "Thermal": return "tag-thermal";
+        case "Fluids": return "tag-fluids";
+        case "Electromechanical": return "tag-electromechanical";
+        default: return "";
+      }
+    }
+
     function renderSubjects() {
       const bar = document.getElementById("subjects-bar");
       bar.innerHTML = SUBJECTS.map(sub => `
@@ -331,11 +430,17 @@
       const filtered = activeSubject === "All" ? TOPICS : TOPICS.filter(t => t.subject === activeSubject);
       list.innerHTML = filtered.map(item => `
         <div class="archive-item" onclick="showView('article')">
-          <div>
+          <div class="archive-main">
             <div class="archive-title">${item.title}</div>
-            <div class="archive-meta">${item.subject} &middot; <span style="color:var(--accent);">${item.viz}</span></div>
+            <div class="archive-details">
+              <span class="archive-subject-tag ${getTagClass(item.subject)}">${item.subject}</span>
+              <span class="archive-viz">&middot; ${item.viz}</span>
+            </div>
           </div>
-          <div class="archive-meta">${item.id} &middot; ${item.status}</div>
+          <div class="archive-right">
+            <span style="font-weight:600; color:var(--text);">${item.id}</span>
+            <span>${item.status}</span>
+          </div>
         </div>
       `).join("");
     }
