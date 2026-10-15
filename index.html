@@ -102,7 +102,6 @@
     .sidebar-outline {
       position: sticky; top: 36px; max-height: calc(100vh - 72px); overflow-y: auto; padding-right: 16px; border-right: 1px solid var(--border);
     }
-    .outline-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 16px; font-weight: 500; }
     .outline-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
     .outline-item a { font-size: 13.5px; color: var(--muted); text-decoration: none; display: block; line-height: 1.4; transition: color 0.15s; border-left: 2px solid transparent; padding-left: 10px; }
     .outline-item a:hover { color: var(--text); }
@@ -169,96 +168,123 @@
       font-weight: 500;
       position: relative;
       transition: background-color 0.15s, color 0.15s;
-      padding: 1px 2px;
+      padding: 1px 3px;
       border-radius: 3px;
     }
-    .tangent-term:hover {
+    .tangent-term:hover, .tangent-term.active-hover {
       background-color: var(--surface);
       color: var(--accent);
     }
 
-    /* Modal / Pop-up Dialog for Mini Deep Dives */
-    .modal-overlay {
+    /* Apple-Style Floating Hover Popover */
+    .floating-popover {
       position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(3px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-    }
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .modal-card {
+      z-index: 2000;
+      max-width: 380px;
+      width: calc(100vw - 32px);
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 8px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-      max-width: 540px;
-      width: 100%;
-      padding: 24px 28px;
-      position: relative;
-      transform: translateY(12px);
-      transition: transform 0.2s ease;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16), 0 2px 8px rgba(0, 0, 0, 0.08);
+      padding: 16px 20px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(6px);
+      transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .modal-overlay.active .modal-card {
+    .floating-popover.active {
+      opacity: 1;
+      pointer-events: auto;
       transform: translateY(0);
     }
-    .modal-header {
+    .floating-popover.pinned {
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.22), 0 0 0 1.5px var(--accent);
+    }
+    .popover-arrow {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      transform: rotate(45deg);
+      z-index: -1;
+    }
+    .floating-popover.arrow-bottom .popover-arrow {
+      bottom: -7px;
+      border-top: none;
+      border-left: none;
+    }
+    .floating-popover.arrow-top .popover-arrow {
+      top: -7px;
+      border-bottom: none;
+      border-right: none;
+    }
+    .popover-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
-      padding-bottom: 10px;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
       border-bottom: 1px solid var(--border);
     }
-    .modal-tag {
+    .popover-tag {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--accent);
       font-weight: 600;
     }
-    .modal-close-btn {
+    .popover-close-btn {
       background: none;
       border: none;
       color: var(--muted);
       cursor: pointer;
-      font-size: 18px;
-      padding: 4px;
+      font-size: 14px;
+      padding: 2px 4px;
       line-height: 1;
-      transition: color 0.15s;
+      display: none;
     }
-    .modal-close-btn:hover { color: var(--text); }
-    .modal-title {
+    .floating-popover.pinned .popover-close-btn {
+      display: block;
+    }
+    .popover-close-btn:hover { color: var(--text); }
+    .popover-title {
       font-family: 'Instrument Serif', Georgia, serif;
-      font-size: 26px;
+      font-size: 21px;
       font-weight: 400;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       line-height: 1.25;
-    }
-    .modal-body {
-      font-size: 15px;
-      line-height: 1.65;
       color: var(--text);
     }
-    .modal-equation-box {
+    .popover-body {
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--text);
+    }
+    .popover-body p { margin-bottom: 8px; }
+    .popover-body p:last-child { margin-bottom: 0; }
+    .popover-body .modal-equation-box {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 12px 16px;
-      margin: 16px 0;
+      border-radius: 5px;
+      padding: 8px 12px;
+      margin: 10px 0;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13.5px;
+      font-size: 11.5px;
+      line-height: 1.45;
       color: var(--text);
+    }
+    .popover-footer {
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .callout-box { background: var(--surface); border-left: 3px solid var(--accent); padding: 18px 22px; margin: 28px 0; font-size: 15.5px; border-radius: 0 6px 6px 0; }
@@ -364,7 +390,6 @@
 
     <div class="content-grid" id="content-grid">
       <aside class="sidebar-outline" id="sidebar-outline">
-        <div class="outline-title" id="outline-title-text">On This Page</div>
         <ul class="outline-list" id="outline-list"></ul>
       </aside>
 
@@ -383,15 +408,18 @@
     </div>
   </div>
 
-  <!-- Interactive Pop-up Modal for Mini Deep Dives -->
-  <div class="modal-overlay" id="tangent-modal" onclick="closeModalOnBackdrop(event)">
-    <div class="modal-card">
-      <div class="modal-header">
-        <span class="modal-tag" id="modal-tag">MINI DEEP DIVE</span>
-        <button class="modal-close-btn" onclick="closeModal()">✕</button>
-      </div>
-      <h3 class="modal-title" id="modal-title">Engineering Concept</h3>
-      <div class="modal-body" id="modal-body"></div>
+  <!-- Apple-Style Floating Hover & Press Popover -->
+  <div id="floating-popover" class="floating-popover" role="tooltip">
+    <div id="popover-arrow" class="popover-arrow"></div>
+    <div class="popover-header">
+      <span class="popover-tag" id="popover-tag">ENGINEERING CONCEPT</span>
+      <button class="popover-close-btn" onclick="unpinPopover()" title="Close popover">✕</button>
+    </div>
+    <h4 class="popover-title" id="popover-title">Concept</h4>
+    <div class="popover-body" id="popover-body"></div>
+    <div class="popover-footer">
+      <span id="popover-footer-text">Click or tap to pin</span>
+      <span>EDD INTEL</span>
     </div>
   </div>
 
@@ -403,133 +431,329 @@
       { id: "#000", subject: "Electromechanical", title: "Apple Vision Pro Actuators: Interpupillary Voice Coil Motors and Custom Encoders", status: "Published", date: "Oct 13, 2026" }
     ];
 
-    // Mini Deep Dive Tangent Database
+    // Mini Deep Dive Tangent Database (26 Specialized Topics)
     const TANGENTS = {
-      convection: {
-        tag: "THERMAL PHYSICS // CONDUCTION & CONVECTION",
-        title: "Passive Natural Convection in Compute Displays",
-        body: `
-          <p>Smart displays on nightstands cannot use active cooling fans due to acoustic noise, dust accumulation, and motor wear over a 10-year lifespan. Dissipating heat from the 3nm A18 silicon die package requires a continuous thermal conduction chain into the rear housing.</p>
+      "convection": {
+        "tag": "THERMAL PHYSICS // CONDUCTION & BUOYANCY",
+        "title": "Passive Natural Convection & Heat Spreading",
+        "body": `
+          <p>Electronic devices operating without cooling fans rely on buoyancy-driven air motion (natural convection) governed by temperature differences between the chassis surface and ambient air.</p>
           <div class="modal-equation-box">
             Conduction: q = -k · A · (dT/dx)<br>
             Natural Convection: q_conv = h · A · (T_surface - T_ambient)
           </div>
-          <p>Thermal energy moves from the silicon die package through a high-conductivity phase-change thermal interface material (TIM) into anisotropic pyrolytic graphite sheets. These graphite spreaders disperse the concentrated heat flux horizontally across an internal structural aluminum chassis extrusion, keeping peak rear-enclosure skin temperatures safely under 38°C during full-screen video playback and local neural network execution.</p>
+          <p>To prevent localized hotspots exceeding safe touch limits (&le;43&deg;C per IEC 62368-1), high-power silicon packages pair with pyrolytic graphite spreaders to disperse heat flux uniformly across an internal aluminum chassis extrusion.</p>
         `
       },
-      uwb: {
-        tag: "RF PHYSICS // SPATIAL RANGING",
-        title: "Ultra-Wideband (UWB) Time-of-Flight vs. BLE RSSI",
-        body: `
-          <p>Standard Bluetooth Low Energy measures signal strength (RSSI) to estimate distance. However, multipath RF reflections bouncing off metal door frames and stucco wire mesh create ±12 dB swings—making someone inside the foyer look closer than someone standing on the porch.</p>
+      "pwm_dimming": {
+        "tag": "OPTOELECTRONICS // LED BACKLIGHT DRIVERS",
+        "title": "High-Frequency Pulse-Width Modulation (PWM)",
+        "body": `
+          <p>Direct current dimming causes LEDs to shift color temperature and suffer threshold voltage cutoffs at ultra-low currents. PWM achieves deep dimming by switching LEDs fully on and off at high frequencies.</p>
           <div class="modal-equation-box">
-            Range: d = (c · Δt) / 2<br>
-            Pulse Width: τ_pulse ≈ 2 nanoseconds (500 MHz Bandwidth)
+            Luminance: L_avg = L_peak &middot; (t_on / T_period)<br>
+            Frequency: f_pwm &ge; 25 kHz (Eliminates acoustic coil whine & stroboscopic flicker)
           </div>
-          <p>UWB transmits short nanosecond-duration pulses across 6.5 GHz and 8.0 GHz channels. Because the pulses are ultra-narrow in the time domain, the receiver easily separates the direct line-of-sight wavefront from reflected echoes, measuring physical Time-of-Flight (ToF) down to ±3 cm accuracy and resolving exterior vs. interior approach vectors.</p>
+          <p>By modulating duty cycle down to 0.06%, the display throttles from 500 nits down to 0.3 nits without color distortion or backlight flickering.</p>
         `
       },
-      gearbox: {
-        tag: "MECHANICAL KINEMATICS // DRIVETRAIN",
-        title: "Why Planetary Gearheads Fit High Torque in Door Bores",
-        body: `
-          <p>A smart deadbolt must fit inside a standard 25.4 mm (1-inch) edge bore while producing enough torque to cam a warped, sticking wooden door against compressed weatherstripping (>30 N force).</p>
+      "pyrolytic_graphite": {
+        "tag": "MATERIALS SCIENCE // THERMAL ANISOTROPY",
+        "title": "Pyrolytic Graphite Heat Spreaders",
+        "body": `
+          <p>Synthetic pyrolytic graphite sheets exhibit extreme planar thermal anisotropy due to hexagonal sp&sup2; carbon covalent bonds in-plane versus weak van der Waals forces between layers.</p>
+          <div class="modal-equation-box">
+            In-Plane Conductivity: k_xy &asymp; 1,600 &ndash; 1,800 W/(m&middot;K) (4x Copper)<br>
+            Through-Plane Conductivity: k_z &asymp; 15 W/(m&middot;K) (Thermal Barrier)
+          </div>
+          <p>This guides concentrated heat away from concentrated chips horizontally across broad chassis surfaces before it can penetrate through the front cover glass.</p>
+        `
+      },
+      "uwb": {
+        "tag": "RF PHYSICS // TIME-OF-FLIGHT SPATIAL RANGING",
+        "title": "Ultra-Wideband (UWB) Time-of-Flight vs. BLE RSSI",
+        "body": `
+          <p>Bluetooth Low Energy measures Received Signal Strength (RSSI) to estimate distance, but metal door frames and stucco wire cause &plusmn;12 dB multipath swings—tricking locks into unlocking from inside the home.</p>
+          <div class="modal-equation-box">
+            Distance: d = (c &middot; &Delta;t) / 2<br>
+            Pulse Duration: &tau; &asymp; 2 nanoseconds (&ge;500 MHz Bandwidth)
+          </div>
+          <p>UWB transmits ultra-narrow RF pulses across 6.5 GHz and 8.0 GHz. Because pulses arrive faster than reflected echoes, the receiver isolates the direct line-of-sight wavefront, achieving &plusmn;3 cm ranging accuracy.</p>
+        `
+      },
+      "aliro": {
+        "tag": "COMMUNICATION PROTOCOLS // ACCESS CONTROL",
+        "title": "Aliro Universal Access Standard",
+        "body": `
+          <p>A unified credential standard established by the Connectivity Standards Alliance (CSA) to standardize digital key handshakes across Apple, Google, Samsung, and lock manufacturers.</p>
+          <div class="modal-equation-box">
+            Layers: Matter-over-Thread (Mesh) + BLE (Discovery) + UWB (Ranging)<br>
+            Security: Asymmetric public-key cryptography via Secure Element
+          </div>
+          <p>Eliminates proprietary vendor hubs by allowing devices to discover, authenticate, and range entirely offline with sub-second latency.</p>
+        `
+      },
+      "gearbox": {
+        "tag": "MECHANICAL KINEMATICS // TORQUE TRANSMISSION",
+        "title": "Planetary Gearboxes in Cylindrical Bores",
+        "body": `
+          <p>Door locks must fit inside a standard 25.4 mm (1-inch) edge bore while generating over 30 N of linear bolt-throw force to overcome sticking, weather-stripped doors.</p>
           <div class="modal-equation-box">
             Gear Ratio: i = 1 + (Z_ring / Z_sun)<br>
-            Output Torque: τ_out = F_throw · r_cam · η_gear
+            Output Torque: &tau;_out = F_throw &middot; r_cam / &eta;_gear
           </div>
-          <p>Spur gear trains require wide center-to-center distances between parallel shafts, making them far too bulky for cylindrical lock bores. In contrast, planetary gearheads share loads across three planet gears orbiting a central sun gear along a common coaxial centerline. This delivers high gear reduction (approx. 120:1) and exceptional volumetric torque density in a tiny cylindrical envelope.</p>
+          <p>Unlike spur gears that require wide parallel shaft spacing, planetary gearheads share loads across multiple planet gears orbiting a central sun gear along a common axis, delivering high reduction (120:1) in a tiny cylinder.</p>
         `
       },
-      optics: {
-        tag: "OPTICAL DESIGN // PARALLAX & FOV",
-        title: "Dual-Lens Optical Split vs. Wide Fisheye Distortion",
-        body: `
-          <p>A single extreme ultra-wide fisheye lens (>180° FOV) creates severe barrel distortion at the image perimeter, stretching human faces at eye level and rendering package shipping labels unreadable on the floor.</p>
+      "lost_motion_cam": {
+        "tag": "MECHANISMS // MECHANICAL DECOUPLING",
+        "title": "Lost-Motion Slotted Cam Drivetrains",
+        "body": `
+          <p>When an electric motor drives a deadbolt, its high-ratio planetary gearbox has enormous back-driving resistance, making manual rotation from the inside thumbturn nearly impossible.</p>
           <div class="modal-equation-box">
-            Camera 1 (Visitor): 2.5K HDR, f/2.0, 130° FOV (Optimized for facial MTF)<br>
-            Camera 2 (Package): 1080p, f/2.4, 110° Downward Tilt (Canted at 45°)
+            Free Angle: &theta;_free &asymp; 45&deg; &ndash; 60&deg; of Unconstrained Cam Arc<br>
+            Operation: Motor centers drive pin in open slot after bolt extension
           </div>
-          <p>By splitting the optical pipeline into two dedicated glass lens modules, each sensor is optical-bench calibrated for its exact focal distance, providing crystal-clear facial recognition while simultaneously monitoring packages touching the door threshold.</p>
+          <p>The lost-motion slot mechanically decouples the manual thumbturn from the motor shaft, allowing users to rotate the deadbolt freely by hand with zero motor gear drag.</p>
         `
       },
-      leafswitch: {
-        tag: "ELECTROMECHANICAL // AIR-GAP PRIVACY",
-        title: "Mechanical Air-Gap Disconnect vs. Firmware Muting",
-        body: `
-          <p>Modern MEMS microphones are powered by a DC supply line (VDD) from the power management IC. When cameras use "software privacy mode", firmware merely stops recording the I2S digital audio stream—meaning the physical microphone membrane remains powered and susceptible to software exploits.</p>
+      "optics": {
+        "tag": "OPTICAL DESIGN // PARALLAX & CHROMATIC CORRECTION",
+        "title": "Dual-Lens Optical Split vs. Fisheye Barrel Distortion",
+        "body": `
+          <p>Single-lens doorbell cameras with &ge;180&deg; field-of-view suffer severe peripheral barrel distortion, stretching human faces at eye level and washing out package details near the floor.</p>
           <div class="modal-equation-box">
-            Mechanism: Dual-axis gimbal pitches barrel 95° downward<br>
-            Electrical Cutoff: Eccentric cam lobe opens gold-plated NC leaf switch<br>
-            Isolation: Complete physical air-gap on VDD microphone power rail
+            Upper Sensor (Visitor): 2.5K HDR, f/2.0, 130&deg; FOV (Facial MTF optimized)<br>
+            Lower Sensor (Package): 1080p, f/2.4, 110&deg; FOV (Canted 45&deg; downward)
           </div>
-          <p>At the bottom 5° of downward tilt, the gimbal mechanically pushes an internal spring-loaded leaf switch open. This severs the physical circuit supplying power to the microphone hardware itself, guaranteeing hardware-enforced privacy.</p>
+          <p>Splitting the optics across two independent glass assemblies allows each sensor to be calibrated for its exact focal plane, providing crisp facial identification and a flat, undistorted package view.</p>
         `
       },
-      powerstealing: {
-        tag: "POWER ELECTRONICS // ZERO-CROSSING HARVESTING",
-        title: "Active MOSFET Power Stealing in 2-Wire HVAC Loops",
-        body: `
-          <p>Older North American HVAC systems only provide two wires: R (24V AC power) and W (heat call). There is no Common (C) wire return loop. If a smart thermostat draws too much current while the heat is off, the furnace relay will falsely pull in and ignite the burner.</p>
+      "leafswitch": {
+        "tag": "ELECTROMECHANICAL // AIR-GAP PRIVACY",
+        "title": "Mechanical Leaf-Switch Hardware Cutoff",
+        "body": `
+          <p>Software privacy toggles merely stop digital audio recording in firmware while MEMS microphones remain electrically biased on the circuit board, vulnerable to firmware exploits.</p>
           <div class="modal-equation-box">
-            AC Waveform: v(t) = V_peak · sin(ωt)<br>
-            Harvest Window: Δt ≈ 300 μs at Zero-Voltage Crossing (v(t) ≈ 0V)<br>
-            Current Threshold: I_leak < 20 mA (Well below 40 mA relay pull-in)
+            Kinematics: 95&deg; motorized gimbal pitch pushes cam lobe into leaf spring<br>
+            Contact: Gold-plated normally-closed (NC) wiping contact (R &lt; 30 m&Omega;)<br>
+            Isolation: Physical open circuit on microphone VDD power rail
           </div>
-          <p>To survive without dropping offline, the thermostat board uses back-to-back power MOSFETs. Near the 60 Hz AC zero-crossing, the MOSFETs briefly open for microsecond windows to siphon short current pulses into an internal supercapacitor bank—providing continuous power for its 60 GHz radar and Thread mesh radio.</p>
+          <p>At the bottom 5&deg; of rotation, a cam lobe physically pushes the leaf spring open, breaking the DC power supply trace to the microphones and guaranteeing hardware-enforced silence.</p>
         `
       },
-      ipd_alignment: {
-        tag: "OPTICAL BIOMECHANICS // VISUAL AXIS",
-        title: "Interpupillary Visual Axis & Pancake Eyebox Limits",
-        body: `
-          <p>Catadioptric pancake lenses fold optical paths using quarter-wave retarders and partial beam splitters. This produces extreme compactness but restricts the aberration-free sweet spot to a 4.0 mm circular pupil box.</p>
+      "heatsinks": {
+        "tag": "THERMAL DESIGN // ENVIRONMENTAL DISSIPATION",
+        "title": "Die-Cast Convective Heatsink Enclosures",
+        "body": `
+          <p>Outdoor floodlight cameras combine 2,000-lumen LED drivers with high-temperature solar loading. Sensor dark-current shot noise doubles for every 6&deg;C to 8&deg;C rise in CMOS junction temperature.</p>
           <div class="modal-equation-box">
-            Visual Eyebox: ⌀ = 4.0 mm<br>
-            Allowable Off-Axis Shift: Δx_max ≤ ±0.75 mm<br>
-            MTF Penalty: >45% contrast decay beyond 1.5 mm displacement
+            Convective Fins: Nu = C &middot; (Gr &middot; Pr)^m<br>
+            Surface Finish: Black anodized emissivity &epsilon; &asymp; 0.85 &ndash; 0.90 (Maximizes radiative cooling)
           </div>
-          <p>When the lens optical axis does not align with the visual line of sight connecting the fovea through the nodal point of the cornea, lateral color dispersion and coma severely degrade fine spatial frequencies.</p>
+          <p>Heavy-gauge aluminum outriggers conduct LED heat away into convective cooling fins on the exterior housing, thermally decoupling high-wattage lighting from the central camera core.</p>
         `
       },
-      lorentz_vcm: {
-        tag: "ELECTROMECHANICAL // DIRECT-DRIVE FORCE",
-        title: "Lorentz Force in Miniature Voice Coil Actuators",
-        body: `
-          <p>Voice coil motors eliminate rotary-to-linear conversion hardware, delivering direct linear translation with zero mechanical backlash and zero audible motor stepping noise.</p>
+      "fresnel_glare": {
+        "tag": "OPTICS // INTERNAL REFLECTION",
+        "title": "Fresnel Glare & Optical Boot Isolation",
+        "body": `
+          <p>When 850 nm infrared night-vision LEDs share a protective glass dome with a camera lens, light bounces off the internal glass-air boundary according to Fresnel's reflection law.</p>
           <div class="modal-equation-box">
-            Force: F = B · I · L<br>
-            B = Magnetic Flux Density (1.2 Tesla from NdFeB magnets)<br>
-            I = Coil Current (mA control via H-bridge PWM)<br>
-            L = Active Wire Length in Magnetic Gap
+            Reflection: R = ((n_glass - n_air) / (n_glass + n_air))&sup2; &asymp; 4% per surface<br>
+            Result: Reflected IR light floods the CMOS aperture, creating milky haze
           </div>
-          <p>By suspending the coil carriage in a balanced magnetic circuit, linear force is strictly proportional to current, enabling sub-millisecond step settling and positioning repeatability under 1 micron.</p>
+          <p>A dual-durometer black silicone boot compresses directly against the inner glass face, creating an opaque light-seal that physically prevents stray IR rays from washing out night vision.</p>
         `
       },
-      flexure_suspension: {
-        tag: "PRECISION MECHANISMS // COMPLIANT GUIDES",
-        title: "Planar Beryllium-Copper Flexure Spring Guides",
-        body: `
-          <p>Sliding bushings and rolling ball bearings introduce friction, stick-slip hysteresis, and require lubricant that can outgas inside sealed optical modules. Vision Pro suspends its optical carriages on compliant flexure spring blades.</p>
+      "powerstealing": {
+        "tag": "POWER ELECTRONICS // ZERO-CROSSING HARVESTING",
+        "title": "Active MOSFET Power Stealing (2-Wire Loops)",
+        "body": `
+          <p>Older homes lack a dedicated Common (C) neutral wire. Smart thermostats must harvest power in series through the furnace relay coil without pulling enough current to close the relay.</p>
           <div class="modal-equation-box">
-            Stiffness: k = 12 · E · I / L^3<br>
-            Material: Beryllium-Copper (C17200) / Annealed Spring Steel<br>
-            Fatigue Life: >10^6 cycles at rated ±12 mm deflection
+            AC Waveform: v(t) = V_peak &middot; sin(&omega;t)<br>
+            Harvest Window: &Delta;t &asymp; 300 &mu;s near zero-crossing (where v(t) &asymp; 0V)<br>
+            Current Threshold: I_leak &lt; 20 mA (Well below 40 mA relay pull-in)
           </div>
-          <p>Flexure blades flex elastically in the primary transverse degree of freedom while remaining exceptionally rigid against off-axis pitching and yawing moments, ensuring perfect optical orthogonality.</p>
+          <p>Back-to-back MOSFETs open for microsecond windows near 60 Hz zero-crossings to charge an internal supercapacitor bank without dropping holding flux in the furnace contactor.</p>
         `
       },
-      linear_encoder: {
-        tag: "METROLOGY // OPTICAL DIFFRACTION",
-        title: "Reflective Chrome-on-Glass Quadrature Linear Encoders",
-        body: `
-          <p>Because voice coil motors lack holding detents when de-energized, an absolute position reference is provided by reflective optical encoders etched directly along the carriage guide shafts.</p>
+      "fmcw_radar": {
+        "tag": "RF SENSING // MICROWAVE INTERFEROMETRY",
+        "title": "60 GHz FMCW Respiration Radar",
+        "body": `
+          <p>Traditional passive infrared (PIR) sensors require an exterior plastic Fresnel lens and cannot detect a stationary person. Millimeter-wave radar penetrates dielectric cover glass invisibly.</p>
           <div class="modal-equation-box">
-            Scale Pitch: P = 20.0 microns<br>
-            Interpolation Factor: N = 256 subdivisions per fringe<br>
-            Effective Resolution: Δx = P / N = 0.078 microns (78 nm)
+            Frequency Sweep: 57 &ndash; 64 GHz (&lambda; &asymp; 5 mm)<br>
+            Phase Sensitivity: &Delta;&phi; = 4&pi; &middot; &Delta;r / &lambda;<br>
+            Resolution: Detects sub-millimeter chest displacement from respiration
           </div>
-          <p>An infrared VCSEL illuminates alternating chrome lines, and a differential ASIC photodiode array measures the reflected interference fringes. The quadrature signals provide direction and sub-micron position tracking with zero magnetic interference susceptibility.</p>
+          <p>By measuring minute phase shifts between transmitted and reflected chirps, the sensor confirms room occupancy even when occupants are sitting completely motionless.</p>
+        `
+      },
+      "ipd_alignment": {
+        "tag": "BIOMECHANICS // OPTICAL ALIGNMENT",
+        "title": "Interpupillary Distance (IPD) & Eyebox Limits",
+        "body": `
+          <p>Human interpupillary distance ranges from 51 mm to 75 mm. High-resolution catadioptric pancake optics have an optical sweet spot (eyebox) measuring only 4.0 mm in diameter.</p>
+          <div class="modal-equation-box">
+            Tolerance: &plusmn;0.75 mm allowable off-axis pupillary offset<br>
+            MTF Degradation: >45% contrast loss beyond 1.5 mm displacement
+          </div>
+          <p>When the optical center fails to align with the eye's visual axis, image sharpness collapses and artificial binocular parallax vergence rapidly induces motion sickness.</p>
+        `
+      },
+      "pancake_optics": {
+        "tag": "OPTICAL PHYSICS // POLARIZATION FOLDING",
+        "title": "Catadioptric Pancake Optics",
+        "body": `
+          <p>Conventional refractive VR lenses require large air gaps (40–50 mm) between lens and display. Pancake optics fold the optical path back and forth using polarizers and beam splitters.</p>
+          <div class="modal-equation-box">
+            Optical Path: Polarizer &rarr; 50/50 Beam Splitter &rarr; Quarter-Wave Plate (QWP) &rarr; Reflective Polarizer<br>
+            Z-Stack Reduction: Reduces physical headset depth by >60%
+          </div>
+          <p>This achieves a thin, low-profile front visor but introduces approximately 75% optical light loss, demanding high-brightness micro-OLED panels capable of over 5,000 nits.</p>
+        `
+      },
+      "mtf": {
+        "tag": "OPTICAL METROLOGY // IMAGE FIDELITY",
+        "title": "Modulation Transfer Function (MTF)",
+        "body": `
+          <p>MTF measures an optical system's ability to transfer contrast from an object to the image plane across increasing spatial frequencies (measured in line pairs per millimeter, lp/mm).</p>
+          <div class="modal-equation-box">
+            MTF: Contrast Transfer = (I_max - I_min) / (I_max + I_min)<br>
+            Spatial Benchmark: MTF &gt; 0.6 at 30 lp/mm (Required for tack-sharp text)
+          </div>
+          <p>In spatial displays, MTF drops rapidly off-axis. Automated mechanical lens alignment ensures the user's pupil stays pinned at the optical center where MTF is highest.</p>
+        `
+      },
+      "vergence_accommodation": {
+        "tag": "VISUAL NEUROLOGY // SENSORY CONFLICT",
+        "title": "Vergence-Accommodation Conflict (VAC)",
+        "body": `
+          <p>In the natural world, the brain couples eye lens accommodation (focusing) with binocular vergence (inward/outward eye rotation). In spatial headsets, the screen focal distance is fixed (~1.3 m).</p>
+          <div class="modal-equation-box">
+            Accommodation Cue: Fixed focal plane at 1.3 meters (0.77 Diopters)<br>
+            Vergence Cue: Dynamic virtual object depth (0.2 m to infinity)<br>
+            Conflict: Neurological decoupling induces eye strain and headache
+          </div>
+          <p>Precise mechanical IPD centering eliminates added lateral parallax errors, keeping the neurological vergence-accommodation discrepancy within tolerable sensory limits.</p>
+        `
+      },
+      "lorentz_force": {
+        "tag": "PHYSICS // ELECTROMAGNETIC FORCES",
+        "title": "Lorentz Force in Linear Voice Coil Actuators",
+        "body": `
+          <p>The foundational electromagnetic force exerted on a charged particle or current-carrying conductor moving through a magnetic field, discovered by Hendrik Lorentz.</p>
+          <div class="modal-equation-box">
+            General Equation: F = q &middot; (E + v &times; B)<br>
+            Conductor in Magnetic Field: F = I &middot; (L &times; B)<br>
+            Where: F = Force (N), I = Current (A), L = Wire Length (m), B = Flux Density (Tesla)
+          </div>
+          <p>Because force is directly proportional to coil current, voice coil actuators produce instantaneous, smooth linear motion without gear train friction, motor cogging, or stepping backlash.</p>
+        `
+      },
+      "lorentz_vcm": {
+        "tag": "ELECTROMECHANICAL // DIRECT-DRIVE ACTUATION",
+        "title": "Miniature Voice Coil Motors (VCMs)",
+        "body": `
+          <p>A direct-drive linear actuator consisting of a lightweight electrical coil positioned inside the radial magnetic air gap of high-grade NdFeB permanent magnets.</p>
+          <div class="modal-equation-box">
+            Actuator Force: F = B &middot; I &middot; L<br>
+            Linear Stroke: &plusmn;12 mm range with &plusmn;0.05 mm positioning repeatability<br>
+            Acoustic Profile: 0 dB audible noise (No rotating gears or tooth engagement)
+          </div>
+          <p>VCMs deliver frictionless, whisper-quiet micro-stepping and sub-millisecond settling times, making them ideal for headsets sitting directly against facial bones.</p>
+        `
+      },
+      "flexure_suspension": {
+        "tag": "PRECISION MECHANISMS // COMPLIANT GUIDES",
+        "title": "Planar Beryllium-Copper Flexure Springs",
+        "body": `
+          <p>Conventional sliding bushings or linear ball bearings suffer from stick-slip friction and require lubricant greases that outgas and fog sealed optical surfaces in spatial headsets.</p>
+          <div class="modal-equation-box">
+            Linear Stiffness: k = 12 &middot; E &middot; I / L&sup3;<br>
+            Material: Beryllium-Copper (Alloy 25 / C17200)<br>
+            Fatigue Limit: High endurance under continuous microscopic deflection
+          </div>
+          <p>Flat flexure blades flex elastically along the primary transverse translation axis while maintaining immense stiffness against out-of-plane pitching and yawing moments.</p>
+        `
+      },
+      "linear_encoder": {
+        "tag": "METROLOGY // CLOSED-LOOP POSITION FEEDBACK",
+        "title": "Reflective Optical Linear Encoders",
+        "body": `
+          <p>Because voice coil motors lack mechanical detents when de-energized, real-time closed-loop position feedback is required to track lens position with sub-micron precision.</p>
+          <div class="modal-equation-box">
+            Scale Pitch: P = 20.0 microns (&mu;m)<br>
+            Digital Interpolation: 256 subdivisions per optical fringe<br>
+            Effective Resolution: &Delta;x = P / 256 = 0.078 microns (78 nanometers)
+          </div>
+          <p>An infrared VCSEL laser illuminates alternating reflective chrome lines etched on a glass scale, projecting interference fringes onto an ASIC photodiode array to verify exact displacement.</p>
+        `
+      },
+      "quadrature_encoder": {
+        "tag": "SIGNAL PROCESSING // SINE-WAVE INTERPOLATION",
+        "title": "Quadrature Phase Encoding & Interpolation",
+        "body": `
+          <p>Optical encoders read two sinusoidal signals (Channel A and Channel B) electrically offset by 90&deg; in phase (quadrature) to determine both speed and direction of travel.</p>
+          <div class="modal-equation-box">
+            Signals: V_A = V_0 &middot; sin(2&pi;x / P),  V_B = V_0 &middot; cos(2&pi;x / P)<br>
+            Direction: Sign of phase lead (A leads B = forward, B leads A = reverse)<br>
+            Arctangent Interpolation: &theta; = arctan(V_A / V_B) resolves sub-fringe positions
+          </div>
+          <p>By computing the instantaneous phase angle, high-speed DSP interpolators resolve nanometer-scale displacements between adjacent 20-micron physical grating lines.</p>
+        `
+      },
+      "vcsel": {
+        "tag": "OPTOELECTRONICS // LASER EMITTERS",
+        "title": "Vertical-Cavity Surface-Emitting Lasers (VCSELs)",
+        "body": `
+          <p>Semiconductor laser diodes that emit a coherent, circular optical beam perpendicular to the wafer surface, unlike edge-emitting laser diodes.</p>
+          <div class="modal-equation-box">
+            Wavelengths: 850 nm & 940 nm (Invisible to human eye, high CMOS sensitivity)<br>
+            Beam Divergence: Narrow circular cone (~10&deg; &ndash; 15&deg;) for precision glint projection
+          </div>
+          <p>Vision Pro surrounds each lens barrel with an array of infrared VCSELs that project structured light glints onto the cornea for real-time computational eye-tracking.</p>
+        `
+      },
+      "thixomolding": {
+        "tag": "MANUFACTURING // SEMI-SOLID METAL INJECTION",
+        "title": "Thixomolding of AZ91D Magnesium Alloys",
+        "body": `
+          <p>A specialized manufacturing process where magnesium alloy is heated into a semi-solid slurry (containing solid globular grains suspended in liquid) and injected into molds like plastic.</p>
+          <div class="modal-equation-box">
+            Alloy: AZ91D Magnesium (9% Aluminum, 1% Zinc)<br>
+            Wall Thickness: Down to 0.6 mm with zero porosity and minimal shrinkage<br>
+            Density: 1.81 g/cm&sup3; (35% lighter than aluminum, 75% lighter than steel)
+          </div>
+          <p>Delivers high structural stiffness, superior internal vibration damping, and razor-thin walls to keep the moving optical pod weight under 26 grams.</p>
+        `
+      },
+      "fpc_ribbon": {
+        "tag": "ELECTROMECHANICAL // DYNAMIC FLEX CIRCUITS",
+        "title": "Dynamic Rolled-Annealed (RA) FPC Ribbons",
+        "body": `
+          <p>Flexible Printed Circuits (FPCs) routing power and high-speed video data across moving stages require specialized copper foil to survive continuous cyclical bending.</p>
+          <div class="modal-equation-box">
+            Copper Type: Rolled-Annealed (RA) Copper (Elongated grain boundaries)<br>
+            Design Rule: Bend Radius R &ge; 10 &times; overall thickness (Teardrop loop)<br>
+            Endurance: Certified for &gt;150,000 continuous translation cycles
+          </div>
+          <p>Unlike standard electrodeposited (ED) copper whose brittle vertical grain structure cracks quickly, RA copper bends elastically without fatigue fracture.</p>
+        `
+      },
+      "lost_motion_clutch": {
+        "tag": "MECHANICAL SAFETY // IMPACT OVERLOAD DECOUPLING",
+        "title": "Lost-Motion Elastomer Friction Clutches",
+        "body": `
+          <p>When high-precision mechanisms with fragile sub-micron encoders are subjected to external drop shocks or manual finger force, rigid gear teeth will bend or strip.</p>
+          <div class="modal-equation-box">
+            Slip Threshold: F_decouple &asymp; 12 N (Above normal motor force, below damage limit)<br>
+            Restoration: High-memory fluorosilicone elastomer re-engages centering pin
+          </div>
+          <p>The clutch elastically yields under excessive force, absorbing mechanical over-travel energy and automatically re-seating without loss of calibration.</p>
         `
       }
     };
@@ -664,7 +888,7 @@
             The <strong>Tabletop Model</strong> features a counterbalanced, domed acoustic speaker base connected to the display through an articulated, friction-tuned <strong>stainless-steel tilt hinge</strong> that allows smooth vertical angle adjustment for kitchen islands or high bedside tables. The <strong>Wall-Mounted Model</strong> eliminates the acoustic dome in favor of a clean, flush-mount rear chassis designed to lock into three modular <strong>Schneider Home Power Mounts</strong>: a standard low-profile USB-C wall connector ($59.95), an integrated 120V AC gang-box transformer mount ($79.95), and an enterprise-grade Power-over-Ethernet (PoE) wired mount ($129.95).
           </p>
           <p>
-            <strong>Display & Thermal Engineering:</strong> The 7-inch Liquid Retina display (1,088 × 1,088 resolution at 220 ppi) addresses a common flaw of smart displays: bedroom glare. While standard panels bottom out at around 10 to 15 nits, HomeView utilizes an advanced ultra-wide PWM dimming backlight driver that throttles luminance from a daylight-readable <strong>500 nits</strong> all the way down to <strong>0.3 nits</strong> in pitch darkness. To keep the device silent in quiet rooms, the powerful 3nm A18 system-on-chip operates entirely via <span class="tangent-term" onclick="openTangent('convection')">passive natural convection</span>. Internal heat flux is conducted away from the silicon die package through pyrolytic graphite thermal spreaders and coupled to an extruded structural aluminum chassis frame, keeping exterior rear skin temperatures comfortably below 38°C without active cooling fans.
+            <strong>Display & Thermal Engineering:</strong> The 7-inch Liquid Retina display (1,088 × 1,088 resolution at 220 ppi) addresses a common flaw of smart displays: bedroom glare. While standard panels bottom out at around 10 to 15 nits, HomeView utilizes an advanced ultra-wide <span class="tangent-term" data-tangent="pwm_dimming">PWM dimming</span> backlight driver that throttles luminance from a daylight-readable <strong>500 nits</strong> all the way down to <strong>0.3 nits</strong> in pitch darkness. To keep the device silent in quiet rooms, the powerful 3nm A18 system-on-chip operates entirely via <span class="tangent-term" data-tangent="convection">passive natural convection</span>. Internal heat flux is conducted away from the silicon die package through <span class="tangent-term" data-tangent="pyrolytic_graphite">pyrolytic graphite thermal spreaders</span> and coupled to an extruded structural aluminum chassis frame, keeping exterior rear skin temperatures comfortably below 38°C without active cooling fans.
           </p>
           <p>
             <strong>Acoustics & Facial Recognition:</strong> Inside the acoustic base, Apple decoupled a custom down-firing woofer and dual force-canceling passive radiators from the compute PCB using vibration-damping silicone isolators. This structural isolation prevents powerful acoustic excursions from vibrating the 12MP Center Stage camera or injecting harmonic distortion into the four-microphone beamforming array. The on-device A18 Neural Engine securely stores 3D facial embeddings in an isolated Secure Exclave, instantly recognizing up to <strong>six household members</strong> as they approach and tailoring widgets, reminders, and calendar appointments to that specific person without sending personal biometric telemetry to cloud servers.
@@ -675,10 +899,10 @@
             First-generation smart locks relied on 2.4 GHz Bluetooth Low Energy (BLE) Received Signal Strength Indicator (RSSI) thresholds to trigger hands-free auto-unlocking. Because 2.4 GHz RF waves suffer from multipath reflection off metal doors, stucco lath, and human tissue, signal attenuation is a terrible indicator of actual distance. This caused dangerous false unlocks when a homeowner was simply walking around inside their living room or upstairs hallway.
           </p>
           <p>
-            <strong>Spatial Ranging Physics:</strong> The LG Smart Deadbolt solves this using the newly standardized <strong>Aliro</strong> protocol coupled with an IEEE 802.15.4z <span class="tangent-term" onclick="openTangent('uwb')">UWB spatial ranging</span> radio. Operating across 6.5 GHz and 8.0 GHz channels, UWB emits sub-nanosecond pulses. By measuring the physical Time-of-Flight (ToF) of these pulses and calculating the phase difference of arrival across a dual-antenna array, the deadbolt resolves the user's approach angle and exterior distance within ±3 cm. It unlocks automatically when you approach from the porch, but remains rigidly locked when you walk past the door inside.
+            <strong>Spatial Ranging Physics:</strong> The LG Smart Deadbolt solves this using the newly standardized <span class="tangent-term" data-tangent="aliro">Aliro</span> protocol coupled with an IEEE 802.15.4z <span class="tangent-term" data-tangent="uwb">UWB spatial ranging</span> radio. Operating across 6.5 GHz and 8.0 GHz channels, UWB emits sub-nanosecond pulses. By measuring the physical Time-of-Flight (ToF) of these pulses and calculating the phase difference of arrival across a dual-antenna array, the deadbolt resolves the user's approach angle and exterior distance within ±3 cm. It unlocks automatically when you approach from the porch, but remains rigidly locked when you walk past the door inside.
           </p>
           <p>
-            <strong>Actuator Mechanics & Stall Torque:</strong> In field conditions, seasonal humidity and building settling cause wooden doors to warp, forcing the deadbolt's beveled tongue to cam the entire door leaf against compressed rubber weatherstripping. This side load can spike bolt-throw resistance above 30 N. To drive through this friction from a compact 4x AA alkaline battery pack, LG engineered a miniature <span class="tangent-term" onclick="openTangent('gearbox')">planetary gearbox</span> that achieves a high reduction ratio while fitting within a standard 25.4 mm (1-inch) cylindrical door bore. The geartrain drives an asymmetric lost-motion slotted cam: once the throw cycle finishes, the motor backs off slightly, centering the pin in an open track so the interior thumbturn can be rotated manually with zero geartrain resistance. For complete peace of mind, the lock provides four redundant entry methods: hands-free UWB, an NFC Apple Home Key tap (which functions for hours after an iPhone battery dies via power reserve), a capacitive backlit exterior keypad, and a concealed physical key cylinder behind a spring-loaded magnetic trim plate.
+            <strong>Actuator Mechanics & Stall Torque:</strong> In field conditions, seasonal humidity and building settling cause wooden doors to warp, forcing the deadbolt's beveled tongue to cam the entire door leaf against compressed rubber weatherstripping. This side load can spike bolt-throw resistance above 30 N. To drive through this friction from a compact 4x AA alkaline battery pack, LG engineered a miniature <span class="tangent-term" data-tangent="gearbox">planetary gearbox</span> that achieves a high reduction ratio while fitting within a standard 25.4 mm (1-inch) cylindrical door bore. The geartrain drives an asymmetric <span class="tangent-term" data-tangent="lost_motion_cam">lost-motion slotted cam</span>: once the throw cycle finishes, the motor backs off slightly, centering the pin in an open track so the interior thumbturn can be rotated manually with zero geartrain resistance. For complete peace of mind, the lock provides four redundant entry methods: hands-free UWB, an NFC Apple Home Key tap (which functions for hours after an iPhone battery dies via power reserve), a capacitive backlit exterior keypad, and a concealed physical key cylinder behind a spring-loaded magnetic trim plate.
           </p>
 
           <h3 id="product-doorbell">LG Video Doorbell (Wired) <span class="price-tag">$249.95</span></h3>
@@ -686,7 +910,7 @@
             Single-lens video doorbells suffer from an unavoidable optical tradeoff: tilt the camera up to identify tall visitors, and you create a blind spot directly beneath the lens where couriers drop packages; tilt it down, and you cut off visitors' faces.
           </p>
           <p>
-            <strong>Dual-Sensor Optical Architecture:</strong> LG resolved this geometric problem by implementing a custom <span class="tangent-term" onclick="openTangent('optics')">dual-lens optical split</span> inside a weather-sealed IP65 housing. The primary upper camera uses a 2.5K HDR CMOS sensor paired with an f/2.0 aperture lens tuned for optimal human facial MTF (Modulation Transfer Function) and high dynamic range under harsh backlit porch conditions. Mounted directly beneath it is an independent 1080p camera tilted 45° downward to monitor the doorstep mat. Both streams are processed simultaneously by an on-device image signal processor (ISP), feeding panoramic package and visitor views into the Apple Home app without the extreme spherical barrel distortion inherent to 180° single-lens fisheye optics.
+            <strong>Dual-Sensor Optical Architecture:</strong> LG resolved this geometric problem by implementing a custom <span class="tangent-term" data-tangent="optics">dual-lens optical split</span> inside a weather-sealed IP65 housing. The primary upper camera uses a 2.5K HDR CMOS sensor paired with an f/2.0 aperture lens tuned for optimal human facial MTF (Modulation Transfer Function) and high dynamic range under harsh backlit porch conditions. Mounted directly beneath it is an independent 1080p camera tilted 45° downward to monitor the doorstep mat. Both streams are processed simultaneously by an on-device image signal processor (ISP), feeding panoramic package and visitor views into the Apple Home app without the extreme spherical barrel distortion inherent to 180° single-lens fisheye optics.
           </p>
           <p>
             <strong>Reliability & Lighting:</strong> When motion is detected after sunset, an integrated warm-white downward LED spotlight illuminates the threshold, transitioning the camera from infrared into full color night vision. To solve the vulnerability of cloud-dependent doorbells that go blind during broadband outages, the unit integrates 4GB of local high-endurance flash storage. Event clips are captured locally and seamlessly synced to iCloud+ HomeKit Secure Video once Wi-Fi reconnects.
@@ -700,7 +924,7 @@
             <strong>Hardware-Enforced Privacy Kinematics:</strong> The LG Indoor Cam is built around an articulated dual-axis pan/tilt motorized gimbal. When the camera enters Privacy Mode (triggered automatically via geofencing when family members arrive home, or via a Siri command), a precision micro-stepping motor drives the optical barrel <strong>95° downward</strong>, burying the lens assembly completely inside a cast aluminum lower shroud lined with an opaque, light-absorbing elastomer cup.
           </p>
           <p>
-            <strong>Mechanical Air-Gap Disconnect:</strong> During the final 5° of downward travel, an eccentric cam lobe on the gimbal trunnion mechanically pushes open a gold-plated <span class="tangent-term" onclick="openTangent('leafswitch')">mechanical leaf switch</span> soldered directly to the main rigid PCB. This switch physically severs the DC power supply (VDD) line feeding the MEMS microphone array, creating a true electrical air gap. When the camera is closed, eavesdropping is physically and electrically impossible, regardless of firmware exploits or network attacks.
+            <strong>Mechanical Air-Gap Disconnect:</strong> During the final 5° of downward travel, an eccentric cam lobe on the gimbal trunnion mechanically pushes open a gold-plated <span class="tangent-term" data-tangent="leafswitch">mechanical leaf switch</span> soldered directly to the main rigid PCB. This switch physically severs the DC power supply (VDD) line feeding the MEMS microphone array, creating a true electrical air gap. When the camera is closed, eavesdropping is physically and electrically impossible, regardless of firmware exploits or network attacks.
           </p>
 
           <h3 id="product-outdoor-cams">LG Outdoor Cam & Floodlight Cam <span class="price-tag">$299.95 – $399.95</span></h3>
@@ -708,7 +932,7 @@
             Outdoor residential security cameras face intense thermal and optical hurdles: daytime solar loading causes sensor junction temperatures to skyrocket (generating thermal dark-current shot noise), while nighttime infrared LEDs can cause milky internal glare if optical reflections bounce inside the front cover glass.
           </p>
           <p>
-            <strong>Thermal & Optical Packaging:</strong> Both outdoor models are enclosed within heavy-gauge die-cast aluminum enclosures that double as convective heatsinks. In the Floodlight Cam ($399.95), the dual 2,000-lumen COB LED floodlights are mounted on articulated aluminum outriggers, physically isolating high-wattage LED driver heat from the central 2.5K HDR camera core. The front optical stack uses a dual-durometer black silicone boot that compresses tightly against the interior of the cover glass, mechanically isolating the central camera aperture from the outer 850 nm infrared ring to eliminate internal Fresnel back-scatter reflections.
+            <strong>Thermal & Optical Packaging:</strong> Both outdoor models are enclosed within heavy-gauge die-cast aluminum enclosures that double as <span class="tangent-term" data-tangent="heatsinks">convective heatsinks</span>. In the Floodlight Cam ($399.95), the dual 2,000-lumen COB LED floodlights are mounted on articulated aluminum outriggers, physically isolating high-wattage LED driver heat from the central 2.5K HDR camera core. The front optical stack uses a dual-durometer black silicone boot that compresses tightly against the interior of the cover glass, mechanically isolating the central camera aperture from the outer 850 nm infrared ring to eliminate internal <span class="tangent-term" data-tangent="fresnel_glare">Fresnel back-scatter reflections</span>.
           </p>
           <p>
             <strong>Apple Intelligence Video Summaries:</strong> Working in conjunction with a home Apple TV 4K or HomeView hub, video feeds are analyzed on-device using local Apple Intelligence neural models. Instead of forcing users to scrub through hours of false motion alerts caused by windblown branches or passing cars, the system generates natural-language text summaries of daily events and enables semantic search queries (e.g., <em>"Show me when a courier in a blue shirt left a box by the side gate yesterday"</em>).
@@ -719,10 +943,10 @@
             Smart thermostat adoption in North America has long been hampered by the legacy electrical wiring of older homes, where furnaces were installed with only two wires—<code>R</code> (24V AC power hot) and <code>W</code> (heat call)—lacking a dedicated <code>C</code> (Common) neutral return wire.
           </p>
           <p>
-            <strong>Power Electronics & Active Harvesting:</strong> When a thermostat is installed without a C-wire, it must draw operating power in series through the furnace relay coil while the furnace is idle. If current exceeds approximately 20 to 30 mA, the furnace relay will falsely pull in, causing furnace burners to cycle uncontrollably. The LG and Schneider thermostats solve this through an advanced power supply incorporating <span class="tangent-term" onclick="openTangent('powerstealing')">active MOSFET power stealing</span>. By using back-to-back MOSFET switches that open briefly near the 60 Hz AC voltage zero-crossings, the thermostat harvests controlled microsecond pulses of energy into an internal supercapacitor bank without ever passing enough current to trigger the furnace contactor.
+            <strong>Power Electronics & Active Harvesting:</strong> When a thermostat is installed without a C-wire, it must draw operating power in series through the furnace relay coil while the furnace is idle. If current exceeds approximately 20 to 30 mA, the furnace relay will falsely pull in, causing furnace burners to cycle uncontrollably. The LG and Schneider thermostats solve this through an advanced power supply incorporating <span class="tangent-term" data-tangent="powerstealing">active MOSFET power stealing</span>. By using back-to-back MOSFET switches that open briefly near the 60 Hz AC voltage zero-crossings, the thermostat harvests controlled microsecond pulses of energy into an internal supercapacitor bank without ever passing enough current to trigger the furnace contactor.
           </p>
           <p>
-            <strong>Through-Glass mmWave Respiration Radar:</strong> Traditional thermostats use passive infrared (PIR) sensors that require a faceted plastic Fresnel lens window on the front cover. PIR sensors only register gross thermal displacement; if a person sits motionless in an armchair reading a book, the sensor reports an empty room and lowers the temperature. The LG and Schneider thermostats eliminate the ugly plastic window by embedding an invisible <strong>60 GHz FMCW millimeter-wave radar</strong> transceiver directly behind the cover glass. By measuring phase shifts across reflected radar chirps, the sensor detects sub-millimeter chest wall movements from human respiration, maintaining accurate room occupancy telemetry even when occupants are completely still. Furthermore, the thermostats natively fuse telemetry from the temperature and humidity sensors already built into Apple HomeView, HomePod, and HomePod mini devices throughout the home, averaging multi-room climate zones without requiring proprietary wall pucks.
+            <strong>Through-Glass mmWave Respiration Radar:</strong> Traditional thermostats use passive infrared (PIR) sensors that require a faceted plastic Fresnel lens window on the front cover. PIR sensors only register gross thermal displacement; if a person sits motionless in an armchair reading a book, the sensor reports an empty room and lowers the temperature. The LG and Schneider thermostats eliminate the ugly plastic window by embedding an invisible <span class="tangent-term" data-tangent="fmcw_radar">60 GHz FMCW millimeter-wave radar</span> transceiver directly behind the cover glass. By measuring phase shifts across reflected radar chirps, the sensor detects sub-millimeter chest wall movements from human respiration, maintaining accurate room occupancy telemetry even when occupants are completely still. Furthermore, the thermostats natively fuse telemetry from the temperature and humidity sensors already built into Apple HomeView, HomePod, and HomePod mini devices throughout the home, averaging multi-room climate zones without requiring proprietary wall pucks.
           </p>
 
           <div class="telemetry-bar">
@@ -752,7 +976,7 @@
               Current Dispatch: Issue #001 &middot; Oct 14, 2026
             </span>
           </div>
-`,
+      `,
       "#000": `
           <div class="meta-line">
             <span>ISSUE #000</span><span>•</span><span>ELECTROMECHANICAL</span><span>•</span><span id="read-time-badge">12 MIN READ</span>
@@ -781,8 +1005,8 @@
             Conventional consumer VR headsets (such as the Meta Quest 2 and early HTC Vive headsets) attempted to address this biometric dispersion using coarse manual sliders or discrete three-position detent ratchets. However, user studies consistently demonstrate that over 70% of non-technical consumers set their manual IPD incorrectly by an average error of 2.5 mm to 4.0 mm. In low-resolution displays, this error causes mild blur; but in a display system boasting 23 million pixels across two postage-stamp-sized Sony 4K micro-OLED panels, a 2 mm misalignment introduces catastrophic visual artifacts:
           </p>
           <ul>
-            <li><strong>Catadioptric Pancake MTF Collapse:</strong> Folded pancake optics achieve extraordinary flatness and compactness by polarizing, reflecting, and semi-transmitting light multiple times between spherical glass surfaces. However, this catadioptric beam path creates an ultra-tight "optical eyebox" measuring only 4.0 mm in diameter. Translating the human pupil just 1.5 mm off the primary <span class="tangent-term" onclick="openTangent('ipd_alignment')">interpupillary optical axis</span> causes the Modulation Transfer Function (MTF) to drop by over 45%, introducing severe astigmatic blur, chromatic fringing, and geometric coma aberrations.</li>
-            <li><strong>Vergence-Accommodation Conflict & Vestibular Mismatch:</strong> In the natural physical world, visual accommodation (the focal power of the crystalline lens inside the eyeball) and visual vergence (the inward or outward rotation of both eyeballs to triangulate a target) are mechanically coupled in the brainstem. In spatial headsets, the micro-OLED virtual image plane is held at a fixed optical focal distance of approximately 1.3 meters. If physical display centers fail to match the user's interpupillary vector, the user's brain is forced to artificially diverge or converge its optical axes against the physical focal cues, rapidly inducing nausea, visual fatigue, and debilitating vestibular disorientation.</li>
+            <li><strong>Catadioptric Pancake MTF Collapse:</strong> Folded <span class="tangent-term" data-tangent="pancake_optics">pancake optics</span> achieve extraordinary flatness and compactness by polarizing, reflecting, and semi-transmitting light multiple times between spherical glass surfaces. However, this catadioptric beam path creates an ultra-tight "optical eyebox" measuring only 4.0 mm in diameter. Translating the human pupil just 1.5 mm off the primary <span class="tangent-term" data-tangent="ipd_alignment">interpupillary optical axis</span> causes the <span class="tangent-term" data-tangent="mtf">Modulation Transfer Function (MTF)</span> to drop by over 45%, introducing severe astigmatic blur, chromatic fringing, and geometric coma aberrations.</li>
+            <li><strong>Vergence-Accommodation Conflict & Vestibular Mismatch:</strong> In the natural physical world, visual accommodation (the focal power of the crystalline lens inside the eyeball) and visual vergence (the inward or outward rotation of both eyeballs to triangulate a target) are mechanically coupled in the brainstem. In spatial headsets, the micro-OLED virtual image plane is held at a fixed optical focal distance of approximately 1.3 meters. If physical display centers fail to match the user's interpupillary vector, the user's brain is forced to artificially diverge or converge its optical axes against the physical focal cues, causing <span class="tangent-term" data-tangent="vergence_accommodation">Vergence-Accommodation Conflict</span> that rapidly induces nausea, visual fatigue, and debilitating vestibular disorientation.</li>
           </ul>
           <p>
             To eliminate this entire error class, Apple eliminated manual mechanical dials, ratchets, and sliders entirely. Instead, Vision Pro incorporates a fully automated, closed-loop electromechanical drivetrain that detects eye positions and translates the dual lens pods into optical alignment within ±0.05 mm during initial calibration.
@@ -801,10 +1025,10 @@
             Miniature stepper motors paired with lead screws—the standard industrial approach in camera zoom stages—were systematically evaluated and rejected. Lead screw nuts suffer from mechanical backlash, require periodic lubrication that can outgas and fog sealed optical surfaces, generate high-frequency micro-stepping acoustic chatter, and exhibit slow settling times.
           </p>
           <p>
-            Instead, Apple engineered custom miniature dual-gap <span class="tangent-term" onclick="openTangent('lorentz_vcm')">voice coil motors (VCMs)</span> mounted directly to the optical carriages and suspended on planar beryllium-copper <span class="tangent-term" onclick="openTangent('flexure_suspension')">flexure spring suspensions</span>.
+            Instead, Apple engineered custom miniature dual-gap <span class="tangent-term" data-tangent="lorentz_vcm">voice coil motors (VCMs)</span> mounted directly to the optical carriages and suspended on planar beryllium-copper <span class="tangent-term" data-tangent="flexure_suspension">flexure spring suspensions</span>.
           </p>
           <p>
-            Unlike rotary motors that convert rotary torque to linear motion via friction-laden mechanical interfaces, a voice coil motor generates direct linear force via the Lorentz force interaction between a stationary NdFeB permanent magnet array and an energized copper voice coil. By regulating current through a high-frequency PWM H-bridge driver, the VCM produces completely smooth, frictionless linear translation. It operates in absolute acoustic silence, exhibits zero mechanical backlash, and achieves full-stroke position settling in under 120 milliseconds.
+            Unlike rotary motors that convert rotary torque to linear motion via friction-laden mechanical interfaces, a voice coil motor generates direct linear force via the <span class="tangent-term" data-tangent="lorentz_force">Lorentz force</span> interaction between a stationary NdFeB permanent magnet array and an energized copper voice coil. By regulating current through a high-frequency PWM H-bridge driver, the VCM produces completely smooth, frictionless linear translation. It operates in absolute acoustic silence, exhibits zero mechanical backlash, and achieves full-stroke position settling in under 120 milliseconds.
           </p>
 
           <h2 id="section-optical-encoders">3. Closed-Loop Metrology: Sub-Micron Optical Linear Encoders</h2>
@@ -815,11 +1039,11 @@
             Traditional rotary encoders were unusable because there is no rotating shaft. Hall-effect magnetic linear sensors were evaluated, but the intense magnetic fields generated by the headset's integrated spatial audio speakers, magnetic head-strap connectors, and external power cords introduced unacceptable sensor noise and offset drift.
           </p>
           <p>
-            Apple solved this by developing custom reflective <span class="tangent-term" onclick="openTangent('linear_encoder')">optical linear encoders</span> integrated directly along the structural magnesium guide rail:
+            Apple solved this by developing custom reflective <span class="tangent-term" data-tangent="linear_encoder">optical linear encoders</span> integrated directly along the structural magnesium guide rail:
           </p>
           <ul>
             <li><strong>Photolithographic Chrome-on-Glass Scale:</strong> A precision glass encoder scale etched with reflective chrome lines at a 20-micron pitch runs parallel to the transverse carriage guide shaft.</li>
-            <li><strong>Differential Quadrature Laser Metrology:</strong> An infrared VCSEL laser diode illuminates the moving scale, reflecting optical diffraction fringes onto an application-specific integrated circuit (ASIC) photodiode array. The sensor outputs two 90°-phase-shifted sinusoidal signals (Channel A and Channel B).</li>
+            <li><strong>Differential Quadrature Laser Metrology:</strong> An infrared VCSEL laser diode illuminates the moving scale, reflecting optical diffraction fringes onto an application-specific integrated circuit (ASIC) photodiode array. The sensor outputs two 90°-phase-shifted sinusoidal signals (<span class="tangent-term" data-tangent="quadrature_encoder">quadrature sine waves</span> on Channel A and Channel B).</li>
             <li><strong>256x Digital Sub-Division:</strong> The dedicated encoder ASIC digitizes and interpolates the analog quadrature sine waves down to 1/256th of a pitch period. This mathematical interpolation resolves linear displacement down to an astonishing <strong>0.078 microns (78 nanometers)</strong>.</li>
             <li><strong>Non-Volatile Hardware Position Locking:</strong> Once the optimal IPD is reached, the controller cuts high holding currents to preserve battery life, relying on a bi-stable micro-solenoid friction brake to lock the carriage rigidly in place. The encoder writes the physical coordinates to non-volatile flash memory, enabling instant, homing-free readiness the next time the device is powered on.</li>
           </ul>
@@ -829,7 +1053,7 @@
             A high-precision motorized stage is useless without an equally precise sensing system to dictate its target coordinates. In Apple Vision Pro, the automated IPD calibration process is completely invisible to the user, occurring dynamically during the initial device onboarding sequence.
           </p>
           <p>
-            Surrounding each pancake lens barrel is an annular ring of infrared vertical-cavity surface-emitting lasers (VCSELs) operating across both 850 nm and 940 nm wavelengths. These illuminators project an invisible structured array of glint reflections onto the user's curved cornea. High-speed infrared cameras positioned at the base of the lens barrels capture the corneal reflections and pupil boundary at 90 frames per second.
+            Surrounding each pancake lens barrel is an annular ring of infrared <span class="tangent-term" data-tangent="vcsel">VCSEL</span> lasers operating across both 850 nm and 940 nm wavelengths. These illuminators project an invisible structured array of glint reflections onto the user's curved cornea. High-speed infrared cameras positioned at the base of the lens barrels capture the corneal reflections and pupil boundary at 90 frames per second.
           </p>
           <p>
             Apple's computer vision pipeline runs these video streams through custom convolutional neural networks running locally on the R1 real-time coprocessor. By measuring the dynamic spatial vector between the pupil center and the multiple corneal glints across varying gaze angles, the R1 calculates the true 3D center of rotation of the eyeball in Cartesian coordinate space. It separates the optical visual axis (the line connecting the fovea to the pupil center) from the anatomical pupillary axis, computing the exact mathematical interpupillary separation. The system then commands the left and right VCM drivers independently, translating each optical pod until its optical axis aligns with the user's eyes within ±0.05 mm.
@@ -840,10 +1064,10 @@
             Packing two motorized optical translation carriages, four display micro-OLED panels, eye-tracking optics, and logic boards into a sealed, curved facial enclosure represents a masterclass in electromechanical design for manufacturing (DFM):
           </p>
           <ul>
-            <li><strong>Thixomolded Magnesium-Aluminum Skeleton:</strong> The internal structural chassis is thixomolded from AZ91D magnesium alloy. Thixomolding produces thin-wall (0.6 mm) structural ribbing with high dimensional stability and superior damping characteristics, keeping the moving carriage weight under 26 grams per eye pod.</li>
-            <li><strong>Dynamic High-Flex FPC Ribbon Cables:</strong> Connecting the continuously moving optical pod (which carries the 4K micro-OLED panels, display drivers, and eye-tracking cameras) to the stationary main logic board requires flexible flat circuits (FPCs). Apple designed custom multi-layer rolled annealed copper ribbons routed through a controlled teardrop bend radius, certified for over 150,000 continuous translation cycles without copper trace fatigue failure.</li>
+            <li><strong>Thixomolded Magnesium-Aluminum Skeleton:</strong> The internal structural chassis is <span class="tangent-term" data-tangent="thixomolding">thixomolded from AZ91D magnesium alloy</span>. Thixomolding produces thin-wall (0.6 mm) structural ribbing with high dimensional stability and superior damping characteristics, keeping the moving carriage weight under 26 grams per eye pod.</li>
+            <li><strong>Dynamic High-Flex FPC Ribbon Cables:</strong> Connecting the continuously moving optical pod (which carries the 4K micro-OLED panels, display drivers, and eye-tracking cameras) to the stationary main logic board requires <span class="tangent-term" data-tangent="fpc_ribbon">dynamic high-flex FPC ribbon cables</span>. Apple designed custom multi-layer rolled annealed copper ribbons routed through a controlled teardrop bend radius, certified for over 150,000 continuous translation cycles without copper trace fatigue failure.</li>
             <li><strong>Thermal Shunt Chimneys:</strong> The two micro-OLED display panels dissipate approximately 6W to 8W of electrical power at peak luminance. Because heat cannot be dumped directly into the user's face, flexible annealed copper foil shunts conduct thermal energy from the rear of the moving displays into a central structural chimney, where an ultra-quiet radial micro-blower gently exhausts warm air through top-facing chassis vents.</li>
-            <li><strong>Lost-Motion Mechanical Shock Decouplers:</strong> If a user grabs the lens pods with their fingers while cleaning the optics or during a severe drop impact, rigid gear connections would strip or bend flexure springs. Apple engineered an internal lost-motion elastomer friction clutch into the carriage mount that safely decouples under external shock loads exceeding 12 N, re-engaging seamlessly once external force is removed.</li>
+            <li><strong>Lost-Motion Mechanical Shock Decouplers:</strong> If a user grabs the lens pods with their fingers while cleaning the optics or during a severe drop impact, rigid gear connections would strip or bend flexure springs. Apple engineered internal <span class="tangent-term" data-tangent="lost_motion_clutch">lost-motion mechanical shock decouplers</span> into the carriage mount that safely slip under external shock loads exceeding 12 N, re-engaging seamlessly once external force is removed.</li>
           </ul>
 
           <div class="telemetry-bar">
@@ -872,15 +1096,167 @@
               Current Dispatch: Issue #000 &middot; Oct 13, 2026
             </span>
           </div>
-`
+      `
     };
 
     let activeArticleId = "#001";
     let activeSubject = "All";
 
+    // Floating Popover State & Controller
+    let currentHoveredTerm = null;
+    let isPinned = false;
+    let hideTimeout = null;
+
+    function showPopover(termElement, key) {
+      const data = TANGENTS[key];
+      if (!data) return;
+      
+      if (hideTimeout) {
+        clearTimeout(hideTimeout);
+        hideTimeout = null;
+      }
+      
+      currentHoveredTerm = termElement;
+      termElement.classList.add('active-hover');
+
+      const popover = document.getElementById('floating-popover');
+      document.getElementById('popover-tag').textContent = data.tag;
+      document.getElementById('popover-title').textContent = data.title;
+      document.getElementById('popover-body').innerHTML = data.body;
+      
+      // Position calculation
+      popover.style.display = 'block';
+      popover.style.visibility = 'hidden';
+      
+      const popoverRect = popover.getBoundingClientRect();
+      const termRect = termElement.getBoundingClientRect();
+      const popoverWidth = Math.min(380, window.innerWidth - 32);
+      popover.style.width = `${popoverWidth}px`;
+      
+      const popoverHeight = popover.offsetHeight || 220;
+      
+      let left = termRect.left + (termRect.width / 2) - (popoverWidth / 2);
+      left = Math.max(16, Math.min(left, window.innerWidth - popoverWidth - 16));
+      
+      // Default to hovering directly above the phrase
+      let top = termRect.top - popoverHeight - 12;
+      let arrowClass = 'arrow-bottom';
+      
+      if (top < 16) {
+        // Flip below if too close to viewport top
+        top = termRect.bottom + 12;
+        arrowClass = 'arrow-top';
+      }
+      
+      popover.classList.remove('arrow-top', 'arrow-bottom');
+      popover.classList.add(arrowClass);
+      
+      // Position arrow right above/below target center
+      const arrow = document.getElementById('popover-arrow');
+      const arrowX = Math.max(16, Math.min(termRect.left + (termRect.width / 2) - left - 6, popoverWidth - 24));
+      arrow.style.left = `${arrowX}px`;
+      
+      popover.style.top = `${top}px`;
+      popover.style.left = `${left}px`;
+      popover.style.visibility = 'visible';
+      popover.classList.add('active');
+    }
+
+    function hidePopover(immediate = false) {
+      if (isPinned) return;
+      const popover = document.getElementById('floating-popover');
+      if (currentHoveredTerm) currentHoveredTerm.classList.remove('active-hover');
+      
+      if (immediate) {
+        popover.classList.remove('active');
+        currentHoveredTerm = null;
+      } else {
+        hideTimeout = setTimeout(() => {
+          popover.classList.remove('active');
+          currentHoveredTerm = null;
+        }, 140);
+      }
+    }
+
+    function pinPopover(termElement, key) {
+      showPopover(termElement, key);
+      const popover = document.getElementById('floating-popover');
+      isPinned = true;
+      popover.classList.add('pinned');
+      document.getElementById('popover-footer-text').textContent = 'Pinned · Click outside or ✕ to close';
+    }
+
+    function unpinPopover() {
+      isPinned = false;
+      const popover = document.getElementById('floating-popover');
+      popover.classList.remove('pinned', 'active');
+      if (currentHoveredTerm) currentHoveredTerm.classList.remove('active-hover');
+      currentHoveredTerm = null;
+      document.getElementById('popover-footer-text').textContent = 'Click or tap to pin';
+    }
+
+    // Attach delegated hover & click listeners to document for .tangent-term
+    document.addEventListener('mouseover', (e) => {
+      const term = e.target.closest('.tangent-term');
+      if (term) {
+        const key = term.getAttribute('data-tangent') || term.getAttribute('onclick')?.match(/openTangent\('([^']+)'\)/)?.[1];
+        if (key && !isPinned) {
+          showPopover(term, key);
+        }
+      }
+    });
+
+    document.addEventListener('mouseout', (e) => {
+      const term = e.target.closest('.tangent-term');
+      if (term && !isPinned) {
+        hidePopover(false);
+      }
+    });
+
+    // Popover hover retention
+    const popoverEl = document.getElementById('floating-popover');
+    popoverEl.addEventListener('mouseenter', () => {
+      if (hideTimeout) {
+        clearTimeout(hideTimeout);
+        hideTimeout = null;
+      }
+    });
+    popoverEl.addEventListener('mouseleave', () => {
+      if (!isPinned) hidePopover(false);
+    });
+
+    // Click on term to pin or toggle
+    document.addEventListener('click', (e) => {
+      const term = e.target.closest('.tangent-term');
+      if (term) {
+        e.preventDefault();
+        e.stopPropagation();
+        const key = term.getAttribute('data-tangent') || term.getAttribute('onclick')?.match(/openTangent\('([^']+)'\)/)?.[1];
+        if (key) {
+          if (isPinned && currentHoveredTerm === term) {
+            unpinPopover();
+          } else {
+            pinPopover(term, key);
+          }
+        }
+        return;
+      }
+
+      // Click outside popover closes pinned state
+      if (!e.target.closest('#floating-popover')) {
+        unpinPopover();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') unpinPopover();
+    });
+
+    // Load Article Controller
     function loadArticle(id) {
       if (!ARTICLES[id]) id = "#001";
       activeArticleId = id;
+      unpinPopover();
       
       const articleEl = document.getElementById("view-article");
       articleEl.innerHTML = ARTICLES[id];
@@ -890,27 +1266,6 @@
       buildOutline();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-
-    function openTangent(key) {
-      const data = TANGENTS[key];
-      if (!data) return;
-      document.getElementById('modal-tag').textContent = data.tag;
-      document.getElementById('modal-title').textContent = data.title;
-      document.getElementById('modal-body').innerHTML = data.body;
-      document.getElementById('tangent-modal').classList.add('active');
-    }
-
-    function closeModal() {
-      document.getElementById('tangent-modal').classList.remove('active');
-    }
-
-    function closeModalOnBackdrop(e) {
-      if (e.target.id === 'tangent-modal') closeModal();
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
-    });
 
     // Dynamic Read Time Calculation (~220 words per minute for technical teardowns)
     function calculateReadTime() {
@@ -1015,6 +1370,10 @@
         mainContainer.className = "archive-column";
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+    }
+
+    function showPreviousIssueNotification() {
+      showView('archive');
     }
 
     function toggleTheme() {
