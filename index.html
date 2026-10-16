@@ -25,6 +25,7 @@
       --border: #D8D4CC;
       --accent: #D97757;
       --accent-hover: #C56645;
+      --card-inner: #FFFFFF;
       --max-w: 1080px;
 
       --sub-product-dives: #D97757;
@@ -45,6 +46,7 @@
       --border: #383734;
       --accent: #D97757;
       --accent-hover: #E88868;
+      --card-inner: #1C1B19;
 
       --sub-product-dives: #D97757;
       --sub-manufacturing: #3B82F6;
@@ -177,9 +179,7 @@
       border-left: 1px solid var(--border);
       padding-left: 12px;
     }
-    .outline-item {
-      margin-bottom: 10px;
-    }
+    .outline-item { margin-bottom: 10px; }
     .outline-link {
       font-size: 13px;
       color: var(--muted);
@@ -345,19 +345,17 @@
       margin: 0 !important;
       padding: 4px 0;
     }
-    .katex {
-      font-size: 1.05em;
-    }
+    .katex { font-size: 1.05em; }
     .katex-error {
       color: inherit !important;
       border-bottom: 1px dotted var(--accent);
     }
 
-    /* Figures, Schematics, and Spec Tables */
+    /* Figures, Schematics, and Process Flow Cards (Consistent Light/Dark Theming) */
     figure.product-figure {
       margin: 38px 0;
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       overflow: hidden;
       background: var(--surface);
     }
@@ -366,7 +364,7 @@
       width: 100%;
       aspect-ratio: 16 / 10;
       overflow: hidden;
-      background: #141413;
+      background: var(--surface-hover);
     }
     .img-wrapper img {
       width: 100%;
@@ -380,6 +378,7 @@
       font-size: 12px;
       color: var(--muted);
       border-top: 1px solid var(--border);
+      background: var(--surface);
       display: flex;
       justify-content: space-between;
       gap: 16px;
@@ -392,11 +391,12 @@
       border: 1px solid var(--border);
       border-radius: 8px;
       overflow: hidden;
-      background: #141413;
+      background: var(--surface);
+      transition: background-color 0.2s ease, border-color 0.2s ease;
     }
     .schematic-header {
-      padding: 12px 18px;
-      background: #1C1917;
+      padding: 14px 18px;
+      background: var(--surface-hover);
       border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
@@ -412,8 +412,9 @@
       letter-spacing: 0.05em;
     }
     .schematic-viewport {
-      padding: 16px;
+      padding: 18px;
       overflow-x: auto;
+      background: var(--bg);
     }
     .schematic-viewport svg {
       width: 100%;
@@ -427,13 +428,50 @@
       font-size: 11.5px;
       color: var(--muted);
       border-top: 1px solid var(--border);
-      background: #191918;
+      background: var(--surface);
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
     }
 
+    /* Process Flow Grid Cards: Fully Theme-Aligned in Light and Dark Mode */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      padding: 20px;
+      background: var(--surface);
+    }
+    .process-step-card {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+    .process-step-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .process-step-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .process-step-desc {
+      font-size: 11.5px;
+      line-height: 1.45;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* Spec Comparison Table */
     .spec-table-wrap {
       width: 100%;
       overflow-x: auto;
@@ -461,6 +499,103 @@
       color: var(--muted);
     }
     .spec-table tr:last-child td { border-bottom: none; }
+
+    /* Background Quality Telemetry Bar: Fixed & Polished */
+    .telemetry-bar {
+      margin: 48px 0 24px;
+      padding: 18px 22px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    }
+    .telemetry-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .telemetry-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+    }
+    .telemetry-desc {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .telemetry-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .score-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .score-btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .score-btn.active {
+      background: var(--accent);
+      color: #FFF;
+      border-color: var(--accent);
+    }
+
+    /* Issue Navigation Footer Bar: Fixed & Polished */
+    .issue-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0 48px;
+      border-top: 1px solid var(--border);
+      margin-top: 24px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .issue-nav-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .issue-nav-btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .issue-nav-btn.disabled {
+      opacity: 0.45;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
 
     /* Archive View */
     .hidden { display: none !important; }
@@ -514,6 +649,8 @@
       .sidebar-outline { display: none; }
       h1 { font-size: 34px; }
       h2 { font-size: 26px; margin: 40px 0 14px; }
+      .telemetry-bar { flex-direction: column; align-items: flex-start; }
+      .issue-nav { flex-direction: column; align-items: stretch; }
     }
   </style>
 </head>
@@ -539,7 +676,7 @@
         <button class="nav-btn" id="btn-archive" onclick="showView('archive')">Archive</button>
         <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme">
           <svg id="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-          <svg id="sun-icon" style="display:none;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></svg>
+          <svg id="sun-icon" style="display:none;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
         </button>
       </div>
     </header>
@@ -551,6 +688,9 @@
 
       <main class="editorial-column" id="main-container">
         <article id="view-article"></article>
+        
+        <!-- Bottom Article Navigation: Previous & Next Article -->
+        <nav class="issue-nav" id="issue-nav"></nav>
 
         <section id="view-archive" class="hidden">
           <h1>Archive</h1>
@@ -574,8 +714,10 @@
 
     let TANGENTS = {};
     const articleCache = {};
+    let activeArticleId = "#003";
     let activeSubject = "All";
     let isPinned = false;
+    let telemetryScores = {};
 
     function renderMath(targetEl) {
       if (!targetEl) return;
@@ -599,6 +741,7 @@
     }
 
     async function loadArticle(id) {
+      activeArticleId = id;
       const articleEl = document.getElementById("view-article");
       const currentTopic = TOPICS.find(t => t.id === id);
       if (currentTopic) {
@@ -631,8 +774,60 @@
       renderMath(articleEl);
       showView("article");
       buildOutline();
+      renderIssueNav();
+      syncTelemetryUI();
       attachTangentListeners();
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderIssueNav() {
+      const navEl = document.getElementById("issue-nav");
+      if (!navEl) return;
+      const published = TOPICS.filter(t => t.status === "Published");
+      const currentIndex = published.findIndex(t => t.id === activeArticleId);
+      if (currentIndex === -1) {
+        navEl.innerHTML = "";
+        return;
+      }
+      
+      const prevTopic = published[currentIndex + 1];
+      const nextTopic = published[currentIndex - 1];
+
+      const prevHtml = prevTopic ? `
+        <button class="issue-nav-btn" onclick="loadArticle('${prevTopic.id}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span><strong>Previous:</strong> ${prevTopic.title}</span>
+        </button>
+      ` : `<div class="issue-nav-btn disabled"><span>Beginning of Archive</span></div>`;
+
+      const nextHtml = nextTopic ? `
+        <button class="issue-nav-btn" onclick="loadArticle('${nextTopic.id}')">
+          <span><strong>Next:</strong> ${nextTopic.title}</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      ` : `<div class="issue-nav-btn disabled"><span>Latest Dispatch</span></div>`;
+
+      navEl.innerHTML = prevHtml + nextHtml;
+    }
+
+    function recordTelemetry(score) {
+      telemetryScores[activeArticleId] = score;
+      const upBtn = document.getElementById("telemetry-up");
+      const downBtn = document.getElementById("telemetry-down");
+      if (upBtn && downBtn) {
+        upBtn.classList.toggle("active", score === "up");
+        downBtn.classList.toggle("active", score === "down");
+      }
+    }
+
+    function syncTelemetryUI() {
+      const score = telemetryScores[activeArticleId];
+      const upBtn = document.getElementById("telemetry-up");
+      const downBtn = document.getElementById("telemetry-down");
+      if (upBtn && downBtn) {
+        upBtn.classList.toggle("active", score === "up");
+        downBtn.classList.toggle("active", score === "down");
+      }
     }
 
     function buildOutline() {
@@ -701,6 +896,8 @@
       document.getElementById("view-archive").classList.toggle("hidden", view !== "archive");
       document.getElementById("btn-archive").classList.toggle("active", view === "archive");
       document.getElementById("sidebar-outline").style.display = (view === "article") ? "block" : "none";
+      const issueNav = document.getElementById("issue-nav");
+      if (issueNav) issueNav.style.display = (view === "article") ? "flex" : "none";
     }
 
     function renderArchive() {
