@@ -3,8 +3,10 @@ import path from 'path';
 
 const INDEX_PATH = path.join(process.cwd(), 'index.html');
 const CONTENT_DIR = path.join(process.cwd(), 'content');
+const QUEUE_PATH = path.join(CONTENT_DIR, 'upcoming-queue.json');
+const VETOES_PATH = path.join(CONTENT_DIR, 'vetoes.json');
 
-// 8 Core Disciplines in strict round-robin rotation
+// 8 Core Disciplines (Free selection, no rigid rotation)
 const SUBJECTS = [
   "Manufacturing",
   "Mechanisms",
@@ -109,38 +111,83 @@ async function run() {
   const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   const isoDate = now.toISOString().split('T')[0];
 
-  // Rotate strictly across the 8 core disciplines
-  const subjectIndex = (nextNum - 3 + SUBJECTS.length) % SUBJECTS.length;
-  const currentSubject = SUBJECTS[subjectIndex];
-
-  // Extract past titles to guarantee zero topic overlap
+  // Extract past published titles to prevent topic duplication
   const pastTitles = [...html.matchAll(/title:\s*"([^"]+)"/g)].map(m => m[1]);
-  const recentTitlesList = pastTitles.slice(0, 30).map(t => `• ${t}`).join('\n');
+  const recentTitlesList = pastTitles.slice(0, 35).map(t => `• ${t}`).join('\n');
 
-  // Select inspirational catalysts for today's subject
-  const catalysts = DISCIPLINE_CATALYSTS[currentSubject] || [];
-  const catalystSuggestions = catalysts.map(c => `  - ${c}`).join('\n');
+  // Load user veto history to tune out unwanted topics (negative feedback loop)
+  let vetoedTopics = [];
+  try {
+    const vetoesRaw = await fs.readFile(VETOES_PATH, 'utf-8');
+    vetoedTopics = JSON.parse(vetoesRaw);
+  } catch (e) {
+    // No vetoes yet
+  }
+  const vetoesList = vetoedTopics.map(v => `• VETOED: ${v.title} (${v.reason || 'Not aligned with core interests'})`).join('\n');
 
-  console.log(`Generating Issue ${nextId} for ${dateStr} [${currentSubject}]...`);
+  // Check if an upcoming queue exists for today
+  let preQueuedTopic = null;
+  try {
+    const queueRaw = await fs.readFile(QUEUE_PATH, 'utf-8');
+    const queue = JSON.parse(queueRaw);
+    const todayIndex = queue.findIndex(item => item.date === isoDate);
+    if (todayIndex !== -1) {
+      const candidate = queue[todayIndex];
+      if (candidate.status !== 'vetoed') {
+        preQueuedTopic = candidate;
+        console.log(`Found pre-approved topic in queue: "${preQueuedTopic.title}" [${preQueuedTopic.subject}]`);
+      } else {
+        console.log(`Today's queued topic "${candidate.title}" was vetoed by user. Triggering dynamic replacement...`);
+      }
+    }
+  } catch (e) {
+    // Queue not populated yet, will proceed autonomously
+  }
+
+  // Build the generation prompt
+  let promptTargetInstructions = "";
+  if (preQueuedTopic) {
+    promptTargetInstructions = `
+GENERATE THE TEARDOWN FOR THIS PRE-APPROVED TOPIC:
+Discipline: ${preQueuedTopic.subject}
+Title: ${preQueuedTopic.title}
+Core Tension / Angle: ${preQueuedTopic.dilemma || preQueuedTopic.subtitle || ''}
+`;
+  } else {
+    promptTargetInstructions = `
+AUTONOMOUS TOPIC & DISCIPLINE SELECTION:
+1. Full Editorial Autonomy: Choose the most compelling discipline from the 8 Core Subjects:
+   ${JSON.stringify(SUBJECTS)}
+2. No Rigid Carousel: You are free to cluster disciplines when relevant. If two major hardware products launch around the same time, or an advanced manufacturing process directly informs a mechanism teardown, run them back-to-back.
+3. Pick a fresh, high-stakes topic with genuine mechanical tension.
+`;
+  }
+
+  console.log(`Authoring Issue ${nextId} for ${dateStr}...`);
 
   const prompt = `You are a Principal Hardware / Mechanical Systems Engineer authoring today's dispatch for "Engineering Deep Dive".
 Your audience consists of elite Product Design Engineers (PD), Mechanical Engineers (ME), and Hardware Architects who demand first-principles physics, real-world DFM tolerances, and deep kinematic/thermal teardowns.
 
-DISCIPLINE FOR TODAY: ${currentSubject}
+${promptTargetInstructions}
 
 RECENTLY PUBLISHED TITLES (DO NOT DUPLICATE OR CLOSELY OVERLAP WITH ANY OF THESE):
 ${recentTitlesList}
 
-TOPIC SELECTION & DIVERSITY MANDATE:
-1. Choose a NOVEL, deeply technical, and fascinating engineering topic under "${currentSubject}".
-2. Draw inspiration across diverse high-engineering domains (Aerospace & Satellites, Surgical Robotics & Medical Devices, Consumer Electronics & Flagships, EV Powertrains & Inverters, High-Precision Metrology & Optics, Extreme Industrial Tooling, or Everyday Micro-Mechanisms).
-3. INSPIRATIONAL DOMAIN CATALYSTS FOR ${currentSubject.toUpperCase()}:
-${catalystSuggestions}
-4. THE CORE ENGINEERING DILEMMA: Every topic MUST be centered around a real, uncompromising physical or mechanical dilemma where optimizing one engineering parameter threatens another (e.g. stiffness vs. inertia, thermal dissipation vs. dielectric clearance, wear life vs. contact friction, sealing compression vs. insertion drag).
+${vetoesList ? `USER VETOES & NEGATIVE FEEDBACK (DO NOT SELECT TOPICS SIMILAR TO THESE):\n${vetoesList}\n` : ''}
+
+DOMAIN CATALYST SPECTRUM ACROSS DISCIPLINES:
+- Manufacturing: Precision micro-tooling (2-micron EDM), MIM debinding/sintering kinetics, AZ91D magnesium thixomolding, 5-axis CNC deflection compensation, optical LSR overmolding.
+- Mechanisms: Continuous rotational barrel cams, harmonic drive strain-wave gearing, cycloidal speed reducers, Geneva indexing wheels, monolithic planar flexure stages.
+- Materials: Nitinol superelastic phase transitions, pyrolytic graphite thermal anisotropy (1,800 W/m·K), chemical glass ion-exchange, Y-TZP structural ceramics, carbon fiber anisotropic layups.
+- Design: Tolerance stack-up analysis (Monte Carlo vs RSS), exact-constraint kinematic design (Kelvin/Maxwell mounts), dynamic O-ring/gasket compression set (IP68/IP69K), fastener torque-tension (50-40-10 rule).
+- Fluids: Microfluidic capillary pumping & burst valves, laminar boundary layer thermal insulation, cavitation pitting in hydraulic pumps, non-Newtonian fluid damping.
+- Electromechanical: Voice coil motors (VCMs) with Lorentz force, piezoelectric ultrasonic standing-wave motors, linear resonant actuators (LRAs), laser quadrature optical encoders.
+- Thermal: Two-phase vapor chambers vs sintered heat pipes, loop heat pipes (LHPs), volumetric thermal mass damping, thermoelectric Peltier coolers (TECs).
+- Product Dives: Multi-industry teardowns across surgical robotics, satellite deployment mechanisms, EV battery cold plates, cinema camera sensor cooling.
 
 STRICT EDITORIAL REQUIREMENTS:
 1. WORD COUNT: The article body MUST be between 2,750 and 3,300 words (strictly 12 to 15 minutes read duration at 220 WPM). Never write high-level overviews or brief summaries.
-2. TITLE: Direct, clean, topic-first format (e.g. "Harmonic Drive Gearboxes: Strain Wave Kinematics and Tooth Fatigue" or "Pyrolytic Graphite Heat Spreaders: Thermal Anisotropy in Ultra-Thin Devices").
+2. TITLE: Direct, clean, topic-first format (e.g. "Harmonic Drive Gearboxes: Strain Wave Kinematics and Tooth Fatigue").
 3. SUBTITLE: A captivating, single-sentence narrative hook highlighting the core mechanical tension or engineering trade-off without meta-announcements or filler.
 4. STRUCTURE: 6 detailed, deeply technical sections with numbers:
    - 1. Governing Physics & First Principles (Equations, quantitative load paths, boundary conditions)
@@ -162,7 +209,7 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other te
 {
   "title": "Topic-First Title",
   "subtitle": "Single-sentence narrative hook.",
-  "subject": "${currentSubject}",
+  "subject": "Discipline Name (One of the 8)",
   "tangents": {
     "key1": {
       "tag": "DISCIPLINE // TOPIC",
