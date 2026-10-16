@@ -14,7 +14,7 @@ function checkFiles() {
 
   const bannedPatterns = [
     /!\[.*\]\(.*(dalle|midjourney|generated|ai-image|diagram-gen).*\)/i,
-    /!\[.*\]\(.*\.(png|jpg|jpeg|webp)\)/i, // Strict ban on unverified local/remote raster graphics
+    /!\[.*\]\(.*\.(png|jpg|jpeg|webp)\)/i,
     /<img.*src=.*(png|jpg|jpeg|webp).*>/i
   ];
 

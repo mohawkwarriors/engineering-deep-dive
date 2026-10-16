@@ -11,7 +11,7 @@ export function ProcessStep({ step, title, parameters, children }: ProcessStepPr
   const formattedStep = typeof step === 'number' ? String(step).padStart(2, '0') : step;
 
   return (
-    <div className="relative pl-8 sm:pl-10 group">
+    <div className="relative pl-8 sm:pl-10 group my-3">
       {/* Connector Line */}
       <div className="absolute left-[15px] sm:left-[19px] top-7 bottom-0 w-px bg-neutral-800 group-last:hidden" />
       
@@ -42,7 +42,7 @@ export function ProcessStep({ step, title, parameters, children }: ProcessStepPr
 
 export function ProcessFlow({ children }: { children: React.ReactNode }) {
   return (
-    <div className="my-6 space-y-4">
+    <div className="my-6 space-y-2">
       {children}
     </div>
   );
