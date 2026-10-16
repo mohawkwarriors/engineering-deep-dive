@@ -59,7 +59,7 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
+    html, body {
       background-color: var(--bg);
       color: var(--text);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -68,6 +68,9 @@
       letter-spacing: -0.011em;
       transition: background-color 0.2s ease, color 0.2s ease;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100%;
     }
 
     .reading-progress-container {
@@ -90,6 +93,7 @@
       max-width: var(--max-w);
       margin: 0 auto;
       padding: 0 24px;
+      width: 100%;
     }
 
     header {
@@ -99,6 +103,7 @@
       padding: 24px 0 20px;
       border-bottom: 1px solid var(--border);
       margin-bottom: 32px;
+      width: 100%;
     }
     .brand-group {
       display: flex;
@@ -162,11 +167,14 @@
       stroke-width: 2;
     }
 
+    /* Desktop Content Grid (Untouched Desktop Mode) */
     .content-grid {
       display: grid;
       grid-template-columns: 240px 1fr;
       gap: 48px;
       align-items: start;
+      min-width: 0;
+      width: 100%;
     }
     .sidebar-outline {
       position: sticky;
@@ -193,6 +201,13 @@
       font-weight: 500;
     }
 
+    .editorial-column, main, article {
+      min-width: 0;
+      max-width: 100%;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
     .meta-line {
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
@@ -213,12 +228,15 @@
       letter-spacing: -0.01em;
       margin-bottom: 20px;
       word-break: break-word;
+      overflow-wrap: break-word;
     }
     .subtitle {
       font-size: 18.5px;
       color: var(--muted);
       line-height: 1.55;
       margin-bottom: 36px;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
     h2 {
       font-family: 'Instrument Serif', Georgia, serif;
@@ -229,6 +247,8 @@
       letter-spacing: -0.01em;
       color: var(--text);
       scroll-margin-top: 56px;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
     h3 {
       font-size: 21px;
@@ -236,10 +256,12 @@
       margin: 44px 0 14px;
       padding-left: 12px;
       border-left: 3px solid var(--accent);
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
-    p { margin-bottom: 20px; }
+    p { margin-bottom: 20px; word-break: break-word; overflow-wrap: break-word; }
     ul, ol { margin: 0 0 24px 22px; }
-    li { margin-bottom: 12px; }
+    li { margin-bottom: 12px; word-break: break-word; overflow-wrap: break-word; }
     strong { font-weight: 600; }
 
     /* Interactive Tangent Popovers */
@@ -311,6 +333,8 @@
       padding: 10px 14px;
       margin: 12px 0;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      max-width: 100%;
     }
     .modal-equation-box .math-label {
       font-family: 'JetBrains Mono', monospace;
@@ -328,7 +352,30 @@
       line-height: 1.45;
     }
 
-    
+    /* KaTeX & Uniform Mathematical Typography */
+    .math-block {
+      margin: 22px 0;
+      padding: 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      text-align: center;
+      font-size: 16px;
+      max-width: 100%;
+    }
+    .katex-display {
+      margin: 0 !important;
+      padding: 4px 0;
+    }
+    .katex { font-size: 1.05em; }
+    .katex-error {
+      color: inherit !important;
+      border-bottom: 1px dotted var(--accent);
+    }
+
     /* Adaptive SVG Diagram Theming (Seamless Light & Dark Mode) */
     .svg-canvas-bg {
       fill: var(--card-inner);
@@ -369,39 +416,17 @@
       opacity: 0.85;
       stroke: var(--border);
       stroke-width: 1.2px;
-      transition: fill 0.2s ease, stroke 0.2s ease;
+      transition: fill 0.2s ease;
     }
 
-/* KaTeX & Uniform Mathematical Typography */
-    .math-block {
-      margin: 22px 0;
-      padding: 16px 20px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      border-radius: 6px;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      text-align: center;
-      font-size: 16px;
-    }
-    .katex-display {
-      margin: 0 !important;
-      padding: 4px 0;
-    }
-    .katex { font-size: 1.05em; }
-    .katex-error {
-      color: inherit !important;
-      border-bottom: 1px dotted var(--accent);
-    }
-
-    /* Figures, Schematics, and Process Flow Cards (Consistent Light/Dark Theming) */
+    /* Figures, Schematics, and Process Flow Cards */
     figure.product-figure {
       margin: 38px 0;
       border: 1px solid var(--border);
       border-radius: 8px;
       overflow: hidden;
       background: var(--surface);
+      max-width: 100%;
     }
     .img-wrapper {
       position: relative;
@@ -436,6 +461,7 @@
       border-radius: 8px;
       overflow: hidden;
       background: var(--surface);
+      max-width: 100%;
       transition: background-color 0.2s ease, border-color 0.2s ease;
     }
     .schematic-header {
@@ -458,11 +484,15 @@
     .schematic-viewport {
       padding: 18px;
       overflow-x: auto;
-      background: var(--bg);
+      -webkit-overflow-scrolling: touch;
+      background: var(--surface);
+      display: flex;
+      justify-content: center;
+      max-width: 100%;
     }
     .schematic-viewport svg {
       width: 100%;
-      min-width: 600px;
+      min-width: 580px;
       height: auto;
       display: block;
     }
@@ -486,6 +516,7 @@
       gap: 14px;
       padding: 20px;
       background: var(--surface);
+      max-width: 100%;
     }
     .process-step-card {
       background: var(--card-inner);
@@ -518,7 +549,9 @@
     /* Spec Comparison Table */
     .spec-table-wrap {
       width: 100%;
+      max-width: 100%;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       margin: 28px 0 36px;
       border: 1px solid var(--border);
       border-radius: 6px;
@@ -527,7 +560,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 14px;
-      min-width: 620px;
+      min-width: 580px;
     }
     .spec-table th, .spec-table td {
       padding: 12px 16px;
@@ -544,7 +577,7 @@
     }
     .spec-table tr:last-child td { border-bottom: none; }
 
-    /* Background Quality Telemetry Bar: Fixed & Polished */
+    /* Background Quality Telemetry Bar */
     .telemetry-bar {
       margin: 48px 0 24px;
       padding: 18px 22px;
@@ -556,7 +589,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+      max-width: 100%;
     }
     .telemetry-info {
       display: flex;
@@ -604,7 +637,7 @@
       border-color: var(--accent);
     }
 
-    /* Issue Navigation Footer Bar: Fixed & Polished */
+    /* Issue Navigation Footer Bar */
     .issue-nav {
       display: flex;
       justify-content: space-between;
@@ -614,6 +647,7 @@
       margin-top: 24px;
       gap: 16px;
       flex-wrap: wrap;
+      max-width: 100%;
     }
     .issue-nav-btn {
       font-family: 'JetBrains Mono', monospace;
@@ -688,13 +722,108 @@
       gap: 16px;
     }
 
+    /* ==========================================================================
+       MOBILE READING OPTIMIZATION (STRICT: REMOVES PINNED OUTLINE, ZERO OVERFLOW)
+       Desktop mode (> 768px) is 100% untouched.
+       ========================================================================== */
     @media (max-width: 768px) {
-      .content-grid { grid-template-columns: 1fr; gap: 0; }
-      .sidebar-outline { display: none; }
-      h1 { font-size: 34px; }
-      h2 { font-size: 26px; margin: 40px 0 14px; }
-      .telemetry-bar { flex-direction: column; align-items: flex-start; }
-      .issue-nav { flex-direction: column; align-items: stretch; }
+      /* 1. Eliminate pinned outline completely on mobile */
+      .sidebar-outline, #sidebar-outline {
+        display: none !important;
+        visibility: hidden !important;
+        position: static !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+      }
+
+      /* 2. Prevent horizontal window expansion */
+      html, body {
+        overflow-x: hidden !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+      }
+      .layout-wrapper {
+        padding: 0 16px !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+      }
+
+      /* 3. Single-column reading flow */
+      .content-grid {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        gap: 0 !important;
+      }
+      .editorial-column, main, article, #view-article {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow-wrap: break-word !important;
+        word-break: break-word !important;
+      }
+
+      /* 4. Mobile typography scaling */
+      h1 {
+        font-size: 32px !important;
+        line-height: 1.15 !important;
+        margin-bottom: 14px !important;
+      }
+      .subtitle {
+        font-size: 16px !important;
+        line-height: 1.5 !important;
+        margin-bottom: 24px !important;
+      }
+      h2 {
+        font-size: 25px !important;
+        margin: 36px 0 14px !important;
+        line-height: 1.2 !important;
+      }
+      h3 {
+        font-size: 18px !important;
+        margin: 28px 0 12px !important;
+      }
+      p, li {
+        font-size: 15.5px !important;
+        line-height: 1.65 !important;
+      }
+      ul, ol {
+        margin: 0 0 20px 18px !important;
+      }
+
+      /* 5. Process flow grid stacks cleanly on mobile */
+      .process-grid {
+        grid-template-columns: 1fr !important;
+        padding: 14px !important;
+        gap: 10px !important;
+      }
+
+      /* 6. Isolated horizontal scrolling for wide graphics & tables only */
+      .schematic-viewport {
+        padding: 12px !important;
+        justify-content: flex-start !important;
+      }
+      .math-block {
+        padding: 12px 14px !important;
+        font-size: 14.5px !important;
+      }
+      .telemetry-bar {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        padding: 16px !important;
+      }
+      .issue-nav {
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+      .issue-nav-btn {
+        justify-content: center !important;
+      }
     }
   </style>
 </head>
@@ -726,6 +855,7 @@
     </header>
 
     <div class="content-grid" id="content-grid">
+      <!-- Desktop Left Sidebar (Only visible on Desktop > 768px) -->
       <aside class="sidebar-outline" id="sidebar-outline">
         <ul class="outline-list" id="outline-list"></ul>
       </aside>
@@ -733,7 +863,6 @@
       <main class="editorial-column" id="main-container">
         <article id="view-article"></article>
         
-        <!-- Bottom Article Navigation: Previous & Next Article -->
         <nav class="issue-nav" id="issue-nav"></nav>
 
         <section id="view-archive" class="hidden">
@@ -875,6 +1004,9 @@
     }
 
     function buildOutline() {
+      const isDesktop = window.innerWidth > 768;
+      if (!isDesktop) return; // Do not build or touch outline on mobile
+      
       const list = document.getElementById("outline-list");
       list.innerHTML = "";
       const headings = document.querySelectorAll("#view-article h2");
@@ -939,9 +1071,17 @@
       document.getElementById("view-article").classList.toggle("hidden", view !== "article");
       document.getElementById("view-archive").classList.toggle("hidden", view !== "archive");
       document.getElementById("btn-archive").classList.toggle("active", view === "archive");
-      document.getElementById("sidebar-outline").style.display = (view === "article") ? "block" : "none";
+      
+      const isDesktop = window.innerWidth > 768;
+      const outline = document.getElementById("sidebar-outline");
+      if (outline) {
+        outline.style.display = (view === "article" && isDesktop) ? "block" : "none";
+      }
+
       const issueNav = document.getElementById("issue-nav");
-      if (issueNav) issueNav.style.display = (view === "article") ? "flex" : "none";
+      if (issueNav) {
+        issueNav.style.display = (view === "article") ? "flex" : "none";
+      }
     }
 
     function renderArchive() {
