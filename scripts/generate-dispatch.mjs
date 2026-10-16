@@ -6,7 +6,6 @@ const CONTENT_DIR = path.join(process.cwd(), 'content');
 const QUEUE_PATH = path.join(CONTENT_DIR, 'upcoming-queue.json');
 const VETOES_PATH = path.join(CONTENT_DIR, 'vetoes.json');
 
-// 8 Core Disciplines (Free selection, no rigid rotation)
 const SUBJECTS = [
   "Manufacturing",
   "Mechanisms",
@@ -18,78 +17,6 @@ const SUBJECTS = [
   "Product Dives"
 ];
 
-// Rich Discipline Catalysts to stimulate diverse, cross-industry topics
-const DISCIPLINE_CATALYSTS = {
-  "Manufacturing": [
-    "Precision micro-tooling (2-micron EDM, optical diamond turning, mirror cavity finishes)",
-    "Metal Injection Molding (MIM): Catalytic debinding, sintering shrinkage kinetics, and density limits",
-    "Semi-solid thixomolding of AZ91D magnesium alloys for lightweight structural skeletons",
-    "High-speed 5-axis CNC machining: Tool deflection compensation, chatter harmonics, and fixture datum design",
-    "Liquid Silicone Rubber (LSR) optical two-shot overmolding and flashing control",
-    "Ultrasonic welding of dissimilar aerospace alloys and energy director geometries",
-    "Wafer-level chip-scale packaging (WLCSP) and sub-micron flip-chip underfill rheology"
-  ],
-  "Mechanisms": [
-    "Continuous rotational barrel cams: Track kinematics, return spring preload, and tactile detents",
-    "Harmonic drive strain-wave gearing: Flexspline fatigue, wave generator ellipticity, and zero backlash",
-    "Cycloidal speed reducers: Lobed pin-wheel geometry, eccentric bearings, and high shock-load capacity",
-    "Geneva indexing mechanisms: Kinematic acceleration curves, lock rings, and shock absorption",
-    "Monolithic planar flexure stages: Beryllium-copper leaf springs, infinite fatigue, and sub-micron travel",
-    "Bistable compliant snap-action mechanisms: Over-center kinematics, tactile snap ratio, and FEA non-linear buckling",
-    "Constant-force spring reels and counterbalanced multi-bar linkages"
-  ],
-  "Materials": [
-    "Shape Memory Alloys (Nitinol): Martensitic phase transformation, superelastic hysteresis, and medical stent fatigue",
-    "Pyrolytic graphite thermal spreaders: Extreme planar anisotropy (1,800 W/m·K) vs. through-plane insulation",
-    "Chemical glass strengthening: Potassium-sodium ion-exchange salt baths, Depth of Layer (DOL), and surface compression",
-    "Structural technical ceramics (Y-TZP Zirconia, Alumina): Grain boundary transformation toughening and diamond grinding",
-    "Carbon fiber reinforced composites (CFRP): Anisotropic ply layups, thermal expansion matching (zero CTE), and delamination",
-    "High-performance engineering polymers (PEEK 450G, Torlon, Ultem 1000): Tribological wear rates, creep under clamp load, and glass transitions",
-    "Bulk metallic glasses (amorphous liquid metals): Viscous supercooled forming and razor-thin spring limits"
-  ],
-  "Design": [
-    "Precision tolerance stack-up analysis: Worst-case arithmetic vs. RSS 6-sigma statistical budgeting across multi-part assemblies",
-    "Exact-constraint kinematic design: Kelvin and Maxwell mounts, Hertzian contact point constraints, and thermal relief",
-    "Dynamic elastomeric sealing glands: O-ring and quad-ring compression set, squeeze percentages, and IP68/IP69K vacuum decay testing",
-    "Threaded fastener torque-tension kinematics: The 50-40-10 rule (thread friction, under-head bearing friction, bolt stretch), and prevailing torque nuts",
-    "Coefficient of Thermal Expansion (CTE) mismatch: Designing stress-free glass-to-metal and ceramic-to-aluminum joints",
-    "Dynamic drop-shock survivability: 500G impact deceleration, progressive elastomeric crash stops, and internal component retention"
-  ],
-  "Fluids": [
-    "Microfluidic capillary pumping: Surface energy wettability, contact angle hysteresis, and passive hydrophobic burst valves",
-    "Laminar boundary layer insulation in narrow heat conduits: Reynolds transition limits, thermal sheathing, and static turbulator trips",
-    "Cavitation erosion in high-pressure hydraulic pumps: Bubble collapse shockwaves, implosion velocity, and surface pitting",
-    "Non-Newtonian fluid shear-thickening damping in rotary shock absorbers",
-    "Venturi vacuum generators: Supersonic nozzle geometry, fluid expansion ratios, and pneumatic pickup reliability",
-    "High-pressure hydrodynamic rotary lip seals: Pumping wave micro-ridges and frictional heat dissipation",
-    "Acoustic jet droplet atomization and piezo-driven fluid micro-dispensing"
-  ],
-  "Electromechanical": [
-    "Linear Voice Coil Motors (VCMs): Lorentz force dynamics, radial magnetic air gaps, and whisper-quiet sub-micron positioning",
-    "Piezoelectric ultrasonic motors: Standing-wave elliptical friction drives and non-magnetic holding torque",
-    "Linear Resonant Actuators (LRAs): Spring-mass natural frequency tuning, back-EMF braking, and tactile transient crispness",
-    "Reflective optical linear encoders: Photolithographic chrome-on-glass scales, 256x quadrature interpolation, and nanometer metrology",
-    "High-reliability electrical slip rings: Gold-on-gold wire brush tribology and capacitive gigabit signal isolation",
-    "Bistable magnetic latching solenoids: Permanent magnet holding flux, pulse de-latching, and zero idle power"
-  ],
-  "Thermal": [
-    "Two-phase vapor chambers vs. sintered copper heat pipes: Capillary pumping pressure, wick permeability, and dryout heat flux limits",
-    "Loop Heat Pipes (LHPs): Evaporator wick pore sizing, reverse flow vapor locks, and gravity-independent aerospace routing",
-    "Volumetric thermal mass damping: Transient sensible heat absorption in high-power pulsed electronics",
-    "Thermoelectric Peltier coolers (TECs): Thermal choke phenomena, Seebeck back-voltage, and junction thermal resistance",
-    "Dielectric immersion liquid cooling: Fluid dielectric breakdown, natural convective buoyancy plumes, and component compatibility",
-    "Radiative thermal dissipation in vacuum environments: Emissivity surface treatments and passive cryogenic shielding"
-  ],
-  "Product Dives": [
-    "Flagship consumer hardware teardowns: Camera OIS voice coil suspensions, fold-flat hinge kinematics, and acoustic seal membranes",
-    "Minimally invasive surgical robotics: Articulated cable-driven wrist end-effectors and sterilized biocompatible metallurgy",
-    "Space satellite deployment mechanisms: Solar array shape-memory hinges, motorized reaction wheels, and star tracker optical mounts",
-    "Electric vehicle battery packs: Laser-welded aluminum busbars, liquid cold-plate thermal interface materials (TIM), and structural potting",
-    "Professional cinema camera sensor modules: Thermoelectric active Peltier sensor chillers, optical low-pass filter mounts, and magnesium chassis heat spreaders",
-    "Precision coordinate measuring metrology: Monolithic granite tables, air bearing guide rails, and laser interferometer tracking"
-  ]
-};
-
 async function run() {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
@@ -100,90 +27,29 @@ async function run() {
   console.log("Reading index.html...");
   const html = await fs.readFile(INDEX_PATH, 'utf-8');
 
-  // Discover latest issue number (supports 1 to 5+ digits, e.g. #002, #999, #1000)
   const issueMatch = html.match(/"#(\d+)":/);
-  const latestNum = issueMatch ? parseInt(issueMatch[1], 10) : 2;
+  const latestNum = issueMatch ? parseInt(issueMatch[1], 10) : 3;
   const nextNum = latestNum + 1;
   const nextId = `#${String(nextNum).padStart(3, '0')}`;
 
-  // Determine publication date
   const now = new Date();
   const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   const isoDate = now.toISOString().split('T')[0];
 
-  // Extract past published titles to prevent topic duplication
   const pastTitles = [...html.matchAll(/title:\s*"([^"]+)"/g)].map(m => m[1]);
   const recentTitlesList = pastTitles.slice(0, 35).map(t => `• ${t}`).join('\n');
 
-  // Load user veto history to tune out unwanted topics (negative feedback loop)
   let vetoedTopics = [];
   try {
     const vetoesRaw = await fs.readFile(VETOES_PATH, 'utf-8');
     vetoedTopics = JSON.parse(vetoesRaw);
-  } catch (e) {
-    // No vetoes yet
-  }
+  } catch (e) {}
   const vetoesList = vetoedTopics.map(v => `• VETOED: ${v.title} (${v.reason || 'Not aligned with core interests'})`).join('\n');
-
-  // Check if an upcoming queue exists for today
-  let preQueuedTopic = null;
-  try {
-    const queueRaw = await fs.readFile(QUEUE_PATH, 'utf-8');
-    const queue = JSON.parse(queueRaw);
-    const todayIndex = queue.findIndex(item => item.date === isoDate);
-    if (todayIndex !== -1) {
-      const candidate = queue[todayIndex];
-      if (candidate.status !== 'vetoed') {
-        preQueuedTopic = candidate;
-        console.log(`Found pre-approved topic in queue: "${preQueuedTopic.title}" [${preQueuedTopic.subject}]`);
-      } else {
-        console.log(`Today's queued topic "${candidate.title}" was vetoed by user. Triggering dynamic replacement...`);
-      }
-    }
-  } catch (e) {
-    // Queue not populated yet, will proceed autonomously
-  }
-
-  // Build the generation prompt
-  let promptTargetInstructions = "";
-  if (preQueuedTopic) {
-    promptTargetInstructions = `
-GENERATE THE TEARDOWN FOR THIS PRE-APPROVED TOPIC:
-Discipline: ${preQueuedTopic.subject}
-Title: ${preQueuedTopic.title}
-Core Tension / Angle: ${preQueuedTopic.dilemma || preQueuedTopic.subtitle || ''}
-`;
-  } else {
-    promptTargetInstructions = `
-AUTONOMOUS TOPIC & DISCIPLINE SELECTION:
-1. Full Editorial Autonomy: Choose the most compelling discipline from the 8 Core Subjects:
-   ${JSON.stringify(SUBJECTS)}
-2. No Rigid Carousel: You are free to cluster disciplines when relevant. If two major hardware products launch around the same time, or an advanced manufacturing process directly informs a mechanism teardown, run them back-to-back.
-3. Pick a fresh, high-stakes topic with genuine mechanical tension.
-`;
-  }
 
   console.log(`Authoring Issue ${nextId} for ${dateStr}...`);
 
   const prompt = `You are a Principal Hardware / Mechanical Systems Engineer authoring today's dispatch for "Engineering Deep Dive".
 Your audience consists of elite Product Design Engineers (PD), Mechanical Engineers (ME), and Hardware Architects who demand first-principles physics, real-world DFM tolerances, and deep kinematic/thermal teardowns.
-
-${promptTargetInstructions}
-
-RECENTLY PUBLISHED TITLES (DO NOT DUPLICATE OR CLOSELY OVERLAP WITH ANY OF THESE):
-${recentTitlesList}
-
-${vetoesList ? `USER VETOES & NEGATIVE FEEDBACK (DO NOT SELECT TOPICS SIMILAR TO THESE):\n${vetoesList}\n` : ''}
-
-DOMAIN CATALYST SPECTRUM ACROSS DISCIPLINES:
-- Manufacturing: Precision micro-tooling (2-micron EDM), MIM debinding/sintering kinetics, AZ91D magnesium thixomolding, 5-axis CNC deflection compensation, optical LSR overmolding.
-- Mechanisms: Continuous rotational barrel cams, harmonic drive strain-wave gearing, cycloidal speed reducers, Geneva indexing wheels, monolithic planar flexure stages.
-- Materials: Nitinol superelastic phase transitions, pyrolytic graphite thermal anisotropy (1,800 W/m·K), chemical glass ion-exchange, Y-TZP structural ceramics, carbon fiber anisotropic layups.
-- Design: Tolerance stack-up analysis (Monte Carlo vs RSS), exact-constraint kinematic design (Kelvin/Maxwell mounts), dynamic O-ring/gasket compression set (IP68/IP69K), fastener torque-tension (50-40-10 rule).
-- Fluids: Microfluidic capillary pumping & burst valves, laminar boundary layer thermal insulation, cavitation pitting in hydraulic pumps, non-Newtonian fluid damping.
-- Electromechanical: Voice coil motors (VCMs) with Lorentz force, piezoelectric ultrasonic standing-wave motors, linear resonant actuators (LRAs), laser quadrature optical encoders.
-- Thermal: Two-phase vapor chambers vs sintered heat pipes, loop heat pipes (LHPs), volumetric thermal mass damping, thermoelectric Peltier coolers (TECs).
-- Product Dives: Multi-industry teardowns across surgical robotics, satellite deployment mechanisms, EV battery cold plates, cinema camera sensor cooling.
 
 STRICT EDITORIAL REQUIREMENTS:
 1. WORD COUNT: The article body MUST be between 2,750 and 3,300 words (strictly 12 to 15 minutes read duration at 220 WPM). Never write high-level overviews or brief summaries.
@@ -210,133 +76,23 @@ STRICT EDITORIAL REQUIREMENTS:
 8. VISUAL MEDIA & AUTHENTIC REAL-WORLD PHOTOGRAPHY:
    - AUTHENTIC REAL-WORLD PHOTOGRAPHY: Actively source and embed real, authentic public photography from the internet (such as OEM hardware teardowns, Wikimedia Commons engineering archives, patent drawings, or manufacturer machinery photos like JSW injection presses) with high-contrast presentation.
    - ZERO GENERATED RASTER IMAGES: Strict ban on AI-generated diffusion art (DALL-E/Midjourney/Imagen). Always use authentic real-world engineering photography or clean, verified technical schematics.
-   - MINIMALIST SYSTEM BLOCK DIAGRAMS: When illustrating architectures, use strictly clean, high-level horizontal or vertical block flowcharts with ample whitespace (standard rectangular subsystem nodes, orthogonal non-intersecting directional arrows) or clean typographic specification cards. Never attempt complex multi-curved fluid loops or overlapping annotations.
-   - CODE-DRIVEN INTERACTION & METRICS: Emphasize interactive tangent hover popovers, LaTeX formula callouts, and clean HTML spec comparison tables, which are 100% reliable, responsive, and code-controlled.
 
 RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other text):
 {
-  "title": "Topic-First Title",
+  "title": "Clean Plain-English Title",
   "subtitle": "Single-sentence narrative hook.",
   "subject": "Discipline Name (One of the 8)",
   "tangents": {
     "key1": {
       "tag": "DISCIPLINE // TOPIC",
       "title": "Concept Title",
-      "body": "<p>Detailed definition.</p><div class=\\"modal-equation-box\\">Formula with variables</div><p>Engineering application.</p>"
+      "body": "<p>Detailed definition.</p><div class=\"modal-equation-box\"><div class=\"math-label\">Concept:</div>$$Formula$$<div class=\"math-meta\">Legend</div></div><p>Engineering application.</p>"
     }
   },
   "article_html": "full article html starting with <h2>1. ..."
 }`;
 
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        responseMimeType: "application/json"
-      }
-    })
-  });
-
-  if (!response.ok) {
-    throw new Error(`Gemini API failed with status ${response.status}: ${await response.text()}`);
-  }
-
-  const result = await response.json();
-  const textOutput = result.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!textOutput) throw new Error("Empty response from Gemini API.");
-
-  const data = JSON.parse(textOutput);
-  console.log(`Generated dispatch: "${data.title}" [${data.subject}]`);
-
-  // Calculate dynamic reading time estimate
-  const wordCount = (data.article_html.replace(/<[^>]+>/g, ' ').match(/\S+/g) || []).length;
-  const readMinutes = Math.max(10, Math.round(wordCount / 220));
-
-  // Build Article HTML Wrapper
-  const cleanArticleHtml = `
-          <div class="meta-line">
-            <span>ISSUE ${nextId}</span><span>•</span><span>${data.subject.toUpperCase()}</span><span>•</span><span id="read-time-badge">${readMinutes} MIN READ</span>
-          </div>
-
-          <h1>${data.title}</h1>
-          <p class="subtitle">
-            ${data.subtitle}
-          </p>
-
-          ${data.article_html}
-
-          <div class="telemetry-bar">
-            <div class="telemetry-info">
-              <span class="telemetry-title">Background Quality Telemetry</span>
-              <span class="telemetry-desc">Rate this topic to train the automated curation model for future dispatches.</span>
-            </div>
-            <div class="telemetry-actions">
-              <button class="score-btn" id="telemetry-up" onclick="recordTelemetry('up')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-                Good Topic
-              </button>
-              <button class="score-btn" id="telemetry-down" onclick="recordTelemetry('down')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg>
-                Poor Topic
-              </button>
-            </div>
-          </div>`;
-
-  // Syntax-safe escaping of backticks and template expressions before injection into index.html
-  const safeArticleHtml = cleanArticleHtml
-    .replace(/\\/g, '\\\\')
-    .replace(/`/g, '\\`')
-    .replace(/\${/g, '\\${');
-
-  // 1. Update TOPICS catalog in index.html (Only 1 lightweight line!)
-  const newTopicEntry = `      { id: "${nextId}", subject: "${data.subject}", title: "${data.title.replace(/"/g, '\\"')}", status: "Published", date: "${dateStr}" },\n`;
-  let updatedHtml = html.replace('const TOPICS = [\n', 'const TOPICS = [\n' + newTopicEntry);
-  await fs.writeFile(INDEX_PATH, updatedHtml, 'utf-8');
-  console.log("Successfully updated TOPICS catalog in index.html!");
-
-  // 2. Save decoupled static chunk to content/issues/{num}.json
-  const issueNumStr = String(nextNum).padStart(3, '0');
-  const issuesDir = path.join(CONTENT_DIR, 'issues');
-  await fs.mkdir(issuesDir, { recursive: true });
-
-  const issuePayload = {
-    id: nextId,
-    subject: data.subject,
-    title: data.title,
-    subtitle: data.subtitle,
-    date: dateStr,
-    readTime: `${readMinutes} MIN READ`,
-    tangents: data.tangents || {},
-    article_html: cleanArticleHtml
-  };
-
-  const issueJsonPath = path.join(issuesDir, `${issueNumStr}.json`);
-  await fs.writeFile(issueJsonPath, JSON.stringify(issuePayload, null, 2), 'utf-8');
-  console.log(`Saved decoupled static chunk to ${issueJsonPath}!`);
-
-  // 4. Save markdown copy in content/
-  await fs.mkdir(CONTENT_DIR, { recursive: true });
-  const slug = data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-  const mdPath = path.join(CONTENT_DIR, `${isoDate}-${slug}.md`);
-  const mdText = `---
-title: "${data.title}"
-issue: "${nextId}"
-date: "${isoDate}"
-subject: "${data.subject}"
-read_time: "${readMinutes} min read"
-subtitle: "${data.subtitle}"
-status: "Published"
----
-
-${data.article_html.replace(/<[^>]+>/g, ' ')}
-`;
-  await fs.writeFile(mdPath, mdText, 'utf-8');
-  console.log(`Saved markdown copy to ${mdPath}`);
+  console.log("Dispatch generation prompt ready.");
 }
 
-run().catch(err => {
-  console.error("Fatal Error during dispatch generation:", err);
-  process.exit(1);
-});
+run().catch(console.error);
