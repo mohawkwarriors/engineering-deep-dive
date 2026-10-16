@@ -4,7 +4,8 @@
   "description": "Daily automated mechanical engineering deep dive dispatches.",
   "type": "module",
   "scripts": {
-    "generate": "node scripts/generate-dispatch.mjs"
+    "generate": "node scripts/generate-dispatch.mjs",
+    "curate": "node scripts/generate-monthly-queue.mjs"
   },
   "dependencies": {
     "node-fetch": "^3.3.2"

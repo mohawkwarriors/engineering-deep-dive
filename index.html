@@ -1025,415 +1025,80 @@
       { id: "#000", subject: "Electromechanical", title: "Apple Vision Pro: Automatic Lens Adjustment & Voice Coil Motors", status: "Published", date: "Oct 13, 2026" }
     ];
 
-    // Mini Deep Dive Tangent Database (32 Specialized Topics)
-    const TANGENTS = {
+    // Decoupled Static Chunking Cache
+    // Pre-loaded tangents & article for Issue #002 ensures zero latency on initial load
+    let TANGENTS = {
       "sensible_heat": {
-        "tag": "THERMODYNAMICS // SENSIBLE HEAT EXCHANGE",
-        "title": "Sensible Heat Flux & Transient Drawdown",
-        "body": `
-          <p>Sensible heat is the thermal energy transferred to a fluid resulting in temperature change without a phase transition. When 18°C reservoir water enters a heating block at 9 bar, it continuously absorbs thermal energy.</p>
-          <div class="modal-equation-box">
-            Heat Transfer: q = &dot;m &middot; C_p &middot; (T_brew - T_inlet)<br>
-            Where: &dot;m = 2.0 g/s, C_p &asymp; 4.184 J/(g&middot;&deg;C), &Delta;T = 75&deg;C<br>
-            Instantaneous Power Required: P_min &asymp; 628 Watts (excluding losses)
-          </div>
-          <p>Because flow is non-steady during pre-infusion, heating elements must deliver instantaneous localized heat flux or rely on high conductive thermal mass to prevent water temperature from plummeting.</p>
-        `
+            "tag": "THERMODYNAMICS // SENSIBLE HEAT EXCHANGE",
+            "title": "Sensible Heat Flux & Transient Drawdown",
+            "body": "\n          <p>Sensible heat is the thermal energy transferred to a fluid resulting in temperature change without a phase transition. When 18\u00b0C reservoir water enters a heating block at 9 bar, it continuously absorbs thermal energy.</p>\n          <div class=\"modal-equation-box\">\n            Heat Transfer: q = &dot;m &middot; C_p &middot; (T_brew - T_inlet)<br>\n            Where: &dot;m = 2.0 g/s, C_p &asymp; 4.184 J/(g&middot;&deg;C), &Delta;T = 75&deg;C<br>\n            Instantaneous Power Required: P_min &asymp; 628 Watts (excluding losses)\n          </div>\n          <p>Because flow is non-steady during pre-infusion, heating elements must deliver instantaneous localized heat flux or rely on high conductive thermal mass to prevent water temperature from plummeting.</p>\n        "
       },
       "pid_controller": {
-        "tag": "CONTROL SYSTEMS // CLOSED-LOOP REGULATION",
-        "title": "Discrete PID Loop & Anti-Windup Reset",
-        "body": `
-          <p>Bimetallic mechanical thermostats oscillate across a sloppy &plusmn;5°C hysteresis band. Proportional-Integral-Derivative (PID) controllers compute error between setpoint and RTD thermocouple feedback at 10 Hz.</p>
-          <div class="modal-equation-box">
-            Control Output: u(t) = K_p &middot; e(t) + K_i &int; e(&tau;) d&tau; + K_d &middot; (de/dt)<br>
-            Cycle Rate: Solid-State Relay (SSR) pulsed with zero-crossing triac<br>
-            Thermal Stability: &plusmn;0.2&deg;C steady-state group head precision
-          </div>
-          <p>An anti-windup clamping algorithm halts integral accumulation during prolonged shots, preventing severe thermal overshoot when the brew solenoid abruptly closes.</p>
-        `
+            "tag": "CONTROL SYSTEMS // CLOSED-LOOP REGULATION",
+            "title": "Discrete PID Loop & Anti-Windup Reset",
+            "body": "\n          <p>Bimetallic mechanical thermostats oscillate across a sloppy &plusmn;5\u00b0C hysteresis band. Proportional-Integral-Derivative (PID) controllers compute error between setpoint and RTD thermocouple feedback at 10 Hz.</p>\n          <div class=\"modal-equation-box\">\n            Control Output: u(t) = K_p &middot; e(t) + K_i &int; e(&tau;) d&tau; + K_d &middot; (de/dt)<br>\n            Cycle Rate: Solid-State Relay (SSR) pulsed with zero-crossing triac<br>\n            Thermal Stability: &plusmn;0.2&deg;C steady-state group head precision\n          </div>\n          <p>An anti-windup clamping algorithm halts integral accumulation during prolonged shots, preventing severe thermal overshoot when the brew solenoid abruptly closes.</p>\n        "
       },
       "thermal_mass": {
-        "tag": "THERMAL INERTIA // CAPACITANCE",
-        "title": "Volumetric Heat Capacity & Mass Damping",
-        "body": `
-          <p>Thermal mass acts as a low-pass thermodynamic filter. High thermal capacitance dampens rapid fluid temperature swings caused by cold water ingestion.</p>
-          <div class="modal-equation-box">
-            Thermal Capacitance: C_th = m &middot; c_p = &rho; &middot; V &middot; c_p<br>
-            Forged Brass Group (4.2 kg): C_th &asymp; 1,600 J/&deg;C<br>
-            Cast Aluminum Thermoblock (0.6 kg): C_th &asymp; 540 J/&deg;C (3x lower inertia)
-          </div>
-          <p>Commercial E61 group heads leverage massive forged brass bodies to passively stabilize brewing water temperature even if incoming boiler water fluctuates.</p>
-        `
+            "tag": "THERMAL INERTIA // CAPACITANCE",
+            "title": "Volumetric Heat Capacity & Mass Damping",
+            "body": "\n          <p>Thermal mass acts as a low-pass thermodynamic filter. High thermal capacitance dampens rapid fluid temperature swings caused by cold water ingestion.</p>\n          <div class=\"modal-equation-box\">\n            Thermal Capacitance: C_th = m &middot; c_p = &rho; &middot; V &middot; c_p<br>\n            Forged Brass Group (4.2 kg): C_th &asymp; 1,600 J/&deg;C<br>\n            Cast Aluminum Thermoblock (0.6 kg): C_th &asymp; 540 J/&deg;C (3x lower inertia)\n          </div>\n          <p>Commercial E61 group heads leverage massive forged brass bodies to passively stabilize brewing water temperature even if incoming boiler water fluctuates.</p>\n        "
       },
       "saturated_group": {
-        "tag": "FLUID THERMAL ARCHITECTURE // GROUP HEADS",
-        "title": "Saturated Group Head Geometries",
-        "body": `
-          <p>In semi-saturated or bolt-on group heads, heat transfers solely via conduction across a dry mechanical neck flange, creating a 3°C to 6°C thermal gradient from boiler to portafilter.</p>
-          <div class="modal-equation-box">
-            Conduction Flange: q_cond = -k &middot; A_flange &middot; (dT/dx)<br>
-            Saturated Geometry: Group neck forms a continuous water-jacket chamber<br>
-            Temperature Delta: &Delta;T &lt; 0.15&deg;C between boiler core and puck surface
-          </div>
-          <p>Pioneered by La Marzocco, saturated groups submerge the entire brass dispersion block directly into the brew boiler cavity, ensuring water never encounters a cooler metal surface prior to extraction.</p>
-        `
+            "tag": "FLUID THERMAL ARCHITECTURE // GROUP HEADS",
+            "title": "Saturated Group Head Geometries",
+            "body": "\n          <p>In semi-saturated or bolt-on group heads, heat transfers solely via conduction across a dry mechanical neck flange, creating a 3\u00b0C to 6\u00b0C thermal gradient from boiler to portafilter.</p>\n          <div class=\"modal-equation-box\">\n            Conduction Flange: q_cond = -k &middot; A_flange &middot; (dT/dx)<br>\n            Saturated Geometry: Group neck forms a continuous water-jacket chamber<br>\n            Temperature Delta: &Delta;T &lt; 0.15&deg;C between boiler core and puck surface\n          </div>\n          <p>Pioneered by La Marzocco, saturated groups submerge the entire brass dispersion block directly into the brew boiler cavity, ensuring water never encounters a cooler metal surface prior to extraction.</p>\n        "
       },
       "calcification": {
-        "tag": "MATERIALS SCIENCE // MINERAL PRECIPITATION",
-        "title": "Calcium Carbonate Scale Deposition Kinetics",
-        "body": `
-          <p>Tap water contains dissolved calcium and bicarbonate ions. Unlike most salts whose solubility increases with heat, calcium carbonate exhibits retrograde (inverse) solubility.</p>
-          <div class="modal-equation-box">
-            Reaction: Ca&sup2;&spplus; + 2HCO_3&minus; &harr; CaCO_3&darr; + CO_2&uarr; + H_2O<br>
-            Solubility: Decreases exponentially above 60&deg;C<br>
-            Thermal Barrier: k_scale &asymp; 1.3 W/(m&middot;K) (vs. Copper k &asymp; 390 W/(m&middot;K))
-          </div>
-          <p>A mere 1.0 mm scale crust on boiler heating coils acts as an insulator, reducing conductive heat transfer by >40% and causing element sheath burnout.</p>
-        `
+            "tag": "MATERIALS SCIENCE // MINERAL PRECIPITATION",
+            "title": "Calcium Carbonate Scale Deposition Kinetics",
+            "body": "\n          <p>Tap water contains dissolved calcium and bicarbonate ions. Unlike most salts whose solubility increases with heat, calcium carbonate exhibits retrograde (inverse) solubility.</p>\n          <div class=\"modal-equation-box\">\n            Reaction: Ca&sup2;&spplus; + 2HCO_3&minus; &harr; CaCO_3&darr; + CO_2&uarr; + H_2O<br>\n            Solubility: Decreases exponentially above 60&deg;C<br>\n            Thermal Barrier: k_scale &asymp; 1.3 W/(m&middot;K) (vs. Copper k &asymp; 390 W/(m&middot;K))\n          </div>\n          <p>A mere 1.0 mm scale crust on boiler heating coils acts as an insulator, reducing conductive heat transfer by >40% and causing element sheath burnout.</p>\n        "
       },
       "thermal_conductivity": {
-        "tag": "METALLURGY // THERMAL TRANSPORT",
-        "title": "Conductivity: Copper vs. Brass vs. 316L Stainless",
-        "body": `
-          <p>Boiler material choice dictates warm-up latency, internal corrosion resistance, and thermal response under heavy cycling.</p>
-          <div class="modal-equation-box">
-            Deoxidized Copper (C12200): k &asymp; 385 W/(m&middot;K)<br>
-            Forged CW617N Lead-Free Brass: k &asymp; 115 W/(m&middot;K)<br>
-            AISI 316L Stainless Steel: k &asymp; 16 W/(m&middot;K) (Corrosion immune, low conduction)
-          </div>
-          <p>Stainless boilers exhibit superior structural burst strength and zero heavy-metal leaching, but require external resistive heat jackets or internal baffles to prevent localized thermal stratifications.</p>
-        `
-      },
-      "convection": {
-        "tag": "THERMAL PHYSICS // CONDUCTION & BUOYANCY",
-        "title": "Passive Natural Convection & Heat Spreading",
-        "body": `
-          <p>Electronic devices operating without cooling fans rely on buoyancy-driven air motion (natural convection) governed by temperature differences between the chassis surface and ambient air.</p>
-          <div class="modal-equation-box">
-            Conduction: q = -k · A · (dT/dx)<br>
-            Natural Convection: q_conv = h · A · (T_surface - T_ambient)
-          </div>
-          <p>To prevent localized hotspots exceeding safe touch limits (&le;43&deg;C per IEC 62368-1), high-power silicon packages pair with pyrolytic graphite spreaders to disperse heat flux uniformly across an internal aluminum chassis extrusion.</p>
-        `
-      },
-      "pwm_dimming": {
-        "tag": "OPTOELECTRONICS // LED BACKLIGHT DRIVERS",
-        "title": "High-Frequency Pulse-Width Modulation (PWM)",
-        "body": `
-          <p>Direct current dimming causes LEDs to shift color temperature and suffer threshold voltage cutoffs at ultra-low currents. PWM achieves deep dimming by switching LEDs fully on and off at high frequencies.</p>
-          <div class="modal-equation-box">
-            Luminance: L_avg = L_peak &middot; (t_on / T_period)<br>
-            Frequency: f_pwm &ge; 25 kHz (Eliminates acoustic coil whine & stroboscopic flicker)
-          </div>
-          <p>By modulating duty cycle down to 0.06%, the display throttles from 500 nits down to 0.3 nits without color distortion or backlight flickering.</p>
-        `
-      },
-      "pyrolytic_graphite": {
-        "tag": "MATERIALS SCIENCE // THERMAL ANISOTROPY",
-        "title": "Pyrolytic Graphite Heat Spreaders",
-        "body": `
-          <p>Synthetic pyrolytic graphite sheets exhibit extreme planar thermal anisotropy due to hexagonal sp&sup2; carbon covalent bonds in-plane versus weak van der Waals forces between layers.</p>
-          <div class="modal-equation-box">
-            In-Plane Conductivity: k_xy &asymp; 1,600 &ndash; 1,800 W/(m&middot;K) (4x Copper)<br>
-            Through-Plane Conductivity: k_z &asymp; 15 W/(m&middot;K) (Thermal Barrier)
-          </div>
-          <p>This guides concentrated heat away from concentrated chips horizontally across broad chassis surfaces before it can penetrate through the front cover glass.</p>
-        `
-      },
-      "uwb": {
-        "tag": "RF PHYSICS // TIME-OF-FLIGHT SPATIAL RANGING",
-        "title": "Ultra-Wideband (UWB) Time-of-Flight vs. BLE RSSI",
-        "body": `
-          <p>Bluetooth Low Energy measures Received Signal Strength (RSSI) to estimate distance, but metal door frames and stucco wire cause &plusmn;12 dB multipath swings—tricking locks into unlocking from inside the home.</p>
-          <div class="modal-equation-box">
-            Distance: d = (c &middot; &Delta;t) / 2<br>
-            Pulse Duration: &tau; &asymp; 2 nanoseconds (&ge;500 MHz Bandwidth)
-          </div>
-          <p>UWB transmits ultra-narrow RF pulses across 6.5 GHz and 8.0 GHz. Because pulses arrive faster than reflected echoes, the receiver isolates the direct line-of-sight wavefront, achieving &plusmn;3 cm ranging accuracy.</p>
-        `
-      },
-      "aliro": {
-        "tag": "COMMUNICATION PROTOCOLS // ACCESS CONTROL",
-        "title": "Aliro Universal Access Standard",
-        "body": `
-          <p>A unified credential standard established by the Connectivity Standards Alliance (CSA) to standardize digital key handshakes across Apple, Google, Samsung, and lock manufacturers.</p>
-          <div class="modal-equation-box">
-            Layers: Matter-over-Thread (Mesh) + BLE (Discovery) + UWB (Ranging)<br>
-            Security: Asymmetric public-key cryptography via Secure Element
-          </div>
-          <p>Eliminates proprietary vendor hubs by allowing devices to discover, authenticate, and range entirely offline with sub-second latency.</p>
-        `
-      },
-      "gearbox": {
-        "tag": "MECHANICAL KINEMATICS // TORQUE TRANSMISSION",
-        "title": "Planetary Gearboxes in Cylindrical Bores",
-        "body": `
-          <p>Door locks must fit inside a standard 25.4 mm (1-inch) edge bore while generating over 30 N of linear bolt-throw force to overcome sticking, weather-stripped doors.</p>
-          <div class="modal-equation-box">
-            Gear Ratio: i = 1 + (Z_ring / Z_sun)<br>
-            Output Torque: &tau;_out = F_throw &middot; r_cam / &eta;_gear
-          </div>
-          <p>Unlike spur gears that require wide parallel shaft spacing, planetary gearheads share loads across multiple planet gears orbiting a central sun gear along a common axis, delivering high reduction (120:1) in a tiny cylinder.</p>
-        `
-      },
-      "lost_motion_cam": {
-        "tag": "MECHANISMS // MECHANICAL DECOUPLING",
-        "title": "Lost-Motion Slotted Cam Drivetrains",
-        "body": `
-          <p>When an electric motor drives a deadbolt, its high-ratio planetary gearbox has enormous back-driving resistance, making manual rotation from the inside thumbturn nearly impossible.</p>
-          <div class="modal-equation-box">
-            Free Angle: &theta;_free &asymp; 45&deg; &ndash; 60&deg; of Unconstrained Cam Arc<br>
-            Operation: Motor centers drive pin in open slot after bolt extension
-          </div>
-          <p>The lost-motion slot mechanically decouples the manual thumbturn from the motor shaft, allowing users to rotate the deadbolt freely by hand with zero motor gear drag.</p>
-        `
-      },
-      "optics": {
-        "tag": "OPTICAL DESIGN // PARALLAX & CHROMATIC CORRECTION",
-        "title": "Dual-Lens Optical Split vs. Fisheye Barrel Distortion",
-        "body": `
-          <p>Single-lens doorbell cameras with &ge;180&deg; field-of-view suffer severe peripheral barrel distortion, stretching human faces at eye level and washing out package details near the floor.</p>
-          <div class="modal-equation-box">
-            Upper Sensor (Visitor): 2.5K HDR, f/2.0, 130&deg; FOV (Facial MTF optimized)<br>
-            Lower Sensor (Package): 1080p, f/2.4, 110&deg; FOV (Canted 45&deg; downward)
-          </div>
-          <p>Splitting the optics across two independent glass assemblies allows each sensor to be calibrated for its exact focal plane, providing crisp facial identification and a flat, undistorted package view.</p>
-        `
-      },
-      "leafswitch": {
-        "tag": "ELECTROMECHANICAL // AIR-GAP PRIVACY",
-        "title": "Mechanical Leaf-Switch Hardware Cutoff",
-        "body": `
-          <p>Software privacy toggles merely stop digital audio recording in firmware while MEMS microphones remain electrically biased on the circuit board, vulnerable to firmware exploits.</p>
-          <div class="modal-equation-box">
-            Kinematics: 95&deg; motorized gimbal pitch pushes cam lobe into leaf spring<br>
-            Contact: Gold-plated normally-closed (NC) wiping contact (R &lt; 30 m&Omega;)<br>
-            Isolation: Physical open circuit on microphone VDD power rail
-          </div>
-          <p>At the bottom 5&deg; of rotation, a cam lobe physically pushes the leaf spring open, breaking the DC power supply trace to the microphones and guaranteeing hardware-enforced silence.</p>
-        `
-      },
-      "heatsinks": {
-        "tag": "THERMAL DESIGN // ENVIRONMENTAL DISSIPATION",
-        "title": "Die-Cast Convective Heatsink Enclosures",
-        "body": `
-          <p>Outdoor floodlight cameras combine 2,000-lumen LED drivers with high-temperature solar loading. Sensor dark-current shot noise doubles for every 6&deg;C to 8&deg;C rise in CMOS junction temperature.</p>
-          <div class="modal-equation-box">
-            Convective Fins: Nu = C &middot; (Gr &middot; Pr)^m<br>
-            Surface Finish: Black anodized emissivity &epsilon; &asymp; 0.85 &ndash; 0.90 (Maximizes radiative cooling)
-          </div>
-          <p>Heavy-gauge aluminum outriggers conduct LED heat away into convective cooling fins on the exterior housing, thermally decoupling high-wattage lighting from the central camera core.</p>
-        `
-      },
-      "fresnel_glare": {
-        "tag": "OPTICS // INTERNAL REFLECTION",
-        "title": "Fresnel Glare & Optical Boot Isolation",
-        "body": `
-          <p>When 850 nm infrared night-vision LEDs share a protective glass dome with a camera lens, light bounces off the internal glass-air boundary according to Fresnel's reflection law.</p>
-          <div class="modal-equation-box">
-            Reflection: R = ((n_glass - n_air) / (n_glass + n_air))&sup2; &asymp; 4% per surface<br>
-            Result: Reflected IR light floods the CMOS aperture, creating milky haze
-          </div>
-          <p>A dual-durometer black silicone boot compresses directly against the inner glass face, creating an opaque light-seal that physically prevents stray IR rays from washing out night vision.</p>
-        `
-      },
-      "powerstealing": {
-        "tag": "POWER ELECTRONICS // ZERO-CROSSING HARVESTING",
-        "title": "Active MOSFET Power Stealing (2-Wire Loops)",
-        "body": `
-          <p>Older homes lack a dedicated Common (C) neutral wire. Smart thermostats must harvest power in series through the furnace relay coil without pulling enough current to close the relay.</p>
-          <div class="modal-equation-box">
-            AC Waveform: v(t) = V_peak &middot; sin(&omega;t)<br>
-            Harvest Window: &Delta;t &asymp; 300 &mu;s near zero-crossing (where v(t) &asymp; 0V)<br>
-            Current Threshold: I_leak &lt; 20 mA (Well below 40 mA relay pull-in)
-          </div>
-          <p>Back-to-back MOSFETs open for microsecond windows near 60 Hz zero-crossings to charge an internal supercapacitor bank without dropping holding flux in the furnace contactor.</p>
-        `
-      },
-      "fmcw_radar": {
-        "tag": "RF SENSING // MICROWAVE INTERFEROMETRY",
-        "title": "60 GHz FMCW Respiration Radar",
-        "body": `
-          <p>Traditional passive infrared (PIR) sensors require an exterior plastic Fresnel lens and cannot detect a stationary person. Millimeter-wave radar penetrates dielectric cover glass invisibly.</p>
-          <div class="modal-equation-box">
-            Frequency Sweep: 57 &ndash; 64 GHz (&lambda; &asymp; 5 mm)<br>
-            Phase Sensitivity: &Delta;&phi; = 4&pi; &middot; &Delta;r / &lambda;<br>
-            Resolution: Detects sub-millimeter chest displacement from respiration
-          </div>
-          <p>By measuring minute phase shifts between transmitted and reflected chirps, the sensor confirms room occupancy even when occupants are sitting completely motionless.</p>
-        `
-      },
-      "ipd_alignment": {
-        "tag": "BIOMECHANICS // OPTICAL ALIGNMENT",
-        "title": "Interpupillary Distance (IPD) & Eyebox Limits",
-        "body": `
-          <p>Human interpupillary distance ranges from 51 mm to 75 mm. High-resolution catadioptric pancake optics have an optical sweet spot (eyebox) measuring only 4.0 mm in diameter.</p>
-          <div class="modal-equation-box">
-            Tolerance: &plusmn;0.75 mm allowable off-axis pupillary offset<br>
-            MTF Degradation: >45% contrast loss beyond 1.5 mm displacement
-          </div>
-          <p>When the optical center fails to align with the eye's visual axis, image sharpness collapses and artificial binocular parallax vergence rapidly induces motion sickness.</p>
-        `
-      },
-      "pancake_optics": {
-        "tag": "OPTICAL PHYSICS // POLARIZATION FOLDING",
-        "title": "Catadioptric Pancake Optics",
-        "body": `
-          <p>Conventional refractive VR lenses require large air gaps (40–50 mm) between lens and display. Pancake optics fold the optical path back and forth using polarizers and beam splitters.</p>
-          <div class="modal-equation-box">
-            Optical Path: Polarizer &rarr; 50/50 Beam Splitter &rarr; Quarter-Wave Plate (QWP) &rarr; Reflective Polarizer<br>
-            Z-Stack Reduction: Reduces physical headset depth by >60%
-          </div>
-          <p>This achieves a thin, low-profile front visor but introduces approximately 75% optical light loss, demanding high-brightness micro-OLED panels capable of over 5,000 nits.</p>
-        `
-      },
-      "mtf": {
-        "tag": "OPTICAL METROLOGY // IMAGE FIDELITY",
-        "title": "Modulation Transfer Function (MTF)",
-        "body": `
-          <p>MTF measures an optical system's ability to transfer contrast from an object to the image plane across increasing spatial frequencies (measured in line pairs per millimeter, lp/mm).</p>
-          <div class="modal-equation-box">
-            MTF: Contrast Transfer = (I_max - I_min) / (I_max + I_min)<br>
-            Spatial Benchmark: MTF &gt; 0.6 at 30 lp/mm (Required for tack-sharp text)
-          </div>
-          <p>In spatial displays, MTF drops rapidly off-axis. Automated mechanical lens alignment ensures the user's pupil stays pinned at the optical center where MTF is highest.</p>
-        `
-      },
-      "vergence_accommodation": {
-        "tag": "VISUAL NEUROLOGY // SENSORY CONFLICT",
-        "title": "Vergence-Accommodation Conflict (VAC)",
-        "body": `
-          <p>In the natural world, the brain couples eye lens accommodation (focusing) with binocular vergence (inward/outward eye rotation). In spatial headsets, the screen focal distance is fixed (~1.3 m).</p>
-          <div class="modal-equation-box">
-            Accommodation Cue: Fixed focal plane at 1.3 meters (0.77 Diopters)<br>
-            Vergence Cue: Dynamic virtual object depth (0.2 m to infinity)<br>
-            Conflict: Neurological decoupling induces eye strain and headache
-          </div>
-          <p>Precise mechanical IPD centering eliminates added lateral parallax errors, keeping the neurological vergence-accommodation discrepancy within tolerable sensory limits.</p>
-        `
-      },
-      "lorentz_force": {
-        "tag": "PHYSICS // ELECTROMAGNETIC FORCES",
-        "title": "Lorentz Force in Linear Voice Coil Actuators",
-        "body": `
-          <p>The foundational electromagnetic force exerted on a charged particle or current-carrying conductor moving through a magnetic field, discovered by Hendrik Lorentz.</p>
-          <div class="modal-equation-box">
-            General Equation: F = q &middot; (E + v &times; B)<br>
-            Conductor in Magnetic Field: F = I &middot; (L &times; B)<br>
-            Where: F = Force (N), I = Current (A), L = Wire Length (m), B = Flux Density (Tesla)
-          </div>
-          <p>Because force is directly proportional to coil current, voice coil actuators produce instantaneous, smooth linear motion without gear train friction, motor cogging, or stepping backlash.</p>
-        `
-      },
-      "lorentz_vcm": {
-        "tag": "ELECTROMECHANICAL // DIRECT-DRIVE ACTUATION",
-        "title": "Miniature Voice Coil Motors (VCMs)",
-        "body": `
-          <p>A direct-drive linear actuator consisting of a lightweight electrical coil positioned inside the radial magnetic air gap of high-grade NdFeB permanent magnets.</p>
-          <div class="modal-equation-box">
-            Actuator Force: F = B &middot; I &middot; L<br>
-            Linear Stroke: &plusmn;12 mm range with &plusmn;0.05 mm positioning repeatability<br>
-            Acoustic Profile: 0 dB audible noise (No rotating gears or tooth engagement)
-          </div>
-          <p>VCMs deliver frictionless, whisper-quiet micro-stepping and sub-millisecond settling times, making them ideal for headsets sitting directly against facial bones.</p>
-        `
-      },
-      "flexure_suspension": {
-        "tag": "PRECISION MECHANISMS // COMPLIANT GUIDES",
-        "title": "Planar Beryllium-Copper Flexure Springs",
-        "body": `
-          <p>Conventional sliding bushings or linear ball bearings suffer from stick-slip friction and require lubricant greases that outgas and fog sealed optical surfaces in spatial headsets.</p>
-          <div class="modal-equation-box">
-            Linear Stiffness: k = 12 &middot; E &middot; I / L&sup3;<br>
-            Material: Beryllium-Copper (Alloy 25 / C17200)<br>
-            Fatigue Limit: High endurance under continuous microscopic deflection
-          </div>
-          <p>Flat flexure blades flex elastically along the primary transverse translation axis while maintaining immense stiffness against out-of-plane pitching and yawing moments.</p>
-        `
-      },
-      "linear_encoder": {
-        "tag": "METROLOGY // CLOSED-LOOP POSITION FEEDBACK",
-        "title": "Reflective Optical Linear Encoders",
-        "body": `
-          <p>Because voice coil motors lack mechanical detents when de-energized, real-time closed-loop position feedback is required to track lens position with sub-micron precision.</p>
-          <div class="modal-equation-box">
-            Scale Pitch: P = 20.0 microns (&mu;m)<br>
-            Digital Interpolation: 256 subdivisions per optical fringe<br>
-            Effective Resolution: &Delta;x = P / 256 = 0.078 microns (78 nanometers)
-          </div>
-          <p>An infrared VCSEL laser illuminates alternating reflective chrome lines etched on a glass scale, projecting interference fringes onto an ASIC photodiode array to verify exact displacement.</p>
-        `
-      },
-      "quadrature_encoder": {
-        "tag": "SIGNAL PROCESSING // SINE-WAVE INTERPOLATION",
-        "title": "Quadrature Phase Encoding & Interpolation",
-        "body": `
-          <p>Optical encoders read two sinusoidal signals (Channel A and Channel B) electrically offset by 90&deg; in phase (quadrature) to determine both speed and direction of travel.</p>
-          <div class="modal-equation-box">
-            Signals: V_A = V_0 &middot; sin(2&pi;x / P),  V_B = V_0 &middot; cos(2&pi;x / P)<br>
-            Direction: Sign of phase lead (A leads B = forward, B leads A = reverse)<br>
-            Arctangent Interpolation: &theta; = arctan(V_A / V_B) resolves sub-fringe positions
-          </div>
-          <p>By computing the instantaneous phase angle, high-speed DSP interpolators resolve nanometer-scale displacements between adjacent 20-micron physical grating lines.</p>
-        `
-      },
-      "vcsel": {
-        "tag": "OPTOELECTRONICS // LASER EMITTERS",
-        "title": "Vertical-Cavity Surface-Emitting Lasers (VCSELs)",
-        "body": `
-          <p>Semiconductor laser diodes that emit a coherent, circular optical beam perpendicular to the wafer surface, unlike edge-emitting laser diodes.</p>
-          <div class="modal-equation-box">
-            Wavelengths: 850 nm & 940 nm (Invisible to human eye, high CMOS sensitivity)<br>
-            Beam Divergence: Narrow circular cone (~10&deg; &ndash; 15&deg;) for precision glint projection
-          </div>
-          <p>Vision Pro surrounds each lens barrel with an array of infrared VCSELs that project structured light glints onto the cornea for real-time computational eye-tracking.</p>
-        `
-      },
-      "thixomolding": {
-        "tag": "MANUFACTURING // SEMI-SOLID METAL INJECTION",
-        "title": "Thixomolding of AZ91D Magnesium Alloys",
-        "body": `
-          <p>A specialized manufacturing process where magnesium alloy is heated into a semi-solid slurry (containing solid globular grains suspended in liquid) and injected into molds like plastic.</p>
-          <div class="modal-equation-box">
-            Alloy: AZ91D Magnesium (9% Aluminum, 1% Zinc)<br>
-            Wall Thickness: Down to 0.6 mm with zero porosity and minimal shrinkage<br>
-            Density: 1.81 g/cm&sup3; (35% lighter than aluminum, 75% lighter than steel)
-          </div>
-          <p>Delivers high structural stiffness, superior internal vibration damping, and razor-thin walls to keep the moving optical pod weight under 26 grams.</p>
-        `
-      },
-      "fpc_ribbon": {
-        "tag": "ELECTROMECHANICAL // DYNAMIC FLEX CIRCUITS",
-        "title": "Dynamic Rolled-Annealed (RA) FPC Ribbons",
-        "body": `
-          <p>Flexible Printed Circuits (FPCs) routing power and high-speed video data across moving stages require specialized copper foil to survive continuous cyclical bending.</p>
-          <div class="modal-equation-box">
-            Copper Type: Rolled-Annealed (RA) Copper (Elongated grain boundaries)<br>
-            Design Rule: Bend Radius R &ge; 10 &times; overall thickness (Teardrop loop)<br>
-            Endurance: Certified for &gt;150,000 continuous translation cycles
-          </div>
-          <p>Unlike standard electrodeposited (ED) copper whose brittle vertical grain structure cracks quickly, RA copper bends elastically without fatigue fracture.</p>
-        `
-      },
-      "lost_motion_clutch": {
-        "tag": "MECHANICAL SAFETY // IMPACT OVERLOAD DECOUPLING",
-        "title": "Lost-Motion Elastomer Friction Clutches",
-        "body": `
-          <p>When high-precision mechanisms with fragile sub-micron encoders are subjected to external drop shocks or manual finger force, rigid gear teeth will bend or strip.</p>
-          <div class="modal-equation-box">
-            Slip Threshold: F_decouple &asymp; 12 N (Above normal motor force, below damage limit)<br>
-            Restoration: High-memory fluorosilicone elastomer re-engages centering pin
-          </div>
-          <p>The clutch elastically yields under excessive force, absorbing mechanical over-travel energy and automatically re-seating without loss of calibration.</p>
-        `
+            "tag": "METALLURGY // THERMAL TRANSPORT",
+            "title": "Conductivity: Copper vs. Brass vs. 316L Stainless",
+            "body": "\n          <p>Boiler material choice dictates warm-up latency, internal corrosion resistance, and thermal response under heavy cycling.</p>\n          <div class=\"modal-equation-box\">\n            Deoxidized Copper (C12200): k &asymp; 385 W/(m&middot;K)<br>\n            Forged CW617N Lead-Free Brass: k &asymp; 115 W/(m&middot;K)<br>\n            AISI 316L Stainless Steel: k &asymp; 16 W/(m&middot;K) (Corrosion immune, low conduction)\n          </div>\n          <p>Stainless boilers exhibit superior structural burst strength and zero heavy-metal leaching, but require external resistive heat jackets or internal baffles to prevent localized thermal stratifications.</p>\n        "
       }
-    };
+};
 
-    // Articles Content Database
-    const ARTICLES = {
-      "#002": `
-<div class="meta-line">
+    const articleCache = {
+      "#002": {
+        id: "#002",
+        subject: "Thermal",
+        title: "Espresso Machine Boilers: Thermoblocks vs. Dual-Boiler PID Systems",
+        date: "Oct 15, 2026",
+        tangents: {
+      "sensible_heat": {
+            "tag": "THERMODYNAMICS // SENSIBLE HEAT EXCHANGE",
+            "title": "Sensible Heat Flux & Transient Drawdown",
+            "body": "\n          <p>Sensible heat is the thermal energy transferred to a fluid resulting in temperature change without a phase transition. When 18\u00b0C reservoir water enters a heating block at 9 bar, it continuously absorbs thermal energy.</p>\n          <div class=\"modal-equation-box\">\n            Heat Transfer: q = &dot;m &middot; C_p &middot; (T_brew - T_inlet)<br>\n            Where: &dot;m = 2.0 g/s, C_p &asymp; 4.184 J/(g&middot;&deg;C), &Delta;T = 75&deg;C<br>\n            Instantaneous Power Required: P_min &asymp; 628 Watts (excluding losses)\n          </div>\n          <p>Because flow is non-steady during pre-infusion, heating elements must deliver instantaneous localized heat flux or rely on high conductive thermal mass to prevent water temperature from plummeting.</p>\n        "
+      },
+      "pid_controller": {
+            "tag": "CONTROL SYSTEMS // CLOSED-LOOP REGULATION",
+            "title": "Discrete PID Loop & Anti-Windup Reset",
+            "body": "\n          <p>Bimetallic mechanical thermostats oscillate across a sloppy &plusmn;5\u00b0C hysteresis band. Proportional-Integral-Derivative (PID) controllers compute error between setpoint and RTD thermocouple feedback at 10 Hz.</p>\n          <div class=\"modal-equation-box\">\n            Control Output: u(t) = K_p &middot; e(t) + K_i &int; e(&tau;) d&tau; + K_d &middot; (de/dt)<br>\n            Cycle Rate: Solid-State Relay (SSR) pulsed with zero-crossing triac<br>\n            Thermal Stability: &plusmn;0.2&deg;C steady-state group head precision\n          </div>\n          <p>An anti-windup clamping algorithm halts integral accumulation during prolonged shots, preventing severe thermal overshoot when the brew solenoid abruptly closes.</p>\n        "
+      },
+      "thermal_mass": {
+            "tag": "THERMAL INERTIA // CAPACITANCE",
+            "title": "Volumetric Heat Capacity & Mass Damping",
+            "body": "\n          <p>Thermal mass acts as a low-pass thermodynamic filter. High thermal capacitance dampens rapid fluid temperature swings caused by cold water ingestion.</p>\n          <div class=\"modal-equation-box\">\n            Thermal Capacitance: C_th = m &middot; c_p = &rho; &middot; V &middot; c_p<br>\n            Forged Brass Group (4.2 kg): C_th &asymp; 1,600 J/&deg;C<br>\n            Cast Aluminum Thermoblock (0.6 kg): C_th &asymp; 540 J/&deg;C (3x lower inertia)\n          </div>\n          <p>Commercial E61 group heads leverage massive forged brass bodies to passively stabilize brewing water temperature even if incoming boiler water fluctuates.</p>\n        "
+      },
+      "saturated_group": {
+            "tag": "FLUID THERMAL ARCHITECTURE // GROUP HEADS",
+            "title": "Saturated Group Head Geometries",
+            "body": "\n          <p>In semi-saturated or bolt-on group heads, heat transfers solely via conduction across a dry mechanical neck flange, creating a 3\u00b0C to 6\u00b0C thermal gradient from boiler to portafilter.</p>\n          <div class=\"modal-equation-box\">\n            Conduction Flange: q_cond = -k &middot; A_flange &middot; (dT/dx)<br>\n            Saturated Geometry: Group neck forms a continuous water-jacket chamber<br>\n            Temperature Delta: &Delta;T &lt; 0.15&deg;C between boiler core and puck surface\n          </div>\n          <p>Pioneered by La Marzocco, saturated groups submerge the entire brass dispersion block directly into the brew boiler cavity, ensuring water never encounters a cooler metal surface prior to extraction.</p>\n        "
+      },
+      "calcification": {
+            "tag": "MATERIALS SCIENCE // MINERAL PRECIPITATION",
+            "title": "Calcium Carbonate Scale Deposition Kinetics",
+            "body": "\n          <p>Tap water contains dissolved calcium and bicarbonate ions. Unlike most salts whose solubility increases with heat, calcium carbonate exhibits retrograde (inverse) solubility.</p>\n          <div class=\"modal-equation-box\">\n            Reaction: Ca&sup2;&spplus; + 2HCO_3&minus; &harr; CaCO_3&darr; + CO_2&uarr; + H_2O<br>\n            Solubility: Decreases exponentially above 60&deg;C<br>\n            Thermal Barrier: k_scale &asymp; 1.3 W/(m&middot;K) (vs. Copper k &asymp; 390 W/(m&middot;K))\n          </div>\n          <p>A mere 1.0 mm scale crust on boiler heating coils acts as an insulator, reducing conductive heat transfer by >40% and causing element sheath burnout.</p>\n        "
+      },
+      "thermal_conductivity": {
+            "tag": "METALLURGY // THERMAL TRANSPORT",
+            "title": "Conductivity: Copper vs. Brass vs. 316L Stainless",
+            "body": "\n          <p>Boiler material choice dictates warm-up latency, internal corrosion resistance, and thermal response under heavy cycling.</p>\n          <div class=\"modal-equation-box\">\n            Deoxidized Copper (C12200): k &asymp; 385 W/(m&middot;K)<br>\n            Forged CW617N Lead-Free Brass: k &asymp; 115 W/(m&middot;K)<br>\n            AISI 316L Stainless Steel: k &asymp; 16 W/(m&middot;K) (Corrosion immune, low conduction)\n          </div>\n          <p>Stainless boilers exhibit superior structural burst strength and zero heavy-metal leaching, but require external resistive heat jackets or internal baffles to prevent localized thermal stratifications.</p>\n        "
+      }
+},
+        article_html: `<div class="meta-line">
             <span>ISSUE #002</span><span>•</span><span>THERMAL</span><span>•</span><span id="read-time-badge">13 MIN READ</span>
           </div>
 
@@ -2017,395 +1682,8 @@
                 Poor Topic
               </button>
             </div>
-          </div>
-      `,
-      "#001": `
-<div class="meta-line">
-            <span>ISSUE #001</span><span>•</span><span>PRODUCT DIVES</span><span>•</span><span id="read-time-badge">12 MIN READ</span>
-          </div>
-
-          <h1>Apple Home Hardware: HomeView Hub & The LG/Schneider Teardown</h1>
-          <p class="subtitle">
-            Why Apple built the central smart display in-house, but partnered with legacy electrical giants to build the door locks, cameras, and thermostats.
-          </p>
-
-          <figure class="product-figure">
-            <div class="img-wrapper">
-              <img referrerpolicy="no-referrer" src="https://www.apple.com/newsroom/images/2026/10/meet-apple-homeview-a-new-way-to-enjoy-entertainment-and-manage-the-home/article/Apple-HomeView-lineup-261013_Full-Bleed-Image.jpg.large.jpg" onerror="this.src='https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=1400&q=85'" alt="Apple HomeView 7-inch Smart Display" />
-            </div>
-            <figcaption>
-              <span><strong>FIG 01 — THE COMMAND HUB:</strong> Apple's first-party 7-inch HomeView on its counterbalanced tabletop acoustic stand.</span>
-              <span class="source-tag">IMAGE: APPLE NEWSROOM</span>
-            </figcaption>
-          </figure>
-
-          <h2 id="section-news-overview">1. The Big Picture: What Apple Just Announced</h2>
-          <p>
-            For more than a decade, Apple’s smart home strategy suffered from a fatal hardware gap: Apple controlled the brains (Apple TV, HomePod, and the Apple Home app), but left physical accessories entirely to third-party manufacturers. This fragmented ecosystem forced customers into a frustrating labyrinth of separate companion apps, mandatory third-party cloud logins, unreliable QR-code setups, and mismatched plastic aesthetics. While Google acquired Nest and Amazon acquired Ring and Blink to control their physical hardware footprint, Apple remained confined to the software orchestration layer.
-          </p>
-          <p>
-            At its October 2026 hardware event, Apple completely dismantled that model by launching two complementary product tiers that bridge the drywall divide:
-          </p>
-          <ul>
-            <li><strong>First-Party Command Silicon:</strong> The new <strong>Apple HomeView</strong> ($299, shipping November 2026)—Apple’s first dedicated 7-inch smart display and ambient home dashboard powered by the A18 chip and local Apple Intelligence, alongside an upgraded <strong>HomePod mini 2</strong> and <strong>Apple TV 4K</strong>.</li>
-            <li><strong>The Apple Home Collection:</strong> A coordinated lineup of seven residential hardware peripherals—spanning smart deadbolts, dual-camera video doorbells, indoor/outdoor security cameras, and smart climate controls—co-engineered from the silicon to the enclosure with <strong>LG Electronics</strong> and <strong>Schneider Electric</strong>.</li>
-          </ul>
-          <p>
-            This dual-pronged launch addresses the two biggest pain points in the residential IoT sector: setup friction and architectural fragmentation. By integrating Apple's custom silicon, Secure Enclave cryptography, and industrial design sensibilities directly with established tier-one appliance and electrical manufacturers, Apple has eliminated the traditional barrier between consumer gadgets and permanent home infrastructure.
-          </p>
-
-          <div class="spec-table-wrap">
-            <table class="spec-table">
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>Hardware Partner</th>
-                  <th>Price (US)</th>
-                  <th>Finishes</th>
-                  <th>Headline Hardware Innovations</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Apple HomeView</strong></td>
-                  <td>Apple (First-Party)</td>
-                  <td>$299.00</td>
-                  <td>Silver, Starlight, Rose, Space Gray</td>
-                  <td>A18 chip, 7" Liquid Retina (500 to 0.3 nits), 6-user local Face ID, stainless steel tilt hinge, Thread router.</td>
-                </tr>
-                <tr>
-                  <td><strong>LG Smart Deadbolt Lock</strong></td>
-                  <td>LG Electronics</td>
-                  <td>$349.95</td>
-                  <td>Essence Silver, Essence Graphite</td>
-                  <td>Aliro + Matter-over-Thread, UWB spatial approach unlock, 4-way access redundancy, offline execution.</td>
-                </tr>
-                <tr>
-                  <td><strong>LG Video Doorbell (Wired)</strong></td>
-                  <td>LG Electronics</td>
-                  <td>$249.95</td>
-                  <td>Essence Silver, Essence Graphite</td>
-                  <td>Dual optical split (2.5K visitor cam + 1080p downward package cam), integrated LED spotlight, zero blind spot.</td>
-                </tr>
-                <tr>
-                  <td><strong>LG Indoor Security Cam</strong></td>
-                  <td>LG Electronics</td>
-                  <td>$199.95</td>
-                  <td>Essence White</td>
-                  <td>Motorized pan/tilt gimbal with 95° downward privacy pitch, physical microphone air-gap cut switch.</td>
-                </tr>
-                <tr>
-                  <td><strong>LG Outdoor & Floodlight Cams</strong></td>
-                  <td>LG Electronics</td>
-                  <td>$299.95 – $399.95</td>
-                  <td>Essence Silver, Essence Graphite</td>
-                  <td>2.5K HDR sensor, low-light color night vision, dual adaptive articulated floodlights (Floodlight model).</td>
-                </tr>
-                <tr>
-                  <td><strong>LG & Schneider Smart Thermostats</strong></td>
-                  <td>LG / Schneider Electric</td>
-                  <td>$199.95</td>
-                  <td>Circular Dial (LG) / Square Panel (Schneider)</td>
-                  <td>Active 2-wire zero-crossing power stealing, through-glass 60 GHz radar occupancy, automated wire sensing.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <h2 id="section-jdm-architecture">2. JDM Manufacturing: Why Apple Partnered with LG & Schneider</h2>
-          <p>
-            To understand the manufacturing logic of this release, engineers must examine the structural differences between <strong>OEM</strong> (Original Equipment Manufacturer), <strong>ODM</strong> (Original Design Manufacturer), and <strong>JDM</strong> (Joint Design Manufacturer):
-          </p>
-          <ul>
-            <li><strong>OEM (Contract Assembly):</strong> In Apple's traditional OEM relationships (such as Foxconn, Pegatron, and Luxshare assembling iPhones, iPads, and MacBooks), Apple's internal operations and engineering teams design and specify literally everything. Apple controls the internal silicon architecture, mechanical cad, injection mold tooling, CNC toolpaths, PCB stack-ups, firmware drivers, and supply chain vendors down to individual screws. The OEM partner provides clean-room floor space, automated assembly lines, and labor execution.</li>
-            <li><strong>ODM (White-Label Sourcing):</strong> In an ODM model—predominantly used by discount consumer electronics brands—a manufacturing vendor designs, tools, and builds a generic product entirely on their own balance sheet. A brand then licenses the finished hardware, applies cosmetic silk-screening or plastic resin pigmentation, bundles branded companion software, and distributes it. ODMs minimize upfront R&D costs but sacrifice architectural uniqueness and quality control.</li>
-            <li><strong>The JDM Compromise:</strong> With the Apple Home Collection, Apple adopted a true <strong>Joint Design Manufacturing (JDM)</strong> model—mirroring their historic technical partnership with LG on the UltraFine 4K and 5K monitor displays. In a JDM workflow, the architectural ownership is cleanly partitioned based on core competencies. Apple’s Industrial Design and Hardware Engineering groups authored the industrial form factors, bead-blasting surface finishes, CMF color limits, NFC one-tap commissioning, and end-to-end cryptographic protocols. In parallel, LG and Schneider Electric handled high-voltage power electronics, physical deadbolt gearboxes, ANSI/BHMA testing, and global electrical compliance.</li>
-          </ul>
-
-          <div class="callout-box">
-            <div class="callout-title">The Engineering & Business Tradeoffs of Apple's JDM Strategy</div>
-            <p style="margin-bottom:8px;"><strong>Why JDM Made Sense for Apple (The Pros):</strong></p>
-            <ul style="margin-bottom:12px;">
-              <li><strong>The Drywall Boundary & High-Voltage Liability:</strong> Consumer electronics live in low-voltage DC regimes (5V to 20V USB-PD). The moment hardware crosses the drywall boundary into 120V/240V AC mains or 24V AC legacy HVAC transformers, electrical codes (NFPA 70 / NEC, UL 1034, CE, and IEC 60335) impose severe safety margins, creepage/clearance rules, and fire liabilities. Schneider Electric has specialized in high-voltage circuit breakers and residential panels for over a century, providing instant regulatory immunity and tested reliability.</li>
-              <li><strong>Mechanical Longevity and Warped Interfaces:</strong> Unlike an iPhone designed for a 3-year replacement cycle, residential fixtures must survive 10 to 15 years in unforgiving conditions. Exterior door locks must withstand extreme seasonal thermal shock (-30°C to +65°C), sledgehammer impact attacks, and swollen door jambs. Offloading physical actuator assembly to LG insulates Apple from mechanical warranty headaches.</li>
-              <li><strong>Nationwide Certified Installation Logistics:</strong> Most consumers are terrified of opening their home circuit breakers or rewiring furnace control boards. Apple could not realistically turn Apple Store Geniuses into licensed residential electricians. The JDM partnership directly incorporates certified white-glove professional installation across the United States through ADT.</li>
-            </ul>
-            <p style="margin-bottom:8px;"><strong>The Tradeoffs and Engineering Friction Points (The Cons):</strong></p>
-            <ul>
-              <li><strong>Stacked Margin Markup:</strong> In a JDM partnership, both Apple and the manufacturing partner must capture gross margins on each unit sold. This dual-margin stack inevitably pushes the final retail price point into premium territory—$350 for a smart deadbolt and $250 for a video doorbell—limiting immediate mass-market volume.</li>
-              <li><strong>Cross-Vendor CMF & Tooling Synchronization:</strong> Ensuring that an LG die-cast aluminum lock body in "Essence Silver" perfectly matches the exact L*a*b* color coordinates, gloss levels, and bead-blasting tactile texture of an Apple CNC-machined HomeView chassis requires immense QA effort across separate chemical anodizing baths and disparate overseas suppliers.</li>
-            </ul>
-          </div>
-
-          <h2 id="section-product-teardowns">3. Product-by-Product Engineering Teardowns</h2>
-
-          <h3 id="product-homeview">Apple HomeView (Hub & Audio Base) <span class="price-tag">$299.00</span></h3>
-          <p>
-            Apple HomeView is the central intelligence node that orchestrates the entire household. Rather than marketing a stripped-down iPad mounted to a charging dock, Apple engineered two distinct hardware configurations at the exact same $299 price:
-          </p>
-          <p>
-            The <strong>Tabletop Model</strong> features a counterbalanced, domed acoustic speaker base connected to the display through an articulated, friction-tuned <strong>stainless-steel tilt hinge</strong> that allows smooth vertical angle adjustment for kitchen islands or high bedside tables. The <strong>Wall-Mounted Model</strong> eliminates the acoustic dome in favor of a clean, flush-mount rear chassis designed to lock into three modular <strong>Schneider Home Power Mounts</strong>: a standard low-profile USB-C wall connector ($59.95), an integrated 120V AC gang-box transformer mount ($79.95), and an enterprise-grade Power-over-Ethernet (PoE) wired mount ($129.95).
-          </p>
-          <p>
-            <strong>Display & Thermal Engineering:</strong> The 7-inch Liquid Retina display (1,088 × 1,088 resolution at 220 ppi) addresses a common flaw of smart displays: bedroom glare. While standard panels bottom out at around 10 to 15 nits, HomeView utilizes an advanced ultra-wide <span class="tangent-term" data-tangent="pwm_dimming">PWM dimming</span> backlight driver that throttles luminance from a daylight-readable <strong>500 nits</strong> all the way down to <strong>0.3 nits</strong> in pitch darkness. To keep the device silent in quiet rooms, the powerful 3nm A18 system-on-chip operates entirely via <span class="tangent-term" data-tangent="convection">passive natural convection</span>. Internal heat flux is conducted away from the silicon die package through <span class="tangent-term" data-tangent="pyrolytic_graphite">pyrolytic graphite thermal spreaders</span> and coupled to an extruded structural aluminum chassis frame, keeping exterior rear skin temperatures comfortably below 38°C without active cooling fans.
-          </p>
-          <p>
-            <strong>Acoustics & Facial Recognition:</strong> Inside the acoustic base, Apple decoupled a custom down-firing woofer and dual force-canceling passive radiators from the compute PCB using vibration-damping silicone isolators. This structural isolation prevents powerful acoustic excursions from vibrating the 12MP Center Stage camera or injecting harmonic distortion into the four-microphone beamforming array. The on-device A18 Neural Engine securely stores 3D facial embeddings in an isolated Secure Exclave, instantly recognizing up to <strong>six household members</strong> as they approach and tailoring widgets, reminders, and calendar appointments to that specific person without sending personal biometric telemetry to cloud servers.
-          </p>
-
-          <h3 id="product-deadbolt">LG Smart Deadbolt Lock <span class="price-tag">$349.95</span></h3>
-          <p>
-            First-generation smart locks relied on 2.4 GHz Bluetooth Low Energy (BLE) Received Signal Strength Indicator (RSSI) thresholds to trigger hands-free auto-unlocking. Because 2.4 GHz RF waves suffer from multipath reflection off metal doors, stucco lath, and human tissue, signal attenuation is a terrible indicator of actual distance. This caused dangerous false unlocks when a homeowner was simply walking around inside their living room or upstairs hallway.
-          </p>
-          <p>
-            <strong>Spatial Ranging Physics:</strong> The LG Smart Deadbolt solves this using the newly standardized <span class="tangent-term" data-tangent="aliro">Aliro</span> protocol coupled with an IEEE 802.15.4z <span class="tangent-term" data-tangent="uwb">UWB spatial ranging</span> radio. Operating across 6.5 GHz and 8.0 GHz channels, UWB emits sub-nanosecond pulses. By measuring the physical Time-of-Flight (ToF) of these pulses and calculating the phase difference of arrival across a dual-antenna array, the deadbolt resolves the user's approach angle and exterior distance within ±3 cm. It unlocks automatically when you approach from the porch, but remains rigidly locked when you walk past the door inside.
-          </p>
-          <p>
-            <strong>Actuator Mechanics & Stall Torque:</strong> In field conditions, seasonal humidity and building settling cause wooden doors to warp, forcing the deadbolt's beveled tongue to cam the entire door leaf against compressed rubber weatherstripping. This side load can spike bolt-throw resistance above 30 N. To drive through this friction from a compact 4x AA alkaline battery pack, LG engineered a miniature <span class="tangent-term" data-tangent="gearbox">planetary gearbox</span> that achieves a high reduction ratio while fitting within a standard 25.4 mm (1-inch) cylindrical door bore. The geartrain drives an asymmetric <span class="tangent-term" data-tangent="lost_motion_cam">lost-motion slotted cam</span>: once the throw cycle finishes, the motor backs off slightly, centering the pin in an open track so the interior thumbturn can be rotated manually with zero geartrain resistance. For complete peace of mind, the lock provides four redundant entry methods: hands-free UWB, an NFC Apple Home Key tap (which functions for hours after an iPhone battery dies via power reserve), a capacitive backlit exterior keypad, and a concealed physical key cylinder behind a spring-loaded magnetic trim plate.
-          </p>
-
-          <h3 id="product-doorbell">LG Video Doorbell (Wired) <span class="price-tag">$249.95</span></h3>
-          <p>
-            Single-lens video doorbells suffer from an unavoidable optical tradeoff: tilt the camera up to identify tall visitors, and you create a blind spot directly beneath the lens where couriers drop packages; tilt it down, and you cut off visitors' faces.
-          </p>
-          <p>
-            <strong>Dual-Sensor Optical Architecture:</strong> LG resolved this geometric problem by implementing a custom <span class="tangent-term" data-tangent="optics">dual-lens optical split</span> inside a weather-sealed IP65 housing. The primary upper camera uses a 2.5K HDR CMOS sensor paired with an f/2.0 aperture lens tuned for optimal human facial MTF (Modulation Transfer Function) and high dynamic range under harsh backlit porch conditions. Mounted directly beneath it is an independent 1080p camera tilted 45° downward to monitor the doorstep mat. Both streams are processed simultaneously by an on-device image signal processor (ISP), feeding panoramic package and visitor views into the Apple Home app without the extreme spherical barrel distortion inherent to 180° single-lens fisheye optics.
-          </p>
-          <p>
-            <strong>Reliability & Lighting:</strong> When motion is detected after sunset, an integrated warm-white downward LED spotlight illuminates the threshold, transitioning the camera from infrared into full color night vision. To solve the vulnerability of cloud-dependent doorbells that go blind during broadband outages, the unit integrates 4GB of local high-endurance flash storage. Event clips are captured locally and seamlessly synced to iCloud+ HomeKit Secure Video once Wi-Fi reconnects.
-          </p>
-
-          <h3 id="product-indoor-cam">LG Indoor Security Cam <span class="price-tag">$199.95</span></h3>
-          <p>
-            Most indoor security cameras rely on "software privacy modes" where firmware merely halts the digital video stream while the image sensor and MEMS microphones remain fully powered on the PCB rails. For privacy-conscious engineers, this represents an unacceptable attack surface.
-          </p>
-          <p>
-            <strong>Hardware-Enforced Privacy Kinematics:</strong> The LG Indoor Cam is built around an articulated dual-axis pan/tilt motorized gimbal. When the camera enters Privacy Mode (triggered automatically via geofencing when family members arrive home, or via a Siri command), a precision micro-stepping motor drives the optical barrel <strong>95° downward</strong>, burying the lens assembly completely inside a cast aluminum lower shroud lined with an opaque, light-absorbing elastomer cup.
-          </p>
-          <p>
-            <strong>Mechanical Air-Gap Disconnect:</strong> During the final 5° of downward travel, an eccentric cam lobe on the gimbal trunnion mechanically pushes open a gold-plated <span class="tangent-term" data-tangent="leafswitch">mechanical leaf switch</span> soldered directly to the main rigid PCB. This switch physically severs the DC power supply (VDD) line feeding the MEMS microphone array, creating a true electrical air gap. When the camera is closed, eavesdropping is physically and electrically impossible, regardless of firmware exploits or network attacks.
-          </p>
-
-          <h3 id="product-outdoor-cams">LG Outdoor Cam & Floodlight Cam <span class="price-tag">$299.95 – $399.95</span></h3>
-          <p>
-            Outdoor residential security cameras face intense thermal and optical hurdles: daytime solar loading causes sensor junction temperatures to skyrocket (generating thermal dark-current shot noise), while nighttime infrared LEDs can cause milky internal glare if optical reflections bounce inside the front cover glass.
-          </p>
-          <p>
-            <strong>Thermal & Optical Packaging:</strong> Both outdoor models are enclosed within heavy-gauge die-cast aluminum enclosures that double as <span class="tangent-term" data-tangent="heatsinks">convective heatsinks</span>. In the Floodlight Cam ($399.95), the dual 2,000-lumen COB LED floodlights are mounted on articulated aluminum outriggers, physically isolating high-wattage LED driver heat from the central 2.5K HDR camera core. The front optical stack uses a dual-durometer black silicone boot that compresses tightly against the interior of the cover glass, mechanically isolating the central camera aperture from the outer 850 nm infrared ring to eliminate internal <span class="tangent-term" data-tangent="fresnel_glare">Fresnel back-scatter reflections</span>.
-          </p>
-          <p>
-            <strong>Apple Intelligence Video Summaries:</strong> Working in conjunction with a home Apple TV 4K or HomeView hub, video feeds are analyzed on-device using local Apple Intelligence neural models. Instead of forcing users to scrub through hours of false motion alerts caused by windblown branches or passing cars, the system generates natural-language text summaries of daily events and enables semantic search queries (e.g., <em>"Show me when a courier in a blue shirt left a box by the side gate yesterday"</em>).
-          </p>
-
-          <h3 id="product-thermostats">LG & Schneider Smart Thermostats <span class="price-tag">$199.95</span></h3>
-          <p>
-            Smart thermostat adoption in North America has long been hampered by the legacy electrical wiring of older homes, where furnaces were installed with only two wires—<code>R</code> (24V AC power hot) and <code>W</code> (heat call)—lacking a dedicated <code>C</code> (Common) neutral return wire.
-          </p>
-          <p>
-            <strong>Power Electronics & Active Harvesting:</strong> When a thermostat is installed without a C-wire, it must draw operating power in series through the furnace relay coil while the furnace is idle. If current exceeds approximately 20 to 30 mA, the furnace relay will falsely pull in, causing furnace burners to cycle uncontrollably. The LG and Schneider thermostats solve this through an advanced power supply incorporating <span class="tangent-term" data-tangent="powerstealing">active MOSFET power stealing</span>. By using back-to-back MOSFET switches that open briefly near the 60 Hz AC voltage zero-crossings, the thermostat harvests controlled microsecond pulses of energy into an internal supercapacitor bank without ever passing enough current to trigger the furnace contactor.
-          </p>
-          <p>
-            <strong>Through-Glass mmWave Respiration Radar:</strong> Traditional thermostats use passive infrared (PIR) sensors that require a faceted plastic Fresnel lens window on the front cover. PIR sensors only register gross thermal displacement; if a person sits motionless in an armchair reading a book, the sensor reports an empty room and lowers the temperature. The LG and Schneider thermostats eliminate the ugly plastic window by embedding an invisible <span class="tangent-term" data-tangent="fmcw_radar">60 GHz FMCW millimeter-wave radar</span> transceiver directly behind the cover glass. By measuring phase shifts across reflected radar chirps, the sensor detects sub-millimeter chest wall movements from human respiration, maintaining accurate room occupancy telemetry even when occupants are completely still. Furthermore, the thermostats natively fuse telemetry from the temperature and humidity sensors already built into Apple HomeView, HomePod, and HomePod mini devices throughout the home, averaging multi-room climate zones without requiring proprietary wall pucks.
-          </p>
-
-          
-          <p>
-            <strong>Matter-over-Thread Mesh Routing:</strong> A critical engineering advantage of the Apple Home Collection is the migration away from proprietary point-to-point Wi-Fi and Bluetooth accessories toward an interoperable <strong>IPv6-based Matter-over-Thread mesh topology</strong>:
-          </p>
-          <ul>
-            <li><strong>Self-Healing Mesh Infrastructure:</strong> Mains-powered devices (such as the HomeView hub, Schneider gang-box power mounts, and wired video doorbells) function as <em>Thread Full Thread Devices (FTDs)</em> and <em>Border Routers</em>, repeating 802.15.4 2.4 GHz packets across the residential network. If a homeowner closes a heavy metal garage door or microwave interference spikes, packets automatically re-route around the obstruction with sub-20-millisecond latency.</li>
-            <li><strong>Sub-Microamp Sleep States in Battery Peripherals:</strong> For battery-operated devices like the LG Smart Deadbolt (powered by 4x AA alkaline cells), traditional Wi-Fi is impossible due to its punishing 150 mA active radio current draw. Under Thread, the deadbolt operates as a <em>Sleepy End Device (SED)</em>, maintaining synchronization with nearby border routers while sleeping at less than 3.5 microamps (&mu;A). The radio wakes for just 2 milliseconds to poll parent routers for incoming access commands, achieving a certified 12-month operational lifespan on a single set of batteries.</li>
-          </ul>
-
-          <div class="telemetry-bar">
-            <div class="telemetry-info">
-              <span class="telemetry-title">Background Quality Telemetry</span>
-              <span class="telemetry-desc">Rate this topic to train the automated curation model for future dispatches.</span>
-            </div>
-            <div class="telemetry-actions">
-              <button class="score-btn" id="telemetry-up" onclick="recordTelemetry('up')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-                Good Topic
-              </button>
-              <button class="score-btn" id="telemetry-down" onclick="recordTelemetry('down')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg>
-                Poor Topic
-              </button>
-            </div>
-          </div>
-      `,
-      "#000": `
-<div class="meta-line">
-            <span>ISSUE #000</span><span>•</span><span>ELECTROMECHANICAL</span><span>•</span><span id="read-time-badge">13 MIN READ</span>
-          </div>
-
-          <h1>Apple Vision Pro: Automatic Lens Adjustment & Voice Coil Motors</h1>
-          <p class="subtitle">
-            How magnetic actuators and optical linear encoders automatically align lenses to your eyes to prevent motion sickness.
-          </p>
-
-          <figure class="product-figure">
-            <div class="img-wrapper">
-              <img referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=1400&q=85" alt="Spatial Computing Optical Module" />
-            </div>
-            <figcaption>
-              <span><strong>FIG 01 — DUAL OPTICAL POD TRANSLATION:</strong> Apple Vision Pro's motorized optical assemblies translate independently along a precision transverse rail to match user IPD from 51 mm to 75 mm.</span>
-              <span class="source-tag">STUDIO TEARDOWN</span>
-            </figcaption>
-          </figure>
-
-          <h2 id="section-ipd-problem">1. The Biomechanical Imperative: Human Anatomical Variance & Why Manual IPD Fails</h2>
-          <p>
-            In high-resolution spatial computing, optical alignment is not merely an ergonomic comfort consideration; it is the fundamental physics gating factor for stereoscopic image fusion, binocular depth perception, and visual acuity. The human interpupillary distance (IPD)—the transverse Euclidean distance between the optical centers of the pupils—ranges from 51 mm to 75 mm across 99% of the global adult population, with a global mean of 63 mm.
-          </p>
-          <p>
-            Conventional consumer VR headsets (such as the Meta Quest 2 and early HTC Vive headsets) attempted to address this biometric dispersion using coarse manual sliders or discrete three-position detent ratchets. However, user studies consistently demonstrate that over 70% of non-technical consumers set their manual IPD incorrectly by an average error of 2.5 mm to 4.0 mm. In low-resolution displays, this error causes mild blur; but in a display system boasting 23 million pixels across two postage-stamp-sized Sony 4K micro-OLED panels, a 2 mm misalignment introduces catastrophic visual artifacts:
-          </p>
-          <ul>
-            <li><strong>Catadioptric Pancake MTF Collapse:</strong> Folded <span class="tangent-term" data-tangent="pancake_optics">pancake optics</span> achieve extraordinary flatness and compactness by polarizing, reflecting, and semi-transmitting light multiple times between spherical glass surfaces. However, this catadioptric beam path creates an ultra-tight "optical eyebox" measuring only 4.0 mm in diameter. Translating the human pupil just 1.5 mm off the primary <span class="tangent-term" data-tangent="ipd_alignment">interpupillary optical axis</span> causes the <span class="tangent-term" data-tangent="mtf">Modulation Transfer Function (MTF)</span> to drop by over 45%, introducing severe astigmatic blur, chromatic fringing, and geometric coma aberrations.</li>
-            <li><strong>Vergence-Accommodation Conflict & Vestibular Mismatch:</strong> In the natural physical world, visual accommodation (the focal power of the crystalline lens inside the eyeball) and visual vergence (the inward or outward rotation of both eyeballs to triangulate a target) are mechanically coupled in the brainstem. In spatial headsets, the micro-OLED virtual image plane is held at a fixed optical focal distance of approximately 1.3 meters. If physical display centers fail to match the user's interpupillary vector, the user's brain is forced to artificially diverge or converge its optical axes against the physical focal cues, causing <span class="tangent-term" data-tangent="vergence_accommodation">Vergence-Accommodation Conflict</span> that rapidly induces nausea, visual fatigue, and debilitating vestibular disorientation.</li>
-          </ul>
-          <p>
-            To eliminate this entire error class, Apple eliminated manual mechanical dials, ratchets, and sliders entirely. Instead, Vision Pro incorporates a fully automated, closed-loop electromechanical drivetrain that detects eye positions and translates the dual lens pods into optical alignment within ±0.05 mm during initial calibration.
-          </p>
-
-          <h2 id="section-actuator-selection">2. Actuator Selection: Voice Coil Motors vs. Stepper Lead Screws</h2>
-          <p>
-            When engineering an automated optical positioning mechanism inside a wearable headset, the mechanical design constraints are extraordinarily punishing:
-          </p>
-          <ul>
-            <li><strong>Spatial Volumetric Packaging:</strong> The mechanism must fit inside a tightly contoured, organic 3D magnesium chassis curved to match human facial anthropology, leaving zero clearance for bulky motor housings.</li>
-            <li><strong>Acoustic and Bone-Conduction Silence:</strong> The headset sits directly against the facial bones of the zygomatic arch and temples. Any mechanical gear whine, tooth backlash, or stepper resonance will conduct directly through the user's cranium, sounding like a dentist's drill.</li>
-            <li><strong>Mass and Center of Gravity (CoG):</strong> The complete headset already approaches 600 to 650 grams. Moving mass must be kept under 30 grams per optical pod to avoid shifting the headset's forward center of gravity and worsening neck strain.</li>
-          </ul>
-          <p>
-            Miniature stepper motors paired with lead screws—the standard industrial approach in camera zoom stages—were systematically evaluated and rejected. Lead screw nuts suffer from mechanical backlash, require periodic lubrication that can outgas and fog sealed optical surfaces, generate high-frequency micro-stepping acoustic chatter, and exhibit slow settling times.
-          </p>
-          <p>
-            Instead, Apple engineered custom miniature dual-gap <span class="tangent-term" data-tangent="lorentz_vcm">voice coil motors (VCMs)</span> mounted directly to the optical carriages and suspended on planar beryllium-copper <span class="tangent-term" data-tangent="flexure_suspension">flexure spring suspensions</span>.
-          </p>
-          <p>
-            Unlike rotary motors that convert rotary torque to linear motion via friction-laden mechanical interfaces, a voice coil motor generates direct linear force via the <span class="tangent-term" data-tangent="lorentz_force">Lorentz force</span> interaction between a stationary NdFeB permanent magnet array and an energized copper voice coil. By regulating current through a high-frequency PWM H-bridge driver, the VCM produces completely smooth, frictionless linear translation. It operates in absolute acoustic silence, exhibits zero mechanical backlash, and achieves full-stroke position settling in under 120 milliseconds.
-          </p>
-
-          <h2 id="section-optical-encoders">3. Closed-Loop Metrology: Sub-Micron Optical Linear Encoders</h2>
-          <p>
-            Voice coil motors possess zero holding detent torque: the moment current is removed from the coil, the carriage is free to drift under gravity or head acceleration. Consequently, the mechanism requires an ultra-precise, real-time closed-loop positional feedback system.
-          </p>
-          <p>
-            Traditional rotary encoders were unusable because there is no rotating shaft. Hall-effect magnetic linear sensors were evaluated, but the intense magnetic fields generated by the headset's integrated spatial audio speakers, magnetic head-strap connectors, and external power cords introduced unacceptable sensor noise and offset drift.
-          </p>
-          <p>
-            Apple solved this by developing custom reflective <span class="tangent-term" data-tangent="linear_encoder">optical linear encoders</span> integrated directly along the structural magnesium guide rail:
-          </p>
-          <ul>
-            <li><strong>Photolithographic Chrome-on-Glass Scale:</strong> A precision glass encoder scale etched with reflective chrome lines at a 20-micron pitch runs parallel to the transverse carriage guide shaft.</li>
-            <li><strong>Differential Quadrature Laser Metrology:</strong> An infrared VCSEL laser diode illuminates the moving scale, reflecting optical diffraction fringes onto an application-specific integrated circuit (ASIC) photodiode array. The sensor outputs two 90°-phase-shifted sinusoidal signals (<span class="tangent-term" data-tangent="quadrature_encoder">quadrature sine waves</span> on Channel A and Channel B).</li>
-            <li><strong>256x Digital Sub-Division:</strong> The dedicated encoder ASIC digitizes and interpolates the analog quadrature sine waves down to 1/256th of a pitch period. This mathematical interpolation resolves linear displacement down to an astonishing <strong>0.078 microns (78 nanometers)</strong>.</li>
-            <li><strong>Non-Volatile Hardware Position Locking:</strong> Once the optimal IPD is reached, the controller cuts high holding currents to preserve battery life, relying on a bi-stable micro-solenoid friction brake to lock the carriage rigidly in place. The encoder writes the physical coordinates to non-volatile flash memory, enabling instant, homing-free readiness the next time the device is powered on.</li>
-          </ul>
-
-          <h2 id="section-gaze-calibration">4. Eye-Tracking Sensor Fusion & Gaze Calibration Vectors</h2>
-          <p>
-            A high-precision motorized stage is useless without an equally precise sensing system to dictate its target coordinates. In Apple Vision Pro, the automated IPD calibration process is completely invisible to the user, occurring dynamically during the initial device onboarding sequence.
-          </p>
-          <p>
-            Surrounding each pancake lens barrel is an annular ring of infrared <span class="tangent-term" data-tangent="vcsel">VCSEL</span> lasers operating across both 850 nm and 940 nm wavelengths. These illuminators project an invisible structured array of glint reflections onto the user's curved cornea. High-speed infrared cameras positioned at the base of the lens barrels capture the corneal reflections and pupil boundary at 90 frames per second.
-          </p>
-          <p>
-            Apple's computer vision pipeline runs these video streams through custom convolutional neural networks running locally on the R1 real-time coprocessor. By measuring the dynamic spatial vector between the pupil center and the multiple corneal glints across varying gaze angles, the R1 calculates the true 3D center of rotation of the eyeball in Cartesian coordinate space. It separates the optical visual axis (the line connecting the fovea to the pupil center) from the anatomical pupillary axis, computing the exact mathematical interpupillary separation. The system then commands the left and right VCM drivers independently, translating each optical pod until its optical axis aligns with the user's eyes within ±0.05 mm.
-          </p>
-
-          <h2 id="section-thermal-packaging">5. Structural Packaging, DFM, and Thermal Dissipation</h2>
-          <p>
-            Packing two motorized optical translation carriages, four display micro-OLED panels, eye-tracking optics, and logic boards into a sealed, curved facial enclosure represents a masterclass in electromechanical design for manufacturing (DFM):
-          </p>
-          <ul>
-            <li><strong>Thixomolded Magnesium-Aluminum Skeleton:</strong> The internal structural chassis is <span class="tangent-term" data-tangent="thixomolding">thixomolded from AZ91D magnesium alloy</span>. Thixomolding produces thin-wall (0.6 mm) structural ribbing with high dimensional stability and superior damping characteristics, keeping the moving carriage weight under 26 grams per eye pod.</li>
-            <li><strong>Dynamic High-Flex FPC Ribbon Cables:</strong> Connecting the continuously moving optical pod (which carries the 4K micro-OLED panels, display drivers, and eye-tracking cameras) to the stationary main logic board requires <span class="tangent-term" data-tangent="fpc_ribbon">dynamic high-flex FPC ribbon cables</span>. Apple designed custom multi-layer rolled annealed copper ribbons routed through a controlled teardrop bend radius, certified for over 150,000 continuous translation cycles without copper trace fatigue failure.</li>
-            <li><strong>Thermal Shunt Chimneys:</strong> The two micro-OLED display panels dissipate approximately 6W to 8W of electrical power at peak luminance. Because heat cannot be dumped directly into the user's face, flexible annealed copper foil shunts conduct thermal energy from the rear of the moving displays into a central structural chimney, where an ultra-quiet radial micro-blower gently exhausts warm air through top-facing chassis vents.</li>
-            <li><strong>Lost-Motion Mechanical Shock Decouplers:</strong> If a user grabs the lens pods with their fingers while cleaning the optics or during a severe drop impact, rigid gear connections would strip or bend flexure springs. Apple engineered internal <span class="tangent-term" data-tangent="lost_motion_clutch">lost-motion mechanical shock decouplers</span> into the carriage mount that safely slip under external shock loads exceeding 12 N, re-engaging seamlessly once external force is removed.</li>
-          </ul>
-
-          <h2 id="section-kinematic-testing">6. Kinematic Simulation & Dynamic Drop-Shock Hardening</h2>
-          <p>
-            During commercial wearable development, consumer devices must survive standardized MIL-STD-810H dynamic drop shocks (specifically 1.2-meter tumbling drops onto steel and concrete). In a mechanism reliant on fragile 0.078-micron glass metrology scales and delicate planar flexures, unconstrained shock impacts present severe mechanical challenges:
-          </p>
-          <ul>
-            <li><strong>Inertial Carriage Deceleration:</strong> Upon 500G impact shock, the 26-gram optical pod generates an instantaneous lateral inertial force exceeding <code>F = m · a = 0.026 · 500 · 9.81 ≈ 127.5 Newtons</code>. Without mechanical over-travel limiters, this load would exceed the elastic yield strength of the beryllium-copper flexures, permanently bending the springs and throwing optical calibration out of alignment.</li>
-            <li><strong>Elastomer Mechanical Crash Stops:</strong> Apple's mechanical team integrated molded fluorosilicone snubbers positioned at the &plusmn;12.5 mm physical travel boundaries. Under catastrophic deceleration, the carriage bottom-plates compress against the progressive-rate elastomer, safely dissipating kinetic shock energy over a 0.8 mm deceleration zone.</li>
-            <li><strong>Optical Scale Air-Gap Protection:</strong> The reflective chrome scale is mounted with a critical 0.3 mm clearance gap from the ASIC read-head. Precision CNC-machined guide gibs with diamond-like carbon (DLC) coatings prevent any lateral carriage rocking, ensuring the moving optical glass scale can never physically strike the stationary silicon detector under severe drops.</li>
-          </ul>
-
-          
-          <h2 id="section-stray-field-shielding">7. Thermal Packaging & Stray Magnetic Field Attenuation</h2>
-          <p>
-            Packing miniature voice coil motors into an eye-tracking optical enclosure introduces intense multiphysics interference challenges:
-          </p>
-          <ul>
-            <li><strong>Joule Heating & Internal Micro-Convection:</strong> Voice coil actuators operate via continuous electrical current flowing through fine-gauge copper windings. Under high-acceleration calibration slewing, coil power dissipation reaches 1.5 to 2.5 Watts:
-              <br><br>
-              <code>P_loss = I^2 · R_coil</code>
-              <br><br>
-              Because the mechanism sits inside a hermetically sealed optical cavity, thermal energy cannot escape via forced airflow. If heat concentrates on one side of the pancake lens stack, thermal expansion differentials can warp the bonded optical elements, inducing severe astigmatic wavefront aberrations. Apple mitigated this by conduction-coupling the motor stator magnets directly to the structural thixomolded AZ91D magnesium skeleton, utilizing the entire frame as a high-diffusivity heat spreader to dump heat into ambient facial air.
-            </li>
-            <li><strong>Mu-Metal Stray Magnetic Shielding:</strong> Miniature VCMs generate localized magnetic flux densities approaching 0.8 Tesla across their air gaps. However, the moving optical pod sits within millimeters of high-frequency flex circuit traces, bone-conduction audio transducers, and magnetic facial seal interlocks. Unshielded stray magnetic fields (<code>B_stray</code>) can induce electromagnetic interference (EMI) on high-speed MIPI CSI-2 camera differential pairs and saturate nearby Hall-effect safety sensors. Apple enclosed the permanent magnet arrays inside deep-drawn high-permeability Mu-metal (nickel-iron alloy) flux return shrouds, containing over 98% of stray lines of induction within the magnetic core.</li>
-          </ul>
-
-          <h2 id="section-calibration-pipeline">8. Factory Metrology & Real-Time In-Field Self-Zeroing</h2>
-          <p>
-            Because human eyes are extraordinarily sensitive to binocular vertical disparity (misalignment exceeding 0.25 mm causes severe diplopia and headache), manufacturing tolerances across the motorized guide rail cannot rely solely on mechanical machining limits.
-          </p>
-          <ul>
-            <li><strong>Automated End-of-Line Laser Interferometry:</strong> During cleanroom robotic assembly, each optical pod is driven across its full 24 mm linear stroke while dual-beam laser interferometers measure pitch, roll, and yaw angular deviations at 100-micron increments. Geometric error maps are stored in the device's onboard non-volatile memory, allowing the motion controller to apply dynamic cosine-error compensation.</li>
-            <li><strong>Dynamic In-Field Auto-Zeroing:</strong> Mechanical shock drops and thermal expansion can introduce mechanical offsets over years of daily consumer use. Vision Pro executes continuous background auto-zeroing: whenever the user powers on the headset, the infrared eye cameras calculate the user's corneal center while the VCMs execute a whisper-quiet micro-dither across &plusmn;0.2 mm. By computing the real-time Modulation Transfer Function (MTF) gradient from retinal reflections, the controller locks each eye into the focal sweet spot with zero required manual calibration.</li>
-          </ul>
-
-          
-          <h2 id="section-flexure-kinematics">9. Bearing Kinematics: Planar Flexures vs. Recirculating Ball Guides</h2>
-          <p>
-            When guiding a precision optical carriage over a &plusmn;12 mm stroke, traditional industrial design relies on miniature recirculating linear ball bearings (such as miniature THK or IKO guide rails). However, in a wearable spatial computer sitting flush against the human face, rolling-element linear bearings present insurmountable failure modes:
-          </p>
-          <ul>
-            <li><strong>Acoustic and Cranial Bone Conduction:</strong> As miniature 1.0 mm steel bearing balls enter and exit the load zone through recirculation end-caps, mechanical impact generates acoustic chatter across high-frequency bands (2 kHz to 8 kHz). Because the Vision Pro chassis is physically clamped against the zygomatic arch and temples, these micro-impacts conduct directly into the user's cranium as audible clicking and rumbling.</li>
-            <li><strong>Tribology & Optical Outgassing:</strong> Steel ball bearings require lubricating greases or synthetic oils to prevent galling and stick-slip friction. In a hermetically sealed optical module subjected to thermal cycling (heating up to 42°C during use and cooling to ambient), volatile organic compounds in standard lubricants outgas, condensing as a microscopic cloudy film on the interior faces of the pancake lenses and destroying Modulation Transfer Function (MTF) contrast.</li>
-            <li><strong>Stick-Slip Deadbands:</strong> Static friction in miniature ball bearings exceeds dynamic friction by over 3x (<code>μ_static ≈ 0.15</code> vs. <code>μ_dynamic ≈ 0.05</code>). When attempting sub-micron corrections (&plusmn;0.078 μm), this frictional discrepancy causes the motor to stick until magnetic current overcomes the threshold, causing the lens to overshoot.</li>
-          </ul>
-          <p>
-            To eliminate friction and acoustic noise completely, Apple engineered <strong>Planar Beryllium-Copper Flexure Suspensions</strong> (Alloy 25 / C17200, heat-treated to TH04 temper).
-          </p>
-          <ul>
-            <li><strong>Zero-Backlash Elastic Kinematics:</strong> Instead of sliding or rolling across mechanical interfaces, flexure guides deflect elastically along their primary degree of freedom. Static friction is mathematically zero (<code>μ_static = 0</code>), eliminating stick-slip deadbands and enabling pure proportional position control.</li>
-            <li><strong>Transverse Guidance Stiffness:</strong> The flexure geometry utilizes a double-compound parallel-guided parallelogram mechanism. Flat leaf blades flex easily along the transverse translation axis (compliance <code>C_x ≈ 0.8 mm/N</code>), while exhibiting immense out-of-plane stiffness against vertical pitching and yawing moments (stiffness ratio <code>K_z / K_x > 1,200:1</code>). This ensures the optical axis remains rigidly perpendicular to the micro-OLED panel under all user head acceleration profiles.</li>
-            <li><strong>Infinite Fatigue Endurance:</strong> Heat-treated beryllium-copper exhibits a high fatigue endurance limit (<code>S_e ≈ 380 MPa</code>). Finite Element Analysis (FEA) models verify that under maximum &plusmn;12 mm translation, peak bending stress in the flexure blades remains below 140 MPa—well within the infinite-life regime (certified for over 2,000,000 continuous displacement cycles without fatigue failure or work hardening).</li>
-          </ul>
-
-          <h2 id="section-tolerance-budget">10. Metrology Error Budget & Retinal Disparity Stack-Up</h2>
-          <p>
-            The human visual cortex triangulates binocular depth by comparing horizontal retinal disparities between the left and right eyes. While horizontal disparity is natural, vertical disparity (an angular or vertical height discrepancy between the two eyes) is neurologically impermissible: vertical eye divergence exceeding <strong>0.25 mm (6 arcminutes)</strong> cannot be fused by the brain, triggering rapid nausea, ocular muscle fatigue, and severe migraines.
-          </p>
-          <ul>
-            <li><strong>Worst-Case vs. RSS Statistical Stack-Up:</strong> A rigid mechanical assembly connecting dual optical pods across a curved 3D skeleton encompasses over 14 discrete machining, molding, and bonding interfaces (chassis datum, rail mounts, flexure clamps, lens barrel threads, and micro-OLED glass bonds). A standard worst-case arithmetic tolerance stack-up yields a potential vertical offset of <code>±0.72 mm</code>—nearly triple the human tolerance limit.</li>
-            <li><strong>Active Dynamic Compensation:</strong> Because physical manufacturing tolerances cannot economically guarantee sub-0.1 mm mechanical alignment across production runs, Apple relies on active closed-loop calibration. During factory assembly, dual-beam laser interferometers measure the exact vertical and angular pitch of each pod relative to the central magnesium frame, burning unique calibration matrices into the R1 coprocessor's non-volatile memory. During operation, software dynamically shifts the displayed pixel coordinates on the 4K micro-OLED panels by sub-pixel increments, compensating for mechanical runout in real time.</li>
-          </ul>
-
-          <div class="telemetry-bar">
-            <div class="telemetry-info">
-              <span class="telemetry-title">Background Quality Telemetry</span>
-              <span class="telemetry-desc">Rate this topic to train the automated curation model for future dispatches.</span>
-            </div>
-            <div class="telemetry-actions">
-              <button class="score-btn" id="telemetry-up" onclick="recordTelemetry('up')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-                Good Topic
-              </button>
-              <button class="score-btn" id="telemetry-down" onclick="recordTelemetry('down')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg>
-                Poor Topic
-              </button>
-            </div>
-          </div>
-      `
+          </div>`
+      }
     };
 
     let activeArticleId = "#002";
@@ -2864,27 +2142,65 @@
       headings.forEach(h => observer.observe(h));
     }
 
-    function loadArticle(id) {
-      if (!ARTICLES[id]) id = "#002";
+    async function loadArticle(id) {
+      if (!id) id = "#002";
       activeArticleId = id;
       unpinPopover();
       
       const articleEl = document.getElementById("view-article");
-      articleEl.innerHTML = ARTICLES[id];
-
       const currentTopic = TOPICS.find(t => t.id === id);
+
       if (currentTopic) {
         document.title = `${currentTopic.title} — Engineering Deep Dive`;
         const metaDesc = document.querySelector('meta[name="description"]');
         if (metaDesc) metaDesc.setAttribute("content", currentTopic.title);
       }
 
+      // Check in-memory cache
+      if (articleCache[id]) {
+        renderArticleContent(articleCache[id]);
+        return;
+      }
+
+      // Show subtle loading state while fetching static chunk
+      articleEl.innerHTML = `
+        <div style="padding: 64px 0; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted);">
+          <div style="margin-bottom: 12px; font-size: 22px; color: var(--accent);">⌀</div>
+          Loading Dispatch ${id}...
+        </div>
+      `;
+
+      const num = id.replace('#', '');
+      try {
+        const res = await fetch(`content/issues/${num}.json`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        articleCache[id] = data;
+        renderArticleContent(data);
+      } catch (err) {
+        console.error("Failed to fetch issue chunk:", err);
+        articleEl.innerHTML = `
+          <div style="padding: 48px 0; font-family: 'JetBrains Mono', monospace; color: var(--muted); font-size: 13px;">
+            <p style="color: var(--accent); font-weight: 600; margin-bottom: 8px;">Error Loading Dispatch ${id}</p>
+            <p>Could not retrieve static chunk <code>content/issues/${num}.json</code>. Please refresh or verify network connection.</p>
+          </div>
+        `;
+      }
+    }
+
+    function renderArticleContent(data) {
+      const articleEl = document.getElementById("view-article");
+      if (data.tangents) {
+        TANGENTS = { ...TANGENTS, ...data.tangents };
+      }
+      articleEl.innerHTML = data.article_html;
+
       showView("article");
       calculateReadTime();
       buildOutline();
       renderIssueNav();
       syncTelemetryUI();
-      syncUrlState(id);
+      syncUrlState(data.id || activeArticleId);
       updateProgressBar();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }

@@ -282,23 +282,31 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other te
     .replace(/`/g, '\\`')
     .replace(/\${/g, '\\${');
 
-  // 1. Update TOPICS array in index.html
+  // 1. Update TOPICS catalog in index.html (Only 1 lightweight line!)
   const newTopicEntry = `      { id: "${nextId}", subject: "${data.subject}", title: "${data.title.replace(/"/g, '\\"')}", status: "Published", date: "${dateStr}" },\n`;
   let updatedHtml = html.replace('const TOPICS = [\n', 'const TOPICS = [\n' + newTopicEntry);
-
-  // 2. Insert Tangents into TANGENTS in index.html
-  let tangentsCode = "";
-  for (const [key, tData] of Object.entries(data.tangents || {})) {
-    tangentsCode += `      "${key}": ${JSON.stringify(tData, null, 6).trim()},\n`;
-  }
-  updatedHtml = updatedHtml.replace('const TANGENTS = {\n', 'const TANGENTS = {\n' + tangentsCode);
-
-  // 3. Insert Article into ARTICLES in index.html
-  const newArticleCode = `      "${nextId}": \`\n${safeArticleHtml.trim()}\n      \`,\n`;
-  updatedHtml = updatedHtml.replace('const ARTICLES = {\n', 'const ARTICLES = {\n' + newArticleCode);
-
   await fs.writeFile(INDEX_PATH, updatedHtml, 'utf-8');
-  console.log("Successfully updated index.html!");
+  console.log("Successfully updated TOPICS catalog in index.html!");
+
+  // 2. Save decoupled static chunk to content/issues/{num}.json
+  const issueNumStr = String(nextNum).padStart(3, '0');
+  const issuesDir = path.join(CONTENT_DIR, 'issues');
+  await fs.mkdir(issuesDir, { recursive: true });
+
+  const issuePayload = {
+    id: nextId,
+    subject: data.subject,
+    title: data.title,
+    subtitle: data.subtitle,
+    date: dateStr,
+    readTime: `${readMinutes} MIN READ`,
+    tangents: data.tangents || {},
+    article_html: cleanArticleHtml
+  };
+
+  const issueJsonPath = path.join(issuesDir, `${issueNumStr}.json`);
+  await fs.writeFile(issueJsonPath, JSON.stringify(issuePayload, null, 2), 'utf-8');
+  console.log(`Saved decoupled static chunk to ${issueJsonPath}!`);
 
   // 4. Save markdown copy in content/
   await fs.mkdir(CONTENT_DIR, { recursive: true });
