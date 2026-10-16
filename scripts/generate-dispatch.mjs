@@ -73,9 +73,14 @@ STRICT EDITORIAL REQUIREMENTS:
    - Popover Equations: In the 'tangents' dictionary, format equations as <div class="modal-equation-box"><div class="math-label">Concept Name:</div>$$Formula$$<div class="math-meta">Parameter definitions with inline LaTeX</div></div>.
 6. SPEC COMPARISON TABLE: Include an HTML <table> with class="spec-table" inside a <div class="spec-table-wrap"> comparing 4-5 engineering architectures or materials across 5 technical metrics.
 7. TANGENT ANNOTATIONS: Wrap 4-6 specialized, non-intuitive technical terms in <span class="tangent-term" data-tangent="key">. In the "tangents" dictionary, provide their category tag, title, and detailed junior-friendly definition with a governing formula.
-8. VISUAL MEDIA & AUTHENTIC REAL-WORLD PHOTOGRAPHY:
+8. VISUAL MEDIA, PHOTOGRAPHY & CODE-DRIVEN SVG DIAGRAMS:
    - AUTHENTIC REAL-WORLD PHOTOGRAPHY: Actively source and embed real, authentic public photography from the internet (such as OEM hardware teardowns, Wikimedia Commons engineering archives, patent drawings, or manufacturer machinery photos like JSW injection presses) with high-contrast presentation.
-   - ZERO GENERATED RASTER IMAGES: Strict ban on AI-generated diffusion art (DALL-E/Midjourney/Imagen). Always use authentic real-world engineering photography or clean, verified technical schematics.
+   - ZERO GENERATED RASTER IMAGES: Strict ban on AI-generated diffusion art (DALL-E/Midjourney/Imagen).
+   - VECTOR DIAGRAM SPATIAL ZONING & ZERO-COLLISION RULES (PREVENTS TEXT OVERRIDING GRAPHICS):
+     * ZERO IN-SHAPE TEXT STAMPING: Text labels MUST NEVER be centered inside small geometric shapes (< 80px), circles, voids, or grain boundaries. This guarantees labels are never clipped, cut off, or overflowing (e.g. never stamp 'GAS VOID' inside a small circle).
+     * LEADER LINE ANNOTATION ARCHITECTURE: All component and microstructural callouts MUST use angled leader lines (`<polyline points="x1,y1 x2,y2 x3,y2" stroke="..." fill="none"/>` with a terminal anchor dot `<circle cx="x1" cy="y1" r="2.5"/>`) pointing from the feature into clear, dedicated whitespace margins.
+     * DEDICATED COORDINATE TIERS: Decouple geometry from annotations into strict vertical bands: Header tier (y = 0 to 25px), Graphic illustration canvas (y = 30 to 180px), and Bottom metric/status banner (y = 185 to 220px). Labels must never float directly across geometry lines or solid fills.
+     * ADAPTIVE LIGHT & DARK THEME CLASSES: Inline SVGs must use CSS classes (`.svg-canvas-bg`, `.svg-panel-bg`, `.svg-panel-sub`, `.svg-text-primary`, `.svg-text-muted`, `.svg-border-muted`) tied to CSS variables so diagrams render on clean white/cream in Light Mode and deep slate in Dark Mode without hardcoded black rectangles.
 
 RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other text):
 {
