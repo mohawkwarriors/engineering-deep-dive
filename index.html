@@ -498,7 +498,7 @@
     figcaption { padding: 14px 18px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); line-height: 1.5; display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
     .source-tag { white-space: nowrap; font-size: 11px; opacity: 0.85; }
 
-    /* Specification Table */
+    /* Specification Table: Isolated Horizontal Scroll Container */
     .spec-table-wrap {
       width: 100%;
       max-width: 100%;
@@ -671,6 +671,7 @@
         margin: 20px 0 !important;
         font-size: 14px !important;
       }
+      
       .floating-popover {
         position: fixed !important;
         bottom: 16px !important;
@@ -695,6 +696,7 @@
       .popover-close-btn {
         display: block !important;
       }
+
       .telemetry-bar {
         flex-direction: column !important;
         align-items: stretch !important;
@@ -720,6 +722,7 @@
         width: 100% !important;
         justify-content: center !important;
       }
+
       .archive-item {
         flex-direction: column !important;
         gap: 10px !important;
@@ -827,7 +830,7 @@
       flex-wrap: wrap;
     }
 
-    /* Keyframes for Convective Flow */
+    /* Animated Convective Fluid Flow Keyframes */
     @keyframes thermosyphon-flow-hot {
       from { stroke-dashoffset: 24; }
       to { stroke-dashoffset: 0; }
@@ -913,7 +916,7 @@
       border-top: 1px solid var(--border);
     }
 
-    /* Clean Code-Driven TechnicalCard Component */
+    /* Code-Driven TechnicalCard Component */
     .tech-card-component {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1413,7 +1416,10 @@
             <li><strong>The Dedicated Service/Steam Boiler:</strong> A larger 1.5 to 3.5 L vessel operating at 1.5 to 2.0 bar gauge pressure (126°C to 130°C saturated steam). It operates with a two-phase liquid-vapor boundary, providing immense instantaneous steam enthalpy for milk texturing.</li>
           </ul>
           <p>
-            <strong>Algorithmic PID Thermal Regulation:</strong> Rather than relying on mechanical thermostats that drift over time, precision dual-boiler systems incorporate discrete <span class="tangent-term" data-tangent="pid_controller">PID control loops</span> driven by Class-A PT100 platinum RTD sensors or high-sensitivity NTC thermistors submerged directly in the fluid core. The controller samples temperature error at 10 Hz, modulating a Solid-State Relay (SSR) at zero-crossing AC cycles to maintain boiler core water within <strong>&plusmn;0.1°C</strong> of setpoint.
+            <strong>Algorithmic PID Thermal Regulation:</strong> Rather than relying on mechanical thermostats that drift over time, precision dual-boiler systems incorporate discrete <span class="tangent-term" data-tangent="pid_controller">PID control loops</span> driven by Class-A PT100 platinum RTD sensors or high-sensitivity NTC thermistors submerged directly in the fluid core:
+          </p>
+          <p>
+            The PID controller samples temperature error at 10 Hz, calculating proportional, integral, and derivative corrections to modulate a Solid-State Relay (SSR). By pulse-width modulating heater element wattage at zero-crossing AC cycles, the system prevents temperature cycling, maintaining steady-state boiler core water within an astonishing <strong>&plusmn;0.1°C</strong> of setpoint.
           </p>
           <p>
             <strong>Pre-Heating Ingress Fluid Loops:</strong> To eliminate cold water shock when 18°C reservoir water enters the brew boiler during extraction, advanced dual-boiler machines route cold pump water through an internal heat exchanger tube submersed inside the 130°C steam boiler before discharging it into the brew boiler. The incoming water is passively pre-heated to approximately 90°C before entering the brew chamber, completely neutralizing the thermal drawdown shock and enabling continuous back-to-back shot extraction with zero temperature loss.
