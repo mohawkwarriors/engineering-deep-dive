@@ -1,0 +1,54 @@
+---
+title: "Issue 002: Thermoblock Cavitation & Boundary Layer Dynamics"
+subtitle: "Why micro-bore heat exchangers choke under high-frequency pulsed delivery despite ample thermal reservoir capacity."
+date: "2026-10-15"
+subject: "Thermal"
+readTime: "12 min"
+---
+
+## Executive Teardown
+
+When designing continuous-flow resistive thermoblocks for compact pressure-driven systems, heat transfer efficiency is governed by the boundary layer laminar sublayer rather than raw heater wattage.
+
+<TechnicalCard
+  title="Die-Cast A380 Aluminum Block"
+  subtitle="Microscopic Cross-Section of 2.4 mm Water Conduit"
+  bottleneck="Without turbulators, laminar conduction resistance causes 4°C exit delta across core flow."
+>
+  <div className="grid grid-cols-2 gap-2 text-xs">
+    <div className="rounded bg-neutral-950 p-2 border border-neutral-800">
+      <div className="text-neutral-500 uppercase text-[10px]">Mass / Properties</div>
+      <div className="font-semibold text-neutral-200">550g • k = 96 W/(m·K)</div>
+      <div className="text-neutral-400">C_th = 510 J/°C</div>
+    </div>
+    <div className="rounded bg-neutral-950 p-2 border border-neutral-800">
+      <div className="text-neutral-500 uppercase text-[10px]">Heater Specs</div>
+      <div className="font-semibold text-amber-400">1,350W Resistive Element</div>
+      <div className="text-neutral-400">Inlet: 18°C @ 9 Bar</div>
+    </div>
+  </div>
+  <div className="rounded bg-neutral-950 p-2 border border-neutral-800 text-xs">
+    <span className="text-neutral-400">Capillary Liner: </span>
+    <span className="text-neutral-200 font-semibold">Embedded AISI 304 (OD 4.0mm / ID 2.4mm)</span>
+    <div className="mt-1 text-neutral-400">Wall Temp: ~98°C • v_max = 0.88 m/s (Core)</div>
+  </div>
+</TechnicalCard>
+
+## Manufacturing & Thermal Transfer Sequence
+
+To avoid internal porosity in the <TechnicalTangent term="Die-Cast A380" category="Materials" definition="Commercial hypereutectic aluminum alloy offering high fluidity and dimensional stability for complex pressure die-casting." equation="k pprox 96\ 	ext{W/(m}\cdot	ext{K)}" /> block and prevent thermal resistance spikes at the tube-block interface, the casting and swaging process follows strict progressive parameters:
+
+<ProcessFlow>
+  <ProcessStep step="01" title="Capillary Tube Pre-Forming" parameters="AISI 304 • OD 4.0mm / ID 2.4mm">
+    Annealed stainless conduit is bent on a CNC rotary-draw mandrel with internal mandrel support to limit ovality under 4%.
+  </ProcessStep>
+  <ProcessStep step="02" title="Cavity Placement & Insert Pre-Heat" parameters="280°C pre-soak">
+    Formed conduit and tubular calrod heating elements are robotically seated into tool steel dies, minimizing chill-pin flash.
+  </ProcessStep>
+  <ProcessStep step="03" title="High-Pressure Aluminum Squeeze" parameters="A380 Alloy • 65 MPa dwell">
+    Semi-solid liquid aluminum is injected under high pressure to metallurgically bed the conduit, eliminating insulating micro-voids.
+  </ProcessStep>
+  <ProcessStep step="04" title="Final Calibration Hydrostatic Burst Check" parameters="18 Bar • 30s dwell">
+    Chamber is pressurized with DI water to calibrate internal wall clearance and confirm zero leakage along the swaged interface.
+  </ProcessStep>
+</ProcessFlow>

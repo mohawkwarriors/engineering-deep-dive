@@ -1,0 +1,38 @@
+name: Daily Engineering Deep Dive
+
+on:
+  schedule:
+    # 7:00 AM PDT (14:00 UTC)
+    - cron: '0 14 * * *'
+  workflow_dispatch:
+
+jobs:
+  generate-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Lint Media & Components
+        run: node scripts/lint-media.mjs
+
+      - name: Run Daily Generation
+        run: node scripts/generate-issue.mjs
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: Commit & Push New Issue
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add content/
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore(issue): auto-publish daily deep-dive [skip ci]"
+          git push
