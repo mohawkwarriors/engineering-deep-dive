@@ -463,7 +463,45 @@
     }
     .popover-body p { margin-bottom: 8px; }
     .popover-body p:last-child { margin-bottom: 0; }
-    .popover-body .modal-equation-box {
+    
+    /* KaTeX & Uniform Mathematical Typography */
+    .math-block {
+      margin: 22px 0;
+      padding: 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      text-align: center;
+      font-size: 16px;
+    }
+    .katex-display {
+      margin: 0 !important;
+      padding: 4px 0;
+    }
+    .katex {
+      font-size: 1.05em;
+    }
+    .modal-equation-box .math-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+    .modal-equation-box .math-meta {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+.popover-body .modal-equation-box {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 5px;
@@ -938,6 +976,11 @@
     }
 
   </style>
+  <!-- KaTeX Mathematical Typography Engine -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+
 </head>
 <body>
   <!-- Reading Progress Bar -->
@@ -1020,7 +1063,7 @@
     const SUBJECTS = ["All", "Product Dives", "Manufacturing", "Design", "Materials", "Mechanisms", "Thermal", "Fluids", "Electromechanical"];
     
     const TOPICS = [
-      { id: "#003", subject: "Manufacturing", title: "Thixomolding Magnesium Enclosures vs. CNC Machining", status: "Published", date: "Oct 16, 2026" },
+      { id: "#003", subject: "Manufacturing", title: "Thixomolding: How Laptops Get Featherweight Metal Shells (vs. CNC Machining)", status: "Published", date: "Oct 16, 2026" },
       { id: "#002", subject: "Thermal", title: "Espresso Machine Boilers: Thermoblocks vs. Dual-Boiler PID Systems", status: "Published", date: "Oct 15, 2026" },
       { id: "#001", subject: "Product Dives", title: "Apple Home Hardware: HomeView Hub & The LG/Schneider Teardown", status: "Published", date: "Oct 14, 2026" },
       { id: "#000", subject: "Electromechanical", title: "Apple Vision Pro: Automatic Lens Adjustment & Voice Coil Motors", status: "Published", date: "Oct 13, 2026" }
@@ -1711,6 +1754,7 @@
       document.getElementById('popover-tag').textContent = data.tag;
       document.getElementById('popover-title').textContent = data.title;
       document.getElementById('popover-body').innerHTML = data.body;
+      renderMath(document.getElementById("popover-body"));
       
       const isMobile = window.innerWidth <= 640;
 
@@ -2189,12 +2233,35 @@
       }
     }
 
-    function renderArticleContent(data) {
+    
+    function renderMath(targetEl) {
+      if (!targetEl) return;
+      if (window.renderMathInElement) {
+        try {
+          window.renderMathInElement(targetEl, {
+            delimiters: [
+              { left: '801', right: '801', display: true },
+              { left: '$', right: '$', display: false },
+              { left: '\(', right: '\)', display: false },
+              { left: '\[', right: '\]', display: true }
+            ],
+            throwOnError: false
+          });
+        } catch (e) {
+          console.error("KaTeX render error:", e);
+        }
+      } else {
+        setTimeout(() => renderMath(targetEl), 120);
+      }
+    }
+
+function renderArticleContent(data) {
       const articleEl = document.getElementById("view-article");
       if (data.tangents) {
         TANGENTS = { ...TANGENTS, ...data.tangents };
       }
       articleEl.innerHTML = data.article_html;
+      renderMath(articleEl);
 
       showView("article");
       calculateReadTime();

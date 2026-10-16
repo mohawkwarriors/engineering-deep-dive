@@ -187,7 +187,14 @@ DOMAIN CATALYST SPECTRUM ACROSS DISCIPLINES:
 
 STRICT EDITORIAL REQUIREMENTS:
 1. WORD COUNT: The article body MUST be between 2,750 and 3,300 words (strictly 12 to 15 minutes read duration at 220 WPM). Never write high-level overviews or brief summaries.
-2. TITLE: Direct, clean, topic-first format (e.g. "Harmonic Drive Gearboxes: Strain Wave Kinematics and Tooth Fatigue").
+2. TITLE & HEADINGS (MORNING DIGEST TONE - PLAIN ENGLISH FIRST, JARGON SECOND):
+   - Morning Coffee Ramp-Up: The publication serves as an energizing morning ramp-up, not a grim academic exam. Frame titles and section headings with punchy, conversational hardware-insider phrasing that sparks curiosity rather than cognitive dread.
+   - De-Jargonized Headings: Replace intimidating academic terminology in section titles and subject lines with clear physical intuition.
+     * Instead of: "Semi-Solid Slurry Rheology & Non-Dendritic Globular Microstructure"
+     * Use: "The Slurpee State: Why Semi-Solid Metal Flows Like Soft-Serve (Microstructure & Rheology)"
+     * Instead of: "Thixomolding Magnesium Enclosures vs. CNC Machining"
+     * Use: "Thixomolding: How Laptops Get Featherweight Metal Shells (vs. CNC Machining)"
+   - Retain deep technical precision within the body text and popover tangent annotations, but lead every section with visceral mechanics and functional "aha!" payoffs.
 3. SUBTITLE: A captivating, single-sentence narrative hook highlighting the core mechanical tension or engineering trade-off without meta-announcements or filler.
 4. STRUCTURE: 6 detailed, deeply technical sections with numbers:
    - 1. Governing Physics & First Principles (Equations, quantitative load paths, boundary conditions)
@@ -196,7 +203,11 @@ STRICT EDITORIAL REQUIREMENTS:
    - 4. Metallurgy & Materials Science (Exact alloy codes e.g. 6061-T6, 7075, 316L, Ti-6Al-4V, PEEK 450G, Delrin 500P, stress-strain, thermal conductivity)
    - 5. Failure Modes, Wear Tribology & Reliability Degradation (Fatigue limits, cycle life, wear mechanisms, environmental stress)
    - 6. Empirical Bench Metrology & Validation (Laser interferometry, strain gauges, Scace/load cell sensors, high-frequency telemetry)
-5. QUANTITATIVE EQUATIONS: Include explicit mathematical formulas with variable definitions and real calculated values.
+5. MATHEMATICAL NOTATION & FORMULA RENDERING (MANDATORY RULE):
+   - High-Quality Rendered Notation Only: Equations and mathematical formulas MUST NEVER be presented as raw plain text.
+   - LaTeX Display Math: All primary formulas, governing equations, derivations, and balance relations must be rendered in formal LaTeX display blocks: <div class="math-block">$$...$$</div>.
+   - LaTeX Inline Math: All variables, parameters, and simple expressions embedded in prose must use inline LaTeX syntax: $F = m \cdot a$, $\delta_{\text{max}}$, $\sigma_v$, $\dot{\gamma} > 10^4\text{ s}^{-1}$.
+   - Popover Equations: In the 'tangents' dictionary, format equations as <div class="modal-equation-box"><div class="math-label">Concept Name:</div>$$Formula$$<div class="math-meta">Parameter definitions with inline LaTeX</div></div>.
 6. SPEC COMPARISON TABLE: Include an HTML <table> with class="spec-table" inside a <div class="spec-table-wrap"> comparing 4-5 engineering architectures or materials across 5 technical metrics.
 7. TANGENT ANNOTATIONS: Wrap 4-6 specialized, non-intuitive technical terms in <span class="tangent-term" data-tangent="key">. In the "tangents" dictionary, provide their category tag, title, and detailed junior-friendly definition with a governing formula.
 8. VISUAL & DIAGRAM ARCHITECTURE (STRICT SET-AND-FORGET STANDARD):

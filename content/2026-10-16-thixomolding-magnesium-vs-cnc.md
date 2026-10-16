@@ -1,4 +1,4 @@
-# Thixomolding Magnesium Enclosures vs. CNC Machining
+# Thixomolding: How Laptops Get Featherweight Metal Shells (vs. CNC Machining)
 **Issue #003** • **Subject:** Manufacturing • **Date:** Oct 16, 2026 • **Read Duration:** ~15 min (3564 words)
 
 > *Why shearing semi-solid magnesium slurry below its liquidus unlocks sub-millimeter unibody laptop chassis—and where tooling wear, porosity, and draft angles fight back.*
@@ -8,7 +8,7 @@
    ISSUE #003  •  MANUFACTURING  •  15 MIN READ 
  
 
- Thixomolding Magnesium Enclosures vs. CNC Machining 
+ Thixomolding: How Laptops Get Featherweight Metal Shells (vs. CNC Machining) 
  
   Why shearing semi-solid magnesium slurry below its liquidus unlocks sub-millimeter unibody laptop chassis—and where tooling wear, porosity, and draft angles fight back.
  
@@ -60,15 +60,16 @@
  
     The Plate Bending Stiffness Equation:  The resistance of a flat structural panel to flexural bending is governed by its flexural plate rigidity  D :
       
-     D = (E · h³) / [12 · (1 - ν²)] 
+     793D = rac{E \cdot h^3}{12(1 - 
+u^2)}793 
       
     Where  E  is Young's modulus,  h  is wall thickness, and  ν  is Poisson's ratio (~0.33). Crucially, rigidity scales linearly with material modulus ( E ), but scales with the  cube  of thickness ( h³ ).
    
-    The Magnesium Mass Advantage:  Extruded 6061-T6 aluminum exhibits  E = 68.9 GPa  with a density of  ρ = 2.70 g/cm³ . Structural magnesium alloys (such as AZ91D and AM60B) have a lower modulus ( E = 45.0 GPa ), but a density of only  ρ = 1.81 g/cm³ —fully  33% lighter than aluminum .
+    The Magnesium Mass Advantage:  Extruded 6061-T6 aluminum exhibits   = 68.9	ext{ GPa}$  with a density of  $ho = 2.70	ext{ g/cm}^3$ . Structural magnesium alloys (such as AZ91D and AM60B) have a lower modulus (  = 45.0	ext{ GPa}$ ), but a density of only  $ho = 1.81	ext{ g/cm}^3$ —fully  33% lighter than aluminum .
    
-    The Flexural Equivalence Calculation:  Because magnesium is significantly less dense, an engineer can take the exact mass budget of a 0.60 mm aluminum wall and cast an equivalent-weight magnesium wall at  h = 0.895 mm  (a 1.49x thickness increase). Evaluating relative rigidity:
+    The Flexural Equivalence Calculation:  Because magnesium is significantly less dense, an engineer can take the exact mass budget of a 0.60 mm aluminum wall and cast an equivalent-weight magnesium wall at   = 0.895	ext{ mm}$  (a 1.49x thickness increase). Evaluating relative rigidity:
       
-     D_ratio = (E_Mg / E_Al) · (h_Mg / h_Al)³ = (45 / 68.9) · (1.492)³ ≈ 0.653 · 3.32 = 2.17 
+     793rac{D_{	ext{Mg}}}{D_{	ext{Al}}} = \left(rac{E_{	ext{Mg}}}{E_{	ext{Al}}}ight) \cdot \left(rac{h_{	ext{Mg}}}{h_{	ext{Al}}}ight)^3 = \left(rac{45.0}{68.9}ight) \cdot (1.492)^3 pprox 0.653 \cdot 3.32 = 2.17793 
       
     At identical part weight, the panel's resistance to flexural deformation more than  doubles (+117% increase in bending stiffness) . Alternatively, magnesium can match baseline aluminum stiffness while cutting total enclosure mass by roughly 25%.
    
@@ -177,7 +178,7 @@
    
  
 
- 2. Semi-Solid Slurry Rheology & Non-Dendritic Globular Microstructure 
+ 2. The Slurpee State: Why Semi-Solid Metal Flows Like Soft-Serve (Microstructure & Rheology) 
  
   Unlike pure metals that freeze at a discrete temperature, light alloys solidify over a broad thermal band bounded by the  solidus  and  liquidus  temperatures. For electronics-grade  AZ91D  (9.0% Al, 0.7% Zn, 0.2% Mn, balance Mg), the solidus is  470°C  and the liquidus is  595°C , creating an immense  125°C semi-solid mushy freezing zone .
  
@@ -188,10 +189,10 @@
    The Physics of Thixotropic Shear-Thinning:  Thixomolding avoids dendritic interlocking through rotational mechanical shear. Subjecting the alloy to continuous shear stress during solidification snaps fragile dendritic arms as soon as they nucleate. These fragments tumble in the shear field, ripening into smooth, spherical  globular α-Mg rosettes  (10–30 μm diameter) suspended in a liquid eutectic matrix.
  
  
-  This suspended slurry exhibits profound  thixotropic shear-thinning rheology . At rest in the barrel, spherical rosettes lightly agglomerate, giving the semi-solid mass the high viscosity of heavy grease (~100 Pa·s). When the screw drives the slurry forward at high shear rates ( γ̇ > 10⁴ s⁻¹ ), inter-particle bonds release instantly. Dynamic viscosity collapses to  0.05 Pa·s —flowing almost as freely as water.
+  This suspended slurry exhibits profound  thixotropic shear-thinning rheology . At rest in the barrel, spherical rosettes lightly agglomerate, giving the semi-solid mass the high viscosity of heavy grease (~100 Pa·s). When the screw drives the slurry forward at high shear rates ( $\dot{\gamma} > 10^4	ext{ s}^{-1}$ ), inter-particle bonds release instantly. Dynamic viscosity collapses to  0.05 Pa·s —flowing almost as freely as water.
  
  
-   Laminar Cavity Filling Mechanics:  The slurry acts as a  Bingham pseudoplastic . When injected at 2.0 to 5.5 m/s, it does not atomize into a turbulent spray like liquid metal in die casting ( Re > 15,000 ). Instead, high viscosity along tool boundaries stabilizes the flow front, driving a cohesive  laminar frontal wave  ( Re  ).
+   Laminar Cavity Filling Mechanics:  The slurry acts as a  Bingham pseudoplastic . When injected at 2.0 to 5.5 m/s, it does not atomize into a turbulent spray like liquid metal in die casting ( $	ext{Re} > 15{,}000$ ). Instead, high viscosity along tool boundaries stabilizes the flow front, driving a cohesive  laminar frontal wave  ( Re  ).
  
  
   As this wave advances across a 0.50 mm cavity, it pushes cavity air ahead like a squeegee, venting through perimeter chill channels without entraining micro-bubbles. This laminar filling eliminates  gas entrainment porosity , reducing internal gas voids from the 3.5% typical of die casting down to   . Because parts are pore-free, thixomolded components can undergo T6 heat treatment or high-temperature paint baking without blistering.
@@ -356,7 +357,7 @@
   Designing a thixomolded unibody requires adhering to strict semi-solid fluid mechanics:
  
  
-    Nominal Wall Thickness Bounds:  The target cosmetic wall thickness for unibody laptops should be set between  0.50 mm and 0.65 mm . While localized flow paths can achieve 0.40 mm over short travel distances (&lt;40 mm), attempting to push 0.40 mm across a 320 mm 14-inch laptop top-case causes excessive pressure drops ( ΔP ∝ 1 / h³ ), forcing the machine to run at extreme intensification pressures that cause parting-line flash. 
+    Nominal Wall Thickness Bounds:  The target cosmetic wall thickness for unibody laptops should be set between  0.50 mm and 0.65 mm . While localized flow paths can achieve 0.40 mm over short travel distances (&lt;40 mm), attempting to push 0.40 mm across a 320 mm 14-inch laptop top-case causes excessive pressure drops ( $\Delta P \propto rac{1}{h^3}$ ), forcing the machine to run at extreme intensification pressures that cause parting-line flash. 
     Wall Thickness Transition Slope Ratios:  When transitioning from a thick functional zone (such as a 1.2 mm hinge boss) down to a 0.55 mm nominal cosmetic skin, never use abrupt 90-degree steps. Abrupt steps disrupt the laminar flow front, triggering localized flow separation, air traps, and sink marks. Always incorporate gradual transitional tapers with a minimum  3:1 ramp slope ratio  (length to step height). 
     Structural Stiffening Rib Geometry:  To prevent sink marks on the outer A-surface of the enclosure, the base thickness of internal stiffening ribs should never exceed  0.45x to 0.55x  the nominal wall thickness (e.g. a 0.28 mm rib on a 0.55 mm skin). Ribs must incorporate a minimum draft angle of  1.5° to 2.0° per side  and a generous root fillet radius of  R ≥ 0.25 mm  to minimize notch stress concentration during drop impacts. 
     Draft Angles and Thermal Shrinkage Clamping:  Magnesium exhibits high volumetric thermal shrinkage during cooling ( 0.60% to 0.75% linear shrinkage ). As the enclosure solidifies in the mold cavity, it contracts tightly around male internal core pins. Internal boss features and vertical ribbing require a strict minimum draft angle of  1.5° , while outer cosmetic perimeter walls can run as tight as  0.75° to 1.0° . Ejector pins must be positioned generously directly beneath rib intersections, designed with large surface areas to prevent punching holes through warm 0.55 mm walls during ejection. 
@@ -446,7 +447,7 @@
    The Economic Breakeven Curve:  At production volumes below  4,500 units , CNC machining is economically superior because there is virtually zero hard tooling capital expenditure ($12,000 for vacuum jigs versus $145,000 for a Dievar tool mold). However, as production scales past the  6,000-unit breakeven crossover , the astronomical cycle time and material waste of CNC hogging penalize the project. At 250,000 units (a typical flagship consumer laptop production run), thixomolding saves over  $7.5 million in unit production costs  while consuming 80% less factory floor space and embodied electricity.
  
 
- 7. Surface Passivation & Corrosion: Micro-Arc Oxidation (MAO) vs. Anodizing 
+ 7. Ceramic Armor: Micro-Arc Oxidation (MAO) vs. Anodizing (Corrosion Defense) 
  
   Magnesium is the most electrochemically active engineering metal, with a standard reduction potential of  E° = -2.37 V  (-1.66 V for aluminum). In contact with noble metals (steel fasteners, brass inserts, copper pipes) in humid, saline conditions (palm sweat), bare magnesium acts as a sacrificial anode, corroding rapidly into white  Mg(OH)2  powder.
  
@@ -468,7 +469,7 @@
   In portable hardware, the ultimate structural test is the  MIL-STD-810H corner drop test : dropping a 1.2 kg laptop from 1.2 meters (4 feet) onto solid steel plate at a 45-degree angle.
  
  
-   The Physics of Impact Deceleration:  The 14.1 Joules of kinetic energy must dissipate within 2 to 4 milliseconds. Extruded 6061-T6 aluminum possesses high stiffness but low  specific damping capacity  (SDC = 4% to 8%). Because aluminum cannot absorb shock internally, acoustic stress waves ( c = √(E/ρ) ≈ 5,050 m/s ) reflect through the chassis, shattering display cover glass and cracking ceramic capacitors.
+   The Physics of Impact Deceleration:  The 14.1 Joules of kinetic energy must dissipate within 2 to 4 milliseconds. Extruded 6061-T6 aluminum possesses high stiffness but low  specific damping capacity  (SDC = 4% to 8%). Because aluminum cannot absorb shock internally, acoustic stress waves ( 793c = \sqrt{rac{E}{ho}} pprox 5{,}050	ext{ m/s}793 ) reflect through the chassis, shattering display cover glass and cracking ceramic capacitors.
  
  
    Magnesium's Atomic Damping Engine:  Magnesium exhibits the highest specific damping capacity of any practical engineering metal—absorbing between  42% and 58%  of dynamic vibration energy per cycle. The hexagonal close-packed (HCP) atomic crystal lattice of magnesium contains easily mobile dislocation segments that bow and unpin reversibly under cyclic mechanical shear, converting kinetic stress wave energy directly into harmless microscopic lattice heat via internal anelastic friction.
