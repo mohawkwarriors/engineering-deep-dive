@@ -57,16 +57,11 @@ STRICT EDITORIAL REQUIREMENTS:
 5. EQUATIONS: Include explicit quantitative formulas (heat flux, stress, flow, clearance).
 6. COMPARISON TABLE: Include an HTML <table> with class="spec-table" inside a <div class="spec-table-wrap"> comparing 4-5 engineering architectures across 5 technical metrics.
 7. TANGENT ANNOTATIONS: Wrap 4-6 specialized technical terms in <span class="tangent-term" data-tangent="key">.
-8. VISUALS & CROSS-SECTIONS (ZERO-TEXT ENFORCEMENT):
-   - When cutaways, cross-sections, or mechanical figures are generated or described, strictly specify Industrial Design (ID) or CAD-style cross-sections (clean 3D CAD solid model section cutaways, uniform engineering materials rendering, cross-section hatching on cut walls).
-   - MANDATORY TRANSPARENCY: Zero background grid, zero background color (must be transparent RGBA PNG).
-   - MANDATORY ZERO-TEXT IN GENERATED IMAGES: Absolute ZERO text, letters, numbers, dimension lines, or leader lines inside the generated image asset. AI diffusion models hallucinate characters and fill enclosed loops/counters with solid blob artifacts. Generate ONLY the clean 3D physical CAD assembly. All callout labels, leader lines, and telemetry MUST be overlaid externally via HTML/SVG or TrueType typography.
-   - Uniform cohesive rendering aesthetic across all dispatches. Real-life photography is strictly reserved for verified scraped images.
-
-9. INLINE SVG SCHEMATICS & DIAGRAM ARCHITECTURE (ZERO-COLLISION & ZERO-OCCLUSION RULES):
-   - Dedicated Coordinate Bands: Never place two <text> elements on the same or adjacent vertical coordinate (minimum 24px vertical separation between distinct text nodes).
-   - Zero-Occlusion Spatial Routing (NO BACKGROUND BOXES): Never draw opaque background rectangles or knockout pills behind text that block or occlude the underlying diagram, vessel gradients, or artwork. Instead, maintain legibility purely through negative space—positioning text labels in clear open areas and routing fluid lines and borders around text.
-   - Logical Physical Routing: Route all flow pipes and connectors in orthogonal, non-overlapping channels following the logical fluidic path, preventing lines from slicing through unrelated components.
+8. VISUAL & DIAGRAM ARCHITECTURE (STRICT SET-AND-FORGET STANDARD):
+   - ZERO GENERATED RASTER IMAGES: Absolute ban on AI-generated raster images, simulated photos, or AI CAD cutaways. Diffusion models lack typography engines, hallucinate fake words, and produce blobby visual artifacts.
+   - VERIFIED TECHNICAL MEDIA ONLY: Only embed figures if linking to authentic, verified OEM press photography or patent drawings with exact technical captions. Never scrape or use generic lifestyle stock photography (e.g., Unsplash). If no verified image is available, omit raster images entirely.
+   - MINIMALIST SYSTEM BLOCK DIAGRAMS: When illustrating architectures, use strictly clean, high-level horizontal or vertical block flowcharts with ample whitespace (e.g., standard rectangular subsystem nodes, orthogonal non-intersecting directional arrows) or clean typographic specification cards. Never attempt complex multi-curved fluid loops, freehand bezier conduits, or overlapping annotations.
+   - CODE-DRIVEN INTERACTION & METRICS: Lean into interactive tangent hover popovers, LaTeX formula callouts, and clean HTML spec comparison tables, which are 100% reliable, responsive, and code-controlled.
 
 RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other text):
 {
