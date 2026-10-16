@@ -328,7 +328,51 @@
       line-height: 1.45;
     }
 
-    /* KaTeX & Uniform Mathematical Typography */
+    
+    /* Adaptive SVG Diagram Theming (Seamless Light & Dark Mode) */
+    .svg-canvas-bg {
+      fill: var(--card-inner);
+      stroke: var(--border);
+      stroke-width: 1px;
+      transition: fill 0.2s ease, stroke 0.2s ease;
+    }
+    .svg-panel-bg {
+      fill: var(--surface);
+      stroke: var(--border);
+      stroke-width: 1.5px;
+      transition: fill 0.2s ease, stroke 0.2s ease;
+    }
+    .svg-panel-sub {
+      fill: var(--surface-hover);
+      stroke: var(--border);
+      stroke-width: 1px;
+      transition: fill 0.2s ease, stroke 0.2s ease;
+    }
+    .svg-text-primary {
+      fill: var(--text);
+      transition: fill 0.2s ease;
+    }
+    .svg-text-muted {
+      fill: var(--muted);
+      transition: fill 0.2s ease;
+    }
+    .svg-border-muted {
+      stroke: var(--border);
+      transition: stroke 0.2s ease;
+    }
+    .svg-void-fill {
+      fill: var(--surface-hover);
+      transition: fill 0.2s ease;
+    }
+    .svg-rosette {
+      fill: var(--muted);
+      opacity: 0.85;
+      stroke: var(--border);
+      stroke-width: 1.2px;
+      transition: fill 0.2s ease, stroke 0.2s ease;
+    }
+
+/* KaTeX & Uniform Mathematical Typography */
     .math-block {
       margin: 22px 0;
       padding: 16px 20px;
