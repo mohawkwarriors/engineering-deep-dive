@@ -187,13 +187,10 @@ DOMAIN CATALYST SPECTRUM ACROSS DISCIPLINES:
 
 STRICT EDITORIAL REQUIREMENTS:
 1. WORD COUNT: The article body MUST be between 2,750 and 3,300 words (strictly 12 to 15 minutes read duration at 220 WPM). Never write high-level overviews or brief summaries.
-2. TITLE & HEADINGS (MORNING DIGEST TONE - PLAIN ENGLISH FIRST, JARGON SECOND):
-   - Morning Coffee Ramp-Up: The publication serves as an energizing morning ramp-up, not a grim academic exam. Frame titles and section headings with punchy, conversational hardware-insider phrasing that sparks curiosity rather than cognitive dread.
-   - De-Jargonized Headings: Replace intimidating academic terminology in section titles and subject lines with clear physical intuition.
-     * Instead of: "Semi-Solid Slurry Rheology & Non-Dendritic Globular Microstructure"
-     * Use: "The Slurpee State: Why Semi-Solid Metal Flows Like Soft-Serve (Microstructure & Rheology)"
-     * Instead of: "Thixomolding Magnesium Enclosures vs. CNC Machining"
-     * Use: "Thixomolding: How Laptops Get Featherweight Metal Shells (vs. CNC Machining)"
+2. TITLE & INTRO HOOK (MORNING DIGEST TONE - CONVERSATIONAL, PLAIN ENGLISH):
+   - Title Standard: Use clean, curiosity-inducing, plain-English titles (e.g. "How Laptops Get Featherweight Metal Shells"). Avoid long, dense compound titles or heavy academic jargon.
+   - Early Technology Definition & Comparison: In Section 1, immediately define the core technology in vivid, plain-English terms early on (e.g. what Thixomolding is: injecting semi-solid metal slurry like plastic instead of melting it), and explicitly contrast why it beats traditional legacy methods (e.g. 18-second cycle times, sub-millimeter walls, zero swarf waste, and double bending rigidity vs. 45-minute 5-axis CNC hogging).
+   - De-Jargonized Section Headings: Clean, punchy headers leading with physical intuition (e.g. "2. The Slurpee State: Why Semi-Solid Metal Flows Like Soft-Serve"). Never include jarring academic parentheticals or styling artifacts in titles.
    - Retain deep technical precision within the body text and popover tangent annotations, but lead every section with visceral mechanics and functional "aha!" payoffs.
 3. SUBTITLE: A captivating, single-sentence narrative hook highlighting the core mechanical tension or engineering trade-off without meta-announcements or filler.
 4. STRUCTURE: 6 detailed, deeply technical sections with numbers:
@@ -210,9 +207,9 @@ STRICT EDITORIAL REQUIREMENTS:
    - Popover Equations: In the 'tangents' dictionary, format equations as <div class="modal-equation-box"><div class="math-label">Concept Name:</div>$$Formula$$<div class="math-meta">Parameter definitions with inline LaTeX</div></div>.
 6. SPEC COMPARISON TABLE: Include an HTML <table> with class="spec-table" inside a <div class="spec-table-wrap"> comparing 4-5 engineering architectures or materials across 5 technical metrics.
 7. TANGENT ANNOTATIONS: Wrap 4-6 specialized, non-intuitive technical terms in <span class="tangent-term" data-tangent="key">. In the "tangents" dictionary, provide their category tag, title, and detailed junior-friendly definition with a governing formula.
-8. VISUAL & DIAGRAM ARCHITECTURE (STRICT SET-AND-FORGET STANDARD):
-   - ZERO GENERATED RASTER IMAGES: Do NOT attempt to generate AI images or CAD cutaways.
-   - VERIFIED PUBLIC TECHNICAL MEDIA ONLY: Only embed figures if referencing authentic, verified OEM press photography or patent drawings with exact technical captions. Never use generic stock photography (e.g. Unsplash). If no verified image is available, omit raster images entirely.
+8. VISUAL MEDIA & AUTHENTIC REAL-WORLD PHOTOGRAPHY:
+   - AUTHENTIC REAL-WORLD PHOTOGRAPHY: Actively source and embed real, authentic public photography from the internet (such as OEM hardware teardowns, Wikimedia Commons engineering archives, patent drawings, or manufacturer machinery photos like JSW injection presses) with high-contrast presentation.
+   - ZERO GENERATED RASTER IMAGES: Strict ban on AI-generated diffusion art (DALL-E/Midjourney/Imagen). Always use authentic real-world engineering photography or clean, verified technical schematics.
    - MINIMALIST SYSTEM BLOCK DIAGRAMS: When illustrating architectures, use strictly clean, high-level horizontal or vertical block flowcharts with ample whitespace (standard rectangular subsystem nodes, orthogonal non-intersecting directional arrows) or clean typographic specification cards. Never attempt complex multi-curved fluid loops or overlapping annotations.
    - CODE-DRIVEN INTERACTION & METRICS: Emphasize interactive tangent hover popovers, LaTeX formula callouts, and clean HTML spec comparison tables, which are 100% reliable, responsive, and code-controlled.
 

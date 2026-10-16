@@ -1,4 +1,4 @@
-# Thixomolding: How Laptops Get Featherweight Metal Shells (vs. CNC Machining)
+# How Laptops Get Featherweight Metal Shells
 **Issue #003** • **Subject:** Manufacturing • **Date:** Oct 16, 2026 • **Read Duration:** ~15 min (3564 words)
 
 > *Why shearing semi-solid magnesium slurry below its liquidus unlocks sub-millimeter unibody laptop chassis—and where tooling wear, porosity, and draft angles fight back.*
@@ -65,11 +65,16 @@ u^2)}793
       
     Where  E  is Young's modulus,  h  is wall thickness, and  ν  is Poisson's ratio (~0.33). Crucially, rigidity scales linearly with material modulus ( E ), but scales with the  cube  of thickness ( h³ ).
    
-    The Magnesium Mass Advantage:  Extruded 6061-T6 aluminum exhibits   = 68.9	ext{ GPa}$  with a density of  $ho = 2.70	ext{ g/cm}^3$ . Structural magnesium alloys (such as AZ91D and AM60B) have a lower modulus (  = 45.0	ext{ GPa}$ ), but a density of only  $ho = 1.81	ext{ g/cm}^3$ —fully  33% lighter than aluminum .
+    The Magnesium Mass Advantage:  Extruded 6061-T6 aluminum exhibits   = 68.9	ext{ GPa}$  with a density of  $
+ho = 2.70	ext{ g/cm}^3$ . Structural magnesium alloys (such as AZ91D and AM60B) have a lower modulus (  = 45.0	ext{ GPa}$ ), but a density of only  $
+ho = 1.81	ext{ g/cm}^3$ —fully  33% lighter than aluminum .
    
     The Flexural Equivalence Calculation:  Because magnesium is significantly less dense, an engineer can take the exact mass budget of a 0.60 mm aluminum wall and cast an equivalent-weight magnesium wall at   = 0.895	ext{ mm}$  (a 1.49x thickness increase). Evaluating relative rigidity:
       
-     793rac{D_{	ext{Mg}}}{D_{	ext{Al}}} = \left(rac{E_{	ext{Mg}}}{E_{	ext{Al}}}ight) \cdot \left(rac{h_{	ext{Mg}}}{h_{	ext{Al}}}ight)^3 = \left(rac{45.0}{68.9}ight) \cdot (1.492)^3 pprox 0.653 \cdot 3.32 = 2.17793 
+     793rac{D_{	ext{Mg}}}{D_{	ext{Al}}} = \left(rac{E_{	ext{Mg}}}{E_{	ext{Al}}}
+ight) \cdot \left(rac{h_{	ext{Mg}}}{h_{	ext{Al}}}
+ight)^3 = \left(rac{45.0}{68.9}
+ight) \cdot (1.492)^3 pprox 0.653 \cdot 3.32 = 2.17793 
       
     At identical part weight, the panel's resistance to flexural deformation more than  doubles (+117% increase in bending stiffness) . Alternatively, magnesium can match baseline aluminum stiffness while cutting total enclosure mass by roughly 25%.
    
@@ -178,7 +183,7 @@ u^2)}793
    
  
 
- 2. The Slurpee State: Why Semi-Solid Metal Flows Like Soft-Serve (Microstructure & Rheology) 
+ 2. The Slurpee State: Why Semi-Solid Metal Flows Like Soft-Serve 
  
   Unlike pure metals that freeze at a discrete temperature, light alloys solidify over a broad thermal band bounded by the  solidus  and  liquidus  temperatures. For electronics-grade  AZ91D  (9.0% Al, 0.7% Zn, 0.2% Mn, balance Mg), the solidus is  470°C  and the liquidus is  595°C , creating an immense  125°C semi-solid mushy freezing zone .
  
@@ -447,7 +452,7 @@ u^2)}793
    The Economic Breakeven Curve:  At production volumes below  4,500 units , CNC machining is economically superior because there is virtually zero hard tooling capital expenditure ($12,000 for vacuum jigs versus $145,000 for a Dievar tool mold). However, as production scales past the  6,000-unit breakeven crossover , the astronomical cycle time and material waste of CNC hogging penalize the project. At 250,000 units (a typical flagship consumer laptop production run), thixomolding saves over  $7.5 million in unit production costs  while consuming 80% less factory floor space and embodied electricity.
  
 
- 7. Ceramic Armor: Micro-Arc Oxidation (MAO) vs. Anodizing (Corrosion Defense) 
+ 7. Ceramic Armor: Micro-Arc Oxidation vs. Anodizing 
  
   Magnesium is the most electrochemically active engineering metal, with a standard reduction potential of  E° = -2.37 V  (-1.66 V for aluminum). In contact with noble metals (steel fasteners, brass inserts, copper pipes) in humid, saline conditions (palm sweat), bare magnesium acts as a sacrificial anode, corroding rapidly into white  Mg(OH)2  powder.
  
@@ -469,7 +474,8 @@ u^2)}793
   In portable hardware, the ultimate structural test is the  MIL-STD-810H corner drop test : dropping a 1.2 kg laptop from 1.2 meters (4 feet) onto solid steel plate at a 45-degree angle.
  
  
-   The Physics of Impact Deceleration:  The 14.1 Joules of kinetic energy must dissipate within 2 to 4 milliseconds. Extruded 6061-T6 aluminum possesses high stiffness but low  specific damping capacity  (SDC = 4% to 8%). Because aluminum cannot absorb shock internally, acoustic stress waves ( 793c = \sqrt{rac{E}{ho}} pprox 5{,}050	ext{ m/s}793 ) reflect through the chassis, shattering display cover glass and cracking ceramic capacitors.
+   The Physics of Impact Deceleration:  The 14.1 Joules of kinetic energy must dissipate within 2 to 4 milliseconds. Extruded 6061-T6 aluminum possesses high stiffness but low  specific damping capacity  (SDC = 4% to 8%). Because aluminum cannot absorb shock internally, acoustic stress waves ( 793c = \sqrt{rac{E}{
+ho}} pprox 5{,}050	ext{ m/s}793 ) reflect through the chassis, shattering display cover glass and cracking ceramic capacitors.
  
  
    Magnesium's Atomic Damping Engine:  Magnesium exhibits the highest specific damping capacity of any practical engineering metal—absorbing between  42% and 58%  of dynamic vibration energy per cycle. The hexagonal close-packed (HCP) atomic crystal lattice of magnesium contains easily mobile dislocation segments that bow and unpin reversibly under cyclic mechanical shear, converting kinetic stress wave energy directly into harmless microscopic lattice heat via internal anelastic friction.

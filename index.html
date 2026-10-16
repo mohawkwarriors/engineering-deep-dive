@@ -465,7 +465,13 @@
     .popover-body p:last-child { margin-bottom: 0; }
     
     /* KaTeX & Uniform Mathematical Typography */
-    .math-block {
+    
+    .katex-error {
+      color: inherit !important;
+      border-bottom: 1px dotted var(--accent);
+    }
+
+.math-block {
       margin: 22px 0;
       padding: 16px 20px;
       background: var(--surface);
@@ -1063,7 +1069,7 @@
     const SUBJECTS = ["All", "Product Dives", "Manufacturing", "Design", "Materials", "Mechanisms", "Thermal", "Fluids", "Electromechanical"];
     
     const TOPICS = [
-      { id: "#003", subject: "Manufacturing", title: "Thixomolding: How Laptops Get Featherweight Metal Shells (vs. CNC Machining)", status: "Published", date: "Oct 16, 2026" },
+      { id: "#003", subject: "Manufacturing", title: "How Laptops Get Featherweight Metal Shells", status: "Published", date: "Oct 16, 2026" },
       { id: "#002", subject: "Thermal", title: "Espresso Machine Boilers: Thermoblocks vs. Dual-Boiler PID Systems", status: "Published", date: "Oct 15, 2026" },
       { id: "#001", subject: "Product Dives", title: "Apple Home Hardware: HomeView Hub & The LG/Schneider Teardown", status: "Published", date: "Oct 14, 2026" },
       { id: "#000", subject: "Electromechanical", title: "Apple Vision Pro: Automatic Lens Adjustment & Voice Coil Motors", status: "Published", date: "Oct 13, 2026" }
