@@ -20,7 +20,7 @@ export function ProcessStep({ step, title, parameters, children }: ProcessStepPr
         {formattedStep}
       </div>
 
-      {/* Content Card with Dynamic Auto-Layout */}
+      {/* Dynamic Content Card */}
       <div className="rounded-lg border border-neutral-800/80 bg-neutral-900/60 p-4 font-mono transition-colors hover:border-neutral-700">
         <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-neutral-800 pb-2 mb-2">
           <span className="text-sm font-semibold uppercase tracking-wide text-neutral-200">

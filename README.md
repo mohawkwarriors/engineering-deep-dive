@@ -1,28 +1,17 @@
-# Engineering Deep Dive - Pipeline & MDX Components
+# Engineering Deep Dive
 
-A zero-maintenance, automated publication architecture for mechanical hardware engineering deep-dives.
+A fully automated daily intelligence pipeline delivering high-depth mechanical engineering deep dives with interactive MDX components and zero poor-quality AI raster images.
 
-## Visual & Diagram Architectural Standard
-- **Zero AI-Generated Raster Images:** Diffusion generators (Midjourney, DALL-E) are strictly prohibited from generating diagrams, CAD cutaways, or charts to prevent typography overflow and graphic clipping.
-- **Native MDX Components:**
-  - `<ProcessFlow>` & `<ProcessStep>`: Auto-expanding, responsive vertical manufacturing and thermodynamics process sequences.
-  - `<TechnicalCard>`: Parameter grids with built-in engineering bottleneck callouts.
-  - `<TechnicalTangent>`: Hoverable popover definitions with LaTeX equation rendering.
-- **CI Media Linter:** `scripts/lint-media.mjs` automatically verifies that no unapproved raster graphics enter production.
+## Architecture & Visual Standards
+- **Zero Raster AI Graphics:** No diffusion image generation. Figure 5 and all schematics are rendered natively in React/Tailwind/KaTeX.
+- **`<TechnicalCard>`:** Parameter matrix container with dynamic container sizing and bottleneck highlights.
+- **`<ProcessFlow>` & `<ProcessStep>`:** Responsive vertical step cards for manufacturing and thermodynamic sequences.
+- **`<TechnicalTangent>`:** Interactive hover/pinned popover cards for physics and engineering principles.
+- **CI Linter (`scripts/lint-media.mjs`):** Automatically fails any PR or build attempting to load raster AI graphics.
 
-## Directory Structure
-```
-├── .github/workflows/
-│   └── daily-pipeline.yml       # Automated 7:00 AM PDT cron runner
-├── components/
-│   ├── ProcessFlow.tsx          # Dynamic process step component
-│   ├── TechnicalCard.tsx        # Bounded specification card
-│   ├── TechnicalTangent.tsx     # Hover tangent definition component
-│   └── mdx-components.tsx       # Component registry for MDX provider
-├── content/
-│   └── issues/
-│       └── sample-issue-002-revised.mdx
-└── scripts/
-    ├── generate-issue.mjs       # Issue generation config & system prompt
-    └── lint-media.mjs           # CI linter preventing raster AI images
+## Quick Start
+```bash
+npm install
+npm run lint:media
+npm run dev
 ```

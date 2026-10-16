@@ -1,6 +1,3 @@
-// scripts/lint-media.mjs
-// Validates that committed MDX files contain zero unverified AI raster diagrams.
-
 import fs from 'fs';
 import path from 'path';
 
@@ -17,7 +14,8 @@ function checkFiles() {
 
   const bannedPatterns = [
     /!\[.*\]\(.*(dalle|midjourney|generated|ai-image|diagram-gen).*\)/i,
-    /!\[.*\]\(.*\.png\)/i, // Restrict generic local png diagrams without approved press prefix
+    /!\[.*\]\(.*\.(png|jpg|jpeg|webp)\)/i, // Strict ban on unverified local/remote raster graphics
+    /<img.*src=.*(png|jpg|jpeg|webp).*>/i
   ];
 
   for (const file of files) {
@@ -33,10 +31,10 @@ function checkFiles() {
   }
 
   if (hasViolation) {
-    console.error('Linting failed: Replace raster diagrams with <ProcessFlow> or <TechnicalCard> MDX components.');
+    console.error('Build blocked: Replace raster diagrams with <ProcessFlow> or <TechnicalCard> MDX components.');
     process.exit(1);
   } else {
-    console.log('All MDX files conform to the Zero-AI-Raster and Native-Component standard.');
+    console.log('All MDX issues strictly adhere to the Zero-AI-Raster and Native-Component standard.');
   }
 }
 

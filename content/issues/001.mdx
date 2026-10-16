@@ -1,0 +1,52 @@
+---
+issue: "001"
+title: "Inside the Apple Home Collection: Why Apple Let LG Build Its Smart Home Hardware"
+subtitle: "A teardown of Apple's dual-pronged smart home architecture—pairing a first-party Liquid Retina command hub with co-engineered residential hardware built by LG Electronics."
+date: "2026-10-10"
+subject: "Product Dives"
+readTime: "12 min"
+---
+
+## 1. The Two-Pronged Hardware Strategy
+
+Rather than manufacturing low-margin, high-liability residential fixtures in-house, Apple split its smart home ecosystem at the drywall boundary. Apple retains complete ownership of the silicon and display layer—the HomeView 7-inch smart display, Apple TV 4K, and HomePod mini—while partnering with LG Electronics and Schneider Electric to manufacture the physical sensors, actuators, and high-voltage wall hardware.
+
+<TechnicalCard
+  title="HomeView & Access Subsystem Matrix"
+  subtitle="Boundary Interfaces across Drywall Substrates"
+  bottleneck="RF attenuation through masonry walls requires active mesh Thread routing via line-powered backplates."
+>
+  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+    <div className="rounded bg-neutral-950 p-2.5 border border-neutral-800">
+      <div className="text-amber-500 font-semibold uppercase text-[10px]">HomeView 7" Hub</div>
+      <div className="text-neutral-200 mt-1">Apple Silicon • Thread Border Router</div>
+      <div className="text-neutral-400 text-[11px] mt-0.5">0.3-nit min luminance, ambient auto-dimming</div>
+    </div>
+    <div className="rounded bg-neutral-950 p-2.5 border border-neutral-800">
+      <div className="text-amber-500 font-semibold uppercase text-[10px]">Smart Deadbolt</div>
+      <div className="text-neutral-200 mt-1">LG Electronics • Aliro Protocol</div>
+      <div className="text-neutral-400 text-[11px] mt-0.5">UWB ToF spatial ranging, planetary gearbox</div>
+    </div>
+    <div className="rounded bg-neutral-950 p-2.5 border border-neutral-800">
+      <div className="text-amber-500 font-semibold uppercase text-[10px]">Indoor Cam</div>
+      <div className="text-neutral-200 mt-1">LG Electronics • 2.5K HDR</div>
+      <div className="text-neutral-400 text-[11px] mt-0.5">95° motorized occlusion, leaf-switch mic cut</div>
+    </div>
+  </div>
+</TechnicalCard>
+
+## 2. Spatial Unlocking Kinematics & Privacy Actuation
+
+Standard smart locks rely on 2.4 GHz Bluetooth RSSI signal strength, which suffers from severe multipath reflections. By combining Bluetooth handshakes with <TechnicalTangent term="Ultra-Wideband (UWB)" category="RF & Communications" definition="Impulse-radio RF standard transmitting picosecond pulses across 500 MHz channel bands, yielding sub-centimeter Time-of-Flight ranging." equation="d = c \cdot \frac{\Delta t}{2}" /> Time-of-Flight ranging and angle-of-arrival (AoA), the deadbolt resolves exterior versus interior approach vectors within ±5 cm.
+
+<ProcessFlow>
+  <ProcessStep step="01" title="UWB Chime & Ranging Handshake" parameters="Channel 5/9 • ±5 cm precision">
+    Approaching authorized digital key triggers bilateral pulse exchange to calculate strict vector boundaries.
+  </ProcessStep>
+  <ProcessStep step="02" title="Planetary Gear Engagement" parameters="4-stage metal gear train • 1.8 N·m">
+    Coreless brushless DC motor drives a high-reduction planetary gearbox to overcome bolt misalignment friction.
+  </ProcessStep>
+  <ProcessStep step="03" title="Physical Occlusion Verification" parameters="95° tilt • Optical leaf switch">
+    When disarmed, the indoor optical barrel pitches into an anodized aluminum cup, physically disconnecting microphone bias.
+  </ProcessStep>
+</ProcessFlow>
