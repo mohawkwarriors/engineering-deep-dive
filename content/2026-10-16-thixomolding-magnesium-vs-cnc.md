@@ -423,106 +423,117 @@
   <strong>The High-Speed Hydraulic Shot Surge:</strong> Once metered, hydraulic nitrogen accumulators discharge into the injection piston. The screw surges forward at speeds up to <strong>5.5 m/s</strong> with acceleration exceeding <strong>40 Gs</strong>. Slurry drives through a heated nozzle into the die runner in less than <strong>18 milliseconds</strong>, reaching an instantaneous intensification pressure of <strong>120 MPa (1,200 bar)</strong> to pack out thin ribs before freezing.
 </p>
 
-<!-- FIG 03: MICROSTRUCTURAL MORPHOLOGY & CRACKING RESISTANCE -->
-<div class="schematic-card" id="fig03-microstructure">
+<!-- FIG 04: MICROSTRUCTURAL MORPHOLOGY & CRACKING RESISTANCE -->
+<div class="schematic-card" id="fig04-microstructure">
   <div class="schematic-header">
     <span class="schematic-title">FIG 04 — MICROSTRUCTURAL CROSS-SECTION: DIE-CAST VS. THIXOMOLDED VS. WROUGHT</span>
     <span class="schematic-subtitle">SEM ETCH: 2% NITAL • 500x MAGNIFICATION</span>
   </div>
-  <div class="schematic-viewport">
-    <svg viewBox="0 0 880 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="880" height="300" rx="8" class="svg-canvas-bg"/>
-      
-      <!-- PANEL A: HIGH-PRESSURE DIE CAST (HPDC) -->
-      <g transform="translate(35, 25)">
-        <rect x="0" y="0" width="240" height="220" rx="6" class="svg-panel-bg" stroke="#DC2626" stroke-width="2"/>
-        <text x="120" y="-10" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#DC2626">A. HIGH-PRESSURE DIE CAST (HPDC)</text>
-        
-        <!-- Dendritic arms -->
-        <g class="svg-border-muted" stroke-width="1.8" opacity="0.8">
-          <line x1="30" y1="50" x2="90" y2="110"/>
-          <line x1="50" y1="70" x2="70" y2="50"/>
-          <line x1="70" y1="90" x2="95" y2="75"/>
-          <line x1="125" y1="120" x2="185" y2="175"/>
-          <line x1="145" y1="140" x2="165" y2="120"/>
-          <line x1="70" y1="150" x2="135" y2="190"/>
-        </g>
-        
-        <!-- Primary Dendrite Callout Leader -->
-        <polyline points="60,60 85,38 150,38" stroke="var(--muted)" stroke-width="1.2" fill="none"/>
-        <circle cx="60" cy="60" r="2.5" fill="var(--muted)"/>
-        <text x="155" y="41" font-family="JetBrains Mono" font-size="12.5" class="svg-text-muted" font-weight="600">INTERLOCKING DENDRITES</text>
+  
+  <div class="comparison-grid three-col">
+    <!-- PANEL A: HIGH-PRESSURE DIE CAST (HPDC) -->
+    <div class="comparison-card flawed-card">
+      <div class="comparison-card-tag"><span class="dot danger"></span> A. HIGH-PRESSURE DIE CAST (HPDC)</div>
+      <div class="comparison-card-title">Interlocking Dendrites</div>
+      <div class="comparison-visual">
+        <svg viewBox="0 0 240 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="comparison-svg">
+          <rect width="240" height="120" rx="4" class="svg-canvas-bg"/>
+          <g stroke="#DC2626" stroke-width="2" opacity="0.85">
+            <line x1="25" y1="30" x2="85" y2="90"/>
+            <line x1="45" y1="50" x2="65" y2="30"/>
+            <line x1="65" y1="70" x2="90" y2="55"/>
+            <line x1="120" y1="25" x2="180" y2="85"/>
+            <line x1="140" y1="45" x2="160" y2="25"/>
+            <line x1="160" y1="65" x2="185" y2="50"/>
+            <line x1="60" y1="95" x2="125" y2="115"/>
+          </g>
+          <circle cx="100" cy="55" r="14" fill="#DC2626" fill-opacity="0.18" stroke="#DC2626" stroke-width="2"/>
+          <circle cx="195" cy="80" r="10" fill="#DC2626" fill-opacity="0.18" stroke="#DC2626" stroke-width="1.8"/>
+          <circle cx="45" cy="100" r="7" fill="#DC2626" fill-opacity="0.18" stroke="#DC2626" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="comparison-metric-pill danger-pill">
+        <div class="pill-label">Porosity &amp; Heat Treat Risk</div>
+        <div class="pill-value">3.8% Porosity • Blister Risk</div>
+        <div class="pill-sub">Turbulent gas entrapment forms macroscopic blisters during T4 solution heat treatment (&gt;400°C).</div>
+      </div>
+      <div class="comparison-consequence">
+        <strong>Fracture Mode:</strong> Rapid intergranular cleavage along dendritic boundaries. Low elongation (&lt;3%) under impact loads.
+      </div>
+    </div>
 
-        <!-- Gas Voids (Pure Geometry, NO text inside small circle) -->
-        <circle cx="120" cy="85" r="14" class="svg-void-fill" stroke="#DC2626" stroke-width="2"/>
-        <circle cx="175" cy="145" r="9" class="svg-void-fill" stroke="#DC2626" stroke-width="1.5"/>
-        
-        <!-- Gas Void Callout Leader pointing outside to clear space -->
-        <polyline points="120,85 145,105 195,105" stroke="#DC2626" stroke-width="1.2" fill="none"/>
-        <circle cx="120" cy="85" r="2.5" fill="#DC2626"/>
-        <text x="145" y="100" font-family="JetBrains Mono" font-size="12.5" fill="#DC2626" font-weight="700">GAS VOID (TRAPPED AIR)</text>
-        
-        <!-- Bottom Status Banner -->
-        <rect x="0" y="185" width="240" height="35" class="svg-panel-sub" rx="0 0 6 6"/>
-        <text x="12" y="206" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="700" fill="#DC2626">Porosity: 3.8% • Blister Risk</text>
-      </g>
-      
-      <!-- PANEL B: SEMI-SOLID THIXOMOLDED -->
-      <g transform="translate(320, 25)">
-        <rect x="0" y="0" width="240" height="220" rx="6" class="svg-panel-bg" stroke="#10B981" stroke-width="2.5"/>
-        <text x="120" y="-10" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#10B981">B. SEMI-SOLID THIXOMOLDED</text>
-        
-        <!-- Rosette field -->
-        <g class="svg-rosette">
-          <circle cx="45" cy="55" r="13"/>
-          <circle cx="85" cy="48" r="15"/>
-          <circle cx="145" cy="52" r="14"/>
-          <circle cx="195" cy="50" r="12"/>
-          <circle cx="50" cy="100" r="14"/>
-          <circle cx="95" cy="105" r="17"/>
-          <circle cx="150" cy="110" r="15"/>
-          <circle cx="200" cy="105" r="13"/>
-          <circle cx="70" cy="150" r="13"/>
-          <circle cx="120" cy="155" r="15"/>
-          <circle cx="170" cy="152" r="13"/>
-        </g>
-        
-        <!-- Rosette Callout Leader pointing from whitespace -->
-        <polyline points="95,105 125,75 190,75" stroke="#10B981" stroke-width="1.2" fill="none"/>
-        <circle cx="95" cy="105" r="2.5" fill="#10B981"/>
-        <text x="125" y="70" font-family="JetBrains Mono" font-size="12.5" fill="#10B981" font-weight="700">&alpha;-Mg ROSETTES (10–30 &mu;m)</text>
-        
-        <!-- Bottom Status Banner -->
-        <rect x="0" y="185" width="240" height="35" class="svg-panel-sub" rx="0 0 6 6"/>
-        <text x="12" y="206" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="700" fill="#10B981">Porosity: &lt;0.2% • Pore-Free</text>
-      </g>
-      
-      <!-- PANEL C: WROUGHT 6061-T6 (BILLET) -->
-      <g transform="translate(605, 25)">
-        <rect x="0" y="0" width="240" height="220" rx="6" class="svg-panel-bg" stroke="#2563EB" stroke-width="2"/>
-        <text x="120" y="-10" text-anchor="middle" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#2563EB">C. WROUGHT 6061-T6 (BILLET)</text>
-        
-        <!-- Laminated grain flow lines -->
-        <g class="svg-panel-sub" stroke="#2563EB" stroke-width="1.2">
-          <path d="M 5 35 Q 120 40 235 30 L 235 70 Q 120 75 5 65 Z"/>
-          <path d="M 5 75 Q 120 80 235 70 L 235 110 Q 120 115 5 105 Z"/>
-          <path d="M 5 115 Q 120 120 235 110 L 235 150 Q 120 155 5 145 Z"/>
-        </g>
-        
-        <!-- Grain Texture Callout Leader pointing from whitespace -->
-        <polyline points="120,75 145,55 210,55" stroke="#2563EB" stroke-width="1.2" fill="none"/>
-        <circle cx="120" cy="75" r="2.5" fill="#2563EB"/>
-        <text x="125" y="50" font-family="JetBrains Mono" font-size="12.5" fill="#2563EB" font-weight="700">ELONGATED GRAIN TEXTURE</text>
-        
-        <!-- Bottom Status Banner -->
-        <rect x="0" y="185" width="240" height="35" class="svg-panel-sub" rx="0 0 6 6"/>
-        <text x="12" y="206" font-family="JetBrains Mono" font-size="12.5" fill="#2563EB" font-weight="700">Porosity: 0.0% • High Cost</text>
-      </g>
-      
-      <!-- Bottom Summary Caption -->
-      <text x="440" y="278" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" class="svg-text-muted">Thixomolding achieves wrought-like fracture resistance by replacing sharp interlocking dendrites with spherical rosettes.</text>
-    </svg>
+    <!-- PANEL B: SEMI-SOLID THIXOMOLDED -->
+    <div class="comparison-card solution-card">
+      <div class="comparison-card-tag"><span class="dot success"></span> B. SEMI-SOLID THIXOMOLDED</div>
+      <div class="comparison-card-title">&alpha;-Mg Spherical Rosettes</div>
+      <div class="comparison-visual">
+        <svg viewBox="0 0 240 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="comparison-svg">
+          <rect width="240" height="120" rx="4" class="svg-canvas-bg"/>
+          <g fill="#10B981" fill-opacity="0.2" stroke="#10B981" stroke-width="2">
+            <circle cx="35" cy="35" r="14"/>
+            <circle cx="75" cy="28" r="16"/>
+            <circle cx="125" cy="32" r="15"/>
+            <circle cx="170" cy="30" r="14"/>
+            <circle cx="210" cy="36" r="13"/>
+            <circle cx="45" cy="80" r="15"/>
+            <circle cx="95" cy="75" r="17"/>
+            <circle cx="145" cy="80" r="16"/>
+            <circle cx="190" cy="82" r="15"/>
+          </g>
+          <g fill="#059669" opacity="0.4">
+            <circle cx="60" cy="55" r="2.5"/>
+            <circle cx="110" cy="55" r="2.5"/>
+            <circle cx="160" cy="55" r="2.5"/>
+            <circle cx="70" cy="105" r="2.5"/>
+            <circle cx="120" cy="108" r="2.5"/>
+            <circle cx="170" cy="105" r="2.5"/>
+          </g>
+        </svg>
+      </div>
+      <div class="comparison-metric-pill success-pill">
+        <div class="pill-label">Porosity &amp; Heat Treat Risk</div>
+        <div class="pill-value">&lt;0.2% Porosity • Pore-Free</div>
+        <div class="pill-sub">Laminar planar filling front prevents air entrapment, enabling safe T4/T6 solution heat treating.</div>
+      </div>
+      <div class="comparison-consequence">
+        <strong>Fracture Mode:</strong> Spherical rosettes blunt and deflect advancing crack tips, providing 8–10% ductile elongation.
+      </div>
+    </div>
+
+    <!-- PANEL C: WROUGHT 6061-T6 (BILLET) -->
+    <div class="comparison-card info-card">
+      <div class="comparison-card-tag"><span class="dot info"></span> C. WROUGHT 6061-T6 (BILLET)</div>
+      <div class="comparison-card-title">Elongated Grain Flow</div>
+      <div class="comparison-visual">
+        <svg viewBox="0 0 240 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="comparison-svg">
+          <rect width="240" height="120" rx="4" class="svg-canvas-bg"/>
+          <g fill="#2563EB" fill-opacity="0.1" stroke="#2563EB" stroke-width="1.6">
+            <path d="M 5 18 Q 120 23 235 15 L 235 48 Q 120 53 5 45 Z"/>
+            <path d="M 5 52 Q 120 57 235 49 L 235 82 Q 120 87 5 79 Z"/>
+            <path d="M 5 86 Q 120 91 235 83 L 235 112 Q 120 117 5 109 Z"/>
+          </g>
+          <g stroke="#3B82F6" stroke-width="1" stroke-dasharray="4 3" opacity="0.6">
+            <line x1="10" y1="33" x2="230" y2="30"/>
+            <line x1="10" y1="67" x2="230" y2="64"/>
+            <line x1="10" y1="99" x2="230" y2="96"/>
+          </g>
+        </svg>
+      </div>
+      <div class="comparison-metric-pill info-pill">
+        <div class="pill-label">Porosity &amp; Buy-to-Fly Ratio</div>
+        <div class="pill-value">0.0% Porosity • 10:1 Scrap Loss</div>
+        <div class="pill-sub">Zero voids with continuous grain boundaries, but 85–90% of virgin alloy is converted to machining chips.</div>
+      </div>
+      <div class="comparison-consequence">
+        <strong>Fracture Mode:</strong> High tensile yield strength (276 MPa), but directional anisotropy along transverse grain planes.
+      </div>
+    </div>
   </div>
+
+  <div class="comparison-banner">
+    <strong>METALLURGICAL TAKEAWAY:</strong> Thixomolding achieves wrought-like fracture resistance by replacing sharp interlocking dendrites with spherical rosettes—delivering 8–10% ductile elongation without the 10:1 scrap loss of billet CNC machining.
+  </div>
+
   <div class="schematic-caption">
     <span><strong>FIG 04 — METALLURGICAL GRAIN STRUCTURE:</strong> Scanning electron comparison illustrating why thixomolded magnesium achieves pore-free structural integrity compared to conventional die-casting gas cavities.</span>
     <span class="source-tag">SCHEMATIC: SEM ARCHIVE</span>

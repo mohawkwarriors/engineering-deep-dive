@@ -689,6 +689,14 @@
       box-sizing: border-box;
       max-width: 100%;
     }
+    .comparison-grid.three-col {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media (max-width: 840px) {
+      .comparison-grid.three-col {
+        grid-template-columns: 1fr;
+      }
+    }
     @media (max-width: 680px) {
       .comparison-grid {
         grid-template-columns: 1fr;
@@ -728,6 +736,15 @@
     }
     .comparison-card.solution-card .comparison-card-tag {
       color: #059669;
+    }
+    .comparison-card.info-card {
+      border-top: 3.5px solid #2563EB;
+    }
+    .comparison-card.info-card .comparison-card-tag {
+      color: #2563EB;
+    }
+    [data-theme="dark"] .comparison-card.info-card .comparison-card-tag {
+      color: #60A5FA;
     }
     .comparison-card-title {
       font-family: 'Instrument Serif', Georgia, serif;
@@ -807,6 +824,19 @@
     .success-pill .pill-sub strong { color: #059669; }
     [data-theme="dark"] .danger-pill .pill-sub strong { color: #F87171; }
     [data-theme="dark"] .success-pill .pill-sub strong { color: #34D399; }
+
+    .comparison-metric-pill.info-pill {
+      background: rgba(37, 99, 235, 0.06);
+      border: 1px solid rgba(37, 99, 235, 0.22);
+    }
+    [data-theme="dark"] .comparison-metric-pill.info-pill {
+      background: rgba(37, 99, 235, 0.14);
+      border-color: rgba(37, 99, 235, 0.35);
+    }
+    .info-pill .pill-label { color: #2563EB; }
+    [data-theme="dark"] .info-pill .pill-label { color: #60A5FA; }
+    .info-pill .pill-sub strong { color: #2563EB; }
+    [data-theme="dark"] .info-pill .pill-sub strong { color: #60A5FA; }
 
     .comparison-consequence {
       font-size: 12.5px;

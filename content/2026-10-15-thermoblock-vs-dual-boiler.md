@@ -79,7 +79,7 @@
         <circle cx="180" cy="135" r="3" fill="#0284C7"/>
 
         <rect x="360" y="20" width="240" height="36" rx="5" class="svg-panel-bg" stroke="#D97706" stroke-width="1.5"/>
-        <text x="480" y="43" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" fill="#D97706" font-weight="700">1,350W INCOLOY (Ni-Fe-Cr) ELEMENT</text>
+        <text x="480" y="43" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" fill="#D97706" font-weight="700">1,350W INCOLOY ELEMENT</text>
         <line x1="480" y1="56" x2="480" y2="165" stroke="#D97706" stroke-width="1.5" stroke-dasharray="3,3"/>
         <circle cx="480" cy="165" r="3" fill="#D97706"/>
 

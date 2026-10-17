@@ -290,7 +290,7 @@
         <text x="77" y="27" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F59E0B" font-weight="700">STEP 2: ECCENTRIC</text>
         <text x="77" y="62" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" class="svg-text-primary" font-weight="700">DUAL CAM LOBES</text>
         <text x="77" y="86" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" class="svg-text-muted">Offset: e = 1.50 mm</text>
-        <text x="77" y="112" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#F59E0B">180&deg; Opposed Balancing</text>
+        <text x="77" y="112" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#F59E0B">Dual 180&deg; Discs</text>
       </g>
 
       <!-- Flow Arrow 2 -> 3 -->

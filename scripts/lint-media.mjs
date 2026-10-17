@@ -545,6 +545,29 @@ export function validateArticleHtml(html, fileLabel = 'article') {
       }
     }
 
+    // 4E-2. Check Sub-Panel & Multi-Column Box Bounding: text placed inside a sub-panel/column must never exceed its boundaries
+    for (const r of rects) {
+      // Sub-panels/cards/columns (width 80..600, height 30..450, excluding full root canvases rw >= 800)
+      if (r.rw >= 80 && r.rw <= 600 && r.rh >= 30 && r.rh <= 450) {
+        for (const t of texts) {
+          const insideY = t.y >= r.ry + 2 && t.y <= r.ry + r.rh + 5;
+          const originatesInsideX = t.x >= r.rx - 2 && t.x <= r.rx + r.rw + 2;
+          if (insideY && originatesInsideX) {
+            if (t.right > r.rx + r.rw + 4) {
+              errors.push(
+                `SVG #${svgIdx + 1} in ${fileLabel} SUB-PANEL OVERFLOW: text "${t.rawText}" (${Math.round(t.right - t.left)}px at x=${Math.round(t.x)}) extends ${Math.round(t.right - (r.rx + r.rw))}px past the right border of sub-panel (x=${r.rx}..${r.rx + r.rw})`
+              );
+            }
+            if (t.left < r.rx - 4) {
+              errors.push(
+                `SVG #${svgIdx + 1} in ${fileLabel} SUB-PANEL UNDERFLOW: text "${t.rawText}" (${Math.round(t.right - t.left)}px at x=${Math.round(t.x)}) extends ${Math.round(r.rx - t.left)}px past the left border of sub-panel (x=${r.rx}..${r.rx + r.rw})`
+              );
+            }
+          }
+        }
+      }
+    }
+
     // 4F. Check for Low-Contrast Pastel / Washed Out Text Colors on Light Backgrounds
     const paleColorRegex = /#(?:FCA5A5|6EE7B7|A7F3D0|F1F5F9|FFFFFF|FAFAFA|FED7AA|FEF08A|93C5FD)\b/i;
     for (const t of texts) {
