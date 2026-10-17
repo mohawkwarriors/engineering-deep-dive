@@ -61,7 +61,7 @@ async function run() {
   } catch (e) {}
 
   const vetoesList = vetoedTopics.length > 0 
-    ? vetoedTopics.map(v => `• VETOED: ${v.topic} (${v.discipline}) — ${v.summary}`).join('\n')
+    ? vetoedTopics.map(v => `• VETOED: ${v.topic || v.title} (${v.discipline || v.subject || 'Hardware'}) — ${v.summary || v.reason || 'Off-target'}`).join('\n')
     : "None yet.";
 
   const pastTitles = [...html.matchAll(/title:\s*"([^"]+)"/g)].map(m => m[1]);
@@ -178,6 +178,7 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other te
 
   let rawContent = null;
   let lastError = null;
+  let successfulEndpoint = null;
 
   for (const model of candidateModels) {
     try {
@@ -206,6 +207,7 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other te
       rawContent = resJson.candidates?.[0]?.content?.parts?.[0]?.text;
       if (rawContent) {
         console.log(`Successfully received content from ${model}.`);
+        successfulEndpoint = endpoint;
         break;
       }
     } catch (err) {
@@ -227,7 +229,7 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other te
   if (lintErrors.length > 0) {
     console.warn(`Detected ${lintErrors.length} schematic/media issue(s). Running automated SVG repair pass...`);
     const repairPrompt = `Fix the following SVG geometry / text collision / viewBox clipping errors in this article_html without removing any technical content:\n${lintErrors.join('\n')}\n\nReturn ONLY JSON: { "article_html": "..." }\n\nCURRENT HTML:\n${articleData.article_html}`;
-    const repairRes = await fetch(endpoint, {
+    const repairRes = await fetch(successfulEndpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -285,7 +287,7 @@ ${articleData.article_html}
   // 5. Update index.html TOPICS catalog
   const shortTitle = articleData.shortTitle || (articleData.title.includes(':') ? articleData.title.split(':')[0].trim() : articleData.title);
   const topicEntry = `      { id: "${nextId}", subject: "${articleData.subject}", title: "${articleData.title}", shortTitle: "${shortTitle}", status: "Published", date: "${dateStr}" },\n`;
-  const updatedHtml = html.replace(/(const TOPICS = \[\n)/, `$1${topicEntry}`);
+  const updatedHtml = html.replace(/(const TOPICS = \[\r?\n)/, `$1${topicEntry}`);
   await fs.writeFile(INDEX_PATH, updatedHtml, 'utf-8');
   console.log(`Registered ${nextId} in index.html TOPICS catalog`);
 

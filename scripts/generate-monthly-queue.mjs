@@ -43,7 +43,7 @@ async function generateQueue() {
     const vetoesRaw = await fs.readFile(VETOES_PATH, 'utf-8');
     vetoedTopics = JSON.parse(vetoesRaw);
   } catch (e) {}
-  const vetoesList = vetoedTopics.map(v => `• VETOED: ${v.title} (${v.reason || 'Off-target'})`).join('\n');
+  const vetoesList = vetoedTopics.map(v => `• VETOED: ${v.topic || v.title} (${v.discipline || v.subject || 'Hardware'}) - ${v.summary || v.reason || 'Off-target'}`).join('\n');
 
   console.log(`Generating 30 upcoming topics starting from Issue #${startNum}...`);
 

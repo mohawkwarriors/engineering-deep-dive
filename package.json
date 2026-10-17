@@ -7,6 +7,7 @@
     "build": "echo 'Static build ready'",
     "lint": "node scripts/lint-media.mjs",
     "test": "node scripts/lint-media.mjs",
+    "audit": "node scripts/audit-deep.mjs",
     "generate": "node scripts/generate-dispatch.mjs",
     "curate": "node scripts/generate-monthly-queue.mjs"
   },

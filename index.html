@@ -1295,8 +1295,10 @@
     const articleCache = {};
     let activeArticleId = "#003";
     let activeSubject = "All";
-    let isPinned = false;
     let telemetryScores = {};
+    try {
+      telemetryScores = JSON.parse(localStorage.getItem("deepdive_telemetry") || "{}");
+    } catch (e) {}
 
     function renderMath(targetEl) {
       if (!targetEl) return;
@@ -1424,6 +1426,9 @@
 
     function recordTelemetry(score) {
       telemetryScores[activeArticleId] = score;
+      try {
+        localStorage.setItem("deepdive_telemetry", JSON.stringify(telemetryScores));
+      } catch (e) {}
       const upBtn = document.getElementById("telemetry-up");
       const downBtn = document.getElementById("telemetry-down");
       if (upBtn && downBtn) {
