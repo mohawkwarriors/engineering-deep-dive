@@ -221,95 +221,109 @@
 </p>
 
 <!-- FIG 03: HIGH-RESOLUTION SVG SCHEMATIC OF TEARDROP HINGE CAD -->
-<div class="schematic-card" id="fig03-teardrop-cad">
+<div class="schematic-card" id="teardrop-simulator">
   <div class="schematic-header">
-    <span class="schematic-title">FIG 04 — MULTI-LINK TEARDROP HINGE KINEMATIC CROSS-SECTION</span>
-    <span class="schematic-subtitle">DUAL SLIDER STROKE: ΔL = 1.42 mm • CAM PRELOAD: 45 N • ZERO-GAP PROFILE</span>
+    <span class="schematic-title">FIG 04 — INTERACTIVE KINEMATIC SIMULATOR</span>
+    <span class="sim-badge"><span class="sim-pulse"></span> LIVE SIMULATOR (60 FPS)</span>
   </div>
-  <div class="schematic-viewport">
-    <svg viewBox="0 0 960 380" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="960" height="380" rx="8" class="svg-canvas-bg" />
 
-      <!-- TOP METRIC CARDS (Y: 20 - 56) -->
-      <g>
-        <rect x="40" y="20" width="260" height="36" rx="5" class="svg-panel-bg" stroke="#38BDF8" stroke-width="1.5"/>
-        <text x="170" y="43" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" fill="#38BDF8" font-weight="700">TEARDROP RADIUS: ρ = 3.45 mm</text>
+  <div class="sim-viewport">
+    <svg viewBox="0 0 960 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="960" height="340" rx="8" class="svg-canvas-bg" />
 
-        <rect x="350" y="20" width="260" height="36" rx="5" class="svg-panel-bg" stroke="#F59E0B" stroke-width="1.5"/>
-        <text x="480" y="43" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F59E0B" font-weight="700">SLIDER STROKE: ΔL = 1.42 mm</text>
+      <!-- Fixed Central Spine Housing (MIM 17-4 PH) -->
+      <path d="M 370 170 L 590 170 L 565 295 L 395 295 Z" class="svg-panel-sub" stroke="#D97706" stroke-width="1.8"/>
+      <text x="480" y="280" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#D97706" font-weight="700">MIM HINGE SPINE (17-4 PH)</text>
 
-        <rect x="660" y="20" width="260" height="36" rx="5" class="svg-panel-bg" stroke="#10B981" stroke-width="1.5"/>
-        <text x="790" y="43" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" fill="#10B981" font-weight="700">UTG STRAIN: ε &lt; 1.1% (SAFE)</text>
+      <!-- Center Spur Gear Mesh -->
+      <circle cx="455" cy="225" r="16" fill="#1C1917" stroke="#F59E0B" stroke-width="1.8"/>
+      <circle cx="505" cy="225" r="16" fill="#1C1917" stroke="#F59E0B" stroke-width="1.8"/>
+      <circle cx="455" cy="225" r="3.5" fill="#F59E0B"/>
+      <circle cx="505" cy="225" r="3.5" fill="#F59E0B"/>
+
+      <!-- Floating Support Plate Drop Mechanism -->
+      <g id="sim-plate-left">
+        <rect x="375" y="172" width="95" height="10" rx="2" fill="#047857" stroke="#10B981" stroke-width="1.5"/>
+        <line x1="422" y1="182" x2="422" y2="202" stroke="#10B981" stroke-width="1.5" stroke-dasharray="2 2"/>
+      </g>
+      <g id="sim-plate-right">
+        <rect x="490" y="172" width="95" height="10" rx="2" fill="#047857" stroke="#10B981" stroke-width="1.5"/>
+        <line x1="538" y1="182" x2="538" y2="202" stroke="#10B981" stroke-width="1.5" stroke-dasharray="2 2"/>
       </g>
 
-      <!-- MAIN MECHANICAL CROSS-SECTION (Center X: 480, Y: 85 - 280) -->
-      <g id="hinge-cad-geometry">
-        <!-- Outer Chassis Wings (Left & Right Aluminum 7075 frames) -->
-        <rect x="80" y="120" width="240" height="85" rx="6" class="svg-panel-bg" stroke="#64748B" stroke-width="2"/>
-        <rect x="640" y="120" width="240" height="85" rx="6" class="svg-panel-bg" stroke="#64748B" stroke-width="2"/>
-
-        <!-- Central Hinge Spine Housing (SUS630 / 17-4 PH MIM) -->
-        <path d="M 360 140 L 600 140 L 580 260 L 380 260 Z" class="svg-panel-sub" stroke="#D97706" stroke-width="2"/>
-        <text x="480" y="245" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#D97706" font-weight="700">MIM CENTRAL SPINE (17-4 PH)</text>
-
-        <!-- Teardrop Display Curve (Folded Profile) -->
-        <path d="M 120 110 L 360 110 C 430 110 440 180 480 180 C 520 180 530 110 600 110 L 840 110" stroke="#0284C7" stroke-width="4.5" fill="none"/>
-        <path d="M 120 114 L 360 114 C 430 114 440 184 480 184 C 520 184 530 114 600 114 L 840 114" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
-
-        <!-- Sliding Carriages (Left and Right) -->
-        <rect x="220" y="130" width="130" height="40" rx="4" fill="#1E293B" stroke="#38BDF8" stroke-width="1.8"/>
-        <rect x="610" y="130" width="130" height="40" rx="4" fill="#1E293B" stroke="#38BDF8" stroke-width="1.8"/>
-
-        <!-- Slider Translation Arrows -->
-        <g stroke="#38BDF8" stroke-width="2">
-          <line x1="250" y1="150" x2="310" y2="150"/>
-          <polygon points="245,150 255,145 255,155" fill="#38BDF8"/>
-          <polygon points="315,150 305,145 305,155" fill="#38BDF8"/>
-          
-          <line x1="640" y1="150" x2="700" y2="150"/>
-          <polygon points="635,150 645,145 645,155" fill="#38BDF8"/>
-          <polygon points="705,150 695,145 695,155" fill="#38BDF8"/>
-        </g>
-
-        <!-- Synchronizing Spur Gear Mesh (Center) -->
-        <circle cx="455" cy="185" r="18" fill="#1C1917" stroke="#F59E0B" stroke-width="2"/>
-        <circle cx="505" cy="185" r="18" fill="#1C1917" stroke="#F59E0B" stroke-width="2"/>
-        <circle cx="455" cy="185" r="4" fill="#F59E0B"/>
-        <circle cx="505" cy="185" r="4" fill="#F59E0B"/>
-
-        <!-- Floating Support Plate Drop Mechanism -->
-        <rect x="375" y="115" width="95" height="12" rx="2" fill="#047857" stroke="#10B981" stroke-width="1.5"/>
-        <rect x="490" y="115" width="95" height="12" rx="2" fill="#047857" stroke="#10B981" stroke-width="1.5"/>
-        <line x1="422" y1="127" x2="422" y2="155" stroke="#10B981" stroke-width="2" stroke-dasharray="2 2"/>
-        <line x1="538" y1="127" x2="538" y2="155" stroke="#10B981" stroke-width="2" stroke-dasharray="2 2"/>
-        <polygon points="422,160 417,152 427,152" fill="#10B981"/>
-        <polygon points="538,160 533,152 543,152" fill="#10B981"/>
-
-        <!-- High-Contrast Badge Callouts -->
-        <g transform="translate(100, 220)">
-          <rect x="0" y="0" width="180" height="42" rx="4" class="svg-canvas-bg" stroke="#38BDF8" stroke-width="1.5"/>
-          <text x="90" y="18" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#38BDF8" font-weight="700">LATERAL SLIDER</text>
-          <text x="90" y="33" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94A3B8">Absorbs ΔL = 1.42mm</text>
-        </g>
-
-        <g transform="translate(680, 220)">
-          <rect x="0" y="0" width="180" height="42" rx="4" class="svg-canvas-bg" stroke="#10B981" stroke-width="1.5"/>
-          <text x="90" y="18" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#10B981" font-weight="700">FLOATING WINGS</text>
-          <text x="90" y="33" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94A3B8">Recess 1.35mm vertically</text>
-        </g>
+      <!-- Left Chassis Wing Group (Pivots at 360, 180) -->
+      <g id="sim-chassis-left">
+        <rect x="100" y="145" width="260" height="65" rx="5" class="svg-panel-bg" stroke="#64748B" stroke-width="1.8"/>
+        <rect x="230" y="155" width="115" height="30" rx="3" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
+        <circle cx="360" cy="180" r="7" class="svg-panel-bg" stroke="#38BDF8" stroke-width="2"/>
       </g>
 
-      <!-- BOTTOM KINEMATIC FOOTER -->
-      <g transform="translate(40, 310)">
-        <rect x="0" y="0" width="880" height="50" rx="6" class="svg-panel-bg" stroke="var(--border)" stroke-width="1.5"/>
-        <text x="20" y="22" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700" fill="#38BDF8">KINEMATIC PATH EQUILIBRIUM:</text>
-        <text x="20" y="38" font-family="'JetBrains Mono', monospace" font-size="12"  class="svg-text-primary">Dual-axis gear synchronization guarantees symmetric 0°–180° rotation with zero screen tension.</text>
+      <!-- Right Chassis Wing Group (Pivots at 600, 180) -->
+      <g id="sim-chassis-right">
+        <rect x="600" y="145" width="260" height="65" rx="5" class="svg-panel-bg" stroke="#64748B" stroke-width="1.8"/>
+        <rect x="615" y="155" width="115" height="30" rx="3" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
+        <circle cx="600" cy="180" r="7" class="svg-panel-bg" stroke="#38BDF8" stroke-width="2"/>
       </g>
+
+      <!-- Parametric Flexible Display Curve (Dynamic Path) -->
+      <path id="sim-display-curve" d="M 100 175 L 860 175" stroke="#0284C7" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <path id="sim-display-accent" d="M 100 175 L 860 175" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+
+      <!-- Dynamic Curvature Radius Circle Overlay -->
+      <circle id="sim-radius-circle" cx="480" cy="200" r="30" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0"/>
+      <circle id="sim-radius-center" cx="480" cy="200" r="3" fill="#0284C7" opacity="0"/>
+      <text id="sim-radius-text" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#38BDF8" opacity="0">ρ = 3.45 mm</text>
     </svg>
   </div>
+
+  <div class="sim-controls-bar">
+    <button class="sim-play-btn" id="teardrop-play-btn">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Auto-Cycle
+    </button>
+    <div class="sim-slider-container">
+      <label for="teardrop-slider">FOLD ANGLE:</label>
+      <input type="range" class="sim-range-input" id="teardrop-slider" min="0" max="180" value="180" step="1"/>
+      <span class="sim-angle-badge" id="sim-angle-display">180° (FLAT)</span>
+    </div>
+    <div class="sim-presets">
+      <button class="sim-preset-btn" data-angle="180">180° Flat</button>
+      <button class="sim-preset-btn" data-angle="90">90° Hover</button>
+      <button class="sim-preset-btn" data-angle="0">0° Closed</button>
+    </div>
+  </div>
+
+  <div class="sim-hud">
+    <div class="sim-hud-card">
+      <span class="sim-hud-label">FOLD ANGLE (&theta;)</span>
+      <span class="sim-hud-val" id="hud-angle">180.0°</span>
+      <span class="sim-hud-sub">Range: 0° to 180°</span>
+    </div>
+    <div class="sim-hud-card">
+      <span class="sim-hud-label">BEND RADIUS (&rho;)</span>
+      <span class="sim-hud-val" id="hud-radius">&infin; (Flat)</span>
+      <span class="sim-hud-sub">Target: &rho; &ge; 3.45 mm</span>
+    </div>
+    <div class="sim-hud-card">
+      <span class="sim-hud-label">GLASS STRAIN (&epsilon;)</span>
+      <span class="sim-hud-val" id="hud-strain" style="color: #10B981;">0.00%</span>
+      <span class="sim-hud-sub">Safe: &epsilon; &lt; 1.10%</span>
+    </div>
+    <div class="sim-hud-card">
+      <span class="sim-hud-label">PLATE DESCENT (h)</span>
+      <span class="sim-hud-val" id="hud-plate">0.00 mm</span>
+      <span class="sim-hud-sub">Max Drop: 1.35 mm</span>
+    </div>
+    <div class="sim-hud-card">
+      <span class="sim-hud-label">SLIDER STROKE (&Delta;L)</span>
+      <span class="sim-hud-val" id="hud-stroke">0.00 mm</span>
+      <span class="sim-hud-sub">Absorbs: 1.42 mm</span>
+    </div>
+  </div>
+
   <div class="schematic-caption">
-    <span><strong>FIG 04 — CAD SCHEMATIC:</strong> Transverse kinematic section view of the multi-link teardrop hinge mechanism, highlighting the synchronized spur gears, lateral slider translation, and the vertical drop path of the internal support wings.</span>
-    <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
+    <span><strong>FIG 04 — INTERACTIVE KINEMATIC SIMULATOR:</strong> Real-time parametric simulation of the multi-link teardrop hinge mechanism. Scrub the slider from 180° to 0° to observe the synchronized vertical descent of the support plates, the outward stroke of the lateral carriages, and how the Euler clothoid curve caps peak glass strain at 1.08%.</span>
+    <span class="source-tag">INTERACTIVE CAD ENGINE</span>
   </div>
 </div>
 
