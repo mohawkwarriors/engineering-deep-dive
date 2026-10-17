@@ -697,7 +697,7 @@
       margin-bottom: 28px;
     }
 
-    /* Interactive Filter Bar */
+    /* Interactive Filter Bar & Subject Tags (Exact Shape & Color Match) */
     .subjects-bar {
       display: flex;
       gap: 8px;
@@ -705,30 +705,131 @@
       margin-bottom: 32px;
       padding-bottom: 4px;
     }
-    .subject-pill {
+
+    /* Shared Shape, Typography & Border Geometry (Matches Article Tag Exactly: 4px rectangular badge) */
+    .subject-pill, .archive-subject-tag {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 500;
-      padding: 6px 14px;
-      border-radius: 20px;
+      font-size: 10.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-radius: 4px;
+      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       border: 1px solid var(--border);
-      background: var(--surface);
+      background: var(--card-inner);
       color: var(--text);
-      cursor: pointer;
       transition: all 0.15s ease;
+      box-sizing: border-box;
+      line-height: 1.3;
     }
-    .subject-pill:hover {
+
+    .subject-pill {
+      cursor: pointer;
+    }
+    .subject-pill:hover:not(.disabled) {
       background: var(--surface-hover);
-      border-color: var(--accent);
-      color: var(--accent);
+      transform: translateY(-1px);
     }
-    .subject-pill.active {
-      background: var(--accent);
-      color: #FFF;
-      border-color: var(--accent);
+
+    /* Exact Subject Colors (Applied across both Filter Buttons & Article Tags) */
+    .sub-all {
+      border-color: var(--border);
+      color: var(--text);
     }
+    .sub-all.active {
+      background: var(--accent) !important;
+      color: #FFF !important;
+      border-color: var(--accent) !important;
+    }
+
+    .sub-manufacturing {
+      border-color: rgba(37, 99, 235, 0.45);
+      color: var(--sub-manufacturing);
+    }
+    .sub-manufacturing.active {
+      background: var(--sub-manufacturing) !important;
+      color: #FFF !important;
+      border-color: var(--sub-manufacturing) !important;
+    }
+
+    .sub-thermal {
+      border-color: rgba(225, 29, 72, 0.45);
+      color: var(--sub-thermal);
+    }
+    .sub-thermal.active {
+      background: var(--sub-thermal) !important;
+      color: #FFF !important;
+      border-color: var(--sub-thermal) !important;
+    }
+
+    .sub-product-dives {
+      border-color: rgba(217, 119, 87, 0.45);
+      color: var(--sub-product-dives);
+    }
+    .sub-product-dives.active {
+      background: var(--sub-product-dives) !important;
+      color: #FFF !important;
+      border-color: var(--sub-product-dives) !important;
+    }
+
+    .sub-electromechanical {
+      border-color: rgba(79, 70, 229, 0.45);
+      color: var(--sub-electromechanical);
+    }
+    .sub-electromechanical.active {
+      background: var(--sub-electromechanical) !important;
+      color: #FFF !important;
+      border-color: var(--sub-electromechanical) !important;
+    }
+
+    .sub-design {
+      border-color: rgba(124, 58, 237, 0.45);
+      color: var(--sub-design);
+    }
+    .sub-design.active {
+      background: var(--sub-design) !important;
+      color: #FFF !important;
+      border-color: var(--sub-design) !important;
+    }
+
+    .sub-materials {
+      border-color: rgba(5, 150, 105, 0.45);
+      color: var(--sub-materials);
+    }
+    .sub-materials.active {
+      background: var(--sub-materials) !important;
+      color: #FFF !important;
+      border-color: var(--sub-materials) !important;
+    }
+
+    .sub-mechanisms {
+      border-color: rgba(217, 119, 6, 0.45);
+      color: var(--sub-mechanisms);
+    }
+    .sub-mechanisms.active {
+      background: var(--sub-mechanisms) !important;
+      color: #FFF !important;
+      border-color: var(--sub-mechanisms) !important;
+    }
+
+    .sub-fluids {
+      border-color: rgba(8, 145, 178, 0.45);
+      color: var(--sub-fluids);
+    }
+    .sub-fluids.active {
+      background: var(--sub-fluids) !important;
+      color: #FFF !important;
+      border-color: var(--sub-fluids) !important;
+    }
+
     .subject-pill.disabled {
-      opacity: 0.35;
+      opacity: 0.35 !important;
+      border-color: var(--border) !important;
+      color: var(--muted) !important;
+      background: var(--surface) !important;
       cursor: not-allowed;
       pointer-events: none;
     }
@@ -1187,13 +1288,18 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    function getTagClass(sub) {
+    function getSubClass(sub) {
       switch(sub) {
-        case "Product Dives": return "tag-product-dives";
-        case "Manufacturing": return "tag-manufacturing";
-        case "Thermal": return "tag-thermal";
-        case "Electromechanical": return "tag-electromechanical";
-        default: return "";
+        case "All": return "sub-all";
+        case "Product Dives": return "sub-product-dives";
+        case "Manufacturing": return "sub-manufacturing";
+        case "Thermal": return "sub-thermal";
+        case "Electromechanical": return "sub-electromechanical";
+        case "Design": return "sub-design";
+        case "Materials": return "sub-materials";
+        case "Mechanisms": return "sub-mechanisms";
+        case "Fluids": return "sub-fluids";
+        default: return "sub-all";
       }
     }
 
@@ -1208,11 +1314,14 @@
           : published.filter(t => t.subject === sub).length;
         const isActive = sub === activeSubject;
         const isDisabled = count === 0;
+        const subClass = getSubClass(sub);
 
         return `
-          <button class="subject-pill ${isActive ? 'active' : ''} ${isDisabled ? 'disabled' : ''}" 
-                  ${isDisabled ? 'disabled' : `onclick="filterSubject('${sub}')"`}>
-            ${sub} (${count})
+          <button class="subject-pill ${subClass} ${isActive ? 'active' : ''} ${isDisabled ? 'disabled' : ''}" 
+                  ${isDisabled ? 'disabled' : `onclick="filterSubject('${sub}')"`}
+                  title="${count} published">
+            <span>${sub}</span>
+            <span style="opacity: 0.85;">(${count})</span>
           </button>
         `;
       }).join("");
@@ -1242,7 +1351,7 @@
           <div class="archive-main">
             <div class="archive-meta">
               <span class="archive-id">${item.id}</span>
-              <span class="archive-subject-tag ${getTagClass(item.subject)}">${item.subject}</span>
+              <span class="archive-subject-tag ${getSubClass(item.subject)}">${item.subject}</span>
               <span class="archive-date">${item.date}</span>
             </div>
             <h3 class="archive-title">${item.title}</h3>
