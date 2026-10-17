@@ -132,11 +132,11 @@ if (mdFiles.length < issues.length) {
   for (const file of issues) {
     const jsonPath = path.join('content/issues', file);
     const issueData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-    const expectedHtml = (issueData.article_html || '').trim();
+    const expectedHtml = (issueData.article_html || '').trim().replace(/\r\n/g, '\n');
 
     // Find corresponding md file
     const matchingMd = mdFiles.find(mf => {
-      const mdContent = fs.readFileSync(path.join('content', mf), 'utf8').trim();
+      const mdContent = fs.readFileSync(path.join('content', mf), 'utf8').trim().replace(/\r\n/g, '\n');
       return mdContent === expectedHtml;
     });
 
