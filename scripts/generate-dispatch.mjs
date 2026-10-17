@@ -160,10 +160,10 @@ STRICT EDITORIAL REQUIREMENTS:
    - LaTeX Formatting: Display formulas must use <div class="math-block">$$...$$</div>; inline symbols must use $F$, $\rho$, $\mu$.
    - Deep Academic Formulations: Keep advanced derivations in the clickable 'tangents' popovers where readers can optionally explore them.
 6. SPEC COMPARISON TABLE: Include an HTML <table> with class="spec-table" inside a <div class="spec-table-wrap"> comparing 4-5 engineering architectures or materials across 5 technical metrics.
-7. TANGENT ANNOTATIONS & THE "NO-BARE-JARGON" RULE (THE GRIFFITH RULE):
+7. TANGENT ANNOTATIONS & THE "NO-BARE-JARGON" RULE (THE GRIFFITH & TOOL-STEEL RULE):
    - Wrap 4-6 specialized, non-intuitive technical terms in <span class="tangent-term" data-tangent="key"> with full popover definitions in the "tangents" dictionary.
-   - MANDATORY IN-PROSE JARGON TRANSLATION: Never drop advanced physical, materials, or mechanical terminology (e.g. Griffith micro-flaws, Hertzian contact stress, Taylor dispersion, Thixotropic rosettes, Dean vortices, Kirkendall voids) into the text without an immediate plain-English translation or parenthetical in that same sentence (e.g. "Griffith micro-flaws—microscopic surface scratches that act as stress magnifiers, causing brittle glass to fracture far below its theoretical atomic strength").
-   - A reader must NEVER feel confused or alienated by unexplained academic jargon while reading their morning digest.
+   - MANDATORY IN-PROSE JARGON TRANSLATION: Never drop advanced physical, materials, mechanical terminology, or proprietary alloy/tool steel brand names (e.g. Griffith micro-flaws, Hertzian contact stress, Taylor dispersion, Thixotropic rosettes, Dean vortices, Kirkendall voids, Böhler M390, Uddeholm Elmax, Dievar, Inconel 718) into the text without an immediate plain-English translation or parenthetical in that same sentence (e.g. "Griffith micro-flaws—microscopic surface scratches that act as stress magnifiers, causing brittle glass to fracture far below its theoretical atomic strength" or "Böhler M390 or Uddeholm Elmax—premium powder-metallurgy super-steels atomized into micro-powder to prevent brittle carbide clumps").
+   - A reader must NEVER feel confused or alienated by unexplained academic jargon or proprietary trade names while reading their morning digest.
 8. VISUAL MEDIA & GRAPHICS ARCHITECTURE:
    - TIER 1 (PRIMARY): AUTHENTIC REAL-WORLD TEARDOWN / HARDWARE PHOTOGRAPHY (PAID PUBLICATION BENCHMARK):
      * SELECTION ARCHETYPE:

@@ -418,7 +418,7 @@ isoDate: "2026-10-17"
 
 <p>
   <strong>Tooling Steel Selection for MIM:</strong><br>
-  Injecting abrasive, metal-powder-loaded feedstock at $180^\circ\text{C}$ and $110\text{ MPa}$ causes severe abrasive tool wear. Mold cavities are machined from powdered-metallurgy hot-work tool steel (Böhler M390 Microclean or Uddeholm Elmax) vacuum hardened to <strong>58–60 HRC</strong> and coated with Titanium Aluminum Nitride (TiAlN) physical vapor deposition (PVD) to resist wash-out across 500,000 shots.
+  Injecting abrasive, metal-powder-loaded feedstock at $180^\circ\text{C}$ and $110\text{ MPa}$ causes severe abrasive tool wear. Mold cavities are machined from premium powder-metallurgy super-steels (specifically <span class="tangent-term" data-tangent="pm_tool_steels">Böhler M390 Microclean or Uddeholm Elmax</span>—wear-resistant alloys formed by atomizing liquid steel into microscopic powder to prevent brittle carbide clumps). Vacuum hardened to <strong>58–60 HRC</strong> and coated with Titanium Aluminum Nitride (TiAlN), these tooling inserts resist abrasive erosion across 500,000 injection shots without losing micron-level tolerances.
 </p>
 
 <h2 id="section-metallurgy-tribology">5. Metallurgy, Hertzian Cam Stress & Tribology</h2>
