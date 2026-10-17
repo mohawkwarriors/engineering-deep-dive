@@ -343,6 +343,16 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     }
   }
 
+  // 3A-2. Check that every schematic-card has an actual visual representation (<svg>, <img>, or .process-grid)
+  const schematicCards = [...html.matchAll(/<div class="schematic-card"[^>]*>([\s\S]*?)<\/div>\s*<\/div>/g)].map(m => m[1]);
+  for (let sIdx = 0; sIdx < schematicCards.length; sIdx++) {
+    const cardContent = schematicCards[sIdx];
+    const hasVisual = cardContent.includes('<svg') || cardContent.includes('<img') || cardContent.includes('process-grid');
+    if (!hasVisual) {
+      errors.push(`Schematic card #${sIdx + 1} in ${fileLabel} lacks an authentic graphical element (<svg>, <img>, or .process-grid). Schematics cannot be purely text.`);
+    }
+  }
+
   // 3B. Check tables for consistent .spec-table styling
   const tables = [...html.matchAll(/<table\b([^>]*)>([\s\S]*?)<\/table>/gi)];
   for (let tIdx = 0; tIdx < tables.length; tIdx++) {

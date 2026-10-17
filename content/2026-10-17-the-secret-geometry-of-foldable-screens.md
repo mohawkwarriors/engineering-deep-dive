@@ -64,6 +64,19 @@
     <div class="comparison-card flawed-card">
       <div class="comparison-card-tag">PANEL A // TRADITIONAL METHOD</div>
       <h4 class="comparison-card-title">Traditional Concentric U-Shaped Fold</h4>
+      <div class="comparison-visual">
+        <svg viewBox="0 0 360 140" fill="none" xmlns="http://www.w3.org/2000/svg" class="comparison-svg">
+          <rect width="360" height="140" rx="4" class="svg-canvas-bg" />
+          <rect x="30" y="24" width="150" height="32" rx="3" class="svg-panel-sub" stroke="#78716C" stroke-width="1.2"/>
+          <rect x="30" y="84" width="150" height="32" rx="3" class="svg-panel-sub" stroke="#78716C" stroke-width="1.2"/>
+          <line x1="42" y1="56" x2="42" y2="84" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="2 2"/>
+          <path d="M 45 56 L 190 56 C 240 56 240 84 190 84 L 45 84" stroke="#EF4444" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+          <circle cx="205" cy="70" r="14" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="2 2" fill="none"/>
+          <circle cx="205" cy="70" r="2.5" fill="#DC2626"/>
+          <circle cx="245" cy="70" r="8" class="svg-panel-bg" stroke="#DC2626" stroke-width="1.8"/>
+          <circle cx="245" cy="70" r="2.5" fill="#DC2626"/>
+        </svg>
+      </div>
       <div class="comparison-metric-pill danger-pill">
         <span class="pill-label">BEND RADIUS:</span>
         <span class="pill-value">&rho; = 1.25 mm (Sharp Concentric Pinch)</span>
@@ -74,6 +87,42 @@
         <strong>&bull; Failure Mode:</strong> Exceeds UTG critical Griffith crack limit; triggers spalling micro-cracks under cyclic bending.
       </div>
     </div>
+
+    <div class="comparison-card solution-card">
+      <div class="comparison-card-tag">PANEL B // ENGINEERED SOLUTION</div>
+      <h4 class="comparison-card-title">Euler Clothoid Teardrop Fold</h4>
+      <div class="comparison-visual">
+        <svg viewBox="0 0 360 140" fill="none" xmlns="http://www.w3.org/2000/svg" class="comparison-svg">
+          <rect width="360" height="140" rx="4" class="svg-canvas-bg" />
+          <rect x="30" y="24" width="135" height="32" rx="3" class="svg-panel-sub" stroke="#78716C" stroke-width="1.2"/>
+          <rect x="30" y="84" width="135" height="32" rx="3" class="svg-panel-sub" stroke="#78716C" stroke-width="1.2"/>
+          <line x1="30" y1="70" x2="165" y2="70" stroke="#059669" stroke-width="1.2" stroke-dasharray="3 3"/>
+          <path d="M 45 56 L 150 56 C 180 56 195 20 235 20 C 285 20 295 120 235 120 C 195 120 180 84 150 84 L 45 84" stroke="#0284C7" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+          <circle cx="240" cy="70" r="42" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+          <circle cx="240" cy="70" r="3" fill="#0284C7"/>
+          <circle cx="310" cy="56" r="6" class="svg-panel-bg" stroke="#10B981" stroke-width="1.5"/>
+          <circle cx="310" cy="84" r="6" class="svg-panel-bg" stroke="#10B981" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="comparison-metric-pill success-pill">
+        <span class="pill-label">TEARDROP RADIUS:</span>
+        <span class="pill-value">&rho; = 3.45 mm (Bulbous Relief Loop)</span>
+        <span class="pill-sub">Safe Tensile Strain: <strong>&epsilon; &lt; 6.2% (Below Elastic Limit)</strong></span>
+      </div>
+      <div class="comparison-consequence">
+        <strong>&bull; True 0.0 mm Flush Closure:</strong> Internal floating cavity eliminates outer chassis pinch.<br>
+        <strong>&bull; Reliability:</strong> Triples bend radius, cutting glass tensile strain by 63% and preventing crease fatigue.
+      </div>
+    </div>
+  </div>
+  <div class="comparison-banner">
+    <strong>GEOMETRIC PRINCIPLE:</strong> Teardrop geometry nearly triples bend radius (3.45 mm vs 1.25 mm), cutting glass strain by 63% and enabling flush 0.0 mm chassis closure without crushing display layers.
+  </div>
+  <div class="schematic-caption">
+    <span><strong>FIG 02 — FOLD GEOMETRY COMPARISON:</strong> Side-by-side comparison of legacy U-shaped concentric bending versus the Euler clothoid teardrop fold, illustrating how the internal waterdrop loop relieves tensile strain on Ultra-Thin Glass while enabling flush closure.</span>
+    <span class="source-tag">SCHEMATIC: KINEMATIC CAD</span>
+  </div>
+</div>
 
     <div class="comparison-card solution-card">
       <div class="comparison-card-tag">PANEL B // ENGINEERED SOLUTION</div>

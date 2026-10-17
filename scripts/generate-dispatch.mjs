@@ -195,6 +195,11 @@ STRICT EDITORIAL REQUIREMENTS:
             <div class="comparison-card flawed-card">
               <div class="comparison-card-tag">PANEL A // TRADITIONAL METHOD</div>
               <h4 class="comparison-card-title">Traditional Flawed Approach</h4>
+              <div class="comparison-visual">
+                <svg viewBox="0 0 360 140" fill="none" class="comparison-svg">
+                  <!-- Clean vector geometry illustrating flawed curve/chassis (NO <text> inside SVG) -->
+                </svg>
+              </div>
               <div class="comparison-metric-pill danger-pill">
                 <span class="pill-label">PRIMARY LIMIT / METRIC:</span>
                 <span class="pill-value">Quantified Value / Critical Threshold</span>
@@ -208,6 +213,11 @@ STRICT EDITORIAL REQUIREMENTS:
             <div class="comparison-card solution-card">
               <div class="comparison-card-tag">PANEL B // ENGINEERED SOLUTION</div>
               <h4 class="comparison-card-title">Engineered Breakthrough Approach</h4>
+              <div class="comparison-visual">
+                <svg viewBox="0 0 360 140" fill="none" class="comparison-svg">
+                  <!-- Clean vector geometry illustrating breakthrough curve/chassis (NO <text> inside SVG) -->
+                </svg>
+              </div>
               <div class="comparison-metric-pill success-pill">
                 <span class="pill-label">PRIMARY ADVANTAGE / METRIC:</span>
                 <span class="pill-value">Quantified Value / Safe Regime</span>
