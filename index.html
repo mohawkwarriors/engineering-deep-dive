@@ -484,21 +484,21 @@
     .img-wrapper {
       position: relative;
       width: 100%;
-      min-height: 240px;
-      overflow: hidden;
+      min-height: 200px;
       background: var(--card-inner);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: 24px 16px;
+      box-sizing: border-box;
     }
     .img-wrapper img {
       max-width: 100%;
-      max-height: 540px;
+      max-height: 560px;
       width: auto;
       height: auto;
-      object-fit: contain;
-      object-position: center;
+      object-fit: contain !important;
+      object-position: center center !important;
       display: block;
       margin: 0 auto;
       border-radius: 4px;
