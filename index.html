@@ -215,14 +215,14 @@
       border-left: 2px solid var(--border);
       padding-left: 14px;
     }
-    .outline-item { margin-bottom: 12px; }
+    .outline-item { margin-bottom: 10px; }
     .outline-link {
       font-size: 13px;
       color: var(--muted);
       text-decoration: none;
       display: block;
-      line-height: 1.45;
-      padding: 2px 0;
+      line-height: 1.4;
+      padding: 3px 0;
       border-left: 2px solid transparent;
       margin-left: -16px;
       padding-left: 14px;
@@ -235,6 +235,38 @@
       color: var(--accent);
       font-weight: 600;
       border-left-color: var(--accent);
+    }
+    .outline-sublist {
+      list-style: none;
+      margin: 6px 0 6px 4px;
+      padding-left: 12px;
+      border-left: 1px dashed var(--border);
+    }
+    .outline-subitem {
+      margin-bottom: 6px;
+    }
+    .outline-sublink {
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      display: block;
+      line-height: 1.35;
+      padding: 2px 0;
+      border-left: 2px solid transparent;
+      margin-left: -13px;
+      padding-left: 11px;
+      transition: all 0.15s ease;
+      opacity: 0.9;
+    }
+    .outline-sublink:hover {
+      color: var(--text);
+      opacity: 1;
+    }
+    .outline-sublink.active {
+      color: var(--accent);
+      font-weight: 600;
+      border-left-color: var(--accent);
+      opacity: 1;
     }
 
     .editorial-column, main, article {
@@ -1274,19 +1306,58 @@
 
       if (!isDesktop) return;
       
-      const headings = document.querySelectorAll("#view-article h2");
-      if (!headings.length) return;
+      const articleEl = document.getElementById("view-article");
+      if (!articleEl) return;
 
-      headings.forEach((h, idx) => {
-        if (!h.id) h.id = `section-${idx}`;
-        const li = document.createElement("li");
-        li.className = "outline-item";
-        li.innerHTML = `<a class="outline-link" href="#${h.id}" data-target="${h.id}">${h.textContent}</a>`;
-        list.appendChild(li);
+      // Select all h2 and h3 headings in reading order
+      const allHeadings = articleEl.querySelectorAll("h2, h3");
+      if (!allHeadings.length) return;
+
+      const trackedHeadings = [];
+      let currentH2Li = null;
+      let currentSubList = null;
+      let h2Index = 0;
+      let h3Index = 0;
+
+      allHeadings.forEach(heading => {
+        const isH2 = heading.tagName.toLowerCase() === "h2";
+        if (!heading.id) {
+          heading.id = isH2 ? `section-${h2Index++}` : `subsection-${h3Index++}`;
+        }
+        trackedHeadings.push(heading);
+
+        // Clean text: strip price tags, nested spans, or trailing prices for concise overview display
+        let titleText = heading.cloneNode(true);
+        titleText.querySelectorAll(".price-tag").forEach(p => p.remove());
+        let cleanTitle = titleText.textContent.replace(/<[^>]+>/g, '').trim();
+
+        if (isH2) {
+          currentH2Li = document.createElement("li");
+          currentH2Li.className = "outline-item";
+          currentH2Li.innerHTML = `<a class="outline-link" href="#${heading.id}" data-target="${heading.id}">${cleanTitle}</a>`;
+          list.appendChild(currentH2Li);
+          currentSubList = null; // reset sublist for new h2
+        } else {
+          // If no preceding h2 was found, attach directly to list
+          if (!currentH2Li) {
+            currentH2Li = document.createElement("li");
+            currentH2Li.className = "outline-item";
+            list.appendChild(currentH2Li);
+          }
+          if (!currentSubList) {
+            currentSubList = document.createElement("ul");
+            currentSubList.className = "outline-sublist";
+            currentH2Li.appendChild(currentSubList);
+          }
+          const subLi = document.createElement("li");
+          subLi.className = "outline-subitem";
+          subLi.innerHTML = `<a class="outline-sublink" href="#${heading.id}" data-target="${heading.id}">${cleanTitle}</a>`;
+          currentSubList.appendChild(subLi);
+        }
       });
 
-      // Smooth scroll navigation with header offset compensation
-      list.querySelectorAll(".outline-link").forEach(link => {
+      // Smooth scroll navigation with header offset compensation for both h2 and h3
+      list.querySelectorAll(".outline-link, .outline-sublink").forEach(link => {
         link.addEventListener("click", (e) => {
           e.preventDefault();
           const targetId = link.getAttribute("data-target");
@@ -1306,10 +1377,10 @@
       // ScrollSpy: Real-time active section tracking as the user scrolls
       activeScrollSpyHandler = () => {
         const scrollPos = window.scrollY + 120;
-        const links = list.querySelectorAll(".outline-link");
-        let activeId = headings[0].id;
+        const links = list.querySelectorAll(".outline-link, .outline-sublink");
+        let activeId = trackedHeadings[0]?.id;
 
-        headings.forEach(h => {
+        trackedHeadings.forEach(h => {
           if (h.offsetTop <= scrollPos) {
             activeId = h.id;
           }
