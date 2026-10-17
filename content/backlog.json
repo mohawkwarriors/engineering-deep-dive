@@ -13,7 +13,9 @@
     "discipline": "Mechanisms",
     "topic": "Surviving 100G Shock Loads in Cycloidal Drives",
     "summary": "Using rolling pin contact and trochoidal gear curves to endure massive shock loads without tooth shearing.",
-    "status": "available"
+    "status": "published",
+    "publishedDate": "2026-10-13",
+    "issueId": "#000"
   },
   {
     "id": "B003",
