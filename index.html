@@ -683,7 +683,7 @@
     /* ==========================================================================
        ARCHIVE VIEW STYLING (REDESIGNED FOR FULL-WIDTH DESKTOP & FLUID MOBILE)
        ========================================================================== */
-    .hidden { display: none !important; }
+    #view-article.hidden, #view-archive.hidden, .hidden { display: none !important; }
 
     #view-archive {
       width: 100%;
@@ -992,7 +992,7 @@
         min-width: 0 !important;
         gap: 0 !important;
       }
-      .editorial-column, main, article, #view-article {
+      .editorial-column, main, article, #view-article:not(.hidden) {
         display: block !important;
         width: 100% !important;
         max-width: 100% !important;
@@ -1305,6 +1305,7 @@
       archiveView.classList.toggle("hidden", !isArchive);
 
       if (isArchive) {
+        if (window.location.hash !== "#archive") history.replaceState(null, "", "#archive");
         if (grid) grid.classList.add("archive-mode");
         if (btnArchive) {
           btnArchive.classList.add("active");
@@ -1315,6 +1316,7 @@
         renderSubjects();
         renderArchive();
       } else {
+        if (activeArticleId && window.location.hash !== activeArticleId) history.replaceState(null, "", activeArticleId);
         if (grid) grid.classList.remove("archive-mode");
         if (btnArchive) {
           btnArchive.classList.remove("active");
@@ -1325,7 +1327,7 @@
         if (issueNav) issueNav.style.display = "flex";
       }
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo(0, 0);
     }
 
     function getSubClass(sub) {
@@ -1416,9 +1418,20 @@
       document.getElementById("reading-progress-bar").style.width = `${progress}%`;
     });
 
-    // Check if initial hash is #archive
-    if (window.location.hash === "#archive") {
+    window.addEventListener("hashchange", () => {
+      if (window.location.hash === "#archive") {
+        showView("archive");
+      } else if (TOPICS.some(t => t.id === window.location.hash)) {
+        loadArticle(window.location.hash);
+      }
+    });
+
+    // Check if initial hash is #archive or a specific issue (e.g. #001, #002)
+    const initHash = window.location.hash;
+    if (initHash === "#archive") {
       showView("archive");
+    } else if (TOPICS.some(t => t.id === initHash)) {
+      loadArticle(initHash);
     } else {
       loadArticle("#003");
     }
