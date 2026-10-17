@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { autoSanitizeArticleHtml, validateArticleHtml } from './lint-media.mjs';
 
 const INDEX_PATH = path.join(process.cwd(), 'index.html');
 const CONTENT_DIR = path.join(process.cwd(), 'content');
@@ -132,7 +133,12 @@ STRICT EDITORIAL REQUIREMENTS:
        1. SIMPLE CAD CROSS-SECTIONS (e.g. Figure 2 in Issue #003): Clean sectional cutaways with mechanical hatching, clear component boundaries, and strict 3-tier coordinate layout (<svg viewBox="0 0 960 420"> inside <div class="schematic-card">).
        2. HIGH-LEVEL IDEATION SKETCHES: Industrial design (ID) concept sketches with clean linework, phantom transparency lines showing internal ribs/features, and subtle tone shading.
        3. STEP-BY-STEP PROCESS BLOCK DIAGRAMS: Horizontal/grid pipeline cards showing Step 1, Step 2, Step 3 (e.g. using a responsive step grid inside <div class="schematic-card">).
-     * ZERO TEXT COLLISION RULE: Text labels must NEVER be stamped over geometry lines. All callouts must use angled leader lines with terminal anchor dots pointing into open whitespace margins, or sit in dedicated header/footer tiers.
+     * ZERO TEXT COLLISION & VIEWBOX MARGIN RULES (HARD GATE):
+       - Every schematic header MUST use <div class="schematic-header"><span class="schematic-title">FIG XX — TITLE</span>...</div>.
+       - Every <text> element inside an <svg> MUST explicitly specify font-family="'JetBrains Mono', monospace" and font-size between 11 and 14.
+       - NEVER place two callout <text> elements on the same vertical baseline (or within 22px vertically) unless they are inside separate non-overlapping column cards. Left-anchored callouts and right-anchored (text-anchor="end") callouts MUST always sit on distinct vertical y-baselines separated by at least 24px.
+       - Every <text> element's horizontal span [left, right] MUST stay strictly within [20, viewBoxWidth - 20]. Bottom summary banners must use font-size="12" and remain under 105 characters per line so they never clip outside the viewBox.
+       - NEVER route a <line> or <path> through any <text> bounding box.
 
 RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other text):
 {
@@ -176,6 +182,32 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other te
 
   const articleData = JSON.parse(rawContent);
   console.log(`Generated: "${articleData.title}" (${articleData.subject})`);
+
+  // Deterministic Auto-Sanitizer + Global SVG Geometry Validation Gate
+  articleData.article_html = autoSanitizeArticleHtml(articleData.article_html);
+  let lintErrors = validateArticleHtml(articleData.article_html, `${nextFileId}.json`);
+  if (lintErrors.length > 0) {
+    console.warn(`Detected ${lintErrors.length} schematic/media issue(s). Running automated SVG repair pass...`);
+    const repairPrompt = `Fix the following SVG geometry / text collision / viewBox clipping errors in this article_html without removing any technical content:\n${lintErrors.join('\n')}\n\nReturn ONLY JSON: { "article_html": "..." }\n\nCURRENT HTML:\n${articleData.article_html}`;
+    const repairRes = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: repairPrompt }] }],
+        generationConfig: { responseMimeType: "application/json", temperature: 0.1 }
+      })
+    });
+    if (repairRes.ok) {
+      const repairJson = await repairRes.json();
+      const repairedRaw = repairJson.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (repairedRaw) {
+        const repairedObj = JSON.parse(repairedRaw);
+        if (repairedObj.article_html) {
+          articleData.article_html = autoSanitizeArticleHtml(repairedObj.article_html);
+        }
+      }
+    }
+  }
 
   // 3. Write decoupled JSON chunk: content/issues/{num}.json
   const issueJsonPath = path.join(CONTENT_DIR, 'issues', `${nextFileId}.json`);
