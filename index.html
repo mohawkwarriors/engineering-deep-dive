@@ -268,6 +268,61 @@
       border-left-color: var(--accent);
       opacity: 1;
     }
+    .sidebar-overview-header {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+      padding-left: 14px;
+      opacity: 0.85;
+    }
+
+    /* In-Article Product Subtopic Jump Navigator */
+    .product-subnav-bar {
+      margin: 18px 0 28px;
+      padding: 14px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .subnav-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .subnav-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .subnav-chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      text-decoration: none;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+    }
+    .subnav-chip:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
 
     .editorial-column, main, article {
       min-width: 0;
@@ -1147,6 +1202,7 @@
     <div class="content-grid" id="content-grid">
       <!-- Desktop Left Sidebar (Only visible on Desktop in Article view) -->
       <aside class="sidebar-outline" id="sidebar-outline">
+        <div class="sidebar-overview-header">OVERVIEW</div>
         <ul class="outline-list" id="outline-list"></ul>
       </aside>
 
