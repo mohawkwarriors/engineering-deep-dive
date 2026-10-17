@@ -169,29 +169,53 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other te
   "article_html": "full article html starting with <h2>1. ..."
 }`;
 
-  console.log("Calling Gemini API...");
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${apiKey}`;
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        responseMimeType: "application/json",
-        temperature: 0.3
-      }
-    })
-  });
+  const candidateModels = [
+    'gemini-3.1-pro-preview',
+    'gemini-3-pro-preview',
+    'gemini-3-flash-preview',
+    'gemini-2.5-flash'
+  ];
 
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(`Gemini API error (${response.status}): ${errText}`);
+  let rawContent = null;
+  let lastError = null;
+
+  for (const model of candidateModels) {
+    try {
+      console.log(`Calling Gemini API with ${model}...`);
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            responseMimeType: "application/json",
+            temperature: 0.3
+          }
+        })
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        console.warn(`Model ${model} returned error (${response.status}): ${errText.slice(0, 200)}...`);
+        lastError = new Error(`Gemini API error (${response.status}): ${errText}`);
+        continue;
+      }
+
+      const resJson = await response.json();
+      rawContent = resJson.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (rawContent) {
+        console.log(`Successfully received content from ${model}.`);
+        break;
+      }
+    } catch (err) {
+      console.warn(`Attempt with ${model} failed: ${err.message}`);
+      lastError = err;
+    }
   }
 
-  const resJson = await response.json();
-  const rawContent = resJson.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!rawContent) {
-    throw new Error("Gemini returned empty candidate response.");
+    throw lastError || new Error("All Gemini models failed to generate content.");
   }
 
   const articleData = JSON.parse(rawContent);

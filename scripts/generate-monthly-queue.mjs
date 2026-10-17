@@ -85,24 +85,45 @@ RETURN ONLY A VALID JSON ARRAY OF 30 OBJECTS (no markdown fences, no extra text)
   ...
 ]`;
 
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        responseMimeType: "application/json"
-      }
-    })
-  });
+  const candidateModels = [
+    'gemini-3-flash-preview',
+    'gemini-3.1-pro-preview',
+    'gemini-2.5-flash'
+  ];
 
-  if (!response.ok) {
-    throw new Error(`Gemini API failed with status ${response.status}: ${await response.text()}`);
+  let textOutput = null;
+  let lastErr = null;
+
+  for (const model of candidateModels) {
+    try {
+      console.log(`Calling Gemini API for queue curation with ${model}...`);
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            responseMimeType: "application/json"
+          }
+        })
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        textOutput = result.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (textOutput) {
+          console.log(`Queue successfully generated with ${model}.`);
+          break;
+        }
+      } else {
+        lastErr = new Error(`Gemini API failed with status ${response.status}: ${await response.text()}`);
+      }
+    } catch (e) {
+      lastErr = e;
+    }
   }
 
-  const result = await response.json();
-  const textOutput = result.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!textOutput) throw new Error("Empty response from Gemini API.");
+  if (!textOutput) throw lastErr || new Error("Empty response from Gemini API.");
 
   const rawQueue = JSON.parse(textOutput);
 
