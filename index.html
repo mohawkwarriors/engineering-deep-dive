@@ -68,7 +68,7 @@
       letter-spacing: -0.011em;
       transition: background-color 0.2s ease, color 0.2s ease;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      overflow-x: clip;
       width: 100%;
       max-width: 100%;
     }
@@ -203,27 +203,38 @@
 
     .sidebar-outline {
       position: sticky;
-      top: 32px;
-      max-height: calc(100vh - 64px);
+      top: 40px;
+      max-height: calc(100vh - 80px);
       overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+      padding-right: 8px;
     }
     .outline-list {
       list-style: none;
-      border-left: 1px solid var(--border);
-      padding-left: 12px;
+      border-left: 2px solid var(--border);
+      padding-left: 14px;
     }
-    .outline-item { margin-bottom: 10px; }
+    .outline-item { margin-bottom: 12px; }
     .outline-link {
       font-size: 13px;
       color: var(--muted);
       text-decoration: none;
       display: block;
-      line-height: 1.4;
-      transition: color 0.15s ease;
+      line-height: 1.45;
+      padding: 2px 0;
+      border-left: 2px solid transparent;
+      margin-left: -16px;
+      padding-left: 14px;
+      transition: all 0.15s ease;
     }
-    .outline-link:hover, .outline-link.active {
+    .outline-link:hover {
+      color: var(--text);
+    }
+    .outline-link.active {
       color: var(--accent);
-      font-weight: 500;
+      font-weight: 600;
+      border-left-color: var(--accent);
     }
 
     .editorial-column, main, article {
@@ -1231,20 +1242,73 @@
       }
     }
 
+    let activeScrollSpyHandler = null;
+
     function buildOutline() {
       const isDesktop = window.innerWidth > 768;
+      const list = document.getElementById("outline-list");
+      if (!list) return;
+      list.innerHTML = "";
+
+      if (activeScrollSpyHandler) {
+        window.removeEventListener("scroll", activeScrollSpyHandler);
+        activeScrollSpyHandler = null;
+      }
+
       if (!isDesktop) return;
       
-      const list = document.getElementById("outline-list");
-      list.innerHTML = "";
       const headings = document.querySelectorAll("#view-article h2");
+      if (!headings.length) return;
+
       headings.forEach((h, idx) => {
         if (!h.id) h.id = `section-${idx}`;
         const li = document.createElement("li");
         li.className = "outline-item";
-        li.innerHTML = `<a class="outline-link" href="#${h.id}">${h.textContent}</a>`;
+        li.innerHTML = `<a class="outline-link" href="#${h.id}" data-target="${h.id}">${h.textContent}</a>`;
         list.appendChild(li);
       });
+
+      // Smooth scroll navigation with header offset compensation
+      list.querySelectorAll(".outline-link").forEach(link => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute("data-target");
+          const targetEl = document.getElementById(targetId);
+          if (targetEl) {
+            const offset = 48;
+            const elementPosition = targetEl.getBoundingClientRect().top + window.pageYOffset;
+            window.scrollTo({
+              top: elementPosition - offset,
+              behavior: "smooth"
+            });
+            history.pushState(null, "", `#${targetId}`);
+          }
+        });
+      });
+
+      // ScrollSpy: Real-time active section tracking as the user scrolls
+      activeScrollSpyHandler = () => {
+        const scrollPos = window.scrollY + 120;
+        const links = list.querySelectorAll(".outline-link");
+        let activeId = headings[0].id;
+
+        headings.forEach(h => {
+          if (h.offsetTop <= scrollPos) {
+            activeId = h.id;
+          }
+        });
+
+        links.forEach(l => {
+          if (l.getAttribute("data-target") === activeId) {
+            l.classList.add("active");
+          } else {
+            l.classList.remove("active");
+          }
+        });
+      };
+
+      window.addEventListener("scroll", activeScrollSpyHandler, { passive: true });
+      activeScrollSpyHandler();
     }
 
     function attachTangentListeners() {
@@ -1432,6 +1496,17 @@
       } else if (TOPICS.some(t => t.id === window.location.hash)) {
         loadArticle(window.location.hash);
       }
+    });
+
+    let resizeTimer = null;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const articleView = document.getElementById("view-article");
+        if (articleView && !articleView.classList.contains("hidden")) {
+          buildOutline();
+        }
+      }, 150);
     });
 
     // Check if initial hash is #archive or a specific issue (e.g. #001, #002)
