@@ -124,8 +124,15 @@ STRICT EDITORIAL REQUIREMENTS:
 6. SPEC COMPARISON TABLE: Include an HTML <table> with class="spec-table" inside a <div class="spec-table-wrap"> comparing 4-5 engineering architectures or materials across 5 technical metrics.
 7. TANGENT ANNOTATIONS: Wrap 4-6 specialized, non-intuitive technical terms in <span class="tangent-term" data-tangent="key">. In the "tangents" dictionary, provide their category tag, title, and detailed junior-friendly definition with a governing formula.
 8. VISUAL MEDIA & GRAPHICS ARCHITECTURE:
-   - TIER 1 (PRIMARY): AUTHENTIC REAL-WORLD TEARDOWN / HARDWARE PHOTOGRAPHY:
-     * Scraped or linked from verified public archives (Wikimedia Commons, iFixit, FCC filings, US Patent archives, manufacturer technical whitepapers).
+   - TIER 1 (PRIMARY): AUTHENTIC REAL-WORLD TEARDOWN / HARDWARE PHOTOGRAPHY (PAID PUBLICATION BENCHMARK):
+     * SELECTION ARCHETYPE:
+       - Studio-grade component or assembly teardowns (e.g. iFixit teardown benches, FCC filings, lab metrology fixtures, or manufacturer precision machined cutaways).
+       - Clean, neutral backgrounds (matte workbench, white sweep, dark slate, or brushed chassis).
+       - Razor-sharp focus and professional lighting highlighting physical hardware anatomy, CNC toolpaths, die-cast ribs, copper plumbing, or PCB topology.
+     * STRICT EXCLUSION CRITERIA (AUTOMATIC REJECTION):
+       - NO PEOPLE / SELFIES / POSES: Zero photos of technicians, baristas, or people posing or standing near equipment.
+       - NO CLUTTERED / CASUAL ENVIRONMENTS: Zero greasy garage floors, tarp walls, plastic buckets, or messy workshop snapshot photos.
+       - NO LIFESTYLE / CONSUMER SHOTS: No coffee cups, latte art, or living room staging. The physical mechanism/chassis MUST be the sole hero of the composition.
      * Placed inside <figure class="product-figure"> with clean <figcaption> and source-tag at the top of the article.
    - TIER 2 (GENERATED VISUALS — WHEN REAL PHOTOS DO NOT EXIST):
      * NEVER use diffusion AI art for technical mechanisms or schematics (it produces blurry, uninformative blobs).

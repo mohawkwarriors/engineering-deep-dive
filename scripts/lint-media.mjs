@@ -88,7 +88,7 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     errors.push(`Unrendered placeholder string(s) in ${fileLabel}: ${placeholders.join(', ')}`);
   }
 
-  // 2. Check all image src paths
+  // 2. Check all image src paths and premium quality standards
   const imgMatches = [...html.matchAll(/src=["']([^"']+)["']/g)].map(m => m[1]);
   for (const src of imgMatches) {
     if (!src.startsWith('http') && !src.startsWith('data:')) {
@@ -103,8 +103,21 @@ export function validateArticleHtml(html, fileLabel = 'article') {
         const isSvg = buf.slice(0, 100).toString('utf8').includes('<svg');
         if (!isJpg && !isPng && !isGif && !isSvg) {
           errors.push(`Image in ${fileLabel} is not a valid image binary: ${cleanPath}`);
+        } else if (buf.length < 15000 && !isSvg) {
+          errors.push(`Image in ${fileLabel} is suspiciously low resolution (<15KB): ${cleanPath}`);
         }
       }
+    }
+  }
+
+  // 2B. Check captions and figure text against amateur / non-premium photo patterns
+  const figureCaptions = [...html.matchAll(/<figcaption>([\s\S]*?)<\/figcaption>/g)].map(m => m[1]);
+  const amateurPattern = /\b(technician|technicians|barista|baristas|posing|selfie|portrait of|tourist|amateur)\b/i;
+  for (const cap of figureCaptions) {
+    const rawCap = cap.replace(/<[^>]+>/g, '').trim();
+    const hit = rawCap.match(amateurPattern);
+    if (hit) {
+      errors.push(`Amateur/non-premium image caption in ${fileLabel}: "${hit[0]}" detected in "${rawCap.slice(0, 70)}..."`);
     }
   }
 
