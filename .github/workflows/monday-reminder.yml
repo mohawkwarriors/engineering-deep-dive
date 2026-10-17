@@ -1,0 +1,64 @@
+name: Monday Topic Review Reminder
+
+on:
+  schedule:
+    - cron: '0 14 * * 1' # 7:00 AM PDT / 14:00 UTC every Monday
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  send-reminder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Send Review Email
+        uses: dawidd6/action-send-mail@v3
+        if: env.GMAIL_USERNAME != ''
+        env:
+          GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: "☕ Your Monday Topic Review: 7 Upcoming Deep Dives"
+          to: ${{ secrets.NOTIFICATION_EMAIL || 'saahiressa@gmail.com' }}
+          from: "Engineering Deep Dive <${{ secrets.GMAIL_USERNAME }}>"
+          html_body: |
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 540px; margin: 0 auto; padding: 24px 20px; background: #FAF9F5; color: #141413; border-radius: 12px; border: 1px solid #E4E2DA;">
+              <div style="font-family: monospace; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #66655F; margin-bottom: 8px;">⌀ Deep Dive Weekly Screener</div>
+              <h2 style="font-size: 22px; margin: 0 0 12px; color: #141413;">Your 7 Upcoming Dispatches Are Ready</h2>
+              <p style="font-size: 14px; line-height: 1.6; color: #4B4A45; margin: 0 0 20px;">
+                Take 30 seconds on your phone to swipe through this week's engineering teardowns. Swipe left or tap Veto on any topic you want replaced from the 100-item backlog pool before daily publication begins.
+              </p>
+              
+              <div style="text-align: center; margin: 28px 0;">
+                <a href="https://deepdive.saahiressa.com/queue" style="background: #141413; color: #FAF9F5; padding: 14px 28px; border-radius: 9999px; text-decoration: none; font-weight: 600; font-size: 13px; display: inline-block; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                  👉 Open Mobile Swipe Deck
+                </a>
+              </div>
+              
+              <div style="font-size: 12px; color: #66655F; border-top: 1px solid #E4E2DA; padding-top: 16px; line-height: 1.5;">
+                <strong>How it works:</strong> Swiping left automatically swaps the topic with an available item and trains Gemini's negative constraints. Swiping right keeps it locked in for 4:00 AM PST publishing.
+              </div>
+            </div>
+
+      - name: Fallback Notification (GitHub Issue)
+        if: env.GMAIL_USERNAME == ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `☕ Monday Review Reminder: Screen This Week's 7 Deep Dives`,
+              body: `Your 7 upcoming topics are staged and ready for review!\\n\\n👉 **[Open Mobile Swipe Deck (deepdive.saahiressa.com/queue)](https://deepdive.saahiressa.com/queue)**\\n\\nSwipe left to veto or right to keep. Everything runs automatically at 4:00 AM PST.`,
+              labels: ['topic-queue']
+            });

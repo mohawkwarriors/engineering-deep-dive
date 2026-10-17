@@ -1,141 +1,89 @@
 export default async function handler(req, res) {
-  const { date, title, subject } = req.query;
+  const { id } = req.query;
 
-  // Clean title for display
-  const cleanTitle = title ? decodeURIComponent(title) : "Unknown Topic";
-  const cleanDate = date || "Upcoming";
-  const cleanSubject = subject || "General";
+  if (!id) {
+    return res.status(400).json({ error: "Missing topic ID" });
+  }
 
-  // Optional: If GITHUB_TOKEN is present in Vercel environment variables,
-  // we dispatch an automated repository event to commit the veto directly
-  const githubToken = process.env.GITHUB_TOKEN;
-  const repo = process.env.VERCEL_GIT_REPO_OWNER && process.env.VERCEL_GIT_REPO_SLUG
-    ? `${process.env.VERCEL_GIT_REPO_OWNER}/${process.env.VERCEL_GIT_REPO_SLUG}`
-    : "mohawkwarriors/deepdive";
+  const token = process.env.GITHUB_TOKEN || process.env.GH_PAT;
+  const owner = "mohawkwarriors";
+  const repo = "engineering-deep-dive";
 
-  let statusMessage = "Veto recorded in session filter.";
+  console.log(`Received veto request for topic: ${id}`);
 
-  if (githubToken) {
+  if (token) {
     try {
-      await fetch(`https://api.github.com/repos/${repo}/dispatches`, {
-        method: "POST",
+      // 1. Fetch current content/vetoes.json
+      const fileRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/content/vetoes.json`, {
         headers: {
-          "Authorization": `Bearer ${githubToken}`,
-          "Accept": "application/vnd.github.v3+json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          event_type: "veto-topic",
-          client_payload: { date: cleanDate, title: cleanTitle, subject: cleanSubject }
-        })
+          Authorization: `Bearer ${token}`,
+          Accept: "application/vnd.github.v3+json",
+          "User-Agent": "DeepDive-Veto-Bot"
+        }
       });
-      statusMessage = "Synced directly to your GitHub repository.";
-    } catch (e) {
-      console.error("GitHub dispatch failed:", e);
+
+      if (fileRes.ok) {
+        const fileData = await fileRes.json();
+        const content = Buffer.from(fileData.content, 'base64').toString('utf-8');
+        const vetoes = JSON.parse(content);
+
+        // Add new veto if not already present
+        if (!vetoes.some(v => v.id === id)) {
+          vetoes.push({ id, timestamp: new Date().toISOString() });
+          
+          const updatedBase64 = Buffer.from(JSON.stringify(vetoes, null, 2)).toString('base64');
+          await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/content/vetoes.json`, {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/vnd.github.v3+json",
+              "Content-Type": "application/json",
+              "User-Agent": "DeepDive-Veto-Bot"
+            },
+            body: JSON.stringify({
+              message: `chore: log veto for topic ${id} via mobile review`,
+              content: updatedBase64,
+              sha: fileData.sha
+            })
+          });
+        }
+      }
+    } catch (err) {
+      console.warn("Could not commit veto to GitHub:", err.message);
     }
   }
 
-  // Return a sleek, Apple-style confirmation card
-  const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Topic Vetoed — Engineering Deep Dive</title>
-  <style>
-    body {
-      background: #141413;
-      color: #EDEDEB;
-      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-    .card {
-      background: #1C1917;
-      border: 1px solid #2E2D2A;
-      border-radius: 12px;
-      padding: 36px 32px;
-      max-width: 480px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.4);
-    }
-    .icon {
-      width: 48px;
-      height: 48px;
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #EF4444;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      margin: 0 auto 20px;
-    }
-    .badge {
-      display: inline-block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #D97757;
-      background: #241E1A;
-      padding: 3px 10px;
-      border-radius: 4px;
-      margin-bottom: 12px;
-    }
-    h1 {
-      font-size: 20px;
-      font-weight: 600;
-      margin: 0 0 10px;
-      line-height: 1.35;
-    }
-    p {
-      color: #9E9C94;
-      font-size: 14px;
-      line-height: 1.55;
-      margin: 0 0 24px;
-    }
-    .footer-note {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: #6B6960;
-      border-top: 1px solid #2E2D2A;
-      padding-top: 16px;
-      margin-bottom: 24px;
-    }
-    a.btn {
-      display: inline-block;
-      background: #D97757;
-      color: #FFF;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      padding: 10px 22px;
-      border-radius: 6px;
-      transition: background 0.15s;
-    }
-    a.btn:hover { background: #C56645; }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <div class="icon">✕</div>
-    <span class="badge">${cleanSubject} &middot; ${cleanDate}</span>
-    <h1>Topic Vetoed</h1>
-    <p><strong>"${cleanTitle}"</strong> has been removed from your 30-day queue. Tomorrow's generator will skip this topic and select a fresh, high-impact engineering alternative.</p>
-    <div class="footer-note">${statusMessage} Added to negative feedback filter.</div>
-    <a href="/" class="btn">&larr; Return to Publication</a>
-  </div>
-</body>
-</html>`;
+  // Return clean JSON for API or friendly HTML if accessed in browser
+  const accept = req.headers.accept || "";
+  if (accept.includes("text/html")) {
+    res.setHeader("Content-Type", "text/html");
+    return res.status(200).send(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Topic Vetoed</title>
+        <style>
+          body { font-family: -apple-system, sans-serif; background: #FAF9F5; color: #141413; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; text-align: center; }
+          .card { background: #FFFFFF; border: 1px solid #E4E2DA; padding: 36px 28px; border-radius: 16px; max-width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+          .icon { font-size: 36px; color: #EF4444; margin-bottom: 12px; }
+          h1 { font-size: 20px; margin: 0 0 8px; }
+          p { font-size: 14px; color: #66655F; line-height: 1.5; margin: 0 0 20px; }
+          a { display: inline-block; background: #141413; color: #FAF9F5; text-decoration: none; padding: 10px 20px; border-radius: 9999px; font-size: 12px; font-weight: 600; }
+        </style>
+      </head>
+      <body>
+        <div class="card">
+          <div class="icon">✕</div>
+          <h1>Topic ${id} Vetoed</h1>
+          <p>This topic has been removed from your lineup and added to the negative prompt filter.</p>
+          <a href="/queue">Back to Review Deck</a>
+        </div>
+      </body>
+      </html>
+    `);
+  }
 
-  res.setHeader("Content-Type", "text/html; charset=utf-8");
-  res.status(200).send(html);
+  return res.status(200).json({ status: "success", vetoed: id });
 }

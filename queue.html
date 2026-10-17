@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Weekly Topic Review — Engineering Deep Dive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FAF9F5;
+      --surface: #F2F0E8;
+      --surface-card: #FFFFFF;
+      --text: #141413;
+      --muted: #66655F;
+      --border: #E4E2DA;
+      --border-card: #DCD8CD;
+      --accent: #C84B31;
+      --success: #10B981;
+      --danger: #EF4444;
+
+      /* Discipline Colors */
+      --sub-manufacturing: #2563EB;
+      --sub-thermal: #E11D48;
+      --sub-product-dives: #D97757;
+      --sub-electromechanical: #4F46E5;
+      --sub-design: #7C3AED;
+      --sub-materials: #059669;
+      --sub-mechanisms: #D97706;
+      --sub-fluids: #0891B2;
+    }
+
+    [data-theme="dark"] {
+      --bg: #121211;
+      --surface: #1C1C1A;
+      --surface-card: #181817;
+      --text: #EDEDEC;
+      --muted: #9A9992;
+      --border: #2A2A27;
+      --border-card: #333330;
+      --accent: #E06D53;
+      --success: #34D399;
+      --danger: #F87171;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Header */
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 24px; border-bottom: 1px solid var(--border);
+      max-width: 600px; width: 100%; margin: 0 auto;
+    }
+    .brand {
+      font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); text-decoration: none;
+    }
+    .theme-btn {
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); border-radius: 50%; width: 34px; height: 34px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+    }
+
+    /* Container */
+    .container {
+      max-width: 500px; width: 100%; margin: 0 auto; padding: 20px 20px 40px;
+      flex: 1; display: flex; flex-direction: column; justify-content: space-between;
+    }
+
+    /* Progress Tracker */
+    .progress-bar {
+      display: flex; gap: 6px; margin-bottom: 20px;
+    }
+    .progress-pill {
+      flex: 1; height: 4px; background: var(--border); border-radius: 2px;
+      transition: background 0.25s ease;
+    }
+    .progress-pill.active { background: var(--text); }
+    .progress-pill.kept { background: var(--success); }
+    .progress-pill.vetoed { background: var(--danger); }
+
+    .deck-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 16px;
+    }
+    .deck-title {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--muted); font-weight: 600;
+    }
+    .deck-counter {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Card Viewport */
+    .card-viewport {
+      position: relative;
+      height: 420px;
+      width: 100%;
+      perspective: 1000px;
+      margin-bottom: 24px;
+    }
+
+    .topic-card {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: var(--surface-card);
+      border: 1px solid var(--border-card);
+      border-radius: 20px;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.08);
+      cursor: grab;
+      touch-action: none;
+      transform-origin: 50% 100%;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .topic-card:active { cursor: grabbing; }
+
+    /* Slotted Subject Tags */
+    .subject-tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 4px 12px;
+      border-radius: 9999px !important;
+      border: 1px solid transparent;
+      margin-bottom: 16px;
+    }
+    .sub-manufacturing { background: rgba(37, 99, 235, 0.1); border-color: rgba(37, 99, 235, 0.45); color: var(--sub-manufacturing); }
+    .sub-thermal { background: rgba(225, 29, 72, 0.1); border-color: rgba(225, 29, 72, 0.45); color: var(--sub-thermal); }
+    .sub-product-dives { background: rgba(217, 119, 87, 0.12); border-color: rgba(217, 119, 87, 0.45); color: var(--sub-product-dives); }
+    .sub-electromechanical { background: rgba(79, 70, 229, 0.1); border-color: rgba(79, 70, 229, 0.45); color: var(--sub-electromechanical); }
+    .sub-design { background: rgba(124, 58, 237, 0.1); border-color: rgba(124, 58, 237, 0.45); color: var(--sub-design); }
+    .sub-materials { background: rgba(5, 150, 105, 0.1); border-color: rgba(5, 150, 105, 0.45); color: var(--sub-materials); }
+    .sub-mechanisms { background: rgba(217, 119, 6, 0.1); border-color: rgba(217, 119, 6, 0.45); color: var(--sub-mechanisms); }
+    .sub-fluids { background: rgba(8, 145, 178, 0.1); border-color: rgba(8, 145, 178, 0.45); color: var(--sub-fluids); }
+
+    .card-date-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 27px;
+      line-height: 1.25;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .card-summary {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 14px 16px;
+      border-left: 3px solid var(--border-card);
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .card-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted);
+    }
+
+    /* Swipe Indicator Stamps */
+    .stamp {
+      position: absolute;
+      top: 24px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.1s ease;
+    }
+    .stamp-veto {
+      right: 20px;
+      color: var(--danger);
+      border: 2px solid var(--danger);
+      transform: rotate(12deg);
+    }
+    .stamp-keep {
+      left: 20px;
+      color: var(--success);
+      border: 2px solid var(--success);
+      transform: rotate(-12deg);
+    }
+
+    /* Action Controls */
+    .controls {
+      display: flex;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .btn-action {
+      flex: 1;
+      padding: 16px 20px;
+      border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.12s ease, background-color 0.15s ease, border-color 0.15s ease;
+      border: 1px solid;
+    }
+    .btn-action:active { transform: scale(0.96); }
+
+    .btn-veto {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: var(--danger);
+    }
+    .btn-veto:hover {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: var(--danger);
+    }
+
+    .btn-keep {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: var(--success);
+    }
+    .btn-keep:hover {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: var(--success);
+    }
+
+    /* Completion View */
+    .completion-view {
+      display: none;
+      background: var(--surface-card);
+      border: 1px solid var(--border-card);
+      border-radius: 20px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.08);
+    }
+    .completion-icon {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: rgba(16, 185, 129, 0.12); color: var(--success);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin: 0 auto 16px;
+    }
+    .completion-title {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 30px; margin-bottom: 8px; color: var(--text);
+    }
+    .completion-desc {
+      font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 24px;
+    }
+    .final-lineup {
+      text-align: left;
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 24px;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    .final-item {
+      font-size: 12px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    }
+    .final-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    .final-date { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--muted); }
+    .final-title { font-weight: 600; color: var(--text); }
+
+    .btn-restart {
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      padding: 14px 24px;
+      border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="brand">⌀ Deep Dive</a>
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">◐</button>
+  </header>
+
+  <div class="container">
+    <div>
+      <div class="progress-bar" id="progress-bar"></div>
+      <div class="deck-header">
+        <div class="deck-title">Weekly Queue Screener</div>
+        <div class="deck-counter" id="deck-counter">1 of 7</div>
+      </div>
+
+      <div class="card-viewport" id="card-viewport">
+        <!-- Interactive Card rendered via JS -->
+      </div>
+
+      <div class="completion-view" id="completion-view">
+        <div class="completion-icon">✓</div>
+        <h2 class="completion-title">Lineup Approved!</h2>
+        <p class="completion-desc">You've screened all 7 upcoming dispatches. Vetoes have been logged, and replacements are locked in for the daily 4:00 AM PST publication.</p>
+        <div class="final-lineup" id="final-lineup"></div>
+        <button class="btn-restart" onclick="resetReview()">Re-Review Lineup</button>
+      </div>
+    </div>
+
+    <div class="controls" id="controls">
+      <button class="btn-action btn-veto" onclick="vetoCurrentTopic()">
+        <span>✕</span> VETO
+      </button>
+      <button class="btn-action btn-keep" onclick="keepCurrentTopic()">
+        <span>✓</span> KEEP
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Initial Staged Queue (7 Days)
+    let queue = [
+      { id: "B001", discipline: "Manufacturing", topic: "How Laptops Get Featherweight Metal Shells", summary: "How semi-solid magnesium slurry flows like soft-serve to create ultra-thin, rigid laptop housings.", date: "Mon · Oct 19" },
+      { id: "B002", discipline: "Mechanisms", topic: "Surviving 100G Shock Loads in Cycloidal Drives", summary: "Using rolling pin contact and trochoidal gear curves to endure massive shock loads without tooth shearing.", date: "Tue · Oct 20" },
+      { id: "B003", discipline: "Product Dives", topic: "Foldable Phone Teardrop Hinges", summary: "Multi-link synchronized sliders creating a waterdrop bend radius to prevent permanent display creasing.", date: "Wed · Oct 21" },
+      { id: "B004", discipline: "Thermal", topic: "How Vapor Chambers Flatten Die Hotspots", summary: "Two-phase phase-change flat heat pipes solving extreme localized heat flux across ultra-thin mobile dies.", date: "Thu · Oct 22" },
+      { id: "B005", discipline: "Fluids", topic: "Helical Heat Exchanger Coils: Beating Boundary Layers", summary: "Why curvature-induced secondary Dean flow disrupts thermal boundary layers to dramatically boost heat transfer.", date: "Fri · Oct 23" },
+      { id: "B006", discipline: "Electromechanical", topic: "How Voice Coil Linear Actuators Achieve High-Speed Camera Autofocus", summary: "Using direct Lorentz force and lightweight coil design for ultra-high bandwidth position control.", date: "Sat · Oct 24" },
+      { id: "B007", discipline: "Design", topic: "Cantilever Snap-Fits: Permissible Strain Limits", summary: "Calculating permissible deflection and peak strain limits to prevent plastic failure during automated assembly.", date: "Sun · Oct 25" }
+    ];
+
+    // Replacement Backlog Pool
+    let backlogPool = [
+      { id: "B008", discipline: "Manufacturing", topic: "Liquidmetal Casting with Zero Shrinkage", summary: "Exploiting amorphous vitrification to mold net-shape parts with zero crystalline shrinkage." },
+      { id: "B010", discipline: "Mechanisms", topic: "Zero-Backlash Reduction with Strain Wave Flexsplines", summary: "How continuous elastic deformation and strain wave gear meshing achieve zero-backlash high-ratio reduction." },
+      { id: "B011", discipline: "Materials", topic: "Near-Zero Friction with Diamond-Like Carbon Films", summary: "Depositing sp3-bonded carbon films for extreme surface hardness and near-zero sliding friction." },
+      { id: "B012", discipline: "Electromechanical", topic: "Nanometer Positioning Using Piezoelectric Surface Waves", summary: "Generating high-frequency elliptical stator surface waves to drive direct-drive rotary torque." },
+      { id: "B013", discipline: "Design", topic: "Stripping vs Shearing in Mismatched Fastener Joints", summary: "Determining critical engagement depth across mismatched aluminum and steel fasteners." },
+      { id: "B014", discipline: "Product Dives", topic: "Active Front Grille Shutter Vane Aerodynamics", summary: "Balancing powertrain cooling airflow and aerodynamic drag reduction using motorized louvers." },
+      { id: "B015", discipline: "Materials", topic: "Sintering Precision Metal Hardware via MIM", summary: "Combining polymer binder flow with fine metal powder sintering for high-density micro-parts." }
+    ];
+
+    let currentIndex = 0;
+    let cardEl = null;
+    let isDragging = false;
+    let startX = 0, currentX = 0;
+
+    function getDisciplineClass(sub) {
+      return 'sub-' + sub.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    }
+
+    function initProgressBar() {
+      const bar = document.getElementById("progress-bar");
+      bar.innerHTML = queue.map((_, i) => `<div class="progress-pill ${i === 0 ? 'active' : ''}" id="pill-${i}"></div>`).join('');
+    }
+
+    function renderCard(index) {
+      const viewport = document.getElementById("card-viewport");
+      if (index >= queue.length) {
+        showCompletion();
+        return;
+      }
+
+      document.getElementById("deck-counter").textContent = `${index + 1} of ${queue.length}`;
+      const item = queue[index];
+
+      viewport.innerHTML = `
+        <div class="topic-card" id="active-card">
+          <div class="stamp stamp-veto" id="stamp-veto">VETO</div>
+          <div class="stamp stamp-keep" id="stamp-keep">KEEP</div>
+          
+          <div>
+            <div class="card-date-badge">${item.date}</div>
+            <span class="subject-tag ${getDisciplineClass(item.discipline)}">${item.discipline}</span>
+            <h2 class="card-title">${item.topic}</h2>
+          </div>
+
+          <div class="card-summary">
+            "${item.summary}"
+          </div>
+
+          <div class="card-meta">
+            <span>ID: ${item.id}</span>
+            <span>← SWIPE TO VETO | KEEP TO SWIPE →</span>
+          </div>
+        </div>
+      `;
+
+      cardEl = document.getElementById("active-card");
+      setupGestures(cardEl);
+      updatePill(index, 'active');
+    }
+
+    function updatePill(index, state) {
+      const pill = document.getElementById(`pill-${index}`);
+      if (pill) {
+        pill.className = `progress-pill ${state}`;
+      }
+    }
+
+    function setupGestures(el) {
+      if (!el) return;
+
+      // Touch events
+      el.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        currentX = startX;
+      }, { passive: true });
+
+      el.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentX = e.touches[0].clientX;
+        const dx = currentX - startX;
+        applyDrag(dx);
+      }, { passive: true });
+
+      el.addEventListener('touchend', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        const dx = currentX - startX;
+        resolveDrag(dx);
+      });
+
+      // Mouse drag events
+      el.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+        currentX = startX;
+
+        const onMouseMove = (ev) => {
+          if (!isDragging) return;
+          currentX = ev.clientX;
+          const dx = currentX - startX;
+          applyDrag(dx);
+        };
+
+        const onMouseUp = () => {
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
+          if (!isDragging) return;
+          isDragging = false;
+          const dx = currentX - startX;
+          resolveDrag(dx);
+        };
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+      });
+    }
+
+    function applyDrag(dx) {
+      const rot = dx * 0.08;
+      cardEl.style.transform = `translate3d(${dx}px, 0, 0) rotate(${rot}deg)`;
+
+      const vetoStamp = document.getElementById("stamp-veto");
+      const keepStamp = document.getElementById("stamp-keep");
+
+      if (dx < -20) {
+        vetoStamp.style.opacity = Math.min(1, Math.abs(dx) / 100);
+        keepStamp.style.opacity = 0;
+      } else if (dx > 20) {
+        keepStamp.style.opacity = Math.min(1, dx / 100);
+        vetoStamp.style.opacity = 0;
+      } else {
+        vetoStamp.style.opacity = 0;
+        keepStamp.style.opacity = 0;
+      }
+    }
+
+    function resolveDrag(dx) {
+      const threshold = 90;
+      if (dx < -threshold) {
+        vetoCurrentTopic();
+      } else if (dx > threshold) {
+        keepCurrentTopic();
+      } else {
+        cardEl.style.transition = 'transform 0.25s ease';
+        cardEl.style.transform = 'translate3d(0, 0, 0) rotate(0deg)';
+        document.getElementById("stamp-veto").style.opacity = 0;
+        document.getElementById("stamp-keep").style.opacity = 0;
+        setTimeout(() => { if (cardEl) cardEl.style.transition = ''; }, 250);
+      }
+    }
+
+    function vetoCurrentTopic() {
+      if (!cardEl) return;
+      const oldItem = queue[currentIndex];
+
+      // Pull replacement from backlog pool
+      const replacement = backlogPool.shift() || {
+        id: "B099",
+        discipline: "Materials",
+        topic: "Amorphous Metal Vitrification",
+        summary: "Rapid cooling dynamics preventing crystalline grain formation."
+      };
+      replacement.date = oldItem.date;
+      queue[currentIndex] = replacement;
+
+      cardEl.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+      cardEl.style.transform = 'translate3d(-120vw, 0, 0) rotate(-35deg)';
+      cardEl.style.opacity = '0';
+      updatePill(currentIndex, 'vetoed');
+
+      // Send veto signal to Vercel API
+      fetch(`/api/veto?id=${oldItem.id}`).catch(() => {});
+
+      setTimeout(() => {
+        currentIndex++;
+        renderCard(currentIndex);
+      }, 280);
+    }
+
+    function keepCurrentTopic() {
+      if (!cardEl) return;
+      cardEl.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+      cardEl.style.transform = 'translate3d(120vw, 0, 0) rotate(35deg)';
+      cardEl.style.opacity = '0';
+      updatePill(currentIndex, 'kept');
+
+      setTimeout(() => {
+        currentIndex++;
+        renderCard(currentIndex);
+      }, 280);
+    }
+
+    function showCompletion() {
+      document.getElementById("card-viewport").style.display = "none";
+      document.getElementById("controls").style.display = "none";
+      document.getElementById("deck-counter").textContent = "Completed";
+
+      const completionView = document.getElementById("completion-view");
+      completionView.style.display = "block";
+
+      const finalLineup = document.getElementById("final-lineup");
+      finalLineup.innerHTML = queue.map(item => `
+        <div class="final-item">
+          <div class="final-date">${item.date} · ${item.discipline.toUpperCase()}</div>
+          <div class="final-title">${item.topic}</div>
+        </div>
+      `).join('');
+    }
+
+    function resetReview() {
+      currentIndex = 0;
+      document.getElementById("card-viewport").style.display = "block";
+      document.getElementById("controls").style.display = "flex";
+      document.getElementById("completion-view").style.display = "none";
+      initProgressBar();
+      renderCard(0);
+    }
+
+    function toggleTheme() {
+      const isDark = document.body.getAttribute("data-theme") === "dark";
+      document.body.setAttribute("data-theme", isDark ? "light" : "dark");
+    }
+
+    // Initialize
+    initProgressBar();
+    renderCard(0);
+  </script>
+</body>
+</html>
