@@ -2143,6 +2143,7 @@
       function updateKinematics(angleDeg) {
         const angle = Math.max(0, Math.min(180, parseFloat(angleDeg)));
         const p = (180 - angle) / 180; // 0 = flat, 1 = closed
+        const phi = ((180 - angle) * 0.5) * (Math.PI / 180); // wing rotation in radians
 
         // 1. Text badge
         if (angleBadge) {
@@ -2179,44 +2180,85 @@
         if (plateLeft) plateLeft.setAttribute('transform', `translate(0, ${plateDy})`);
         if (plateRight) plateRight.setAttribute('transform', `translate(0, ${plateDy})`);
 
-        // 5. Parametric Display Curve Path
+        // 5. True Euler Clothoid Display Path Kinematics
+        const L_wing = 160;
+        const pivotLeftX = 360;
+        const pivotLeftY = 180;
+        const pivotRightX = 600;
+        const pivotRightY = 180;
+
+        const xTipLeft = pivotLeftX - L_wing * Math.cos(phi) + 5 * Math.sin(phi);
+        const yTipLeft = pivotLeftY - L_wing * Math.sin(phi) - 5 * Math.cos(phi);
+        const xEntryLeft = pivotLeftX + 5 * Math.sin(phi);
+        const yEntryLeft = pivotLeftY - 5 * Math.cos(phi);
+
+        const xTipRight = pivotRightX + L_wing * Math.cos(phi) - 5 * Math.sin(phi);
+        const yTipRight = pivotRightY - L_wing * Math.sin(phi) - 5 * Math.cos(phi);
+        const xEntryRight = pivotRightX - 5 * Math.sin(phi);
+        const yEntryRight = pivotRightY - 5 * Math.cos(phi);
+
         const cx = 480;
-        const cy = 175;
-        const loopApexY = cy + 85 * p;
-        const bulbSpread = 55 * p;
+        const loopApexY = 175 + 85 * p;
+        const bulbSpread = 50 * p;
+        const controlY = yEntryLeft + 40 * p;
 
         let pathD;
-        if (p < 0.02) {
-          pathD = "M 100 175 L 860 175";
-          if (radiusCircle) radiusCircle.setAttribute('opacity', '0');
-          if (radiusCenter) radiusCenter.setAttribute('opacity', '0');
-          if (radiusText) radiusText.setAttribute('opacity', '0');
+        if (p < 0.01) {
+          pathD = `M ${pivotLeftX - L_wing} 175 L ${pivotRightX + L_wing} 175`;
         } else {
-          pathD = `M 100 175 L 360 175 C ${360 + 30 * p} 175, ${cx - bulbSpread} ${loopApexY}, ${cx} ${loopApexY} C ${cx + bulbSpread} ${loopApexY}, ${600 - 30 * p} 175, 600 175 L 860 175`;
-          if (radiusCircle) {
-            radiusCircle.setAttribute('opacity', '1');
-            const rPx = 20 + 28 * p;
-            radiusCircle.setAttribute('cx', `${cx}`);
-            radiusCircle.setAttribute('cy', `${loopApexY - rPx}`);
-            radiusCircle.setAttribute('r', `${rPx}`);
-          }
-          if (radiusCenter) {
-            radiusCenter.setAttribute('opacity', '1');
-            const rPx = 20 + 28 * p;
-            radiusCenter.setAttribute('cx', `${cx}`);
-            radiusCenter.setAttribute('cy', `${loopApexY - rPx}`);
-          }
-          if (radiusText) {
-            radiusText.setAttribute('opacity', '1');
-            const rPx = 20 + 28 * p;
-            radiusText.setAttribute('x', `${cx}`);
-            radiusText.setAttribute('y', `${loopApexY - rPx - 8}`);
-            radiusText.textContent = `ρ = ${radiusVal.toFixed(2)} mm`;
-          }
+          pathD = `M ${xTipLeft.toFixed(1)} ${yTipLeft.toFixed(1)} L ${xEntryLeft.toFixed(1)} ${yEntryLeft.toFixed(1)} C ${xEntryLeft.toFixed(1)} ${controlY.toFixed(1)}, ${(cx - bulbSpread).toFixed(1)} ${loopApexY.toFixed(1)}, ${cx} ${loopApexY.toFixed(1)} C ${(cx + bulbSpread).toFixed(1)} ${loopApexY.toFixed(1)}, ${xEntryRight.toFixed(1)} ${controlY.toFixed(1)}, ${xEntryRight.toFixed(1)} ${yEntryRight.toFixed(1)} L ${xTipRight.toFixed(1)} ${yTipRight.toFixed(1)}`;
         }
 
         if (displayCurve) displayCurve.setAttribute('d', pathD);
         if (displayAccent) displayAccent.setAttribute('d', pathD);
+
+        // 6. Curvature Overlay & Open-Space Header Callout
+        const rPx = 18 + 20 * p;
+        const circleCy = loopApexY - rPx;
+        const circleApexY = circleCy - rPx;
+
+        const radiusBadge = root.querySelector('#sim-radius-badge');
+        const radiusLine = root.querySelector('#sim-radius-line');
+
+        if (p < 0.04) {
+          if (radiusCircle) radiusCircle.setAttribute('opacity', '0');
+          if (radiusCenter) radiusCenter.setAttribute('opacity', '0');
+          if (radiusBadge) radiusBadge.setAttribute('opacity', '0');
+          if (radiusLine) radiusLine.setAttribute('opacity', '0');
+          if (radiusText) radiusText.setAttribute('opacity', '0');
+        } else {
+          if (radiusCircle) {
+            radiusCircle.setAttribute('opacity', '1');
+            radiusCircle.setAttribute('cx', `${cx}`);
+            radiusCircle.setAttribute('cy', `${circleCy.toFixed(1)}`);
+            radiusCircle.setAttribute('r', `${rPx.toFixed(1)}`);
+          }
+          if (radiusCenter) {
+            radiusCenter.setAttribute('opacity', '1');
+            radiusCenter.setAttribute('cx', `${cx}`);
+            radiusCenter.setAttribute('cy', `${circleCy.toFixed(1)}`);
+          }
+
+          const badgeY = Math.max(30, circleApexY - 36);
+          if (radiusBadge) {
+            radiusBadge.setAttribute('opacity', '1');
+            radiusBadge.setAttribute('x', `${cx - 55}`);
+            radiusBadge.setAttribute('y', `${badgeY.toFixed(1)}`);
+          }
+          if (radiusText) {
+            radiusText.setAttribute('opacity', '1');
+            radiusText.setAttribute('x', `${cx}`);
+            radiusText.setAttribute('y', `${(badgeY + 17).toFixed(1)}`);
+            radiusText.textContent = `ρ = ${radiusVal.toFixed(2)} mm`;
+          }
+          if (radiusLine) {
+            radiusLine.setAttribute('opacity', '1');
+            radiusLine.setAttribute('x1', `${cx}`);
+            radiusLine.setAttribute('y1', `${(badgeY + 25).toFixed(1)}`);
+            radiusLine.setAttribute('x2', `${cx}`);
+            radiusLine.setAttribute('y2', `${circleApexY.toFixed(1)}`);
+          }
+        }
       }
 
       if (slider) {

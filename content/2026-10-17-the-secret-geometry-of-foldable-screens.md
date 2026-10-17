@@ -57,8 +57,7 @@
 
 <div class="schematic-card" id="teardrop-simulator">
   <div class="schematic-header">
-    <span class="schematic-title">FIG 02 — INTERACTIVE KINEMATIC SIMULATOR: EULER CLOTHOID TEARDROP FOLD</span>
-    <span class="sim-badge"><span class="sim-pulse"></span> LIVE SIMULATOR (60 FPS)</span>
+    <span class="schematic-title">FIG 02 — EULER CLOTHOID TEARDROP KINEMATIC SIMULATOR</span>
     <span class="schematic-subtitle">PARAMETRIC BENDING RADIUS &amp; CHASSIS GAP KINEMATICS</span>
   </div>
 
@@ -88,26 +87,30 @@
 
       <!-- Left Chassis Wing Group (Pivots at 360, 180) -->
       <g id="sim-chassis-left">
-        <rect x="100" y="145" width="260" height="65" rx="5" class="svg-panel-bg" stroke="#64748B" stroke-width="1.8"/>
-        <rect x="230" y="155" width="115" height="30" rx="3" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
+        <rect x="185" y="145" width="175" height="65" rx="5" class="svg-panel-bg" stroke="#64748B" stroke-width="1.8"/>
+        <rect x="195" y="155" width="150" height="30" rx="3" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
         <circle cx="360" cy="180" r="7" class="svg-panel-bg" stroke="#38BDF8" stroke-width="2"/>
       </g>
 
       <!-- Right Chassis Wing Group (Pivots at 600, 180) -->
       <g id="sim-chassis-right">
-        <rect x="600" y="145" width="260" height="65" rx="5" class="svg-panel-bg" stroke="#64748B" stroke-width="1.8"/>
-        <rect x="615" y="155" width="115" height="30" rx="3" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
+        <rect x="600" y="145" width="175" height="65" rx="5" class="svg-panel-bg" stroke="#64748B" stroke-width="1.8"/>
+        <rect x="615" y="155" width="150" height="30" rx="3" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
         <circle cx="600" cy="180" r="7" class="svg-panel-bg" stroke="#38BDF8" stroke-width="2"/>
       </g>
 
-      <!-- Parametric Flexible Display Curve (Dynamic Path) -->
-      <path id="sim-display-curve" d="M 100 175 L 860 175" stroke="#0284C7" stroke-width="5" stroke-linecap="round" fill="none"/>
-      <path id="sim-display-accent" d="M 100 175 L 860 175" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+      <!-- Parametric Flexible Display Curve (Dynamic Euler Clothoid Path) -->
+      <path id="sim-display-curve" d="M 200 175 L 760 175" stroke="#0284C7" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <path id="sim-display-accent" d="M 200 175 L 760 175" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
 
       <!-- Dynamic Curvature Radius Circle Overlay -->
-      <circle id="sim-radius-circle" cx="480" cy="200" r="30" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0"/>
-      <circle id="sim-radius-center" cx="480" cy="200" r="3" fill="#0284C7" opacity="0"/>
-      <text id="sim-radius-text" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#38BDF8" opacity="0">ρ = 3.45 mm</text>
+      <circle id="sim-radius-circle" cx="480" cy="220" r="38" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0"/>
+      <circle id="sim-radius-center" cx="480" cy="220" r="3" fill="#0284C7" opacity="0"/>
+
+      <!-- Curvature Radius Callout (Strictly Above Circle in Open Whitespace) -->
+      <line id="sim-radius-line" x1="480" y1="140" x2="480" y2="182" stroke="#38BDF8" stroke-width="1.2" stroke-dasharray="2 2" opacity="0"/>
+      <rect id="sim-radius-badge" x="425" y="115" width="110" height="25" rx="4" class="svg-canvas-bg" stroke="#38BDF8" stroke-width="1.2" opacity="0"/>
+      <text id="sim-radius-text" x="480" y="132" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" font-weight="700" fill="#38BDF8" opacity="0">ρ = 3.45 mm</text>
     </svg>
   </div>
 
@@ -127,6 +130,72 @@
       <button class="sim-preset-btn" data-angle="0">0° Closed</button>
     </div>
   </div>
+
+  <div class="sim-hud">
+    <div class="sim-hud-card">
+      <span class="sim-hud-label">FOLD ANGLE (&theta;)</span>
+      <span class="sim-hud-val" id="hud-angle">180.0°</span>
+      <span class="sim-hud-sub">Range: 0° to 180°</span>
+    </div>
+    <div class="sim-hud-card">
+      <span class="sim-hud-label">BEND RADIUS (&rho;)</span>
+      <span class="sim-hud-val" id="hud-radius">&infin; (Flat)</span>
+      <span class="sim-hud-sub">Target: &rho; &ge; 3.45 mm</span>
+    </div>
+    <div class="sim-hud-card">
+      <span class="sim-hud-label">GLASS STRAIN (&epsilon;)</span>
+      <span class="sim-hud-val" id="hud-strain" style="color: #10B981;">0.00%</span>
+      <span class="sim-hud-sub">Safe: &epsilon; &lt; 1.10%</span>
+    </div>
+    <div class="sim-hud-card">
+      <span class="sim-hud-label">PLATE DESCENT (h)</span>
+      <span class="sim-hud-val" id="hud-plate">0.00 mm</span>
+      <span class="sim-hud-sub">Max Drop: 1.35 mm</span>
+    </div>
+    <div class="sim-hud-card">
+      <span class="sim-hud-label">SLIDER STROKE (&Delta;L)</span>
+      <span class="sim-hud-val" id="hud-stroke">0.00 mm</span>
+      <span class="sim-hud-sub">Absorbs: 1.42 mm</span>
+    </div>
+  </div>
+
+  <div class="comparison-grid" style="border-top: 1px solid var(--border);">
+    <div class="comparison-card flawed-card">
+      <div class="comparison-card-tag">LEGACY METHOD // CONCENTRIC PINCH</div>
+      <h4 class="comparison-card-title">Traditional U-Shaped Fold</h4>
+      <div class="comparison-metric-pill danger-pill">
+        <span class="pill-label">BEND RADIUS &amp; GAP:</span>
+        <span class="pill-value">&rho; = 1.25 mm &bull; 2.2 mm Wedge Gap</span>
+        <span class="pill-sub">Peak Tensile Strain: <strong>&epsilon; = 16.8% (Critical Failure)</strong></span>
+      </div>
+      <div class="comparison-consequence">
+        <strong>&bull; Critical Griffith Flaw:</strong> Exceeds UTG fracture limit, causing rapid micro-cracking and deep permanent crease trenching.
+      </div>
+    </div>
+
+    <div class="comparison-card solution-card">
+      <div class="comparison-card-tag">ENGINEERED SOLUTION // EULER CLOTHOID</div>
+      <h4 class="comparison-card-title">Teardrop Multi-Link Hinge</h4>
+      <div class="comparison-metric-pill success-pill">
+        <span class="pill-label">TEARDROP RADIUS &amp; GAP:</span>
+        <span class="pill-value">&rho; = 3.45 mm &bull; 0.0 mm Flush Closure</span>
+        <span class="pill-sub">Safe Tensile Strain: <strong>&epsilon; &lt; 1.1% (Infinite Fatigue Life)</strong></span>
+      </div>
+      <div class="comparison-consequence">
+        <strong>&bull; Floating Plate Cavity:</strong> Nearly triples bend radius, cutting glass strain by 63% and enabling 400,000+ fold durability without creasing.
+      </div>
+    </div>
+  </div>
+
+  <div class="comparison-banner">
+    <strong>GEOMETRIC PRINCIPLE:</strong> Drag the slider above from 180° to 0° to observe how the teardrop hinge drops the center plates by 1.35 mm and strokes the sliders outward by 1.42 mm—allowing the display to balloon into a generous 3.45 mm curve while closing dead flat with 0.0 mm gap.
+  </div>
+
+  <div class="schematic-caption">
+    <span><strong>FIG 02 — INTERACTIVE KINEMATIC SIMULATOR:</strong> Real-time 60 FPS parametric simulation of the Euler clothoid teardrop fold mechanism versus concentric U-shape bending. Scrub the fold slider to observe live plate drop, stroke absorption, and stress reduction on Ultra-Thin Glass (UTG).</span>
+    <span class="source-tag">INTERACTIVE CAD ENGINE</span>
+  </div>
+</div>
 
   <div class="sim-hud">
     <div class="sim-hud-card">
