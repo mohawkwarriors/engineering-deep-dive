@@ -152,11 +152,13 @@ STRICT EDITORIAL REQUIREMENTS:
    - 4. Metallurgy & Materials Science (Exact alloy codes e.g. 6061-T6, 7075, 316L, Ti-6Al-4V, PEEK 450G, stress-strain, thermal conductivity)
    - 5. Failure Modes, Wear Tribology & Reliability Degradation (Fatigue limits, cycle life, wear mechanisms, environmental stress)
    - 6. Empirical Bench Metrology & Validation (Laser interferometry, strain gauges, Scace/load cell sensors, high-frequency telemetry)
-5. MATHEMATICAL NOTATION & FORMULA RENDERING (MANDATORY RULE):
-   - High-Quality Rendered Notation Only: Equations and mathematical formulas MUST NEVER be presented as raw plain text.
-   - LaTeX Display Math: All primary formulas, governing equations, derivations, and balance relations must be rendered in formal LaTeX display blocks: <div class="math-block">$$...$$</div>.
-   - LaTeX Inline Math: All variables, parameters, and simple expressions embedded in prose must use inline LaTeX syntax: $F = m \\cdot a$, $\\delta_{\\text{max}}$, $\\sigma_v$.
-   - Popover Equations: In the 'tangents' dictionary, format equations as <div class="modal-equation-box"><div class="math-label">Concept Name:</div>$$Formula$$<div class="math-meta">Parameter definitions with inline LaTeX</div></div>.
+5. MATHEMATICAL INTUITION & HIGH-LEVEL CONCEPT FORMULAS (MORNING DIGEST CALIBRATION):
+   - Intuitive, Conceptual Math Only: The audience reads this as a morning engineering digest over coffee. They want first-principles intuition, clear scaling behavior, and physical concepts—NOT intimidating, multi-variable academic textbook equations.
+   - The 2–4 Variable Rule: Keep display equations simple, elegant, and focused on physical proportionality (e.g. strain scales inversely with radius: \epsilon \approx \frac{t}{2\rho}, or flexural rigidity scales with thickness cubed: D \propto E \cdot h^3, or holding torque: T_{\text{hold}} \approx \mu \cdot R \cdot F).
+   - STRICTLY FORBIDDEN MATH OVERKILL: NEVER output dense multi-variable differential equations, contour integrals, or heavy trigonometric fractions (NO complex fractions like \frac{\tan(\alpha) \pm \mu}{1 \mp \mu \tan(\alpha)}, NO complex radical integrals, NO tensor notation).
+   - Explain the "Why" in Plain English: Directly beneath every formula, state the immediate physical takeaway in one clean, plain-English sentence (e.g. "Doubling the bend radius cuts strain in half, keeping the glass well below its fracture limit.").
+   - LaTeX Formatting: Display formulas must use <div class="math-block">$$...$$</div>; inline symbols must use $F$, $\rho$, $\mu$.
+   - Deep Academic Formulations: Keep advanced derivations in the clickable 'tangents' popovers where readers can optionally explore them.
 6. SPEC COMPARISON TABLE: Include an HTML <table> with class="spec-table" inside a <div class="spec-table-wrap"> comparing 4-5 engineering architectures or materials across 5 technical metrics.
 7. TANGENT ANNOTATIONS: Wrap 4-6 specialized, non-intuitive technical terms in <span class="tangent-term" data-tangent="key">. In the "tangents" dictionary, provide their category tag, title, and detailed junior-friendly definition with a governing formula.
 8. VISUAL MEDIA & GRAPHICS ARCHITECTURE:

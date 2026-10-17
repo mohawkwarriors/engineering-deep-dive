@@ -247,9 +247,7 @@ isoDate: "2026-10-17"
   <strong>Cam Kinematics & Torque Derivation:</strong><br>
   As the user rotates the hinge through angle $\theta$, the follower rides along the inclined helical surface of the drive cam. The profile of the cam determines the axial displacement $z(\theta)$ of the springs. The instantaneous torque $T(\theta)$ opposing or assisting user motion is derived from the balance of spring force and friction:
 </p>
-<div class="math-block">
-  $$T(\theta) = R_{\text{cam}} \cdot F_{\text{spring}}(z) \cdot \left[ \frac{\tan(\alpha) \pm \mu}{1 \mp \mu \cdot \tan(\alpha)} \right]$$
-</div>
+<div class="math-block">$T_{\text{hold}} \approx \mu \cdot R_{\text{cam}} \cdot F_{\text{spring}}$</div>
 <p>
   Where:
 </p>
@@ -386,9 +384,7 @@ isoDate: "2026-10-17"
 <p>
   <strong>Environmental Chambers (-20°C to +65°C):</strong> Because the aluminum chassis ($\alpha_{\text{Al}} \approx 23 \times 10^{-6}\text{ K}^{-1}$) and steel hinge ($\alpha_{\text{steel}} \approx 11 \times 10^{-6}\text{ K}^{-1}$) have vastly different thermal expansion coefficients, temperature extremes shrink operating clearances. At $-20^\circ\text{C}$, the differential thermal contraction:
 </p>
-<div class="math-block">
-  $$\Delta \delta = L_0 \cdot (\alpha_{\text{Al}} - \alpha_{\text{steel}}) \cdot \Delta T$$
-</div>
+
 <p>
   Shrinks the lateral slider clearance by up to $14\,\mu\text{m}$. If the initial manufacturing tolerance is not precisely compensated, the sliders will bind solid in freezing climates.
 </p>
