@@ -28,9 +28,9 @@ async function generateQueue() {
   console.log("Reading index.html...");
   const html = await fs.readFile(INDEX_PATH, 'utf-8');
 
-  // Discover latest issue number
-  const issueMatch = html.match(/"#(\d+)":/);
-  const latestNum = issueMatch ? parseInt(issueMatch[1], 10) : 2;
+  // Discover latest issue number from TOPICS catalog (e.g. id: "#003")
+  const issueMatch = html.match(/id:\s*"#(\d+)"/) || html.match(/"#(\d+)":/);
+  const latestNum = issueMatch ? parseInt(issueMatch[1], 10) : 3;
   const startNum = latestNum + 1;
 
   // Extract past published titles

@@ -27,8 +27,8 @@ async function run() {
   console.log("Reading index.html...");
   const html = await fs.readFile(INDEX_PATH, 'utf-8');
 
-  // Match the latest issue number (e.g. #003)
-  const issueMatch = html.match(/"#(\d+)":/);
+  // Match the latest issue number from TOPICS catalog (e.g. id: "#003")
+  const issueMatch = html.match(/id:\s*"#(\d+)"/) || html.match(/"#(\d+)":/);
   const latestNum = issueMatch ? parseInt(issueMatch[1], 10) : 3;
   const nextNum = latestNum + 1;
   const nextId = `#${String(nextNum).padStart(3, '0')}`;
@@ -213,7 +213,8 @@ ${articleData.article_html}
   console.log(`Saved Markdown archive to ${mdPath}`);
 
   // 5. Update index.html TOPICS catalog
-  const topicEntry = `      { id: "${nextId}", subject: "${articleData.subject}", title: "${articleData.title}", status: "Published", date: "${dateStr}" },\n`;
+  const shortTitle = articleData.shortTitle || (articleData.title.includes(':') ? articleData.title.split(':')[0].trim() : articleData.title);
+  const topicEntry = `      { id: "${nextId}", subject: "${articleData.subject}", title: "${articleData.title}", shortTitle: "${shortTitle}", status: "Published", date: "${dateStr}" },\n`;
   const updatedHtml = html.replace(/(const TOPICS = \[\n)/, `$1${topicEntry}`);
   await fs.writeFile(INDEX_PATH, updatedHtml, 'utf-8');
   console.log(`Registered ${nextId} in index.html TOPICS catalog`);

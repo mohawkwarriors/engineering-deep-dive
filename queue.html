@@ -317,7 +317,7 @@
 </head>
 <body>
   <header>
-    <a href="/" class="brand">⌀ Deep Dive</a>
+    <a href="index.html" class="brand">⌀ Deep Dive</a>
     <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">◐</button>
   </header>
 
@@ -355,7 +355,7 @@
   <script>
     // Initial Staged Queue (7 Days)
     let queue = [
-      { id: "B001", discipline: "Manufacturing", topic: "How Laptops Get Featherweight Metal Shells", summary: "How semi-solid magnesium slurry flows like soft-serve to create ultra-thin, rigid laptop housings.", date: "Mon · Oct 19" },
+      { id: "B008", discipline: "Manufacturing", topic: "Liquidmetal Casting with Zero Shrinkage", summary: "Exploiting amorphous vitrification to mold net-shape parts with zero crystalline shrinkage.", date: "Mon · Oct 19" },
       { id: "B002", discipline: "Mechanisms", topic: "Surviving 100G Shock Loads in Cycloidal Drives", summary: "Using rolling pin contact and trochoidal gear curves to endure massive shock loads without tooth shearing.", date: "Tue · Oct 20" },
       { id: "B003", discipline: "Product Dives", topic: "Foldable Phone Teardrop Hinges", summary: "Multi-link synchronized sliders creating a waterdrop bend radius to prevent permanent display creasing.", date: "Wed · Oct 21" },
       { id: "B004", discipline: "Thermal", topic: "How Vapor Chambers Flatten Die Hotspots", summary: "Two-phase phase-change flat heat pipes solving extreme localized heat flux across ultra-thin mobile dies.", date: "Thu · Oct 22" },
@@ -366,13 +366,13 @@
 
     // Replacement Backlog Pool
     let backlogPool = [
-      { id: "B008", discipline: "Manufacturing", topic: "Liquidmetal Casting with Zero Shrinkage", summary: "Exploiting amorphous vitrification to mold net-shape parts with zero crystalline shrinkage." },
       { id: "B010", discipline: "Mechanisms", topic: "Zero-Backlash Reduction with Strain Wave Flexsplines", summary: "How continuous elastic deformation and strain wave gear meshing achieve zero-backlash high-ratio reduction." },
       { id: "B011", discipline: "Materials", topic: "Near-Zero Friction with Diamond-Like Carbon Films", summary: "Depositing sp3-bonded carbon films for extreme surface hardness and near-zero sliding friction." },
       { id: "B012", discipline: "Electromechanical", topic: "Nanometer Positioning Using Piezoelectric Surface Waves", summary: "Generating high-frequency elliptical stator surface waves to drive direct-drive rotary torque." },
       { id: "B013", discipline: "Design", topic: "Stripping vs Shearing in Mismatched Fastener Joints", summary: "Determining critical engagement depth across mismatched aluminum and steel fasteners." },
       { id: "B014", discipline: "Product Dives", topic: "Active Front Grille Shutter Vane Aerodynamics", summary: "Balancing powertrain cooling airflow and aerodynamic drag reduction using motorized louvers." },
-      { id: "B015", discipline: "Materials", topic: "Sintering Precision Metal Hardware via MIM", summary: "Combining polymer binder flow with fine metal powder sintering for high-density micro-parts." }
+      { id: "B015", discipline: "Materials", topic: "Sintering Precision Metal Hardware via MIM", summary: "Combining polymer binder flow with fine metal powder sintering for high-density micro-parts." },
+      { id: "B016", discipline: "Thermal", topic: "Direct Die Cooling with Micro-Pin Fin Arrays", summary: "Etching sub-millimeter silicon pin fins directly on compute dies for extreme convective heat transfer." }
     ];
 
     let currentIndex = 0;
@@ -590,9 +590,29 @@
       document.body.setAttribute("data-theme", isDark ? "light" : "dark");
     }
 
-    // Initialize
-    initProgressBar();
-    renderCard(0);
+    // Initialize (attempt dynamic backlog fetch, fall back gracefully to staged queue)
+    async function loadDynamicQueue() {
+      try {
+        const res = await fetch("content/backlog.json");
+        if (res.ok) {
+          const backlog = await res.json();
+          const unpub = backlog.filter(t => t.status === "available" || t.status === "staged");
+          if (unpub.length >= 7) {
+            const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+            queue = unpub.slice(0, 7).map((item, idx) => ({
+              ...item,
+              date: item.scheduledDate ? `${days[idx % 7]} · ${item.scheduledDate}` : (queue[idx] ? queue[idx].date : `${days[idx % 7]}`)
+            }));
+            backlogPool = unpub.slice(7);
+          }
+        }
+      } catch (e) {
+        // Fall back gracefully
+      }
+      initProgressBar();
+      renderCard(0);
+    }
+    loadDynamicQueue();
   </script>
 </body>
 </html>

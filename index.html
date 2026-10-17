@@ -1058,6 +1058,7 @@
       .telemetry-bar { flex-direction: column !important; align-items: flex-start !important; }
       .issue-nav { flex-direction: column !important; align-items: stretch !important; }
       .issue-nav-btn { justify-content: center !important; }
+      .sidebar-outline { display: none !important; }
     }
   </style>
 </head>
@@ -1075,12 +1076,12 @@
 
   <div class="layout-wrapper">
     <header>
-      <a class="brand-group" onclick="loadArticle('#003')">
+      <a class="brand-group" onclick="loadLatestArticle()">
         <div class="brand-logo">⌀</div>
         <span class="brand">Engineering Deep Dive</span>
       </a>
       <div class="nav-actions">
-        <button class="nav-btn" id="btn-queue" onclick="window.location.href='/queue'">Queue</button>
+        <button class="nav-btn" id="btn-queue" style="display:none;" onclick="window.location.href='queue.html'">Queue</button>
         <button class="nav-btn" id="btn-archive" onclick="toggleArchiveView()">Archive</button>
         <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme">
           <svg id="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
@@ -1281,7 +1282,7 @@
               top: elementPosition - offset,
               behavior: "smooth"
             });
-            history.pushState(null, "", `#${targetId}`);
+            history.replaceState(null, "", `${activeArticleId}/${targetId}`);
           }
         });
       });
@@ -1490,11 +1491,49 @@
       document.getElementById("reading-progress-bar").style.width = `${progress}%`;
     });
 
+    function loadLatestArticle() {
+      if (TOPICS && TOPICS.length > 0) {
+        loadArticle(TOPICS[0].id);
+      }
+    }
+
+    // Author Queue Access (only visible to author via ?author=1 or Ctrl+Shift+Q)
+    function checkQueueAccess() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("author") || urlParams.has("admin") || urlParams.has("queue") || urlParams.has("review")) {
+        localStorage.setItem("deepdive_author", "1");
+      }
+      if (localStorage.getItem("deepdive_author") === "1") {
+        const btnQueue = document.getElementById("btn-queue");
+        if (btnQueue) btnQueue.style.display = "inline-flex";
+      }
+    }
+    checkQueueAccess();
+
+    window.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "q") || (e.altKey && e.key.toLowerCase() === "q")) {
+        const isAuth = localStorage.getItem("deepdive_author") === "1";
+        if (isAuth) {
+          localStorage.removeItem("deepdive_author");
+          const btnQueue = document.getElementById("btn-queue");
+          if (btnQueue) btnQueue.style.display = "none";
+        } else {
+          localStorage.setItem("deepdive_author", "1");
+          const btnQueue = document.getElementById("btn-queue");
+          if (btnQueue) btnQueue.style.display = "inline-flex";
+        }
+      }
+    });
+
     window.addEventListener("hashchange", () => {
-      if (window.location.hash === "#archive") {
+      const currentHash = window.location.hash;
+      if (currentHash === "#archive") {
         showView("archive");
-      } else if (TOPICS.some(t => t.id === window.location.hash)) {
-        loadArticle(window.location.hash);
+      } else {
+        const articleId = currentHash.split('/')[0];
+        if (TOPICS.some(t => t.id === articleId) && articleId !== activeArticleId) {
+          loadArticle(articleId);
+        }
       }
     });
 
@@ -1511,12 +1550,25 @@
 
     // Check if initial hash is #archive or a specific issue (e.g. #001, #002)
     const initHash = window.location.hash;
+    const initialArticleId = initHash.split('/')[0];
     if (initHash === "#archive") {
       showView("archive");
-    } else if (TOPICS.some(t => t.id === initHash)) {
-      loadArticle(initHash);
+    } else if (TOPICS.some(t => t.id === initialArticleId)) {
+      loadArticle(initialArticleId).then(() => {
+        if (initHash.includes('/')) {
+          const sectionId = initHash.split('/')[1];
+          const targetEl = document.getElementById(sectionId);
+          if (targetEl) {
+            setTimeout(() => {
+              const offset = 48;
+              const elementPosition = targetEl.getBoundingClientRect().top + window.pageYOffset;
+              window.scrollTo({ top: elementPosition - offset, behavior: "smooth" });
+            }, 100);
+          }
+        }
+      });
     } else {
-      loadArticle("#003");
+      loadLatestArticle();
     }
   </script>
 </body>

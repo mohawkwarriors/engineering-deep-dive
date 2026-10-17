@@ -4,7 +4,9 @@
     "discipline": "Manufacturing",
     "topic": "How Laptops Get Featherweight Metal Shells",
     "summary": "How semi-solid magnesium slurry flows like soft-serve to create ultra-thin, rigid laptop housings.",
-    "status": "available"
+    "status": "published",
+    "publishedDate": "2026-10-16",
+    "issueId": "#003"
   },
   {
     "id": "B002",
@@ -380,8 +382,8 @@
   {
     "id": "B055",
     "discipline": "Materials",
-    "topic": "Maintaining Creep Resistance in 250\u00b0C PEEK Bushings",
-    "summary": "Semi-crystalline thermoplastics maintaining creep resistance and sliding stability at 250\u00b0C.",
+    "topic": "Maintaining Creep Resistance in 250°C PEEK Bushings",
+    "summary": "Semi-crystalline thermoplastics maintaining creep resistance and sliding stability at 250°C.",
     "status": "available"
   },
   {
@@ -408,8 +410,8 @@
   {
     "id": "B059",
     "discipline": "Design",
-    "topic": "Calculating Press-Fit Hub Yielding with Lam\u00e9 Equations",
-    "summary": "Calculating Lam\u00e9 thick-cylinder equations to prevent plastic yield in press-fit gear hubs.",
+    "topic": "Calculating Press-Fit Hub Yielding with Lamé Equations",
+    "summary": "Calculating Lamé thick-cylinder equations to prevent plastic yield in press-fit gear hubs.",
     "status": "available"
   },
   {
@@ -696,7 +698,7 @@
     "id": "B100",
     "discipline": "Thermal",
     "topic": "Thermal Expansion Balancing in Apochromatic Lens Barrels",
-    "summary": "Using titanium and invar cell spacers to mechanically shift glass elements and preserve focal point over -40\u00b0C to +85\u00b0C.",
+    "summary": "Using titanium and invar cell spacers to mechanically shift glass elements and preserve focal point over -40°C to +85°C.",
     "status": "available"
   }
 ]
