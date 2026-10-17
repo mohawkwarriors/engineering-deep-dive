@@ -373,7 +373,7 @@ export function validateArticleHtml(html, fileLabel = 'article') {
           bottomY = y + fSize * 0.15;
         }
 
-        texts.push({ rawText, x, y, fSize, anchor, left, right, topY, bottomY });
+        texts.push({ rawText, attrs, x, y, fSize, anchor, left, right, topY, bottomY });
       } else if (token.startsWith('<line')) {
         const top = stack[stack.length - 1];
         const x1 = parseFloat((token.match(/\bx1=["']([0-9.-]+)["']/) || [0, 0])[1]) + top.tx;
@@ -427,6 +427,42 @@ export function validateArticleHtml(html, fileLabel = 'article') {
             errors.push(
               `SVG #${svgIdx + 1} in ${fileLabel} DIAGONAL LINE STRIKE-THROUGH: "${t.rawText}" is crossed by line (${Math.round(l.x1)},${Math.round(l.y1)})->(${Math.round(l.x2)},${Math.round(l.y2)})`
             );
+          }
+        }
+      }
+    }
+
+    // 4D. Check for Theme Contrast Collision (adaptive text over hardcoded dark fills)
+    for (const t of texts) {
+      if (t.rawText && t.attrs && (t.attrs.includes('svg-text-primary') || t.attrs.includes('svg-text-muted'))) {
+        const rects = [...svgStr.matchAll(/<rect([^>]*)>/gi)];
+        for (const r of rects) {
+          const rAttr = r[1];
+          const rxMatch = rAttr.match(/\bx=["']([0-9.-]+)["']/);
+          const ryMatch = rAttr.match(/\by=["']([0-9.-]+)["']/);
+          const rwMatch = rAttr.match(/\bwidth=["']([0-9.-]+)["']/);
+          const rhMatch = rAttr.match(/\bheight=["']([0-9.-]+)["']/);
+          const rFillMatch = rAttr.match(/\bfill=["']([^"']+)["']/);
+          const rClassMatch = rAttr.match(/\bclass=["']([^"']+)["']/);
+
+          if (rxMatch && ryMatch && rwMatch && rhMatch) {
+            const rx = parseFloat(rxMatch[1]);
+            const ry = parseFloat(ryMatch[1]);
+            const rw = parseFloat(rwMatch[1]);
+            const rh = parseFloat(rhMatch[1]);
+            const rFill = rFillMatch ? rFillMatch[1] : '';
+            const rClass = rClassMatch ? rClassMatch[1] : '';
+
+            const isDark = /#1[0-9a-f]{5}|#2[0-9a-f]{5}|#0[0-9a-f]{5}|#3[0-9a-f]{5}/i.test(rFill);
+            const isTheme = rClass.includes('svg-panel-bg') || rClass.includes('svg-canvas-bg');
+
+            if (isDark && !isTheme) {
+              if (t.x >= rx && t.x <= rx + rw && t.y >= ry && t.y <= ry + rh) {
+                errors.push(
+                  `SVG #${svgIdx + 1} in ${fileLabel} CONTRAST COLLISION: "${t.rawText}" uses adaptive theme text class directly over hardcoded dark rect (${rFill}). Must use explicit high-contrast badge or light fill.`
+                );
+              }
+            }
           }
         }
       }

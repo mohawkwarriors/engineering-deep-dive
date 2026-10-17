@@ -153,6 +153,9 @@ STRICT EDITORIAL REQUIREMENTS:
        - NEVER place two callout <text> elements on the same vertical baseline (or within 22px vertically) unless they are inside separate non-overlapping column cards. Left-anchored callouts and right-anchored (text-anchor="end") callouts MUST always sit on distinct vertical y-baselines separated by at least 24px.
        - Every <text> element's horizontal span [left, right] MUST stay strictly within [20, viewBoxWidth - 20]. Bottom summary banners must use font-size="12" and remain under 105 characters per line so they never clip outside the viewBox.
        - NEVER route a <line> or <path> through any <text> bounding box.
+        - CONTRAST & THEME IMMUNITY (HARD GATE):
+          * In SVGs, NEVER place <text class="svg-text-primary"> or <text class="svg-text-muted"> directly over hardcoded dark geometry (e.g. #292524, #1C1917, #18181B, or #222). In Light Mode, svg-text-primary becomes dark charcoal (#1F1E1D), resulting in an illegible black-on-black collision.
+          * Any callout pointing to or sitting over dark hardware components MUST be housed inside a dedicated high-contrast badge pill (<rect fill="#1C1917" stroke="#COLOR" rx="4"/>) with an explicit bright accent font (e.g. fill="#38BDF8", fill="#F59E0B", or fill="#10B981"), guaranteeing crisp contrast in both light and dark themes.
 
 RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other text):
 {
