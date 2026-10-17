@@ -125,7 +125,7 @@ RETURN ONLY A VALID JSON ARRAY OF 30 OBJECTS (no markdown fences, no extra text)
 
   if (!textOutput) throw lastErr || new Error("Empty response from Gemini API.");
 
-  const rawQueue = JSON.parse(textOutput);
+  const rawQueue = safeJsonParse(textOutput);
 
   // Format into calendar queue
   const now = new Date();

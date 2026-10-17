@@ -18,6 +18,42 @@ const SUBJECTS = [
   "Product Dives"
 ];
 
+export function safeJsonParse(rawString) {
+  if (!rawString) throw new Error("Empty JSON string received.");
+  let cleaned = rawString.trim();
+  if (cleaned.startsWith('```')) {
+    cleaned = cleaned.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+  }
+
+  try {
+    return JSON.parse(cleaned);
+  } catch (err) {
+    console.warn(`Standard JSON.parse failed (${err.message}). Repairing unescaped LaTeX backslashes...`);
+
+    // Pass 1: Double any backslash not part of a valid JSON escape sequence (\", \\, \/, \b, \f, \n, \r, \t, \uXXXX)
+    const pass1 = cleaned.replace(/\\(?!["\\/bfnrt]|u[0-9a-fA-F]{4})/g, '\\\\');
+    try {
+      return JSON.parse(pass1);
+    } catch (err2) {
+      console.warn(`Pass 1 backslash repair failed (${err2.message}). Attempting iterative positional repair...`);
+      let s = pass1;
+      for (let attempt = 0; attempt < 50; attempt++) {
+        try {
+          return JSON.parse(s);
+        } catch (posErr) {
+          const match = posErr.message.match(/position (\d+)/);
+          if (!match) throw posErr;
+          const pos = parseInt(match[1], 10);
+          const backslashIdx = s.lastIndexOf('\\', pos);
+          if (backslashIdx === -1 || pos - backslashIdx > 8) throw posErr;
+          s = s.slice(0, backslashIdx) + '\\\\' + s.slice(backslashIdx + 1);
+        }
+      }
+      throw err2;
+    }
+  }
+}
+
 async function run() {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
@@ -173,9 +209,8 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other te
 }`;
 
   const candidateModels = [
-    'gemini-3.1-pro-preview',
-    'gemini-3-pro-preview',
     'gemini-3-flash-preview',
+    'gemini-3.1-pro-preview',
     'gemini-2.5-flash'
   ];
 
@@ -223,7 +258,7 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other te
     throw lastError || new Error("All Gemini models failed to generate content.");
   }
 
-  const articleData = JSON.parse(rawContent);
+  const articleData = safeJsonParse(rawContent);
   console.log(`Generated: "${articleData.title}" (${articleData.subject})`);
 
   // Deterministic Auto-Sanitizer + Global SVG Geometry Validation Gate
@@ -244,7 +279,7 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other te
       const repairJson = await repairRes.json();
       const repairedRaw = repairJson.candidates?.[0]?.content?.parts?.[0]?.text;
       if (repairedRaw) {
-        const repairedObj = JSON.parse(repairedRaw);
+        const repairedObj = safeJsonParse(repairedRaw);
         if (repairedObj.article_html) {
           articleData.article_html = autoSanitizeArticleHtml(repairedObj.article_html);
         }
