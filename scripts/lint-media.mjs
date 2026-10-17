@@ -96,6 +96,44 @@ function checkJsonIssues() {
         }
       }
     }
+
+    // 5. Check for overlapping text collisions in SVGs
+    for (const svg of svgMatches) {
+      const gMatches = [...svg.matchAll(/<g([^>]*)>([\s\S]*?)<\/g>/g)];
+      for (const g of gMatches) {
+        const texts = [...g[2].matchAll(/<text([^>]*)>([\s\S]*?)<\/text>/g)];
+        const coords = [];
+        texts.forEach(t => {
+          const xMatch = t[1].match(/x=["']([^"']+)["']/);
+          const yMatch = t[1].match(/y=["']([^"']+)["']/);
+          const anchorMatch = t[1].match(/text-anchor=["']([^"']+)["']/);
+          const anchor = anchorMatch ? anchorMatch[1] : 'start';
+          const str = t[2].replace(/<[^>]+>/g, '').trim();
+          if (xMatch && yMatch && str.length > 0) {
+            coords.push({ x: parseFloat(xMatch[1]), y: parseFloat(yMatch[1]), anchor, text: str });
+          }
+        });
+
+        for (let i = 0; i < coords.length; i++) {
+          for (let j = i + 1; j < coords.length; j++) {
+            const a = coords[i];
+            const b = coords[j];
+            if (Math.abs(a.y - b.y) < 10) {
+              const aWidth = a.text.length * 7.2;
+              const bWidth = b.text.length * 7.2;
+              const aLeft = a.anchor === 'end' ? a.x - aWidth : a.anchor === 'middle' ? a.x - aWidth / 2 : a.x;
+              const aRight = aLeft + aWidth;
+              const bLeft = b.anchor === 'end' ? b.x - bWidth : b.anchor === 'middle' ? b.x - bWidth / 2 : b.x;
+              const bRight = bLeft + bWidth;
+
+              if (Math.max(aLeft, bLeft) < Math.min(aRight, bRight)) {
+                error(`SVG text collision in ${file}: "${a.text}" overlaps with "${b.text}" at y=${a.y}`);
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 
