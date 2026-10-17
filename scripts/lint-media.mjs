@@ -93,6 +93,79 @@ export function autoSanitizeArticleHtml(html) {
     return `<g${gAttrs}>${updatedBody}</g>`;
   });
 
+  // 4. Auto-shield and segment lines striking directly through text
+  out = out.replace(/<svg\b([^>]*)>([\s\S]*?)<\/svg>/g, (fullSvg, svgAttrs, svgBody) => {
+    // Gather all text bounding boxes
+    const textRegex = /<text\b([^>]*)>([\s\S]*?)<\/text>/g;
+    const textBoxes = [];
+    let tm;
+    while ((tm = textRegex.exec(svgBody)) !== null) {
+      const attrs = tm[1];
+      const rawText = tm[2].replace(/<[^>]+>/g, '').replace(/&[a-zA-Z0-9#]+;/g, 'X').trim();
+      const xMatch = attrs.match(/\bx=["']([0-9.-]+)["']/);
+      const yMatch = attrs.match(/\by=["']([0-9.-]+)["']/);
+      const sizeMatch = attrs.match(/font-size=["']([0-9.]+)["']/);
+      const anchorMatch = attrs.match(/text-anchor=["']([^"']+)["']/);
+      if (xMatch && yMatch && rawText) {
+        const x = parseFloat(xMatch[1]);
+        const y = parseFloat(yMatch[1]);
+        const fSize = sizeMatch ? parseFloat(sizeMatch[1]) : 12;
+        const anchor = anchorMatch ? anchorMatch[1] : 'start';
+        const w = rawText.length * (fSize * 0.6);
+        const left = anchor === 'end' ? x - w : anchor === 'middle' ? x - w / 2 : x;
+        const right = left + w;
+        const topY = y - fSize * 0.85;
+        const bottomY = y + fSize * 0.2;
+        textBoxes.push({ left, right, topY, bottomY, x, y, rawText });
+      }
+    }
+
+    // Inspect all <line> tags and split/clip any line crossing a text box
+    let updatedSvgBody = svgBody.replace(/<line\b([^>]*)\/?>/g, (lineTag, lineAttrs) => {
+      const x1M = lineAttrs.match(/\bx1=["']([0-9.-]+)["']/);
+      const y1M = lineAttrs.match(/\by1=["']([0-9.-]+)["']/);
+      const x2M = lineAttrs.match(/\bx2=["']([0-9.-]+)["']/);
+      const y2M = lineAttrs.match(/\by2=["']([0-9.-]+)["']/);
+      if (!x1M || !y1M || !x2M || !y2M) return lineTag;
+
+      const x1 = parseFloat(x1M[1]);
+      const y1 = parseFloat(y1M[1]);
+      const x2 = parseFloat(x2M[1]);
+      const y2 = parseFloat(y2M[1]);
+
+      for (const t of textBoxes) {
+        const lineCrossesX = Math.max(x1, x2) > t.left + 4 && Math.min(x1, x2) < t.right - 4;
+        const lineCrossesY = Math.max(y1, y2) > t.topY + 3 && Math.min(y1, y2) < t.bottomY - 3;
+
+        if (lineCrossesX && lineCrossesY) {
+          // If vertical line: truncate/stop before text
+          if (Math.abs(x1 - x2) < 2) {
+            if (y1 < t.topY && y2 > t.topY) {
+              const newY2 = Math.round(t.topY - 4);
+              return lineTag.replace(/\by2=["'][0-9.-]+["']/, `y2="${newY2}"`);
+            } else if (y1 > t.bottomY && y2 < t.bottomY) {
+              const newY2 = Math.round(t.bottomY + 4);
+              return lineTag.replace(/\by2=["'][0-9.-]+["']/, `y2="${newY2}"`);
+            }
+          }
+          // If horizontal line: stop before text
+          if (Math.abs(y1 - y2) < 2) {
+            if (x1 < t.left && x2 > t.left) {
+              const newX2 = Math.round(t.left - 4);
+              return lineTag.replace(/\bx2=["'][0-9.-]+["']/, `x2="${newX2}"`);
+            } else if (x1 > t.right && x2 < t.right) {
+              const newX2 = Math.round(t.right + 4);
+              return lineTag.replace(/\bx2=["'][0-9.-]+["']/, `x2="${newX2}"`);
+            }
+          }
+        }
+      }
+      return lineTag;
+    });
+
+    return `<svg${svgAttrs}>${updatedSvgBody}</svg>`;
+  });
+
   return out;
 }
 
@@ -335,20 +408,25 @@ export function validateArticleHtml(html, fileLabel = 'article') {
       }
     }
 
-    // 4C. Check horizontal lines striking directly through text
+    // 4C. Check all lines (horizontal, vertical, diagonal) striking through text
     for (const t of texts) {
       for (const l of lines) {
-        if (Math.abs(l.y1 - l.y2) < 1) {
-          const ly = l.y1;
-          const lxMin = Math.min(l.x1, l.x2);
-          const lxMax = Math.max(l.x1, l.x2);
-          if (ly > t.topY + 2 && ly < t.bottomY - 2) {
-            const ox = Math.min(t.right, lxMax) - Math.max(t.left, lxMin);
-            if (ox > 12) {
-              errors.push(
-                `SVG #${svgIdx + 1} in ${fileLabel} LINE STRIKE-THROUGH: "${t.rawText}" is crossed by horizontal line y=${ly} (${lxMin}..${lxMax})`
-              );
-            }
+        // Line segment intersection with text bounding box [t.left, t.right, t.topY, t.bottomY]
+        const lineCrossesX = Math.max(l.x1, l.x2) > t.left + 4 && Math.min(l.x1, l.x2) < t.right - 4;
+        const lineCrossesY = Math.max(l.y1, l.y2) > t.topY + 3 && Math.min(l.y1, l.y2) < t.bottomY - 3;
+        if (lineCrossesX && lineCrossesY) {
+          if (Math.abs(l.x1 - l.x2) < 2) {
+            errors.push(
+              `SVG #${svgIdx + 1} in ${fileLabel} VERTICAL LINE STRIKE-THROUGH: "${t.rawText}" is crossed by vertical line x=${Math.round(l.x1)} (y: ${Math.round(Math.min(l.y1, l.y2))}..${Math.round(Math.max(l.y1, l.y2))})`
+            );
+          } else if (Math.abs(l.y1 - l.y2) < 2) {
+            errors.push(
+              `SVG #${svgIdx + 1} in ${fileLabel} HORIZONTAL LINE STRIKE-THROUGH: "${t.rawText}" is crossed by horizontal line y=${Math.round(l.y1)} (x: ${Math.round(Math.min(l.x1, l.x2))}..${Math.round(Math.max(l.x1, l.x2))})`
+            );
+          } else {
+            errors.push(
+              `SVG #${svgIdx + 1} in ${fileLabel} DIAGONAL LINE STRIKE-THROUGH: "${t.rawText}" is crossed by line (${Math.round(l.x1)},${Math.round(l.y1)})->(${Math.round(l.x2)},${Math.round(l.y2)})`
+            );
           }
         }
       }
