@@ -288,7 +288,7 @@
 
 <h2 id="section-metallurgy-thermal-mass">5. Metallurgy of Thermal Mass: Forged CW510L Brass vs. AISI 316L Stainless Steel</h2>
 <p>
-  The material selection for boilers and group heads dictates both thermal inertia and long-term chemical durability. The table below outlines the mechanical and thermal properties of the primary engineering alloys used in espresso machinery:
+  The material selection for boilers and group heads dictates both <span class="tangent-term" data-tangent="thermal_mass">thermal inertia (thermal mass)</span> and long-term chemical durability. The table below outlines the mechanical and thermal properties of the primary engineering alloys used in espresso machinery:
 </p>
 
 <div class="process-card" style="margin: 28px 0; overflow-x: auto;">
@@ -360,98 +360,63 @@
 
 <h2 id="section-hydraulic-pressure-profiling">6. Hydraulic Pressure Profiling: Rotary Vane Pumps vs. Solenoid Vibratory Pumps</h2>
 <p>
-  A boiler cannot maintain temperature if incoming water flow surges erratically. The hydraulic engine powering the water circuit is either an oscillating solenoid vibratory pump or an industrial positive displacement rotary vane pump.
+  A boiler cannot maintain temperature if incoming water flow surges erratically. The hydraulic engine powering the water circuit is either an oscillating solenoid vibratory pump or an industrial positive displacement <span class="tangent-term" data-tangent="rotary_vane_pump">rotary vane pump</span>.
 </p>
 <ul>
   <li><strong>Vibratory (Ulka) Pumps:</strong> Rely on a diode-driven electromagnetic coil that pulls a spring-loaded magnetic piston back and forth at 50/60 Hz. Because displacement is variable ($0\text{ to }650\text{ mL/min}$ depending on head pressure), backpressure from the coffee puck drastically alters the flow rate. The pulsating output causes hydraulic water hammer that can fracture the coffee puck bed (channeling).</li>
   <li><strong>Rotary Vane Pumps:</strong> Utilize an electric motor spinning an eccentric rotor fitted with spring-loaded graphite vanes. Water is trapped in rotating pockets and continuously pressurized against an adjustable mechanical bypass regulator valve. This delivers immediate, completely smooth 9.0 bar pressure at flow rates exceeding 100 liters/hour with zero acoustic or hydraulic flutter.</li>
 </ul>
 
+<!-- FIG 05: DUAL-BOILER EXTRACTION FLUIDIC PIPELINE -->
 <div class="schematic-card" id="fig05-flow-architecture">
   <div class="schematic-header">
     <span class="schematic-title">FIG 05 — DUAL-BOILER EXTRACTION FLUIDIC PIPELINE</span>
-    <span class="schematic-subtitle">STEP-BY-STEP HYDRAULIC & THERMAL TOPOLOGY</span>
+    <span class="schematic-subtitle">STEP-BY-STEP HYDRAULIC &amp; THERMAL TOPOLOGY</span>
   </div>
-  <div class="schematic-viewport">
-    <svg viewBox="0 0 960 260" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">
-      <rect width="960" height="260" rx="8" class="svg-canvas-bg" />
+  <div class="process-grid">
+    <div class="process-step-card">
+      <div class="process-step-tag">STAGE 01: INTAKE</div>
+      <div class="process-step-title">Ambient Feedwater Intake</div>
+      <p class="process-step-desc">
+        Fresh de-ionized water (18&deg;C, 1 bar, 50 ppm minerals) enters from the reservoir, filtered to prevent calcium scaling.
+      </p>
+    </div>
 
-      <!-- Step 1: Cold Reservoir -->
-      <g transform="translate(30, 40)">
-        <rect x="0" y="0" width="150" height="135" rx="6" class="svg-panel-bg" stroke="#0284C7" stroke-width="1.5"/>
-        <rect x="10" y="10" width="130" height="26" rx="4" fill="#0284C7" opacity="0.2"/>
-        <text x="75" y="27" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" fill="#0284C7" font-weight="700">STEP 1: INTAKE</text>
-        <text x="75" y="62" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" class="svg-text-primary" font-weight="700">COLD RESERVOIR</text>
-        <text x="75" y="86" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" class="svg-text-muted">T = 18°C • P = 1 bar</text>
-        <text x="75" y="112" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#0284C7">De-ionized (50 ppm)</text>
-      </g>
+    <div class="process-step-card">
+      <div class="process-step-tag">STAGE 02: PRESSURIZE</div>
+      <div class="process-step-title">Rotary Vane Pressurization</div>
+      <p class="process-step-desc">
+        A balanced bypass rotary vane pump ramps pressure to an instantaneous, ripple-free 9.0 bars without vibratory oscillation.
+      </p>
+    </div>
 
-      <!-- Flow Arrow 1 -> 2 -->
-      <line x1="185" y1="107" x2="215" y2="107" stroke="#0284C7" stroke-width="3"/>
-      <polygon points="222,107 212,101 212,113" fill="#0284C7"/>
+    <div class="process-step-card">
+      <div class="process-step-tag">STAGE 03: PRE-HEAT</div>
+      <div class="process-step-title">Steam Boiler HX Pre-Heating</div>
+      <p class="process-step-desc">
+        Feedwater travels through a copper heat exchanger immersed in the 125&deg;C steam boiler, raising water temperature from 18&deg;C to 85&deg;C.
+      </p>
+    </div>
 
-      <!-- Step 2: Rotary Vane Pump -->
-      <g transform="translate(225, 40)">
-        <rect x="0" y="0" width="155" height="135" rx="6" class="svg-panel-bg" stroke="#38BDF8" stroke-width="1.5"/>
-        <rect x="10" y="10" width="135" height="26" rx="4" fill="#38BDF8" opacity="0.2"/>
-        <text x="77" y="27" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" fill="#38BDF8" font-weight="700">STEP 2: PRESSURIZE</text>
-        <text x="77" y="62" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" class="svg-text-primary" font-weight="700">ROTARY VANE PUMP</text>
-        <text x="77" y="86" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" class="svg-text-muted">P = 9.0 bar (Instant)</text>
-        <text x="77" y="112" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#38BDF8">Balanced Bypass Reg.</text>
-      </g>
+    <div class="process-step-card">
+      <div class="process-step-tag">STAGE 04: ISOTHERM</div>
+      <div class="process-step-title">Saturated Brew Boiler PID</div>
+      <p class="process-step-desc">
+        Pre-heated water enters the dedicated 1.8 L brew boiler, where a 10 Hz PID loop trims the final temperature to exactly 93.3&deg;C (&plusmn;0.1&deg;C).
+      </p>
+    </div>
 
-      <!-- Flow Arrow 2 -> 3 -->
-      <line x1="385" y1="107" x2="415" y2="107" stroke="#0284C7" stroke-width="3"/>
-      <polygon points="422,107 412,101 412,113" fill="#0284C7"/>
-
-      <!-- Step 3: Steam Boiler Pre-Heat HX Coil -->
-      <g transform="translate(425, 40)">
-        <rect x="0" y="0" width="160" height="135" rx="6" class="svg-panel-bg" stroke="#EA580C" stroke-width="1.5"/>
-        <rect x="10" y="10" width="140" height="26" rx="4" fill="#EA580C" opacity="0.2"/>
-        <text x="80" y="27" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" fill="#EA580C" font-weight="700">STEP 3: PRE-HEAT</text>
-        <text x="80" y="62" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" class="svg-text-primary" font-weight="700">HX IN STEAM BOILER</text>
-        <text x="80" y="86" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" class="svg-text-muted">18°C → 85°C Pre-Heat</text>
-        <text x="80" y="112" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#EA580C">Steam: 125°C @ 2 bar</text>
-      </g>
-
-      <!-- Flow Arrow 3 -> 4 -->
-      <line x1="590" y1="107" x2="620" y2="107" stroke="#EA580C" stroke-width="3"/>
-      <polygon points="627,107 617,101 617,113" fill="#EA580C"/>
-
-      <!-- Step 4: Saturated Brew Boiler + PID -->
-      <g transform="translate(630, 40)">
-        <rect x="0" y="0" width="155" height="135" rx="6" class="svg-panel-bg" stroke="#DC2626" stroke-width="1.5"/>
-        <rect x="10" y="10" width="135" height="26" rx="4" fill="#DC2626" opacity="0.2"/>
-        <text x="77" y="27" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" fill="#DC2626" font-weight="700">STEP 4: ISOTHERM</text>
-        <text x="77" y="62" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" class="svg-text-primary" font-weight="700">SATURATED BOILER</text>
-        <text x="77" y="86" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10.5" class="svg-text-muted">T = 93.3°C (±0.1°C)</text>
-        <text x="77" y="112" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#DC2626">PID RTD Loop @ 10 Hz</text>
-      </g>
-
-      <!-- Flow Arrow 4 -> 5 -->
-      <line x1="790" y1="107" x2="815" y2="107" stroke="#DC2626" stroke-width="3"/>
-      <polygon points="822,107 812,101 812,113" fill="#DC2626"/>
-
-      <!-- Step 5: Saturated Group & Coffee Puck -->
-      <g transform="translate(825, 40)">
-        <rect x="0" y="0" width="115" height="135" rx="6" class="svg-panel-bg" stroke="#10B981" stroke-width="1.5"/>
-        <rect x="6" y="10" width="103" height="26" rx="4" fill="#10B981" opacity="0.2"/>
-        <text x="57" y="27" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#10B981" font-weight="700">STEP 5: EXTRACT</text>
-        <text x="57" y="62" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" class="svg-text-primary" font-weight="700">COFFEE PUCK</text>
-        <text x="57" y="86" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10.5" class="svg-text-muted">30s • 36g Liquid</text>
-        <text x="57" y="112" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#10B981">Yield ~20%</text>
-      </g>
-
-      <!-- Bottom Status Bar -->
-      <g transform="translate(30, 200)">
-        <rect x="0" y="0" width="900" height="42" rx="6" class="svg-panel-bg" stroke="var(--border)" stroke-width="1.5"/>
-        <text x="450" y="26" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" class="svg-text-primary" font-weight="600">FEEDWATER DISSOLVED GAS EVACUATION • CLOSED RECIRCULATION LOOP • PULSE-FREE PRESSURE STACK</text>
-      </g>
-    </svg>
+    <div class="process-step-card">
+      <div class="process-step-tag">STAGE 05: EXTRACT</div>
+      <div class="process-step-title">Saturated Group Delivery</div>
+      <p class="process-step-desc">
+        The massive forged brass group head delivers isothermal water across the coffee puck, extracting 36g espresso in 30s with zero thermal dive.
+      </p>
+    </div>
   </div>
   <div class="schematic-caption">
     <span><strong>FIG 05 — FLUIDIC SEQUENCING:</strong> Five-stage hydraulic and thermal pathway from ambient 18°C feedwater pressurization through steam-jacket pre-heating to isothermal saturated puck delivery.</span>
-    <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
+    <span class="source-tag">FLOWCHART 01</span>
   </div>
 </div>
 

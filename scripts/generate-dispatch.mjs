@@ -159,11 +159,11 @@ STRICT EDITORIAL REQUIREMENTS:
    - Explain the "Why" in Plain English: Directly beneath every formula, state the immediate physical takeaway in one clean, plain-English sentence (e.g. "Doubling the bend radius cuts strain in half, keeping the glass well below its fracture limit.").
    - LaTeX Formatting: Display formulas must use <div class="math-block">$$...$$</div>; inline symbols must use $F$, $\rho$, $\mu$.
    - Deep Academic Formulations: Keep advanced derivations in the clickable 'tangents' popovers where readers can optionally explore them.
-6. SPEC COMPARISON TABLE: Include an HTML <table> with class="spec-table" inside a <div class="spec-table-wrap"> comparing 4-5 engineering architectures or materials across 5 technical metrics.
 7. TANGENT ANNOTATIONS & THE "NO-BARE-JARGON" RULE (THE GRIFFITH & TOOL-STEEL RULE):
-   - Wrap 4-6 specialized, non-intuitive technical terms in <span class="tangent-term" data-tangent="key"> with full popover definitions in the "tangents" dictionary.
+   - Wrap 4-7 specialized, non-intuitive technical terms in <span class="tangent-term" data-tangent="key"> with rich, educational popover definitions in the "tangents" dictionary so readers learn something new and fascinating each morning.
+   - MANDATORY 100% TWO-WAY LINKING RULE: Every single key defined in the "tangents" dictionary MUST be linked at least once in the article text via <span class="tangent-term" data-tangent="key"> (ZERO orphaned/unlinked definitions). Conversely, every data-tangent attribute used in the HTML must have a corresponding entry in "tangents" (ZERO missing definitions).
    - MANDATORY IN-PROSE JARGON TRANSLATION: Never drop advanced physical, materials, mechanical terminology, or proprietary alloy/tool steel brand names (e.g. Griffith micro-flaws, Hertzian contact stress, Taylor dispersion, Thixotropic rosettes, Dean vortices, Kirkendall voids, Böhler M390, Uddeholm Elmax, Dievar, Inconel 718) into the text without an immediate plain-English translation or parenthetical in that same sentence (e.g. "Griffith micro-flaws—microscopic surface scratches that act as stress magnifiers, causing brittle glass to fracture far below its theoretical atomic strength" or "Böhler M390 or Uddeholm Elmax—premium powder-metallurgy super-steels atomized into micro-powder to prevent brittle carbide clumps").
-   - A reader must NEVER feel confused or alienated by unexplained academic jargon or proprietary trade names while reading their morning digest.
+   - A reader must NEVER feel confused or alienated by unexplained academic jargon or proprietary trade names while reading their morning digest. Every article must be clean, welcoming, and deeply educational.
 8. VISUAL MEDIA & GRAPHICS ARCHITECTURE:
    - TIER 1 (PRIMARY): AUTHENTIC REAL-WORLD TEARDOWN / HARDWARE PHOTOGRAPHY (PAID PUBLICATION BENCHMARK):
      * SELECTION ARCHETYPE:
@@ -182,7 +182,9 @@ STRICT EDITORIAL REQUIREMENTS:
        <span class="source-tag">ARCHIVE / SOURCE</span>
        Never omit the FIG XX prefix, never use standalone figure badges, and always include the <span class="source-tag">.
    - TIER 2 (GENERATED VISUALS — WHEN REAL PHOTOS DO NOT EXIST):
-      * STRICT BAN ON FREEHAND SVG COMPARISONS & PROCEDURES:
+      * STRICT BAN ON FREEHAND SVG COMPARISONS, PROCEDURES & KINETIC SIMULATORS:
+         - NEVER output interactive sliders, dynamic JS simulation engines, or moving vector components.
+         - NEVER draw multi-step process workflows, kinematic sequences, or fluid pipelines inside raw SVG (NO <text>STEP 1</text>, NO <text>STAGE 1</text> inside SVG).
         - NEVER attempt to draw comparison panels, badge callouts, or multi-step processes using raw freehand SVGs with hardcoded text coordinates. Raw SVG coordinates lack font-metrics awareness and inevitably cause micro-coordinate line overlaps, text clipping, or box overflows.
         - NEVER use diffusion AI art for technical mechanisms or schematics (it produces blurry, uninformative blobs).
       * NATIVE HTML COMPARISON COMPONENT (MANDATORY FOR FIG 02 THESIS COMPARISON):
@@ -236,8 +238,8 @@ STRICT EDITORIAL REQUIREMENTS:
             <span><strong>FIG 02 — TITLE:</strong> Caption description...</span>
             <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
           </div>
-      * NATIVE HTML PROCESS GRID (MANDATORY FOR SEQUENCES & WORKFLOWS):
-        - For 3 to 5 stage kinematic sequences, manufacturing operations, or fluid pathways, use responsive HTML process grids (<div class="process-grid"><div class="process-step-card"><div class="process-step-tag">STAGE 01: ...</div><div class="process-step-title">...</div><p class="process-step-desc">...</p></div>...</div>). These are 100% responsive, visually bulletproof, and mathematically immune to text collisions.
+      * NATIVE HTML PROCESS GRID (MANDATORY FOR ALL SEQUENCES, FLOWCHARTS & WORKFLOWS):
+        - For 3 to 5 stage kinematic sequences, manufacturing operations, fluid pathways, or reduction stages, you MUST use responsive HTML process grids (<div class="process-grid"><div class="process-step-card"><div class="process-step-tag">STAGE 01: ...</div><div class="process-step-title">...</div><p class="process-step-desc">...</p></div>...</div>). NEVER attempt to draw step sequences inside raw SVG. These HTML cards are 100% responsive, visually bulletproof, and mathematically immune to text collisions.
       * STRICT LIMITS FOR SVG (ONLY FOR SINGLE-AXIS CROSS-SECTIONS):
         - SVG is ONLY permitted for single-axis mechanical cutaways (e.g. FIG 04 CAD schematic). It must be a simple linear component with vast breathing room.
         - ZERO TEXT COLLISION, BADGE PROPORTIONALITY & VIEWBOX RULES:

@@ -15,16 +15,31 @@ for (const file of issues) {
   const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
   const html = data.article_html || '';
 
-  // 1A. Tangents check
+  // 1A. Subtitle presence
+  if (!data.subtitle || typeof data.subtitle !== 'string' || data.subtitle.trim().length === 0) {
+    console.error(`[ERROR] ${file} is missing top-level 'subtitle' field.`);
+    issueErrors++;
+  }
+
+  // 1B. Tangents check (complete 2-way sync)
   const htmlKeys = [...html.matchAll(/data-tangent="([^"]+)"/g)].map(m => m[1]);
   const dictKeys = Object.keys(data.tangents || {});
+  
+  // Every html key must be in dict
   const missingInDict = htmlKeys.filter(k => !dictKeys.includes(k));
   if (missingInDict.length > 0) {
     console.error(`[ERROR] ${file} has data-tangent terms missing from 'tangents' dictionary:`, missingInDict);
     issueErrors++;
   }
+  
+  // Every dict key must be linked in html (zero orphaned definitions)
+  const unlinkedInDict = dictKeys.filter(k => !htmlKeys.includes(k));
+  if (unlinkedInDict.length > 0) {
+    console.error(`[ERROR] ${file} has definitions in 'tangents' dictionary that are never linked in article_html:`, unlinkedInDict);
+    issueErrors++;
+  }
 
-  // 1B. Image src check
+  // 1C. Image src check
   const imgMatches = [...html.matchAll(/<img[^>]+src="([^">]+)"/g)].map(m => m[1]);
   for (const src of imgMatches) {
     if (src.startsWith('images/')) {
@@ -35,7 +50,7 @@ for (const file of issues) {
     }
   }
 
-  // 1C. Sequential figure captions
+  // 1D. Sequential figure captions
   const caps = [...html.matchAll(/<strong>FIG\s*(\d+)\s*—\s*([^:<]+):<\/strong>/g)];
   for (let i = 0; i < caps.length; i++) {
     const num = parseInt(caps[i][1], 10);
@@ -45,7 +60,32 @@ for (const file of issues) {
     }
   }
 
-  // 1D. Math equations calibration (Morning Digest standard)
+  // 1E. Strict ban on raw multi-step process flows in SVG (must use .process-grid)
+  const svgs = [...html.matchAll(/<svg\b[^>]*>([\s\S]*?)<\/svg>/gi)];
+  for (const s of svgs) {
+    if (/(?:STEP|STAGE)\s*\d+/i.test(s[1])) {
+      console.error(`[ERROR] ${file} contains multi-step sequence inside raw SVG. Multi-step sequences must use .process-grid with .process-step-card.`);
+      issueErrors++;
+    }
+  }
+
+  // 1F. Unified source tags on all captions
+  const figcaps = [...html.matchAll(/<figcaption>([\s\S]*?)<\/figcaption>/gi)];
+  for (const fc of figcaps) {
+    if (!fc[1].includes('class="source-tag"')) {
+      console.error(`[ERROR] ${file} has <figcaption> missing <span class="source-tag">.`);
+      issueErrors++;
+    }
+  }
+  const schemCaps = [...html.matchAll(/<div class="schematic-caption">([\s\S]*?)<\/div>/gi)];
+  for (const sc of schemCaps) {
+    if (!sc[1].includes('class="source-tag"')) {
+      console.error(`[ERROR] ${file} has <div class="schematic-caption"> missing <span class="source-tag">.`);
+      issueErrors++;
+    }
+  }
+
+  // 1G. Math equations calibration (Morning Digest standard)
   const mathInline = [...html.matchAll(/\$([^$]+)\$/g)].map(m => m[1]);
   for (const eq of mathInline) {
     if (eq.includes('\u0000') || eq.includes('\u0007') || eq.includes('\u0008')) {
@@ -63,7 +103,7 @@ for (const file of issues) {
     }
   }
 
-  // 1E. Structural elements check
+  // 1H. Structural elements check
   if (!html.includes('class="meta-line"')) {
     console.error(`[ERROR] ${file} is missing standard .meta-line header.`);
     issueErrors++;
@@ -75,7 +115,7 @@ for (const file of issues) {
 }
 
 if (issueErrors === 0) {
-  console.log(`✓ All ${issues.length} articles passed content, image, tangent, equation, and structural audits.`);
+  console.log(`✓ All ${issues.length} articles passed content, image, tangent, subtitle, caption source, and structural audits.`);
 }
 
 console.log('\n--- 2. AUDITING SYNCHRONIZED MARKDOWN MIRRORS ---');
@@ -88,7 +128,26 @@ if (mdFiles.length < issues.length) {
   console.error(`[ERROR] Mismatch between JSON issues (${issues.length}) and Markdown mirrors (${mdFiles.length})`);
   mirrorErrors++;
 } else {
-  console.log('✓ All historical issues have synchronized Markdown archive mirrors.');
+  // Verify exact text synchronization
+  for (const file of issues) {
+    const jsonPath = path.join('content/issues', file);
+    const issueData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+    const expectedHtml = (issueData.article_html || '').trim();
+
+    // Find corresponding md file
+    const matchingMd = mdFiles.find(mf => {
+      const mdContent = fs.readFileSync(path.join('content', mf), 'utf8').trim();
+      return mdContent === expectedHtml;
+    });
+
+    if (!matchingMd) {
+      console.error(`[ERROR] No exact synchronized Markdown mirror found for ${file}!`);
+      mirrorErrors++;
+    }
+  }
+  if (mirrorErrors === 0) {
+    console.log('✓ All historical issues have exact synchronized Markdown archive mirrors.');
+  }
 }
 
 console.log('\n--- 3. AUDITING BACKLOG & QUEUE ---');

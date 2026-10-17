@@ -379,6 +379,25 @@ export function validateArticleHtml(html, fileLabel = 'article') {
   // 4. Global SVG Geometry & Text Collision Analysis
   const svgMatches = [...html.matchAll(/<svg[\s\S]*?<\/svg>/g)].map(m => m[0]);
   svgMatches.forEach((svgStr, svgIdx) => {
+    if (/(?:STEP|STAGE)\s*\d+/i.test(svgStr)) {
+      errors.push(`SVG #${svgIdx + 1} in ${fileLabel}: contains multi-step sequence inside raw SVG. Multi-step workflows must use responsive HTML .process-grid.`);
+    }
+  });
+
+  const figcaps = [...html.matchAll(/<figcaption>([\s\S]*?)<\/figcaption>/gi)];
+  for (const fc of figcaps) {
+    if (!fc[1].includes('class="source-tag"')) {
+      errors.push(`<figcaption> in ${fileLabel} is missing mandatory <span class="source-tag">.`);
+    }
+  }
+  const schemCaps = [...html.matchAll(/<div class="schematic-caption">([\s\S]*?)<\/div>/gi)];
+  for (const sc of schemCaps) {
+    if (!sc[1].includes('class="source-tag"')) {
+      errors.push(`<div class="schematic-caption"> in ${fileLabel} is missing mandatory <span class="source-tag">.`);
+    }
+  }
+
+  svgMatches.forEach((svgStr, svgIdx) => {
     const vbMatch = svgStr.match(/viewBox=["']\s*([0-9.-]+)\s+([0-9.-]+)\s+([0-9.-]+)\s+([0-9.-]+)\s*["']/);
     const vbW = vbMatch ? parseFloat(vbMatch[3]) : 960;
     const vbH = vbMatch ? parseFloat(vbMatch[4]) : 480;
@@ -617,6 +636,24 @@ function runCli() {
         console.error(`[LINT ERROR] Corrupted JSON in ${file}: ${e.message}`);
         hasViolation = true;
         continue;
+      }
+
+      if (!data.subtitle || typeof data.subtitle !== 'string' || !data.subtitle.trim()) {
+        console.error(`[LINT ERROR] Missing top-level 'subtitle' field in ${file}`);
+        hasViolation = true;
+      }
+
+      const htmlKeys = [...(data.article_html || '').matchAll(/data-tangent="([^"]+)"/g)].map(m => m[1]);
+      const dictKeys = Object.keys(data.tangents || {});
+      const missingInDict = htmlKeys.filter(k => !dictKeys.includes(k));
+      if (missingInDict.length > 0) {
+        console.error(`[LINT ERROR] ${file} has data-tangent terms missing from 'tangents' dictionary: ${missingInDict.join(', ')}`);
+        hasViolation = true;
+      }
+      const unlinkedInDict = dictKeys.filter(k => !htmlKeys.includes(k));
+      if (unlinkedInDict.length > 0) {
+        console.error(`[LINT ERROR] ${file} has definitions in 'tangents' dictionary that are never linked in article_html: ${unlinkedInDict.join(', ')}`);
+        hasViolation = true;
       }
 
       if (data.article_html) {

@@ -206,7 +206,7 @@
   <strong>Compressive vs. Bending Stress Distribution:</strong>
 </p>
 <ul>
-  <li><strong>Elimination of Cantilever Bending:</strong> The cycloidal lobes do not project outward as unsupported cantilevers. Instead, the disc is a solid, monolithic wheel supported internally by heavy-duty cylindrical roller bearings. The force transmitted between each roller pin and the disc lobe acts purely as a normal compressive force perpendicular to the tangent of the epitrochoid curve.
+  <li><strong>Elimination of Cantilever Bending:</strong> The cycloidal lobes do not project outward as unsupported cantilevers. Instead, the disc is a solid, monolithic wheel supported internally by heavy-duty <span class="tangent-term" data-tangent="needle_roller_bearing">needle roller bearings</span>. The force transmitted between each roller pin and the disc lobe acts purely as a normal compressive force perpendicular to the tangent of the epitrochoid curve.
   </li>
   <li><strong>Hertzian Contact Stress Mitigation:</strong> Under <span class="tangent-term" data-tangent="hertzian_contact_stress">Hertzian contact theory</span>, two convex cylinders pressed together distribute load across a rectangular contact patch of half-width $b_H$:
     <div class="math-block">
@@ -228,7 +228,7 @@
   While cycloidal reducers exhibit exceptional torque density and shock resistance, their eccentric orbit introduces a serious dynamic dilemma: <strong>centrifugal unbalance</strong>.
 </p>
 <p>
-  The input shaft is machined with an eccentric cam of throw $e$ (typically $1.0\text{ to }2.5\text{ mm}$). As the high-speed input motor spins at $3{,}000\text{ RPM}$ ($\omega_{\text{in}} \approx 314\text{ rad/s}$), the cycloidal disc orbits eccentrically around the gearbox center axis.
+  The input shaft is machined with an <span class="tangent-term" data-tangent="eccentric_offset">eccentric cam throw $e$</span> (typically $1.0\text{ to }2.5\text{ mm}$). As the high-speed input motor spins at $3{,}000\text{ RPM}$ ($\omega_{\text{in}} \approx 314\text{ rad/s}$), the cycloidal disc orbits eccentrically around the gearbox center axis.
 </p>
 <p>
   If only a single cycloidal disc were used, this orbiting mass $m_{\text{disc}}$ would generate an immense rotating centrifugal force vector:
@@ -260,91 +260,56 @@
   </li>
 </ul>
 
+<!-- FIG 03: CYCLOIDAL TORQUE TRANSMISSION PIPELINE -->
 <div class="schematic-card" id="fig03-torque-pipeline">
   <div class="schematic-header">
     <span class="schematic-title">FIG 03 — CYCLOIDAL TORQUE TRANSMISSION PIPELINE</span>
     <span class="schematic-subtitle">STEP-BY-STEP KINEMATIC CONVERSION &amp; REDUCTION TOPOLOGY</span>
   </div>
-  <div class="schematic-viewport">
-    <svg viewBox="0 0 960 260" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; display:block;">
-      <rect width="960" height="260" rx="8" class="svg-canvas-bg" />
+  <div class="process-grid">
+    <div class="process-step-card">
+      <div class="process-step-tag">STAGE 01: INPUT</div>
+      <div class="process-step-title">High-Speed Motor Shaft</div>
+      <p class="process-step-desc">
+        Pure high-speed rotational energy (&omega;<sub>in</sub> = 3,000 RPM) enters via the central drive shaft, coupled directly to the input motor.
+      </p>
+    </div>
 
-      <!-- Step 1: High-Speed Motor Input -->
-      <g transform="translate(30, 40)">
-        <rect x="0" y="0" width="150" height="135" rx="6" class="svg-panel-bg" stroke="#D97706" stroke-width="1.5"/>
-        <rect x="10" y="10" width="130" height="26" rx="4" fill="#D97706" opacity="0.2"/>
-        <text x="75" y="27" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" fill="#D97706" font-weight="700">STEP 1: INPUT</text>
-        <text x="75" y="62" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" class="svg-text-primary" font-weight="700">MOTOR SHAFT</text>
-        <text x="75" y="86" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" class="svg-text-muted">&omega;_in = 3,000 RPM</text>
-        <text x="75" y="112" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#D97706">Pure High-Speed Input</text>
-      </g>
+    <div class="process-step-card">
+      <div class="process-step-tag">STAGE 02: ECCENTRIC</div>
+      <div class="process-step-title">Dual Cam Orbital Translation</div>
+      <p class="process-step-desc">
+        Dual eccentric cam lobes offset by e = 1.50 mm and phased 180&deg; apart convert pure rotation into balanced high-frequency orbital epicyclic motion.
+      </p>
+    </div>
 
-      <!-- Flow Arrow 1 -> 2 -->
-      <line x1="185" y1="107" x2="215" y2="107" stroke="#D97706" stroke-width="3"/>
-      <polygon points="222,107 212,101 212,113" fill="#D97706"/>
+    <div class="process-step-card">
+      <div class="process-step-tag">STAGE 03: MESHING</div>
+      <div class="process-step-title">Rolling Pin Multi-Tooth Contact</div>
+      <p class="process-step-desc">
+        Epitrochoidal disc lobes roll across stationary ring pins with 30% simultaneous contact, completely eliminating cantilever tooth bending fatigue.
+      </p>
+    </div>
 
-      <!-- Step 2: Eccentric Cam Bearing -->
-      <g transform="translate(225, 40)">
-        <rect x="0" y="0" width="155" height="135" rx="6" class="svg-panel-bg" stroke="#F59E0B" stroke-width="1.5"/>
-        <rect x="10" y="10" width="135" height="26" rx="4" fill="#F59E0B" opacity="0.2"/>
-        <text x="77" y="27" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" fill="#F59E0B" font-weight="700">STEP 2: ECCENTRIC</text>
-        <text x="77" y="62" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" class="svg-text-primary" font-weight="700">DUAL CAM LOBES</text>
-        <text x="77" y="86" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" class="svg-text-muted">Offset: e = 1.50 mm</text>
-        <text x="77" y="112" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#F59E0B">Dual 180&deg; Discs</text>
-      </g>
+    <div class="process-step-card">
+      <div class="process-step-tag">STAGE 04: RATIO</div>
+      <div class="process-step-title">Epicyclic Speed Reduction</div>
+      <p class="process-step-desc">
+        With N - 1 disc lobes advancing against N ring pins, each full 360&deg; eccentric orbit drives the disc backward by exactly one lobe pitch (R = N - 1 : 1).
+      </p>
+    </div>
 
-      <!-- Flow Arrow 2 -> 3 -->
-      <line x1="385" y1="107" x2="415" y2="107" stroke="#F59E0B" stroke-width="3"/>
-      <polygon points="422,107 412,101 412,113" fill="#F59E0B"/>
-
-      <!-- Step 3: Cycloidal Meshing -->
-      <g transform="translate(425, 40)">
-        <rect x="0" y="0" width="160" height="135" rx="6" class="svg-panel-bg" stroke="#3B82F6" stroke-width="1.5"/>
-        <rect x="10" y="10" width="140" height="26" rx="4" fill="#3B82F6" opacity="0.2"/>
-        <text x="80" y="27" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" fill="#3B82F6" font-weight="700">STEP 3: MESHING</text>
-        <text x="80" y="62" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" class="svg-text-primary" font-weight="700">ROLLING RING PINS</text>
-        <text x="80" y="86" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" class="svg-text-muted">30% Concurrent Contact</text>
-        <text x="80" y="112" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#3B82F6">Zero Tooth Cantilever</text>
-      </g>
-
-      <!-- Flow Arrow 3 -> 4 -->
-      <line x1="590" y1="107" x2="620" y2="107" stroke="#3B82F6" stroke-width="3"/>
-      <polygon points="627,107 617,101 617,113" fill="#3B82F6"/>
-
-      <!-- Step 4: Speed Reduction -->
-      <g transform="translate(630, 40)">
-        <rect x="0" y="0" width="155" height="135" rx="6" class="svg-panel-bg" stroke="#8B5CF6" stroke-width="1.5"/>
-        <rect x="10" y="10" width="135" height="26" rx="4" fill="#8B5CF6" opacity="0.2"/>
-        <text x="77" y="27" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" fill="#8B5CF6" font-weight="700">STEP 4: RATIO</text>
-        <text x="77" y="62" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" class="svg-text-primary" font-weight="700">SPEED REDUCTION</text>
-        <text x="77" y="86" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" class="svg-text-muted">R = (N - 1) : 1</text>
-        <text x="77" y="112" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#8B5CF6">Reverse Disc Rotation</text>
-      </g>
-
-      <!-- Flow Arrow 4 -> 5 -->
-      <line x1="790" y1="107" x2="815" y2="107" stroke="#8B5CF6" stroke-width="3"/>
-      <polygon points="822,107 812,101 812,113" fill="#8B5CF6"/>
-
-      <!-- Step 5: Output Extraction -->
-      <g transform="translate(825, 40)">
-        <rect x="0" y="0" width="115" height="135" rx="6" class="svg-panel-bg" stroke="#10B981" stroke-width="1.5"/>
-        <rect x="8" y="10" width="99" height="26" rx="4" fill="#10B981" opacity="0.2"/>
-        <text x="57" y="27" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" fill="#10B981" font-weight="700">STEP 5: OUT</text>
-        <text x="57" y="62" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="13" class="svg-text-primary" font-weight="700">OUTPUT FLANGE</text>
-        <text x="57" y="86" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" class="svg-text-muted">&omega;_out = &omega;_in / R</text>
-        <text x="57" y="112" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#10B981">&tau;_out &gt; 500 Nm</text>
-      </g>
-
-      <!-- Bottom Status Bar -->
-      <g transform="translate(30, 200)">
-        <rect x="0" y="0" width="900" height="42" rx="6" class="svg-panel-bg" stroke="var(--border)" stroke-width="1.5"/>
-        <text x="450" y="26" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" class="svg-text-primary" font-weight="600">HIGH-TORQUE EPICYCLIC REDUCTION • PURE ROLLING HERTZIAN CONTACT • 100G SHOCK ISOLATION</text>
-      </g>
-    </svg>
+    <div class="process-step-card">
+      <div class="process-step-tag">STAGE 05: OUTPUT</div>
+      <div class="process-step-title">Pure High-Torque Rotation</div>
+      <p class="process-step-desc">
+        Output flange drive pins cancel the 1.5 mm orbital wobbling, extracting pure, low-speed, shock-proof rotation (&tau;<sub>out</sub> &gt; 500 Nm).
+      </p>
+    </div>
   </div>
   <div class="schematic-caption">
     <span><strong>FIG 03 — KINEMATIC STACK:</strong> Step-by-step mechanical energy conversion through an eccentric cycloidal stage, filtering out orbital translation to deliver pure low-speed high-torque rotation.</span>
-    <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
+    <span class="source-tag">FLOWCHART 01</span>
   </div>
 </div>
 
