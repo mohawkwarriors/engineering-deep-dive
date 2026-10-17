@@ -52,7 +52,7 @@ isoDate: "2026-10-17"
   $$\epsilon_{\text{U-shape}} = \frac{0.42\text{ mm}}{2 \cdot (1.25\text{ mm})} = 0.168 \quad (16.8\%\text{ tensile / compressive strain})$$
 </div>
 <p>
-  This magnitude of mechanical strain is catastrophic. While flexible polymers can elastically accommodate $3\%$ to $5\%$ strain, silicate glass possesses a theoretical elastic limit of only $7\%$ under pristine laboratory vacuum, and an effective production yield limit of under $2.2\%$ due to surface Griffith micro-flaws. Subjecting UTG to $16.8\%$ strain guarantees rapid crack nucleation, delamination of the <span class="tangent-term" data-tangent="oca_viscoelasticity">Optically Clear Adhesive (OCA)</span>, and catastrophic fracture along the hinge centerline within 2,000 to 5,000 duty cycles.
+  This magnitude of mechanical strain is catastrophic. While flexible polymers can elastically accommodate $3\%$ to $5\%$ strain, silicate glass possesses a theoretical elastic limit of only $7\%$ under pristine laboratory vacuum, and an effective production yield limit of under $2.2\%$ due to surface <span class="tangent-term" data-tangent="griffith_flaws">Griffith micro-flaws</span>—microscopic surface scratches and edge micro-cracks that concentrate tensile stress, causing brittle glass to fracture at a tiny fraction of its theoretical atomic strength. Subjecting UTG to $16.8\%$ strain guarantees rapid crack nucleation, delamination of the <span class="tangent-term" data-tangent="oca_viscoelasticity">Optically Clear Adhesive (OCA)</span>, and catastrophic fracture along the hinge centerline within 2,000 to 5,000 duty cycles.
 </p>
 <p>
   <strong>The Teardrop (Waterdrop) Kinematic Breakthrough:</strong><br>

@@ -160,7 +160,10 @@ STRICT EDITORIAL REQUIREMENTS:
    - LaTeX Formatting: Display formulas must use <div class="math-block">$$...$$</div>; inline symbols must use $F$, $\rho$, $\mu$.
    - Deep Academic Formulations: Keep advanced derivations in the clickable 'tangents' popovers where readers can optionally explore them.
 6. SPEC COMPARISON TABLE: Include an HTML <table> with class="spec-table" inside a <div class="spec-table-wrap"> comparing 4-5 engineering architectures or materials across 5 technical metrics.
-7. TANGENT ANNOTATIONS: Wrap 4-6 specialized, non-intuitive technical terms in <span class="tangent-term" data-tangent="key">. In the "tangents" dictionary, provide their category tag, title, and detailed junior-friendly definition with a governing formula.
+7. TANGENT ANNOTATIONS & THE "NO-BARE-JARGON" RULE (THE GRIFFITH RULE):
+   - Wrap 4-6 specialized, non-intuitive technical terms in <span class="tangent-term" data-tangent="key"> with full popover definitions in the "tangents" dictionary.
+   - MANDATORY IN-PROSE JARGON TRANSLATION: Never drop advanced physical, materials, or mechanical terminology (e.g. Griffith micro-flaws, Hertzian contact stress, Taylor dispersion, Thixotropic rosettes, Dean vortices, Kirkendall voids) into the text without an immediate plain-English translation or parenthetical in that same sentence (e.g. "Griffith micro-flaws—microscopic surface scratches that act as stress magnifiers, causing brittle glass to fracture far below its theoretical atomic strength").
+   - A reader must NEVER feel confused or alienated by unexplained academic jargon while reading their morning digest.
 8. VISUAL MEDIA & GRAPHICS ARCHITECTURE:
    - TIER 1 (PRIMARY): AUTHENTIC REAL-WORLD TEARDOWN / HARDWARE PHOTOGRAPHY (PAID PUBLICATION BENCHMARK):
      * SELECTION ARCHETYPE:
