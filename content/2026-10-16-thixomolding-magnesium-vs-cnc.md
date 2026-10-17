@@ -33,7 +33,7 @@ Against 5-axis CNC machining, this delivers four decisive engineering advantages
 Unlike pure metals that freeze at a discrete temperature, light alloys solidify over a broad thermal band bounded by the solidus and liquidus temperatures. For electronics-grade AZ91D, the solidus is 470°C and the liquidus is 595°C, creating an immense 125°C semi-solid mushy freezing zone.
 
 * **The Dendritic Solidification Trap:** Molten magnesium solidifies into sharp, interlocking tree-like dendrites that trap liquid pockets, causing shrinkage porosity and hot tears.
-* **The Physics of Thixotropic Shear-Thinning:** Continuous mechanical shearing in the screw barrel snaps growing dendrites into smooth, globular rosettes suspended in eutectic liquid. Viscosity drops from ~100 Pa·s to 0.05 Pa·s under high shear ($\dot{\gamma} > 10^4\text{ s}^{-1}$).
+* **The Physics of Thixotropic Shear-Thinning:** Continuous mechanical shearing in the screw barrel snaps growing dendrites into smooth, globular rosettes suspended in eutectic liquid. Viscosity drops from ~100 Pa·s to 0.05 Pa·s under high shear ($\dot{\gamma} > 10^4	ext{ s}^{-1}$).
 * **Laminar Cavity Filling:** Injected at 2.0 to 5.5 m/s, the cohesive Bingham flow front ($	ext{Re} < 2{,}100$) pushes air smoothly ahead into chill vents, cutting internal gas porosity from >3.5% down to <0.2%.
 
 ---

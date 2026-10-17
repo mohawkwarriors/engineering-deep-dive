@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>How Laptops Get Featherweight Metal Shells — Engineering Deep Dive</title>
+  <title>Engineering Deep Dive — Daily Hardware Intelligence</title>
   <meta name="description" content="A daily intelligence digest delivering rigorous first-principles mechanical engineering deep-dives, electromechanical teardowns, and interactive physics." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23D97757%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><circle cx=%2212%22 cy=%2212%22 r=%228%22/><line x1=%225.5%22 y1=%2218.5%22 x2=%2218.5%22 y2=%225.5%22/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -140,6 +140,7 @@
       cursor: pointer;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      transition: all 0.15s ease;
     }
     .nav-btn:hover, .nav-btn.active {
       background: var(--surface);
@@ -167,7 +168,7 @@
       stroke-width: 2;
     }
 
-    /* Desktop Content Grid (Untouched Desktop Mode) */
+    /* Content Grid & Layout Modes */
     .content-grid {
       display: grid;
       grid-template-columns: 240px 1fr;
@@ -175,7 +176,24 @@
       align-items: start;
       min-width: 0;
       width: 100%;
+      transition: all 0.2s ease;
     }
+    
+    /* Dedicated Full-Width Desktop Archive Mode (Fixes 240px Narrow Column Bug) */
+    .content-grid.archive-mode {
+      display: block !important;
+      max-width: 860px !important;
+      margin: 0 auto !important;
+      width: 100% !important;
+    }
+    .content-grid.archive-mode .sidebar-outline {
+      display: none !important;
+    }
+    .content-grid.archive-mode #main-container {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+
     .sidebar-outline {
       position: sticky;
       top: 32px;
@@ -366,17 +384,14 @@
       font-size: 16px;
       max-width: 100%;
     }
-    .katex-display {
-      margin: 0 !important;
-      padding: 4px 0;
-    }
+    .katex-display { margin: 0 !important; padding: 4px 0; }
     .katex { font-size: 1.05em; }
     .katex-error {
       color: inherit !important;
       border-bottom: 1px dotted var(--accent);
     }
 
-    /* Adaptive SVG Diagram Theming (Seamless Light & Dark Mode) */
+    /* Adaptive SVG Diagram Theming */
     .svg-canvas-bg {
       fill: var(--card-inner);
       stroke: var(--border);
@@ -395,22 +410,10 @@
       stroke-width: 1px;
       transition: fill 0.2s ease, stroke 0.2s ease;
     }
-    .svg-text-primary {
-      fill: var(--text);
-      transition: fill 0.2s ease;
-    }
-    .svg-text-muted {
-      fill: var(--muted);
-      transition: fill 0.2s ease;
-    }
-    .svg-border-muted {
-      stroke: var(--border);
-      transition: stroke 0.2s ease;
-    }
-    .svg-void-fill {
-      fill: var(--surface-hover);
-      transition: fill 0.2s ease;
-    }
+    .svg-text-primary { fill: var(--text); transition: fill 0.2s ease; }
+    .svg-text-muted { fill: var(--muted); transition: fill 0.2s ease; }
+    .svg-border-muted { stroke: var(--border); transition: stroke 0.2s ease; }
+    .svg-void-fill { fill: var(--surface-hover); transition: fill 0.2s ease; }
     .svg-rosette {
       fill: var(--muted);
       opacity: 0.85;
@@ -509,7 +512,7 @@
       gap: 12px;
     }
 
-    /* Process Flow Grid Cards: Fully Theme-Aligned in Light and Dark Mode */
+    /* Process Flow Grid Cards */
     .process-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -604,14 +607,8 @@
       letter-spacing: 0.05em;
       color: var(--accent);
     }
-    .telemetry-desc {
-      font-size: 13px;
-      color: var(--muted);
-    }
-    .telemetry-actions {
-      display: flex;
-      gap: 10px;
-    }
+    .telemetry-desc { font-size: 13px; color: var(--muted); }
+    .telemetry-actions { display: flex; gap: 10px; }
     .score-btn {
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
@@ -675,59 +672,157 @@
       cursor: not-allowed;
     }
 
-    /* Archive View */
+    /* ==========================================================================
+       ARCHIVE VIEW STYLING (REDESIGNED FOR FULL-WIDTH DESKTOP & FLUID MOBILE)
+       ========================================================================== */
     .hidden { display: none !important; }
+
+    #view-archive {
+      width: 100%;
+      max-width: 100%;
+      padding-bottom: 64px;
+    }
+    .archive-header-title {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 46px;
+      font-weight: 400;
+      line-height: 1.12;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    .archive-header-subtitle {
+      font-size: 17.5px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    /* Interactive Filter Bar */
     .subjects-bar {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      margin-bottom: 24px;
+      margin-bottom: 32px;
+      padding-bottom: 4px;
     }
     .subject-pill {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 4px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 20px;
       border: 1px solid var(--border);
-      background: transparent;
+      background: var(--surface);
       color: var(--text);
       cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .subject-pill:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+      color: var(--accent);
     }
     .subject-pill.active {
       background: var(--accent);
       color: #FFF;
       border-color: var(--accent);
     }
+    .subject-pill.disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* Rich Full-Width Archive Items */
+    #archive-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      width: 100%;
+    }
     .archive-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border);
+      padding: 20px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
       cursor: pointer;
+      transition: all 0.18s ease;
+      gap: 20px;
+      width: 100%;
     }
-    .archive-item:hover .archive-title {
+    .archive-item:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+      transform: translateY(-1.5px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+    }
+    .archive-main {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+    }
+    .archive-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+    .archive-id {
+      font-weight: 700;
       color: var(--accent);
+      letter-spacing: 0.04em;
     }
+    .archive-subject-tag {
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      background: var(--card-inner);
+      color: var(--text);
+      border: 1px solid var(--border);
+      letter-spacing: 0.04em;
+    }
+    .tag-manufacturing { border-color: rgba(37, 99, 235, 0.45); color: var(--sub-manufacturing); }
+    .tag-thermal { border-color: rgba(225, 29, 72, 0.45); color: var(--sub-thermal); }
+    .tag-product-dives { border-color: rgba(217, 119, 87, 0.45); color: var(--sub-product-dives); }
+    .tag-electromechanical { border-color: rgba(79, 70, 229, 0.45); color: var(--sub-electromechanical); }
+
     .archive-title {
       font-family: 'Instrument Serif', Georgia, serif;
-      font-size: 20px;
-      margin-bottom: 4px;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      border: none;
+      word-break: break-word;
     }
-    .archive-right {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+    .archive-arrow {
       color: var(--muted);
       display: flex;
-      gap: 16px;
+      align-items: center;
+      transition: transform 0.15s ease, color 0.15s ease;
+      flex-shrink: 0;
+    }
+    .archive-item:hover .archive-arrow {
+      color: var(--accent);
+      transform: translateX(4px);
     }
 
     /* ==========================================================================
-       MOBILE READING OPTIMIZATION (STRICT: REMOVES PINNED OUTLINE, ZERO OVERFLOW)
-       Desktop mode (> 768px) is 100% untouched.
+       MOBILE OPTIMIZATION (STRICT: REMOVES PINNED OUTLINE, ZERO HORIZONTAL SCROLL)
        ========================================================================== */
     @media (max-width: 768px) {
-      /* 1. Eliminate pinned outline completely on mobile */
       .sidebar-outline, #sidebar-outline {
         display: none !important;
         visibility: hidden !important;
@@ -739,7 +834,6 @@
         border: none !important;
       }
 
-      /* 2. Prevent horizontal window expansion */
       html, body {
         overflow-x: hidden !important;
         width: 100vw !important;
@@ -751,7 +845,6 @@
         overflow-x: hidden !important;
       }
 
-      /* 3. Single-column reading flow */
       .content-grid {
         display: block !important;
         width: 100% !important;
@@ -768,62 +861,44 @@
         word-break: break-word !important;
       }
 
-      /* 4. Mobile typography scaling */
-      h1 {
-        font-size: 32px !important;
-        line-height: 1.15 !important;
-        margin-bottom: 14px !important;
-      }
-      .subtitle {
-        font-size: 16px !important;
-        line-height: 1.5 !important;
-        margin-bottom: 24px !important;
-      }
-      h2 {
-        font-size: 25px !important;
-        margin: 36px 0 14px !important;
-        line-height: 1.2 !important;
-      }
-      h3 {
-        font-size: 18px !important;
-        margin: 28px 0 12px !important;
-      }
-      p, li {
-        font-size: 15.5px !important;
-        line-height: 1.65 !important;
-      }
-      ul, ol {
-        margin: 0 0 20px 18px !important;
-      }
+      h1 { font-size: 32px !important; line-height: 1.15 !important; }
+      .archive-header-title { font-size: 32px !important; }
+      .archive-header-subtitle { font-size: 15.5px !important; margin-bottom: 20px !important; }
+      .subtitle { font-size: 16px !important; line-height: 1.5 !important; }
+      h2 { font-size: 25px !important; line-height: 1.2 !important; }
+      h3 { font-size: 18px !important; }
+      p, li { font-size: 15.5px !important; line-height: 1.65 !important; }
 
-      /* 5. Process flow grid stacks cleanly on mobile */
       .process-grid {
         grid-template-columns: 1fr !important;
         padding: 14px !important;
         gap: 10px !important;
       }
 
-      /* 6. Isolated horizontal scrolling for wide graphics & tables only */
-      .schematic-viewport {
-        padding: 12px !important;
-        justify-content: flex-start !important;
-      }
-      .math-block {
-        padding: 12px 14px !important;
-        font-size: 14.5px !important;
-      }
-      .telemetry-bar {
-        flex-direction: column !important;
-        align-items: flex-start !important;
+      .archive-item {
         padding: 16px !important;
+        gap: 12px !important;
       }
-      .issue-nav {
-        flex-direction: column !important;
-        align-items: stretch !important;
+      .archive-title {
+        font-size: 19px !important;
+        line-height: 1.3 !important;
       }
-      .issue-nav-btn {
-        justify-content: center !important;
+      .subjects-bar {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        flex-wrap: nowrap !important;
+        margin-bottom: 20px !important;
       }
+      .subject-pill {
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+      }
+
+      .schematic-viewport { padding: 12px !important; }
+      .math-block { padding: 12px 14px !important; font-size: 14.5px !important; }
+      .telemetry-bar { flex-direction: column !important; align-items: flex-start !important; }
+      .issue-nav { flex-direction: column !important; align-items: stretch !important; }
+      .issue-nav-btn { justify-content: center !important; }
     }
   </style>
 </head>
@@ -846,7 +921,7 @@
         <span class="brand">Engineering Deep Dive</span>
       </a>
       <div class="nav-actions">
-        <button class="nav-btn" id="btn-archive" onclick="showView('archive')">Archive</button>
+        <button class="nav-btn" id="btn-archive" onclick="toggleArchiveView()">Archive</button>
         <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme">
           <svg id="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
           <svg id="sun-icon" style="display:none;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -855,19 +930,22 @@
     </header>
 
     <div class="content-grid" id="content-grid">
-      <!-- Desktop Left Sidebar (Only visible on Desktop > 768px) -->
+      <!-- Desktop Left Sidebar (Only visible on Desktop in Article view) -->
       <aside class="sidebar-outline" id="sidebar-outline">
         <ul class="outline-list" id="outline-list"></ul>
       </aside>
 
       <main class="editorial-column" id="main-container">
+        <!-- Article View -->
         <article id="view-article"></article>
         
+        <!-- Bottom Article Navigation -->
         <nav class="issue-nav" id="issue-nav"></nav>
 
+        <!-- Archive View (Redesigned Full-Width & Responsive) -->
         <section id="view-archive" class="hidden">
-          <h1>Archive</h1>
-          <p class="subtitle">Explore published dispatches across all 8 core engineering disciplines.</p>
+          <h1 class="archive-header-title">Archive</h1>
+          <p class="archive-header-subtitle">Explore published dispatches across all 8 core engineering disciplines.</p>
           <div class="subjects-bar" id="subjects-bar"></div>
           <div id="archive-list"></div>
         </section>
@@ -934,7 +1012,9 @@
         articleCache[id] = data;
         renderArticleContent(data);
       } catch (err) {
+        console.error("Could not fetch issue chunk:", err);
         articleEl.innerHTML = `<div style="padding:48px 0; color:var(--muted); font-family:'JetBrains Mono',monospace;">Could not load dispatch ${id}.</div>`;
+        showView("article");
       }
     }
 
@@ -950,7 +1030,6 @@
       renderIssueNav();
       syncTelemetryUI();
       attachTangentListeners();
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function renderIssueNav() {
@@ -1005,7 +1084,7 @@
 
     function buildOutline() {
       const isDesktop = window.innerWidth > 768;
-      if (!isDesktop) return; // Do not build or touch outline on mobile
+      if (!isDesktop) return;
       
       const list = document.getElementById("outline-list");
       list.innerHTML = "";
@@ -1067,32 +1146,109 @@
       }
     });
 
+    function toggleArchiveView() {
+      const isCurrentlyArchive = !document.getElementById("view-archive").classList.contains("hidden");
+      showView(isCurrentlyArchive ? "article" : "archive");
+    }
+
     function showView(view) {
-      document.getElementById("view-article").classList.toggle("hidden", view !== "article");
-      document.getElementById("view-archive").classList.toggle("hidden", view !== "archive");
-      document.getElementById("btn-archive").classList.toggle("active", view === "archive");
-      
-      const isDesktop = window.innerWidth > 768;
+      const isArchive = view === "archive";
+      const grid = document.getElementById("content-grid");
+      const articleView = document.getElementById("view-article");
+      const archiveView = document.getElementById("view-archive");
+      const btnArchive = document.getElementById("btn-archive");
       const outline = document.getElementById("sidebar-outline");
-      if (outline) {
-        outline.style.display = (view === "article" && isDesktop) ? "block" : "none";
+      const issueNav = document.getElementById("issue-nav");
+
+      articleView.classList.toggle("hidden", isArchive);
+      archiveView.classList.toggle("hidden", !isArchive);
+
+      if (isArchive) {
+        if (grid) grid.classList.add("archive-mode");
+        if (btnArchive) {
+          btnArchive.classList.add("active");
+          btnArchive.textContent = "Current Issue";
+        }
+        if (outline) outline.style.display = "none";
+        if (issueNav) issueNav.style.display = "none";
+        renderSubjects();
+        renderArchive();
+      } else {
+        if (grid) grid.classList.remove("archive-mode");
+        if (btnArchive) {
+          btnArchive.classList.remove("active");
+          btnArchive.textContent = "Archive";
+        }
+        const isDesktop = window.innerWidth > 768;
+        if (outline) outline.style.display = isDesktop ? "block" : "none";
+        if (issueNav) issueNav.style.display = "flex";
       }
 
-      const issueNav = document.getElementById("issue-nav");
-      if (issueNav) {
-        issueNav.style.display = (view === "article") ? "flex" : "none";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function getTagClass(sub) {
+      switch(sub) {
+        case "Product Dives": return "tag-product-dives";
+        case "Manufacturing": return "tag-manufacturing";
+        case "Thermal": return "tag-thermal";
+        case "Electromechanical": return "tag-electromechanical";
+        default: return "";
       }
+    }
+
+    function renderSubjects() {
+      const bar = document.getElementById("subjects-bar");
+      if (!bar) return;
+      const published = TOPICS.filter(t => t.status === "Published");
+      
+      bar.innerHTML = SUBJECTS.map(sub => {
+        const count = (sub === "All") 
+          ? published.length 
+          : published.filter(t => t.subject === sub).length;
+        const isActive = sub === activeSubject;
+        const isDisabled = count === 0;
+
+        return `
+          <button class="subject-pill ${isActive ? 'active' : ''} ${isDisabled ? 'disabled' : ''}" 
+                  ${isDisabled ? 'disabled' : `onclick="filterSubject('${sub}')"`}>
+            ${sub} (${count})
+          </button>
+        `;
+      }).join("");
+    }
+
+    function filterSubject(sub) {
+      activeSubject = sub;
+      renderSubjects();
+      renderArchive();
     }
 
     function renderArchive() {
       const list = document.getElementById("archive-list");
+      if (!list) return;
       const published = TOPICS.filter(t => t.status === "Published");
-      list.innerHTML = published.map(item => `
+      const filtered = (activeSubject === "All") 
+        ? published 
+        : published.filter(t => t.subject === activeSubject);
+
+      if (filtered.length === 0) {
+        list.innerHTML = `<div style="padding: 40px 0; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 13px;">No published dispatches in this discipline yet.</div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map(item => `
         <div class="archive-item" onclick="loadArticle('${item.id}')">
-          <div class="archive-title">${item.title}</div>
-          <div class="archive-right">
-            <span>${item.subject}</span>
-            <span>${item.date}</span>
+          <div class="archive-main">
+            <div class="archive-meta">
+              <span class="archive-id">${item.id}</span>
+              <span class="archive-subject-tag ${getTagClass(item.subject)}">${item.subject}</span>
+              <span class="archive-date">${item.date}</span>
+            </div>
+            <h3 class="archive-title">${item.title}</h3>
+          </div>
+          <div class="archive-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </div>
         </div>
       `).join("");
@@ -1111,8 +1267,12 @@
       document.getElementById("reading-progress-bar").style.width = `${progress}%`;
     });
 
-    renderArchive();
-    loadArticle("#003");
+    // Check if initial hash is #archive
+    if (window.location.hash === "#archive") {
+      showView("archive");
+    } else {
+      loadArticle("#003");
+    }
   </script>
 </body>
 </html>
