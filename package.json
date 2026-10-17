@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "echo 'Static build ready'",
+    "lint": "node scripts/lint-media.mjs",
+    "test": "node scripts/lint-media.mjs",
     "generate": "node scripts/generate-dispatch.mjs",
     "curate": "node scripts/generate-monthly-queue.mjs"
   },

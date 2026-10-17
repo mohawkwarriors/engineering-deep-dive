@@ -24,11 +24,17 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Run Quality & Schematic Linter
+        run: node scripts/lint-media.mjs
+
       - name: Generate Daily Dispatch
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/generate-dispatch.mjs
+
+      - name: Validate Generated Content
+        run: node scripts/lint-media.mjs
 
       - name: Commit and Push New Issue
         run: |
