@@ -122,13 +122,17 @@ STRICT EDITORIAL REQUIREMENTS:
    - Popover Equations: In the 'tangents' dictionary, format equations as <div class="modal-equation-box"><div class="math-label">Concept Name:</div>$$Formula$$<div class="math-meta">Parameter definitions with inline LaTeX</div></div>.
 6. SPEC COMPARISON TABLE: Include an HTML <table> with class="spec-table" inside a <div class="spec-table-wrap"> comparing 4-5 engineering architectures or materials across 5 technical metrics.
 7. TANGENT ANNOTATIONS: Wrap 4-6 specialized, non-intuitive technical terms in <span class="tangent-term" data-tangent="key">. In the "tangents" dictionary, provide their category tag, title, and detailed junior-friendly definition with a governing formula.
-8. VISUAL MEDIA & CODE-DRIVEN SVG DIAGRAMS:
-   - ZERO GENERATED RASTER IMAGES: Strict ban on AI-generated diffusion art (DALL-E/Midjourney/Imagen).
-   - VECTOR DIAGRAM SPATIAL ZONING & ZERO-COLLISION RULES:
-     * ZERO IN-SHAPE TEXT STAMPING: Text labels MUST NEVER be centered inside small geometric shapes (< 80px), circles, or voids.
-     * LEADER LINE ANNOTATION ARCHITECTURE: All callouts MUST use angled leader lines with a terminal anchor dot pointing into clear whitespace margins.
-     * DEDICATED COORDINATE TIERS: Decouple geometry from annotations into strict vertical bands: Header tier, Graphic illustration canvas, and Bottom metric banner. Labels must never float across geometry lines.
-     * ADAPTIVE SVG THEMING: Inline SVGs must use CSS classes (.svg-canvas-bg, .svg-panel-bg, .svg-text-primary, .svg-text-muted) mapped to CSS variables.
+8. VISUAL MEDIA & GRAPHICS ARCHITECTURE:
+   - TIER 1 (PRIMARY): AUTHENTIC REAL-WORLD TEARDOWN / HARDWARE PHOTOGRAPHY:
+     * Scraped or linked from verified public archives (Wikimedia Commons, iFixit, FCC filings, US Patent archives, manufacturer technical whitepapers).
+     * Placed inside <figure class="product-figure"> with clean <figcaption> and source-tag at the top of the article.
+   - TIER 2 (GENERATED VISUALS — WHEN REAL PHOTOS DO NOT EXIST):
+     * NEVER use diffusion AI art for technical mechanisms or schematics (it produces blurry, uninformative blobs).
+     * All generated visuals MUST adhere to one of the 3 approved clean engineering archetypes, strictly conforming to the website theme (--bg: #191918, --surface: #232220, --border: #383734, --accent: #D97757, --text: #EDEDEB) and 'JetBrains Mono' typography:
+       1. SIMPLE CAD CROSS-SECTIONS (e.g. Figure 2 in Issue #003): Clean sectional cutaways with mechanical hatching, clear component boundaries, and strict 3-tier coordinate layout (<svg viewBox="0 0 960 420"> inside <div class="schematic-card">).
+       2. HIGH-LEVEL IDEATION SKETCHES: Industrial design (ID) concept sketches with clean linework, phantom transparency lines showing internal ribs/features, and subtle tone shading.
+       3. STEP-BY-STEP PROCESS BLOCK DIAGRAMS: Horizontal/grid pipeline cards showing Step 1, Step 2, Step 3 (e.g. using a responsive step grid inside <div class="schematic-card">).
+     * ZERO TEXT COLLISION RULE: Text labels must NEVER be stamped over geometry lines. All callouts must use angled leader lines with terminal anchor dots pointing into open whitespace margins, or sit in dedicated header/footer tiers.
 
 RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other text):
 {
