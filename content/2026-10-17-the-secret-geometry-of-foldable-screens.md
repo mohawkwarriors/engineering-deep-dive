@@ -55,85 +55,42 @@
   Coupled with neutral-axis positioning layers (shifting the zero-strain line directly into the neutral plane of the brittle glass core), peak strain in the UTG drops below <strong>1.1%</strong>—well within its infinite fatigue endurance regime ($> 400{,}000$ cycles).
 </p>
 
-<div class="schematic-card" id="fig02-teardrop-geometry">
+<div class="schematic-card" id="fig02-comparative-geometry">
   <div class="schematic-header">
     <span class="schematic-title">FIG 02 — U-SHAPED FOLD VS. EULER CLOTHOID TEARDROP GEOMETRY</span>
     <span class="schematic-subtitle">COMPARATIVE BENDING RADIUS &amp; CHASSIS GAP KINEMATICS</span>
   </div>
-  <div class="schematic-viewport">
-    <svg viewBox="0 0 960 360" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="960" height="360" rx="8" class="svg-canvas-bg" />
+  <div class="comparison-grid">
+    <div class="comparison-card flawed-card">
+      <div class="comparison-card-tag">PANEL A // TRADITIONAL METHOD</div>
+      <h4 class="comparison-card-title">Traditional Concentric U-Shaped Fold</h4>
+      <div class="comparison-metric-pill danger-pill">
+        <span class="pill-label">BEND RADIUS:</span>
+        <span class="pill-value">&rho; = 1.25 mm (Sharp Concentric Pinch)</span>
+        <span class="pill-sub">Peak Tensile Strain: <strong>&epsilon; = 16.8% (Critical Failure)</strong></span>
+      </div>
+      <div class="comparison-consequence">
+        <strong>&bull; Tapered Gap: 2.2 mm:</strong> Creates wide cosmetic wedge and pronounced crease trench.<br>
+        <strong>&bull; Failure Mode:</strong> Exceeds UTG critical Griffith crack limit; triggers spalling micro-cracks under cyclic bending.
+      </div>
+    </div>
 
-      <!-- PANEL A: TRADITIONAL U-SHAPED FOLD (LEFT) -->
-      <g transform="translate(40, 20)">
-        <rect x="0" y="0" width="420" height="265" rx="6" class="svg-panel-bg" stroke="#DC2626" stroke-width="1.8"/>
-        <text x="210" y="32" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700" fill="#DC2626">A. TRADITIONAL U-SHAPED FOLD</text>
-        
-        <!-- Chassis Halves with Wedge Gap -->
-        <rect x="45" y="65" width="125" height="38" rx="4" class="svg-panel-sub" stroke="#78716C" stroke-width="1.5"/>
-        <rect x="45" y="142" width="125" height="38" rx="4" class="svg-panel-sub" stroke="#78716C" stroke-width="1.5"/>
-        
-        <!-- Hinge Pivot (Isolated behind chassis) -->
-        <circle cx="195" cy="122" r="8" fill="#1C1917" stroke="#DC2626" stroke-width="2"/>
-        <circle cx="195" cy="122" r="2.5" fill="#DC2626"/>
-
-        <!-- Acute U-Shaped Display Curve -->
-        <path d="M 55 103 L 140 103 C 185 103 185 142 140 142 L 55 142" stroke="#EF4444" stroke-width="4" fill="none"/>
-        <circle cx="162" cy="122" r="14" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="2 2" fill="none"/>
-        
-        <!-- Wedge Gap Indicator (Left) -->
-        <line x1="52" y1="103" x2="52" y2="142" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="2 2"/>
-        <text x="32" y="126" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="10" fill="#DC2626" font-weight="600">2.2mm GAP</text>
-
-        <!-- High Strain Badge (Isolated in Right Margin x=245..400) -->
-        <g transform="translate(245, 74)">
-          <rect x="0" y="0" width="160" height="82" rx="6" fill="#18181B" stroke="#DC2626" stroke-width="1.5"/>
-          <text x="80" y="46" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#F87171" font-weight="700">TIGHT BEND RADIUS</text>
-          <text x="80" y="69" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#F1F5F9">ρ = 1.25 mm (Sharp)</text>
-          <text x="80" y="90" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#EF4444" font-weight="700">Peak Strain: ε = 16.8%</text>
-        </g>
-        <line x1="245" y1="117" x2="180" y2="122" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="2 2"/>
-
-        <!-- Lower Status Description -->
-        <text x="210" y="220" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#DC2626" font-weight="700">Tapered Gap: 2.2mm • Deep Crease Trench</text>
-        <text x="210" y="242" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" class="svg-text-muted">Exceeds UTG critical Griffith crack limit</text>
-      </g>
-
-      <!-- PANEL B: EULER CLOTHOID TEARDROP FOLD (RIGHT) -->
-      <g transform="translate(500, 20)">
-        <rect x="0" y="0" width="420" height="265" rx="6" class="svg-panel-bg" stroke="#059669" stroke-width="1.8"/>
-        <text x="210" y="32" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700" fill="#059669">B. EULER CLOTHOID TEARDROP FOLD</text>
-
-        <!-- Chassis Halves Parallel Flush (0.0mm Gap) -->
-        <rect x="45" y="65" width="115" height="38" rx="4" class="svg-panel-sub" stroke="#78716C" stroke-width="1.5"/>
-        <rect x="45" y="142" width="115" height="38" rx="4" class="svg-panel-sub" stroke="#78716C" stroke-width="1.5"/>
-        <line x1="45" y1="122" x2="160" y2="122" stroke="#10B981" stroke-width="1" stroke-dasharray="3 3"/>
-        <text x="32" y="126" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="10" fill="#059669" font-weight="600">0.0mm FLUSH</text>
-
-        <!-- Bulbous Waterdrop Teardrop Loop -->
-        <path d="M 55 103 L 125 103 C 150 103 160 70 190 70 C 225 70 235 175 190 175 C 160 175 150 142 125 142 L 55 142" stroke="#0284C7" stroke-width="4" fill="none"/>
-        <circle cx="195" cy="122" r="32" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
-
-        <!-- Low Strain Badge (Isolated in Right Margin x=245..400) -->
-        <g transform="translate(245, 74)">
-          <rect x="0" y="0" width="160" height="82" rx="6" fill="#18181B" stroke="#059669" stroke-width="1.5"/>
-          <text x="80" y="46" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#34D399" font-weight="700">BULBOUS TEARDROP</text>
-          <text x="80" y="69" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#F1F5F9">ρ = 3.45 mm (Gentle)</text>
-          <text x="80" y="90" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#10B981" font-weight="700">Safe Strain: ε &lt; 6.2%</text>
-        </g>
-        <line x1="245" y1="117" x2="227" y2="122" stroke="#059669" stroke-width="1.5" stroke-dasharray="2 2"/>
-
-        <!-- Lower Status Description -->
-        <text x="210" y="220" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#059669" font-weight="700">True 0.0mm Closed Gap • Flat Display Line</text>
-        <text x="210" y="242" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" class="svg-text-muted">Internal floating cavity eliminates outer pinch</text>
-      </g>
-
-      <!-- BOTTOM SUMMARY BANNER -->
-      <g transform="translate(40, 302)">
-        <rect x="0" y="0" width="880" height="44" rx="5" class="svg-panel-bg" stroke="var(--border)" stroke-width="1.2"/>
-        <text x="440" y="27" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" class="svg-text-primary" font-weight="600">GEOMETRIC PRINCIPLE: Teardrop geometry nearly triples bend radius (3.45mm vs 1.25mm), cutting glass strain by 63%.</text>
-      </g>
-    </svg>
+    <div class="comparison-card solution-card">
+      <div class="comparison-card-tag">PANEL B // ENGINEERED SOLUTION</div>
+      <h4 class="comparison-card-title">Euler Clothoid Teardrop Fold</h4>
+      <div class="comparison-metric-pill success-pill">
+        <span class="pill-label">TEARDROP RADIUS:</span>
+        <span class="pill-value">&rho; = 3.45 mm (Bulbous Relief Loop)</span>
+        <span class="pill-sub">Safe Tensile Strain: <strong>&epsilon; &lt; 6.2% (Below Elastic Limit)</strong></span>
+      </div>
+      <div class="comparison-consequence">
+        <strong>&bull; True 0.0 mm Flush Closure:</strong> Internal floating cavity eliminates outer chassis pinch.<br>
+        <strong>&bull; Reliability:</strong> Triples bend radius, cutting glass tensile strain by 63% and preventing crease fatigue.
+      </div>
+    </div>
+  </div>
+  <div class="comparison-banner">
+    <strong>GEOMETRIC PRINCIPLE:</strong> Teardrop geometry nearly triples bend radius (3.45 mm vs 1.25 mm), cutting glass strain by 63% and enabling flush 0.0 mm chassis closure without crushing display layers.
   </div>
   <div class="schematic-caption">
     <span><strong>FIG 02 — FOLD GEOMETRY COMPARISON:</strong> Side-by-side comparison of legacy U-shaped concentric bending versus the Euler clothoid teardrop fold, illustrating how the internal waterdrop loop relieves tensile strain on Ultra-Thin Glass while enabling flush closure.</span>

@@ -182,28 +182,59 @@ STRICT EDITORIAL REQUIREMENTS:
        <span class="source-tag">ARCHIVE / SOURCE</span>
        Never omit the FIG XX prefix, never use standalone figure badges, and always include the <span class="source-tag">.
    - TIER 2 (GENERATED VISUALS — WHEN REAL PHOTOS DO NOT EXIST):
-      * MANDATORY COMPARATIVE GEOMETRY DIAGRAM (THE VISUAL THESIS RULE):
-        - Whenever an article introduces a new geometry, mechanism, or architecture that replaces a flawed legacy method (e.g. U-Shape vs. Teardrop Fold, Involute Gear vs. Cycloidal Pin, HPDC vs. Thixomolding Slurry, Thermoblock vs. Dual Boiler), you MUST include a dedicated side-by-side comparative vector schematic (<div class="schematic-card"> with <div class="schematic-viewport"><svg ...></div></div>) directly in Section 1 or Section 2 as FIG 02!
-        - Panel A (Left): Traditional Flawed Geometry (highlighting the concentrated stress, gap, or failure mode in red).
-        - Panel B (Right): Engineered Solution (illustrating the distributed load, relief cavity, or improved mechanism in emerald/cyan).
-        - Readers must be able to visually see the core physical breakthrough at a single glance before diving into component-level anatomy.
-     * NEVER use diffusion AI art for technical mechanisms or schematics (it produces blurry, uninformative blobs).
-     * STRICT COMPLEXITY CEILING & GOLDEN RULE:
-       - NEVER attempt complicated architectural or multi-zone scene diagrams (e.g. wall assemblies with studs/drywall/boxes, room layouts, doors with approaching people, or complex multipath ray diagrams). AI fails at these and produces cluttered, brittle visuals. If a diagram is too complicated, DO NOT CREATE IT!
-       - PREFERRED ARCHETYPE (FIGURE 2 STYLE — PERFECT): Use clean, responsive HTML process grids (<div class="process-grid"><div class="process-step-card">...</div></div>) inside <div class="schematic-card">. These are 100% responsive, have zero collision risk, and clearly explain sequential workflows, state machines, and thermal/hydraulic pathways.
-       - MAXIMUM COMPLEXITY CEILING (FIGURE 3 STYLE — UPPER LIMIT FOR SVG): If generating an SVG CAD schematic, it MUST be a single-axis, linear horizontal component (e.g. reciprocating screw barrel, fluid conduit, or single-component gear cross-section). It must have plenty of open breathing room, maximum 3 separated zones, and all callout labels isolated in clean cards or headers outside the geometry.
-       - NEVER exceed Figure 3's complexity. If a mechanism cannot be drawn cleanly as a single-axis component, use the Figure 2 process grid instead.
-     * ZERO TEXT COLLISION, BADGE PROPORTIONALITY & VIEWBOX RULES (HARD GATE):
-       - Every schematic header MUST use <div class="schematic-header"><span class="schematic-title">FIG XX — TITLE</span>...</div>.
-       - Every <text> element inside an <svg> MUST explicitly specify font-family="'JetBrains Mono', monospace" and font-size between 10.5 and 13.
-       - BADGE BOX BOUNDS (THE NO-OVERFLOW RULE): When placing text inside a card or badge <rect>, the rect's width MUST be at least (characterCount * 7.5px) + 30px (e.g. 18 chars requires width >= 165px). The rect's height MUST be at least (lines * 22px) + 20px. All text Y baselines MUST remain strictly between [rect.y + 16, rect.y + rect.height - 10]. Text must NEVER stick out or override the borders of its container box.
-       - GRAPHIC & BADGE SPATIAL DECOUPLING (THE CLEAR AIRSPACE RULE): Never place callout badges directly on top of physical mechanism curves, teardrop loops, gear meshes, or hinge pins. The physical mechanism must occupy the central coordinate zone, while callout badges must occupy the dedicated whitespace margin zone, connected via dashed leader lines.
-       - NEVER place two callout <text> elements on the same vertical baseline (or within 22px vertically) unless they are inside separate non-overlapping column cards.
-       - Every <text> element's horizontal span [left, right] MUST stay strictly within [20, viewBoxWidth - 20]. Bottom summary banners must use font-size="12" and remain under 105 characters per line so they never clip outside the viewBox.
-       - NEVER route a <line> or <path> through any <text> bounding box.
-       - CONTRAST & THEME IMMUNITY (HARD GATE):
-         * In SVGs, NEVER place light pastel colors (e.g. #FCA5A5, #6EE7B7, #A7F3D0, #F1F5F9, #FFFFFF) directly on canvas or panel backgrounds. In Light Mode, these become washed-out and unreadable.
-         * All callout badges must be housed inside high-contrast dark pills (<rect fill="#18181B" stroke="#ACCENT" rx="6"/>) with bright accent text (fill="#38BDF8", fill="#34D399", fill="#F87171"), guaranteeing crisp 12:1+ contrast in both light and dark themes. Outside of dark pills, text on the canvas must use deep high-contrast tones (#DC2626, #059669, #0284C7, or class="svg-text-primary").
+      * STRICT BAN ON FREEHAND SVG COMPARISONS & PROCEDURES:
+        - NEVER attempt to draw comparison panels, badge callouts, or multi-step processes using raw freehand SVGs with hardcoded text coordinates. Raw SVG coordinates lack font-metrics awareness and inevitably cause micro-coordinate line overlaps, text clipping, or box overflows.
+        - NEVER use diffusion AI art for technical mechanisms or schematics (it produces blurry, uninformative blobs).
+      * NATIVE HTML COMPARISON COMPONENT (MANDATORY FOR FIG 02 THESIS COMPARISON):
+        - Whenever an article introduces a new geometry, mechanism, or architecture that replaces a flawed legacy method (e.g. U-Shape vs. Teardrop Fold, Involute Gear vs. Cycloidal Pin, HPDC vs. Thixomolding Slurry, Thermoblock vs. Dual Boiler), you MUST use the high-end native responsive component inside <div class="schematic-card">:
+          <div class="schematic-header">
+            <span class="schematic-title">FIG 02 — COMPARISON TITLE</span>
+            <span class="schematic-subtitle">SUBTITLE</span>
+          </div>
+          <div class="comparison-grid">
+            <div class="comparison-card flawed-card">
+              <div class="comparison-card-tag">PANEL A // TRADITIONAL METHOD</div>
+              <h4 class="comparison-card-title">Traditional Flawed Approach</h4>
+              <div class="comparison-metric-pill danger-pill">
+                <span class="pill-label">PRIMARY LIMIT / METRIC:</span>
+                <span class="pill-value">Quantified Value / Critical Threshold</span>
+                <span class="pill-sub">Failure Criterion: <strong>Critical Limit</strong></span>
+              </div>
+              <div class="comparison-consequence">
+                <strong>• Physical Bottleneck:</strong> Exact engineering limitation.<br>
+                <strong>• Failure Mode:</strong> Physical breakdown mechanism.
+              </div>
+            </div>
+            <div class="comparison-card solution-card">
+              <div class="comparison-card-tag">PANEL B // ENGINEERED SOLUTION</div>
+              <h4 class="comparison-card-title">Engineered Breakthrough Approach</h4>
+              <div class="comparison-metric-pill success-pill">
+                <span class="pill-label">PRIMARY ADVANTAGE / METRIC:</span>
+                <span class="pill-value">Quantified Value / Safe Regime</span>
+                <span class="pill-sub">Safety Factor: <strong>Operating Window</strong></span>
+              </div>
+              <div class="comparison-consequence">
+                <strong>• Physical Solution:</strong> Exact geometric/mechanical innovation.<br>
+                <strong>• Reliability:</strong> Measured endurance or performance gain.
+              </div>
+            </div>
+          </div>
+          <div class="comparison-banner">
+            <strong>CORE PRINCIPLE:</strong> Core physical takeaway summarized in one crisp sentence.
+          </div>
+          <div class="schematic-caption">
+            <span><strong>FIG 02 — TITLE:</strong> Caption description...</span>
+            <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
+          </div>
+      * NATIVE HTML PROCESS GRID (MANDATORY FOR SEQUENCES & WORKFLOWS):
+        - For 3 to 5 stage kinematic sequences, manufacturing operations, or fluid pathways, use responsive HTML process grids (<div class="process-grid"><div class="process-step-card"><div class="process-step-tag">STAGE 01: ...</div><div class="process-step-title">...</div><p class="process-step-desc">...</p></div>...</div>). These are 100% responsive, visually bulletproof, and mathematically immune to text collisions.
+      * STRICT LIMITS FOR SVG (ONLY FOR SINGLE-AXIS CROSS-SECTIONS):
+        - SVG is ONLY permitted for single-axis mechanical cutaways (e.g. FIG 04 CAD schematic). It must be a simple linear component with vast breathing room.
+        - ZERO TEXT COLLISION, BADGE PROPORTIONALITY & VIEWBOX RULES:
+          * Every <text> element inside an <svg> MUST explicitly specify font-family="'JetBrains Mono', monospace" and font-size between 10.5 and 13.
+          * BADGE BOX BOUNDS: All text inside badge rects must have at least 15px horizontal and vertical padding.
+          * GRAPHIC DECOUPLING: Never place callout badges directly on top of physical mechanism geometry. Use dedicated margin whitespace and dashed leader lines.
+          * CONTRAST IMMUNITY: All callout badges must use high-contrast dark pills (<rect fill="#18181B" stroke="#ACCENT" rx="6"/>) with bright accent text (fill="#38BDF8", fill="#34D399", fill="#F87171"). Outside pills, text must use deep accessible tones.
 RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other text):
 {
   "title": "Clean Plain-English Title",
