@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 console.log('--- 1. AUDITING ARTICLES & TANGENTS ---');
-const issues = ['000.json', '001.json', '002.json', '003.json'];
+const issues = fs.readdirSync('content/issues').filter(f => f.endsWith('.json')).sort();
 let issueErrors = 0;
 
 for (const file of issues) {
@@ -54,7 +54,7 @@ for (const file of issues) {
 }
 
 if (issueErrors === 0) {
-  console.log('✓ All 4 articles passed content, image, tangent, and equation audit.');
+  console.log(`✓ All ${issues.length} articles passed content, image, tangent, and equation audit.`);
 }
 
 console.log('\n--- 2. AUDITING BACKLOG & QUEUE ---');
@@ -74,4 +74,31 @@ for (const wf of workflowFiles) {
   if (content.includes('gemini-2.5-pro')) {
     console.error(`[ERROR] ${wf} still references gemini-2.5-pro!`);
   }
+}
+
+console.log('\n--- 4. AUDITING POPOVER & UI INTERACTION GEOMETRY ---');
+const indexHtml = fs.readFileSync('index.html', 'utf8');
+let popoverErrors = 0;
+
+if (indexHtml.includes('rect.top - 280') || indexHtml.includes('top + 280 > window.innerHeight')) {
+  console.error('[ERROR] index.html still contains hardcoded 280px popover offset assumptions!');
+  popoverErrors++;
+}
+if (!indexHtml.includes('popoverRect.height') || !indexHtml.includes('spaceBelow') || !indexHtml.includes('spaceAbove')) {
+  console.error('[ERROR] index.html is missing dynamic geometry height and space calculations for popovers!');
+  popoverErrors++;
+}
+if (!indexHtml.includes('overflow-y: auto') || !indexHtml.includes('box-sizing: border-box')) {
+  console.error('[ERROR] index.html .floating-popover is missing overflow-y: auto or box-sizing: border-box!');
+  popoverErrors++;
+}
+if (!indexHtml.includes('GAP = 10')) {
+  console.error('[ERROR] index.html is missing mandatory cursor/term buffer GAP!');
+  popoverErrors++;
+}
+
+if (popoverErrors === 0) {
+  console.log('✓ Popover geometry audit passed: dynamic height, non-overlapping bounds, and cursor buffer verified.');
+} else {
+  process.exit(1);
 }

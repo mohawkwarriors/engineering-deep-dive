@@ -435,8 +435,18 @@
       padding: 16px 18px;
       max-width: 380px;
       width: calc(100vw - 32px);
+      box-sizing: border-box;
       pointer-events: auto;
+      overflow-y: auto;
+      overscroll-behavior: contain;
       transition: opacity 0.15s ease;
+    }
+    .floating-popover::-webkit-scrollbar {
+      width: 4px;
+    }
+    .floating-popover::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
     }
     .popover-header {
       display: flex;
@@ -1625,7 +1635,9 @@
           }
         });
         popover.addEventListener('mouseleave', () => {
-          hidePopover(true);
+          popoverHideTimer = setTimeout(() => {
+            hidePopover(true);
+          }, 150);
         });
       }
 
@@ -1643,7 +1655,7 @@
           // Grace delay allowing user to bridge into popover if needed, otherwise dismiss
           popoverHideTimer = setTimeout(() => {
             hidePopover(true);
-          }, 120);
+          }, 240);
         });
 
         el.addEventListener("click", (e) => {
@@ -1666,15 +1678,58 @@
       bodyEl.innerHTML = data.body;
       renderMath(bodyEl);
 
-      const rect = termElement.getBoundingClientRect();
+      // Measure true rendered dimensions invisibly off-screen to prevent layout flashes
       popover.style.display = 'block';
-      let top = rect.bottom + 8;
-      let left = Math.max(16, Math.min(rect.left, window.innerWidth - 400));
-      if (top + 280 > window.innerHeight) {
-        top = Math.max(16, rect.top - 280);
+      popover.style.visibility = 'hidden';
+      popover.style.maxHeight = 'none';
+      popover.style.top = '0px';
+      popover.style.left = '0px';
+
+      const rect = termElement.getBoundingClientRect();
+      const popoverRect = popover.getBoundingClientRect();
+      const popoverHeight = popoverRect.height;
+      const popoverWidth = popoverRect.width || 380;
+
+      const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
+      const GAP = 10; // Strict exclusion buffer between cursor/word and popover card
+      const SCREEN_PADDING = 14;
+
+      const spaceBelow = viewportHeight - rect.bottom - GAP - SCREEN_PADDING;
+      const spaceAbove = rect.top - GAP - SCREEN_PADDING;
+
+      let top = 0;
+      let maxHeight = 0;
+
+      // Smart placement: strictly above or strictly below, never intersecting the word/cursor
+      if (spaceBelow >= popoverHeight) {
+        // Fits comfortably below
+        top = rect.bottom + GAP;
+        maxHeight = spaceBelow;
+      } else if (spaceAbove >= popoverHeight) {
+        // Fits comfortably above
+        top = rect.top - popoverHeight - GAP;
+        maxHeight = spaceAbove;
+      } else if (spaceBelow >= spaceAbove) {
+        // Limited height, but more room below
+        top = rect.bottom + GAP;
+        maxHeight = Math.max(140, spaceBelow);
+      } else {
+        // Limited height, but more room above
+        const clampedHeight = Math.min(popoverHeight, spaceAbove);
+        top = rect.top - clampedHeight - GAP;
+        maxHeight = Math.max(140, spaceAbove);
       }
-      popover.style.top = `${top}px`;
-      popover.style.left = `${left}px`;
+
+      // Horizontal alignment: align with left edge of term, clamped inside screen bounds
+      let left = rect.left;
+      const maxLeft = viewportWidth - popoverWidth - SCREEN_PADDING;
+      left = Math.max(SCREEN_PADDING, Math.min(left, maxLeft));
+
+      popover.style.maxHeight = `${Math.floor(maxHeight)}px`;
+      popover.style.top = `${Math.round(top)}px`;
+      popover.style.left = `${Math.round(left)}px`;
+      popover.style.visibility = 'visible';
     }
 
     function hidePopover(force = false) {
@@ -1685,12 +1740,29 @@
       const popover = document.getElementById('floating-popover');
       if (popover) {
         popover.style.display = 'none';
+        popover.style.visibility = 'hidden';
       }
       activePopoverTerm = null;
     }
 
     document.addEventListener("click", (e) => {
       if (!e.target.closest('#floating-popover') && !e.target.closest('.tangent-term')) {
+        hidePopover(true);
+      }
+    });
+
+    window.addEventListener("scroll", () => {
+      if (activePopoverTerm && !document.getElementById('floating-popover')?.matches(':hover')) {
+        hidePopover(true);
+      }
+    }, { passive: true });
+
+    window.addEventListener("resize", () => {
+      hidePopover(true);
+    }, { passive: true });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
         hidePopover(true);
       }
     });
