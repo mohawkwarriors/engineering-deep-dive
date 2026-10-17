@@ -133,7 +133,13 @@ STRICT EDITORIAL REQUIREMENTS:
        - NO PEOPLE / SELFIES / POSES: Zero photos of technicians, baristas, or people posing or standing near equipment.
        - NO CLUTTERED / CASUAL ENVIRONMENTS: Zero greasy garage floors, tarp walls, plastic buckets, or messy workshop snapshot photos.
        - NO LIFESTYLE / CONSUMER SHOTS: No coffee cups, latte art, or living room staging. The physical mechanism/chassis MUST be the sole hero of the composition.
-     * Placed inside <figure class="product-figure"> with clean <figcaption> and source-tag at the top of the article.
+     * HERO FIGURE PRIORITY (MANDATORY): The very first visual element in article_html MUST ALWAYS be a real-world hardware teardown photograph (<figure class="product-figure">) placed at the top of the article as FIG 01. Never place a schematic before the hero photograph.
+     * STRICT SEQUENTIAL NUMBERING: Every visual element (both <figure class="product-figure"> and <div class="schematic-card">) MUST be numbered strictly sequentially starting with FIG 01, FIG 02, FIG 03... There must be ZERO duplicate figure numbers and ZERO numbering gaps across the entire article.
+     * UNIFIED CAPTION SCHEMA (MANDATORY ON ALL FIGURES AND SCHEMATICS):
+       Every <figcaption> and <div class="schematic-caption"> MUST follow this exact markup structure:
+       <span><strong>FIG XX — TITLE:</strong> Detailed engineering description...</span>
+       <span class="source-tag">ARCHIVE / SOURCE</span>
+       Never omit the FIG XX prefix, never use standalone figure badges, and always include the <span class="source-tag">.
    - TIER 2 (GENERATED VISUALS — WHEN REAL PHOTOS DO NOT EXIST):
      * NEVER use diffusion AI art for technical mechanisms or schematics (it produces blurry, uninformative blobs).
      * All generated visuals MUST adhere to one of the 3 approved clean engineering archetypes, strictly conforming to the website theme (--bg: #191918, --surface: #232220, --border: #383734, --accent: #D97757, --text: #EDEDEB) and 'JetBrains Mono' typography:

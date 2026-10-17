@@ -25,6 +25,12 @@ export function autoSanitizeArticleHtml(html) {
     return match;
   });
 
+  // 2B. Normalize figure captions to standard FIG XX — format
+  out = out.replace(/<strong>FIG\s*(\d+)\s*(?::|—|-|&mdash;)\s*([^<]+)<\/strong>/g, (m, num, title) => {
+    const padded = String(num).padStart(2, '0');
+    return `<strong>FIG ${padded} — ${title.trim().replace(/^—\s*/, '')}</strong>`;
+  });
+
   // 3. Auto-separate colliding text baselines inside SVG groups
   out = out.replace(/<g\b([^>]*)>([\s\S]*?)<\/g>/g, (fullG, gAttrs, gBody) => {
     const textRegex = /<text\b([^>]*)>([\s\S]*?)<\/text>/g;
@@ -118,6 +124,52 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     const hit = rawCap.match(amateurPattern);
     if (hit) {
       errors.push(`Amateur/non-premium image caption in ${fileLabel}: "${hit[0]}" detected in "${rawCap.slice(0, 70)}..."`);
+    }
+  }
+
+  // 2C. Hero Photo Priority: The first visual element must be a product-figure (real photo) with FIG 01
+  const visualTokenRegex = /(<figure class="product-figure">|<div class="schematic-card">|<div class="schematic-container">)/g;
+  const firstVisual = visualTokenRegex.exec(html);
+  if (firstVisual && !firstVisual[0].includes('product-figure')) {
+    errors.push(`First visual element in ${fileLabel} is not a real-world teardown photo: expected <figure class="product-figure"> at top of article, found ${firstVisual[0]}`);
+  }
+
+  // 2D. Unified Caption Schema & Strictly Sequential Figure Numbering
+  const allCaptions = [...html.matchAll(/(<figcaption>[\s\S]*?<\/figcaption>|<div class="schematic-caption">[\s\S]*?<\/div>)/g)].map(m => m[0]);
+  let expectedFigNum = 1;
+  const seenFigNums = new Set();
+
+  for (let cIdx = 0; cIdx < allCaptions.length; cIdx++) {
+    const capHtml = allCaptions[cIdx];
+    const isFigCap = capHtml.startsWith('<figcaption>');
+    const tagType = isFigCap ? 'figcaption' : 'schematic-caption';
+
+    // Must have standard title: <span><strong>FIG XX — TITLE:</strong> ...</span>
+    const figNumMatch = capHtml.match(/<strong>FIG\s*(\d+)\s*—\s*([^:<]+):<\/strong>/);
+    if (!figNumMatch) {
+      errors.push(
+        `${tagType} #${cIdx + 1} in ${fileLabel} does not match required format "<span><strong>FIG XX — TITLE:</strong> description</span> <span class="source-tag">SOURCE</span>": ${capHtml.replace(/\s+/g, ' ').slice(0, 80)}...`
+      );
+      continue;
+    }
+
+    const figNum = parseInt(figNumMatch[1], 10);
+
+    // Check for duplicate figure numbers (e.g. two FIG 01s)
+    if (seenFigNums.has(figNum)) {
+      errors.push(`Duplicate figure number FIG ${String(figNum).padStart(2, '0')} detected in ${fileLabel} at ${tagType} #${cIdx + 1}. Figure numbers must be unique.`);
+    }
+    seenFigNums.add(figNum);
+
+    // Check for sequential figure numbering
+    if (figNum !== expectedFigNum) {
+      errors.push(`Non-sequential figure numbering in ${fileLabel} at ${tagType} #${cIdx + 1}: expected FIG ${String(expectedFigNum).padStart(2, '0')}, found FIG ${String(figNum).padStart(2, '0')}.`);
+    }
+    expectedFigNum = figNum + 1;
+
+    // Must have <span class="source-tag">
+    if (!capHtml.includes('class="source-tag"')) {
+      errors.push(`${tagType} #${cIdx + 1} in ${fileLabel} is missing standard <span class="source-tag">...</span> tag.`);
     }
   }
 
