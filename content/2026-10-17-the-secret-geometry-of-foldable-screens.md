@@ -55,176 +55,11 @@
   Coupled with neutral-axis positioning layers (shifting the zero-strain line directly into the neutral plane of the brittle glass core), peak strain in the UTG drops below <strong>1.1%</strong>—well within its infinite fatigue endurance regime ($> 400{,}000$ cycles).
 </p>
 
-<div class="schematic-card" id="fig02-comparative-geometry">
-  <div class="schematic-header">
-    <span class="schematic-title">FIG 02 — U-SHAPED FOLD VS. EULER CLOTHOID TEARDROP GEOMETRY</span>
-    <span class="schematic-subtitle">COMPARATIVE BENDING RADIUS &amp; CHASSIS GAP KINEMATICS</span>
-  </div>
-  <div class="comparison-grid">
-    <div class="comparison-card flawed-card">
-      <div class="comparison-card-tag">PANEL A // TRADITIONAL METHOD</div>
-      <h4 class="comparison-card-title">Traditional Concentric U-Shaped Fold</h4>
-      <div class="comparison-visual">
-        <svg viewBox="0 0 360 140" fill="none" xmlns="http://www.w3.org/2000/svg" class="comparison-svg">
-          <rect width="360" height="140" rx="4" class="svg-canvas-bg" />
-          <rect x="30" y="24" width="150" height="32" rx="3" class="svg-panel-sub" stroke="#78716C" stroke-width="1.2"/>
-          <rect x="30" y="84" width="150" height="32" rx="3" class="svg-panel-sub" stroke="#78716C" stroke-width="1.2"/>
-          <line x1="42" y1="56" x2="42" y2="84" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="2 2"/>
-          <path d="M 45 56 L 190 56 C 240 56 240 84 190 84 L 45 84" stroke="#EF4444" stroke-width="4.5" stroke-linecap="round" fill="none"/>
-          <circle cx="205" cy="70" r="14" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="2 2" fill="none"/>
-          <circle cx="205" cy="70" r="2.5" fill="#DC2626"/>
-          <circle cx="245" cy="70" r="8" class="svg-panel-bg" stroke="#DC2626" stroke-width="1.8"/>
-          <circle cx="245" cy="70" r="2.5" fill="#DC2626"/>
-        </svg>
-      </div>
-      <div class="comparison-metric-pill danger-pill">
-        <span class="pill-label">BEND RADIUS:</span>
-        <span class="pill-value">&rho; = 1.25 mm (Sharp Concentric Pinch)</span>
-        <span class="pill-sub">Peak Tensile Strain: <strong>&epsilon; = 16.8% (Critical Failure)</strong></span>
-      </div>
-      <div class="comparison-consequence">
-        <strong>&bull; Tapered Gap: 2.2 mm:</strong> Creates wide cosmetic wedge and pronounced crease trench.<br>
-        <strong>&bull; Failure Mode:</strong> Exceeds UTG critical Griffith crack limit; triggers spalling micro-cracks under cyclic bending.
-      </div>
-    </div>
-
-    <div class="comparison-card solution-card">
-      <div class="comparison-card-tag">PANEL B // ENGINEERED SOLUTION</div>
-      <h4 class="comparison-card-title">Euler Clothoid Teardrop Fold</h4>
-      <div class="comparison-visual">
-        <svg viewBox="0 0 360 140" fill="none" xmlns="http://www.w3.org/2000/svg" class="comparison-svg">
-          <rect width="360" height="140" rx="4" class="svg-canvas-bg" />
-          <rect x="30" y="24" width="135" height="32" rx="3" class="svg-panel-sub" stroke="#78716C" stroke-width="1.2"/>
-          <rect x="30" y="84" width="135" height="32" rx="3" class="svg-panel-sub" stroke="#78716C" stroke-width="1.2"/>
-          <line x1="30" y1="70" x2="165" y2="70" stroke="#059669" stroke-width="1.2" stroke-dasharray="3 3"/>
-          <path d="M 45 56 L 150 56 C 180 56 195 20 235 20 C 285 20 295 120 235 120 C 195 120 180 84 150 84 L 45 84" stroke="#0284C7" stroke-width="4.5" stroke-linecap="round" fill="none"/>
-          <circle cx="240" cy="70" r="42" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
-          <circle cx="240" cy="70" r="3" fill="#0284C7"/>
-          <circle cx="310" cy="56" r="6" class="svg-panel-bg" stroke="#10B981" stroke-width="1.5"/>
-          <circle cx="310" cy="84" r="6" class="svg-panel-bg" stroke="#10B981" stroke-width="1.5"/>
-        </svg>
-      </div>
-      <div class="comparison-metric-pill success-pill">
-        <span class="pill-label">TEARDROP RADIUS:</span>
-        <span class="pill-value">&rho; = 3.45 mm (Bulbous Relief Loop)</span>
-        <span class="pill-sub">Safe Tensile Strain: <strong>&epsilon; &lt; 6.2% (Below Elastic Limit)</strong></span>
-      </div>
-      <div class="comparison-consequence">
-        <strong>&bull; True 0.0 mm Flush Closure:</strong> Internal floating cavity eliminates outer chassis pinch.<br>
-        <strong>&bull; Reliability:</strong> Triples bend radius, cutting glass tensile strain by 63% and preventing crease fatigue.
-      </div>
-    </div>
-  </div>
-  <div class="comparison-banner">
-    <strong>GEOMETRIC PRINCIPLE:</strong> Teardrop geometry nearly triples bend radius (3.45 mm vs 1.25 mm), cutting glass strain by 63% and enabling flush 0.0 mm chassis closure without crushing display layers.
-  </div>
-  <div class="schematic-caption">
-    <span><strong>FIG 02 — FOLD GEOMETRY COMPARISON:</strong> Side-by-side comparison of legacy U-shaped concentric bending versus the Euler clothoid teardrop fold, illustrating how the internal waterdrop loop relieves tensile strain on Ultra-Thin Glass while enabling flush closure.</span>
-    <span class="source-tag">SCHEMATIC: KINEMATIC CAD</span>
-  </div>
-</div>
-
-    <div class="comparison-card solution-card">
-      <div class="comparison-card-tag">PANEL B // ENGINEERED SOLUTION</div>
-      <h4 class="comparison-card-title">Euler Clothoid Teardrop Fold</h4>
-      <div class="comparison-metric-pill success-pill">
-        <span class="pill-label">TEARDROP RADIUS:</span>
-        <span class="pill-value">&rho; = 3.45 mm (Bulbous Relief Loop)</span>
-        <span class="pill-sub">Safe Tensile Strain: <strong>&epsilon; &lt; 6.2% (Below Elastic Limit)</strong></span>
-      </div>
-      <div class="comparison-consequence">
-        <strong>&bull; True 0.0 mm Flush Closure:</strong> Internal floating cavity eliminates outer chassis pinch.<br>
-        <strong>&bull; Reliability:</strong> Triples bend radius, cutting glass tensile strain by 63% and preventing crease fatigue.
-      </div>
-    </div>
-  </div>
-  <div class="comparison-banner">
-    <strong>GEOMETRIC PRINCIPLE:</strong> Teardrop geometry nearly triples bend radius (3.45 mm vs 1.25 mm), cutting glass strain by 63% and enabling flush 0.0 mm chassis closure without crushing display layers.
-  </div>
-  <div class="schematic-caption">
-    <span><strong>FIG 02 — FOLD GEOMETRY COMPARISON:</strong> Side-by-side comparison of legacy U-shaped concentric bending versus the Euler clothoid teardrop fold, illustrating how the internal waterdrop loop relieves tensile strain on Ultra-Thin Glass while enabling flush closure.</span>
-    <span class="source-tag">SCHEMATIC: KINEMATIC CAD</span>
-  </div>
-</div>
-
-
-<!-- FIG 02: KINEMATIC WORKFLOW GRID -->
-<div class="schematic-card" id="process-steps-diagram">
-  <div class="schematic-header">
-    <span class="schematic-title">FIG 03 — THE 4-STAGE TEARDROP KINEMATIC SEQUENCE</span>
-    <span class="schematic-subtitle">PLANAR (180°) &rarr; BENDING &rarr; SLIDING &rarr; CLOSED (0°)</span>
-  </div>
-  <div class="process-grid">
-    
-    <div class="process-step-card">
-      <div class="process-step-tag">STAGE 01: 180° FLAT</div>
-      <div class="process-step-title">Planar Substrate Lockout</div>
-      <p class="process-step-desc">
-        Floating support wings are locked flush with the chassis by secondary cam detents, forming a rigid 0.10 mm substrate beneath the UTG that resists stylus and finger indentation.
-      </p>
-    </div>
-
-    <div class="process-step-card">
-      <div class="process-step-tag">STAGE 02: 120° UNLATCH</div>
-      <div class="process-step-title">Floating Plate Descent</div>
-      <p class="process-step-desc">
-        As rotation begins, dual synchronization gears drive guide pins along an angled track, dropping the center support plates vertically by 1.35 mm into the housing spine.
-      </p>
-    </div>
-
-    <div class="process-step-card">
-      <div class="process-step-tag">STAGE 03: 60° BENDING</div>
-      <div class="process-step-title">Teardrop Cavity Expansion</div>
-      <p class="process-step-desc">
-        With support plates recessed, the screen enters free-loop deflection. The lateral sliders begin stroking outward along precision curved tracks to absorb display arc-length differential.
-      </p>
-    </div>
-
-    <div class="process-step-card">
-      <div class="process-step-tag">STAGE 04: 0° CLOSED</div>
-      <div class="process-step-title">Zero-Gap Waterdrop Lock</div>
-      <p class="process-step-desc">
-        The housing halves meet parallel with zero gap. The screen loops into a bulbous 3.4 mm waterdrop with &lt;1.1% glass strain, while sliders hold &Delta;L = 1.42 mm tension balance.
-      </p>
-    </div>
-
-  </div>
-  <div class="schematic-caption">
-    <span><strong>FIG 03 — KINEMATIC SEQUENCE:</strong> The four-phase transition of a teardrop hinge mechanism, demonstrating the synchronized vertical descent of central support wings and the lateral translation of perimeter sliders.</span>
-    <span class="source-tag">FLOWCHART 01</span>
-  </div>
-</div>
-
-<h2 id="section-path-length-differential">2. Path-Length Mechanics: Absorbing the Arc-Length Differential (&Delta;L)</h2>
-<p>
-  While the teardrop loop eliminates excessive tensile strain, it creates an aggressive kinematic constraint: <strong>Path-Length Mismatch ($\Delta L$)</strong>.
-</p>
-<p>
-  When a smartphone unfolds from $0^\circ$ to $180^\circ$, the screen is a flat plane spanning width $W_0$. However, when folded into a teardrop shape inside a closed chassis, the curved profile traces an elastica curve composed of a central circular arc of radius $\rho$ flanked by two inflection fillets of radius $r_i$. The total contour length $S$ of the curved display path is given by:
-</p>
-<div class="math-block">
-  $\Delta L \approx \theta \cdot (R_{\text{chassis}} - R_{\text{neutral}}) \approx 1.42\text{ mm}$
-</div>
-<p>
-  <strong>Physical Intuition:</strong> When folding a rigid chassis, the outer perimeter sweeps a longer arc than the internal neutral axis. This geometric arc difference creates an immediate <strong>1.42 mm stroke deficit</strong> that lateral sliding wing carriages must absorb to prevent the flexible glass from buckling or wrinkling along the spine.
-</p>
-<p>
-  If the display were anchored firmly to both sides of the chassis without compliance, this $\Delta L$ differential would induce violent mechanical stress:
-</p>
-<ul>
-  <li><strong>During Folding (Tensile Delamination):</strong> The screen stack would be pulled taut over the hinge spine like a guitar string, creating normal peel stresses exceeding the $0.8\text{ MPa}$ adhesive shear bond of the OCA and ripping the display away from its digitizer.</li>
-  <li><strong>During Unfolding (Compressive Buckling):</strong> Excess material would be shoved into the seam under compressive thrust, causing the UTG to buckle upward, generating the permanent high-amplitude "crease trench" that plagues inferior foldables.</li>
-</ul>
-<p>
-  <strong>The Multi-Link Synchronized Slider Solution:</strong><br>
-  Modern teardrop hinges solve this by mounting the display support plates onto <strong>lateral sliding carriages</strong>. These carriages ride on precision curved tracks machined directly into the outer wing frames. As the hinge closes, a multi-link scissor mechanism pulls the left and right display wings outward by exactly $\Delta L / 2 \approx 0.71\text{ mm}$ each, absorbing the length change with zero net tension.
-</p>
-
-<!-- FIG 03: HIGH-RESOLUTION SVG SCHEMATIC OF TEARDROP HINGE CAD -->
 <div class="schematic-card" id="teardrop-simulator">
   <div class="schematic-header">
-    <span class="schematic-title">FIG 04 — INTERACTIVE KINEMATIC SIMULATOR</span>
+    <span class="schematic-title">FIG 02 — INTERACTIVE KINEMATIC SIMULATOR: EULER CLOTHOID TEARDROP FOLD</span>
     <span class="sim-badge"><span class="sim-pulse"></span> LIVE SIMULATOR (60 FPS)</span>
+    <span class="schematic-subtitle">PARAMETRIC BENDING RADIUS &amp; CHASSIS GAP KINEMATICS</span>
   </div>
 
   <div class="sim-viewport">
@@ -321,11 +156,118 @@
     </div>
   </div>
 
+  <div class="comparison-grid" style="border-top: 1px solid var(--border);">
+    <div class="comparison-card flawed-card">
+      <div class="comparison-card-tag">LEGACY METHOD // CONCENTRIC PINCH</div>
+      <h4 class="comparison-card-title">Traditional U-Shaped Fold</h4>
+      <div class="comparison-metric-pill danger-pill">
+        <span class="pill-label">BEND RADIUS &amp; GAP:</span>
+        <span class="pill-value">&rho; = 1.25 mm &bull; 2.2 mm Wedge Gap</span>
+        <span class="pill-sub">Peak Tensile Strain: <strong>&epsilon; = 16.8% (Critical Failure)</strong></span>
+      </div>
+      <div class="comparison-consequence">
+        <strong>&bull; Critical Griffith Flaw:</strong> Exceeds UTG fracture limit, causing rapid micro-cracking and deep permanent crease trenching.
+      </div>
+    </div>
+
+    <div class="comparison-card solution-card">
+      <div class="comparison-card-tag">ENGINEERED SOLUTION // EULER CLOTHOID</div>
+      <h4 class="comparison-card-title">Teardrop Multi-Link Hinge</h4>
+      <div class="comparison-metric-pill success-pill">
+        <span class="pill-label">TEARDROP RADIUS &amp; GAP:</span>
+        <span class="pill-value">&rho; = 3.45 mm &bull; 0.0 mm Flush Closure</span>
+        <span class="pill-sub">Safe Tensile Strain: <strong>&epsilon; &lt; 1.1% (Infinite Fatigue Life)</strong></span>
+      </div>
+      <div class="comparison-consequence">
+        <strong>&bull; Floating Plate Cavity:</strong> Nearly triples bend radius, cutting glass strain by 63% and enabling 400,000+ fold durability without creasing.
+      </div>
+    </div>
+  </div>
+
+  <div class="comparison-banner">
+    <strong>GEOMETRIC PRINCIPLE:</strong> Drag the slider above from 180° to 0° to observe how the teardrop hinge drops the center plates by 1.35 mm and strokes the sliders outward by 1.42 mm—allowing the display to balloon into a generous 3.45 mm curve while closing dead flat with 0.0 mm gap.
+  </div>
+
   <div class="schematic-caption">
-    <span><strong>FIG 04 — INTERACTIVE KINEMATIC SIMULATOR:</strong> Real-time parametric simulation of the multi-link teardrop hinge mechanism. Scrub the slider from 180° to 0° to observe the synchronized vertical descent of the support plates, the outward stroke of the lateral carriages, and how the Euler clothoid curve caps peak glass strain at 1.08%.</span>
+    <span><strong>FIG 02 — INTERACTIVE KINEMATIC SIMULATOR:</strong> Real-time 60 FPS parametric simulation of the Euler clothoid teardrop fold mechanism versus concentric U-shape bending. Scrub the fold slider to observe live plate drop, stroke absorption, and stress reduction on Ultra-Thin Glass (UTG).</span>
     <span class="source-tag">INTERACTIVE CAD ENGINE</span>
   </div>
 </div>
+
+
+
+
+<!-- FIG 02: KINEMATIC WORKFLOW GRID -->
+<div class="schematic-card" id="process-steps-diagram">
+  <div class="schematic-header">
+    <span class="schematic-title">FIG 03 — THE 4-STAGE TEARDROP KINEMATIC SEQUENCE</span>
+    <span class="schematic-subtitle">PLANAR (180°) &rarr; BENDING &rarr; SLIDING &rarr; CLOSED (0°)</span>
+  </div>
+  <div class="process-grid">
+    
+    <div class="process-step-card">
+      <div class="process-step-tag">STAGE 01: 180° FLAT</div>
+      <div class="process-step-title">Planar Substrate Lockout</div>
+      <p class="process-step-desc">
+        Floating support wings are locked flush with the chassis by secondary cam detents, forming a rigid 0.10 mm substrate beneath the UTG that resists stylus and finger indentation.
+      </p>
+    </div>
+
+    <div class="process-step-card">
+      <div class="process-step-tag">STAGE 02: 120° UNLATCH</div>
+      <div class="process-step-title">Floating Plate Descent</div>
+      <p class="process-step-desc">
+        As rotation begins, dual synchronization gears drive guide pins along an angled track, dropping the center support plates vertically by 1.35 mm into the housing spine.
+      </p>
+    </div>
+
+    <div class="process-step-card">
+      <div class="process-step-tag">STAGE 03: 60° BENDING</div>
+      <div class="process-step-title">Teardrop Cavity Expansion</div>
+      <p class="process-step-desc">
+        With support plates recessed, the screen enters free-loop deflection. The lateral sliders begin stroking outward along precision curved tracks to absorb display arc-length differential.
+      </p>
+    </div>
+
+    <div class="process-step-card">
+      <div class="process-step-tag">STAGE 04: 0° CLOSED</div>
+      <div class="process-step-title">Zero-Gap Waterdrop Lock</div>
+      <p class="process-step-desc">
+        The housing halves meet parallel with zero gap. The screen loops into a bulbous 3.4 mm waterdrop with &lt;1.1% glass strain, while sliders hold &Delta;L = 1.42 mm tension balance.
+      </p>
+    </div>
+
+  </div>
+  <div class="schematic-caption">
+    <span><strong>FIG 03 — KINEMATIC SEQUENCE:</strong> The four-phase transition of a teardrop hinge mechanism, demonstrating the synchronized vertical descent of central support wings and the lateral translation of perimeter sliders.</span>
+    <span class="source-tag">FLOWCHART 01</span>
+  </div>
+</div>
+
+<h2 id="section-path-length-differential">2. Path-Length Mechanics: Absorbing the Arc-Length Differential (&Delta;L)</h2>
+<p>
+  While the teardrop loop eliminates excessive tensile strain, it creates an aggressive kinematic constraint: <strong>Path-Length Mismatch ($\Delta L$)</strong>.
+</p>
+<p>
+  When a smartphone unfolds from $0^\circ$ to $180^\circ$, the screen is a flat plane spanning width $W_0$. However, when folded into a teardrop shape inside a closed chassis, the curved profile traces an elastica curve composed of a central circular arc of radius $\rho$ flanked by two inflection fillets of radius $r_i$. The total contour length $S$ of the curved display path is given by:
+</p>
+<div class="math-block">
+  $\Delta L \approx \theta \cdot (R_{\text{chassis}} - R_{\text{neutral}}) \approx 1.42\text{ mm}$
+</div>
+<p>
+  <strong>Physical Intuition:</strong> When folding a rigid chassis, the outer perimeter sweeps a longer arc than the internal neutral axis. This geometric arc difference creates an immediate <strong>1.42 mm stroke deficit</strong> that lateral sliding wing carriages must absorb to prevent the flexible glass from buckling or wrinkling along the spine.
+</p>
+<p>
+  If the display were anchored firmly to both sides of the chassis without compliance, this $\Delta L$ differential would induce violent mechanical stress:
+</p>
+<ul>
+  <li><strong>During Folding (Tensile Delamination):</strong> The screen stack would be pulled taut over the hinge spine like a guitar string, creating normal peel stresses exceeding the $0.8\text{ MPa}$ adhesive shear bond of the OCA and ripping the display away from its digitizer.</li>
+  <li><strong>During Unfolding (Compressive Buckling):</strong> Excess material would be shoved into the seam under compressive thrust, causing the UTG to buckle upward, generating the permanent high-amplitude "crease trench" that plagues inferior foldables.</li>
+</ul>
+<p>
+  <strong>The Multi-Link Synchronized Slider Solution:</strong><br>
+  Modern teardrop hinges solve this by mounting the display support plates onto <strong>lateral sliding carriages</strong>. These carriages ride on precision curved tracks machined directly into the outer wing frames. As the hinge closes, a multi-link scissor mechanism pulls the left and right display wings outward by exactly $\Delta L / 2 \approx 0.71\text{ mm}$ each, absorbing the length change with zero net tension.
+</p>
 
 <h2 id="section-torque-engine-cams">3. The Torque Engine: Helical Cams & "Flex Mode" Detents</h2>
 <p>
