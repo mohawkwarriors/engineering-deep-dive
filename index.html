@@ -1294,7 +1294,7 @@
 
     let TANGENTS = {};
     const articleCache = {};
-    let activeArticleId = "#003";
+    let activeArticleId = (typeof TOPICS !== "undefined" && TOPICS.length > 0) ? TOPICS[0].id : "#004";
     let activeSubject = "All";
     let telemetryScores = {};
     try {
@@ -1385,7 +1385,60 @@
       if (data.tangents) {
         TANGENTS = { ...TANGENTS, ...data.tangents };
       }
-      articleEl.innerHTML = data.article_html;
+
+      let html = data.article_html || '';
+
+      // Defensive Fallback 1: Ensure metadata header (meta-line, h1, subtitle) is present
+      if (!html.includes('class="meta-line"') && data.title) {
+        const subSlug = (data.subject || 'Hardware').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        html = `
+<div class="meta-line">
+  <span>ISSUE ${data.id || ''}</span><span>•</span><span class="archive-subject-tag sub-${subSlug}">${(data.subject || '').toUpperCase()}</span><span>•</span><span id="read-time-badge">14 MIN READ</span>
+</div>
+
+<h1>${data.title}</h1>
+<p class="subtitle">
+  ${data.subtitle || ''}
+</p>
+` + html;
+      }
+
+      // Defensive Fallback 2: Ensure product-figure has .img-wrapper
+      html = html.replace(/(<figure class="product-figure">\s*)(<img\b[^>]*>)/gi, (m, pre, img) => {
+        return `${pre}<div class="img-wrapper">\n    ${img}\n  </div>`;
+      });
+
+      // Defensive Fallback 3: Ensure schematic-card wraps svg in .schematic-viewport
+      html = html.replace(/(<div class="schematic-card"[^>]*>[\s\S]*?<\/div>\s*)(<svg\b[\s\S]*?<\/svg>)/gi, (m, header, svg) => {
+        if (!m.includes('class="schematic-viewport"')) {
+          return `${header}<div class="schematic-viewport">\n    ${svg}\n  </div>`;
+        }
+        return m;
+      });
+
+      // Defensive Fallback 4: Ensure telemetry-bar is present
+      if (!html.includes('class="telemetry-bar"')) {
+        html += `
+<div class="telemetry-bar">
+  <div class="telemetry-info">
+    <span class="telemetry-title">Background Quality Telemetry</span>
+    <span class="telemetry-desc">Rate this topic to train the automated curation model for future dispatches.</span>
+  </div>
+  <div class="telemetry-actions">
+    <button class="score-btn" id="telemetry-up" onclick="recordTelemetry('up')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+      Good Topic
+    </button>
+    <button class="score-btn" id="telemetry-down" onclick="recordTelemetry('down')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg>
+      Poor Topic
+    </button>
+  </div>
+</div>
+`;
+      }
+
+      articleEl.innerHTML = html;
       formatTablePrices(articleEl);
       renderMath(articleEl);
       showView("article");

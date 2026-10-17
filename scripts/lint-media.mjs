@@ -14,7 +14,38 @@ export function autoSanitizeArticleHtml(html) {
   if (!html) return html;
   let out = html;
 
-  // 1. Ensure .schematic-header has .schematic-title and .schematic-subtitle
+  // 0A. Ensure <img> in <figure class="product-figure"> is wrapped in <div class="img-wrapper">
+  out = out.replace(/(<figure class="product-figure">\s*)(<img\b[^>]*>)/gi, (m, pre, img) => {
+    return `${pre}<div class="img-wrapper">\n    ${img}\n  </div>`;
+  });
+
+  // 0B. Ensure <svg> in <div class="schematic-card"> is wrapped in <div class="schematic-viewport">
+  out = out.replace(/(<div class="schematic-card"[^>]*>[\s\S]*?<\/div>\s*)(<svg\b[\s\S]*?<\/svg>)/gi, (m, header, svg) => {
+    if (!m.includes('class="schematic-viewport"')) {
+      return `${header}<div class="schematic-viewport">\n    ${svg}\n  </div>`;
+    }
+    return m;
+  });
+
+  // 0C. Normalize process-step classes
+  out = out.replace(/class=["']step-number["']/g, 'class="process-step-tag"');
+  out = out.replace(/class=["']step-title["']/g, 'class="process-step-title"');
+  out = out.replace(/(<div class="process-step-card">\s*<div class="process-step-tag">[\s\S]*?<div class="process-step-title">[\s\S]*?)(<p\b[^>]*>)([\s\S]*?<\/p>)/gi, (m, top, pTag, pRest) => {
+    if (!pTag.includes('process-step-desc')) {
+      return `${top}<p class="process-step-desc">${pRest}`;
+    }
+    return m;
+  });
+
+  // 0D. Normalize SVG canvas backgrounds to use theme-adaptive class
+  out = out.replace(/<rect\b([^>]*)\bfill=["']#(?:18181B|1C1917|111110|000000|0F172A)["']([^>]*)\/?>/gi, (m, pre, post) => {
+    if (!pre.includes('class=') && !post.includes('class=')) {
+      return `<rect${pre}class="svg-canvas-bg"${post}/>`;
+    }
+    return m;
+  });
+
+    // 1. Ensure .schematic-header has .schematic-title and .schematic-subtitle
   out = out.replace(/<div class="schematic-header">s*<span>([\s\S]*?)<\/span>/g, '<div class="schematic-header">\n    <span class="schematic-title">$1</span>');
   out = out.replace(/<div class="schematic-header">([\s\S]*?)<\/div>/g, (m, inner) => {
     let res = inner;
