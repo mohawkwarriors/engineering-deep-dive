@@ -1,4 +1,3 @@
-
 <div class="meta-line">
   <span>ISSUE #003</span><span>•</span><span class="archive-subject-tag sub-manufacturing">MANUFACTURING</span><span>•</span><span id="read-time-badge">15 MIN READ</span>
 </div>

@@ -115,6 +115,23 @@ export async function searchPremiumHardwareMedia(query, limit = 10) {
   }
 }
 
+export async function downloadVerifiedMedia(imageUrl, localDestPath) {
+  try {
+    const dir = path.dirname(localDestPath);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    const res = await fetch(imageUrl, {
+      headers: { 'User-Agent': 'EngineeringDeepDive/2.0 (editorial-team@engineering-deep-dive.org)' }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const buf = Buffer.from(await res.arrayBuffer());
+    fs.writeFileSync(localDestPath, buf);
+    return true;
+  } catch (err) {
+    console.warn(`[downloadVerifiedMedia] Download failed for ${imageUrl}:`, err.message);
+    return false;
+  }
+}
+
 /**
  * Automated Multimodal Vision Gate (LLM-as-a-Judge)
  * Evaluates candidate images using Gemini Vision for:
@@ -124,17 +141,31 @@ export async function searchPremiumHardwareMedia(query, limit = 10) {
  */
 export async function verifyMediaWithVision(imageUrl, targetConcept, apiKey = process.env.GEMINI_API_KEY) {
   if (!apiKey || !imageUrl) {
-    return { passed: true, score: 7, reason: 'Vision gate bypassed (API key missing or local mode)' };
+    return { passed: false, score: 0, reason: 'Vision gate bypassed: API key missing or invalid image URL' };
   }
 
   try {
+    const imgFetch = await fetch(imageUrl, {
+      headers: { 'User-Agent': 'EngineeringDeepDive/2.0 (editorial-team@engineering-deep-dive.org)' }
+    });
+    if (!imgFetch.ok) {
+      return { passed: false, score: 0, reason: `Could not fetch candidate image (HTTP ${imgFetch.status})` };
+    }
+    const contentType = imgFetch.headers.get('content-type') || 'image/jpeg';
+    const mimeType = contentType.includes('png') ? 'image/png' : 'image/jpeg';
+    const imgBuf = Buffer.from(await imgFetch.arrayBuffer());
+    if (imgBuf.length < 25000) {
+      return { passed: false, score: 2, reason: 'Image file size suspiciously small (<25KB)' };
+    }
+    const base64Data = imgBuf.toString('base64');
+
     const prompt = `You are the Lead Visual Quality Inspector for an elite engineering publication.
-Evaluate this image candidate for an engineering article about: "${targetConcept}".
+Evaluate this image candidate for an engineering article section about: "${targetConcept}".
 
 Criteria to strictly verify:
 1. WATERMARK & LOGO AUDIT: Does the image contain any commercial watermarks, website logo overlays, stock photo banners, or stamps? If yes, it MUST FAIL.
-2. RELEVANCE & ACCURACY: Does the image authentically depict the engineering mechanism or hardware described? Or is it a generic lifestyle, consumer table shot, or casual snapshot?
-3. PROFESSIONAL POLISH: Is the image sharp, well-lit, and suitable for a technical teardown journal?
+2. RELEVANCE & ACCURACY: Does the image authentically depict the engineering mechanism, hardware component, or physical system described? Or is it a generic lifestyle, consumer table shot, or casual snapshot?
+3. PROFESSIONAL POLISH: Is the image sharp, well-lit, artifact-free, and suitable for a technical teardown journal?
 
 Return ONLY valid JSON:
 {
@@ -154,7 +185,12 @@ Return ONLY valid JSON:
         contents: [{
           parts: [
             { text: prompt },
-            { image_url: imageUrl }
+            {
+              inline_data: {
+                mime_type: mimeType,
+                data: base64Data
+              }
+            }
           ]
         }],
         generationConfig: { responseMimeType: "application/json", temperature: 0.1 }
@@ -162,20 +198,24 @@ Return ONLY valid JSON:
     });
 
     if (!response.ok) {
-      return { passed: true, score: 6, reason: 'Vision API returned non-200' };
+      const errTxt = await response.text();
+      return { passed: false, score: 0, reason: `Vision API error (${response.status}): ${errTxt.slice(0, 100)}` };
     }
 
     const resJson = await response.json();
     const resultText = resJson.candidates?.[0]?.content?.parts?.[0]?.text;
     const parsed = JSON.parse(resultText);
+    const score = parsed.quality_score_1_to_10 || 0;
+    const isPassed = Boolean(parsed.passed && !parsed.has_watermark && !parsed.is_lifestyle_shot && parsed.is_authentic_engineering && score >= 7.5);
+
     return {
-      passed: Boolean(parsed.passed && !parsed.has_watermark && !parsed.is_lifestyle_shot),
-      score: parsed.quality_score_1_to_10 || 5,
-      reason: parsed.verdict_reason || 'Verified via multimodal vision gate'
+      passed: isPassed,
+      score,
+      reason: parsed.verdict_reason || 'Evaluated via multimodal vision gate'
     };
   } catch (err) {
     console.warn(`[verifyMediaWithVision] Verification failed: ${err.message}`);
-    return { passed: true, score: 5, reason: `Inspection bypassed: ${err.message}` };
+    return { passed: false, score: 0, reason: `Inspection failed: ${err.message}` };
   }
 }
 

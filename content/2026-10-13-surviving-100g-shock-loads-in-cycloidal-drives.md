@@ -1,4 +1,3 @@
-
 <div class="meta-line">
   <span>ISSUE #000</span><span>•</span><span class="archive-subject-tag sub-mechanisms">MECHANISMS</span><span>•</span><span id="read-time-badge">14 MIN READ</span>
 </div>

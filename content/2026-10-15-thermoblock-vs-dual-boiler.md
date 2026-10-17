@@ -1,4 +1,3 @@
-
 <div class="meta-line">
   <span>ISSUE #002</span><span>•</span><span class="archive-subject-tag sub-thermal">THERMAL</span><span>•</span><span id="read-time-badge">13 MIN READ</span>
 </div>

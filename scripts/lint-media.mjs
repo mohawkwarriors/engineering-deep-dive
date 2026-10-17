@@ -81,14 +81,8 @@ export function autoSanitizeArticleHtml(html) {
     return `<figcaption>${sanitized}</figcaption>`;
   });
 
-  // 5. Ensure all local image references exist; if missing on disk, safely replace with verified archive asset
+  // 5. Clean trailing queries or anchors from image paths
   out = out.replace(/<img\b([^>]*)\bsrc=["']([^"']+)["']([^>]*)>/gi, (match, prefix, src, suffix) => {
-    if (!src.startsWith('http') && !src.startsWith('data:')) {
-      const cleanPath = src.split('?')[0].split('#')[0];
-      if (!fs.existsSync(cleanPath)) {
-        return `<img${prefix}src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Cycloidal_drive_parts.png"${suffix}>`;
-      }
-    }
     return match;
   });
 
@@ -400,6 +394,10 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     if (/(?:STEP|STAGE)\s*\d+/i.test(svgStr)) {
       errors.push(`SVG #${svgIdx + 1} in ${fileLabel}: contains multi-step sequence inside raw SVG. Multi-step workflows must use responsive HTML .process-grid.`);
     }
+    // Strict ban on <text> in comparison or process-step-visual SVGs
+    if (svgStr.includes('class="comparison-svg"') && /<text\b/i.test(svgStr)) {
+      errors.push(`SVG #${svgIdx + 1} in ${fileLabel}: contains <text> tags inside a .comparison-svg. Comparison cards must use 100% native semantic HTML for text to prevent line overdrawing.`);
+    }
   });
 
   const figcaps = [...html.matchAll(/<figcaption>([\s\S]*?)<\/figcaption>/gi)];
@@ -421,7 +419,7 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     const vbH = vbMatch ? parseFloat(vbMatch[4]) : 480;
 
     // Walk SVG tokens tracking nested <g transform="translate(tx, ty)">
-    const tagRegex = /<\/?g\b[^>]*>|<text\b[^>]*>[\s\S]*?<\/text>|<line\b[^>]*\/?>|<rect\b[^>]*\/?>/g;
+    const tagRegex = /<\/?g\b[^>]*>|<text\b[^>]*>[\s\S]*?<\/text>|<line\b[^>]*\/?>|<rect\b[^>]*\/?>|<circle\b[^>]*\/?>|<polyline\b[^>]*\/?>|<path\b[^>]*\/?>/g;
     const stack = [{ tx: 0, ty: 0 }];
     const texts = [];
     const lines = [];

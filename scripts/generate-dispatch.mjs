@@ -238,8 +238,26 @@ STRICT EDITORIAL REQUIREMENTS:
             <span><strong>FIG 02 — TITLE:</strong> Caption description...</span>
             <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
           </div>
-      * NATIVE HTML PROCESS GRID (MANDATORY FOR ALL SEQUENCES, FLOWCHARTS & WORKFLOWS):
-        - For 3 to 5 stage kinematic sequences, manufacturing operations, fluid pathways, or reduction stages, you MUST use responsive HTML process grids (<div class="process-grid"><div class="process-step-card"><div class="process-step-tag">STAGE 01: ...</div><div class="process-step-title">...</div><p class="process-step-desc">...</p></div>...</div>). NEVER attempt to draw step sequences inside raw SVG. These HTML cards are 100% responsive, visually bulletproof, and mathematically immune to text collisions.
+      * NATIVE HTML VISUAL FLOWCHART / TIMELINE (MANDATORY FOR ALL SEQUENCES & PIPELINES):
+        - For 3 to 5 stage kinematic sequences, signal pipelines, or manufacturing workflows, use the connected visual flowchart component:
+          <div class="process-grid">
+            <div class="process-step-card">
+              <div class="process-step-header">
+                <span class="process-step-tag">STAGE 01: NAME</span>
+                <span class="process-step-arrow">&rarr;</span>
+              </div>
+              <div class="process-step-title">Stage Title</div>
+              <div class="process-step-visual">
+                <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+                  <!-- Clean, text-free vector graphics illustrating the physical signal/action (NO <text> inside SVG) -->
+                </svg>
+              </div>
+              <p class="process-step-desc">Clear description of physical transformation at this step.</p>
+              <div class="process-step-metric">&Delta;t &approx; 200 ps &bull; Output Telemetry</div>
+            </div>
+            ...
+          </div>
+        - ZERO <text> TAGS INSIDE .process-step-visual SVGs! All text must be in HTML tags.
       * STRICT LIMITS FOR SVG (ONLY FOR SINGLE-AXIS CROSS-SECTIONS):
         - SVG is ONLY permitted for single-axis mechanical cutaways (e.g. FIG 04 CAD schematic). It must be a simple linear component with vast breathing room.
         - ZERO TEXT COLLISION, BADGE PROPORTIONALITY & VIEWBOX RULES:

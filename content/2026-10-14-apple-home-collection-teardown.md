@@ -1,4 +1,3 @@
-
 <div class="meta-line">
   <span>ISSUE #001</span><span>•</span><span class="archive-subject-tag sub-product-dives">PRODUCT DIVES</span><span>•</span><span id="read-time-badge">14 MIN READ</span>
 </div>
@@ -18,6 +17,25 @@
     <span class="source-tag">IMAGE: APPLE NEWSROOM / LG PRESS ARCHIVE</span>
   </figcaption>
 </figure>
+
+<div class="morning-brief">
+  <div class="morning-brief-tag">30-SECOND MORNING BRIEF // FIRST-PRINCIPLES OVERVIEW</div>
+  <div class="morning-brief-grid">
+    <div class="brief-col">
+      <div class="brief-label">THE PARADOX</div>
+      <div class="brief-val">How to build a seamless luxury smart home ecosystem without taking on low-margin hardware manufacturing or liability for legacy 24V furnace wiring.</div>
+    </div>
+    <div class="brief-col">
+      <div class="brief-label">THE SECRET</div>
+      <div class="brief-val">A JDM partnership with LG and Schneider: Apple dictates custom silicon, industrial design, and Thread/Matter protocols while partners absorb supply chain and warranty risk.</div>
+    </div>
+    <div class="brief-col">
+      <div class="brief-label">KEY METRIC</div>
+      <div class="brief-val"><strong>&plusmn;5 cm UWB Vector Gating &bull; 0 Fans / In-Wall Conduction</strong></div>
+    </div>
+  </div>
+</div>
+
 
 <h2 id="section-news-overview">1. The Big Picture: What Apple Just Announced</h2>
 <p>
@@ -170,36 +188,97 @@
   </div>
   <div class="process-grid">
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 01: TOF</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 01: TOF</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Picosecond Time-of-Flight</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <path d="M 18 26 L 38 26 L 43 12 L 53 40 L 63 14 L 68 26 L 88 26" stroke="#2563EB" stroke-width="2"/>
+          <circle cx="128" cy="26" r="6" fill="#2563EB" fill-opacity="0.25" stroke="#2563EB" stroke-width="1.5"/>
+          <line x1="88" y1="26" x2="118" y2="26" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="3,3"/>
+          <polygon points="118,23 124,26 118,29" fill="#2563EB"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         The transceiver emits nanosecond RF chirps at 6.5 GHz / 8.0 GHz. Round-trip propagation time resolves distance within &plusmn;3 cm (&Delta;t &approx; 200 ps).
       </p>
+      <div class="process-step-metric">&Delta;t &approx; 200 ps &bull; &plusmn;3 cm Bound</div>
     </div>
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 02: AOA</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 02: AOA</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Dual-Antenna Phase Delta</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <rect x="25" y="16" width="10" height="20" rx="1" fill="#7C3AED" stroke="#6D28D9" stroke-width="1.5"/>
+          <rect x="55" y="16" width="10" height="20" rx="1" fill="#7C3AED" stroke="#6D28D9" stroke-width="1.5"/>
+          <path d="M 95 10 L 135 42" stroke="#7C3AED" stroke-width="2"/>
+          <path d="M 85 18 L 125 50" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <line x1="30" y1="26" x2="60" y2="26" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="2,2"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         Two patch antennas spaced &lambda;/2 apart measure incoming wavefront phase arrival (&Delta;&phi; = (2&pi;d/&lambda;)sin&theta;), calculating horizontal azimuth within &plusmn;3.5&deg;.
       </p>
+      <div class="process-step-metric">&Delta;&phi; Phase Shift &bull; &plusmn;3.5&deg;</div>
     </div>
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 03: GATING</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 03: GATING</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Spatial Vector Thresholding</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <path d="M 80 44 L 45 12 L 115 12 Z" fill="#059669" fill-opacity="0.15" stroke="#059669" stroke-width="1.5"/>
+          <line x1="80" y1="44" x2="80" y2="16" stroke="#059669" stroke-width="2.5"/>
+          <polygon points="76,20 80,14 84,20" fill="#059669"/>
+          <path d="M 30 38 Q 20 20 40 32" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <line x1="26" y1="22" x2="34" y2="30" stroke="#DC2626" stroke-width="2"/>
+          <line x1="34" y1="22" x2="26" y2="30" stroke="#DC2626" stroke-width="2"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         The deadbolt DSP tracks the user's velocity vector. Inside footsteps and hallway pacing (&theta; &gt; 90&deg;) are discarded; only forward exterior porch approaches trigger unlock.
       </p>
+      <div class="process-step-metric">&theta; &lt; 90&deg; Approach Vector</div>
     </div>
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 04: EXECUTE</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 04: EXECUTE</span>
+        <span class="process-step-arrow">&bull;</span>
+      </div>
       <div class="process-step-title">Aliro Cryptographic Unlock</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <rect x="25" y="16" width="36" height="20" rx="4" fill="#D97706" fill-opacity="0.2" stroke="#D97706" stroke-width="1.5"/>
+          <circle cx="43" cy="26" r="4" fill="#D97706"/>
+          <line x1="61" y1="26" x2="90" y2="26" stroke="#D97706" stroke-width="2"/>
+          <polygon points="90,22 96,26 90,30" fill="#D97706"/>
+          <rect x="100" y="20" width="36" height="12" rx="2" fill="#059669" stroke="#059669" stroke-width="1.5"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         Upon crossing the 1.0-meter intent threshold, the Secure Exclave executes an authenticated ECDSA challenge over Thread, driving the high-torque planetary motor in &lt;120 ms.
       </p>
+      <div class="process-step-metric">&lt;120 ms &bull; Motorized Throw</div>
     </div>
   </div>
   <div class="schematic-caption">
-    <span><strong>FIG 04 — SPATIAL RANGING PIPELINE:</strong> The 4-stage IEEE 802.15.4z UWB localization sequence combining Time-of-Flight ranging with dual-channel Angle-of-Arrival (AoA) phase differentiation to eliminate false unlocks from interior foyer footsteps.</span>
+    <span><strong>FIG 04 — SPATIAL RANGING PIPELINE:</strong> The four-stage UWB ranging pipeline executing real-time picosecond Time-of-Flight (ToF) and dual-antenna phase difference (AoA) to track user intent and prevent false unlocks from indoor pacing.</span>
+    <span class="source-tag">PIPELINE: IEEE 802.15.4Z</span>
+  </div>
+</div>
+  <div class="schematic-caption">
+    <span><strong>FIG 05 — SPATIAL RANGING PIPELINE:</strong> The 4-stage IEEE 802.15.4z UWB localization sequence combining Time-of-Flight ranging with dual-channel Angle-of-Arrival (AoA) phase differentiation to eliminate false unlocks from interior foyer footsteps.</span>
     <span class="source-tag">CAD ARCHIVE</span>
   </div>
 </div>
@@ -216,7 +295,7 @@
     <img referrerpolicy="no-referrer" src="images/lg-video-doorbell.jpg" alt="LG Video Doorbell Wired with Dual Optics" />
   </div>
   <figcaption>
-    <span><strong>FIG 05 — LG VIDEO DOORBELL (WIRED):</strong> Dual-lens optical split separating the 2.5K upper visitor camera from the 45° downward-canted package camera.</span>
+    <span><strong>FIG 06 — LG VIDEO DOORBELL (WIRED):</strong> Dual-lens optical split separating the 2.5K upper visitor camera from the 45° downward-canted package camera.</span>
     <span class="source-tag">IMAGE: LG ELECTRONICS / APPLE HOME COLLECTION</span>
   </figcaption>
 </figure>
@@ -237,7 +316,7 @@
     <img referrerpolicy="no-referrer" src="images/lg-indoor-cam.jpg" alt="LG Indoor Security Camera with Motorized Privacy Gimbal" />
   </div>
   <figcaption>
-    <span><strong>FIG 06 — LG INDOOR SECURITY CAM:</strong> Motorized dual-axis pan/tilt gimbal with hardware-enforced 95° downward privacy rotation into an aluminum light-absorbing shroud.</span>
+    <span><strong>FIG 07 — LG INDOOR SECURITY CAM:</strong> Motorized dual-axis pan/tilt gimbal with hardware-enforced 95° downward privacy rotation into an aluminum light-absorbing shroud.</span>
     <span class="source-tag">IMAGE: LG ELECTRONICS / APPLE HOME COLLECTION</span>
   </figcaption>
 </figure>
@@ -258,7 +337,7 @@
     <img referrerpolicy="no-referrer" src="images/lg-floodlight-cam.jpg" alt="LG Floodlight Security Camera with Articulated LED Outriggers" />
   </div>
   <figcaption>
-    <span><strong>FIG 07 — LG FLOODLIGHT SECURITY CAM:</strong> Dual 2,000-lumen articulated COB LED floodlights mounted on die-cast aluminum convective heatsink outriggers.</span>
+    <span><strong>FIG 08 — LG FLOODLIGHT SECURITY CAM:</strong> Dual 2,000-lumen articulated COB LED floodlights mounted on die-cast aluminum convective heatsink outriggers.</span>
     <span class="source-tag">IMAGE: LG ELECTRONICS / APPLE HOME COLLECTION</span>
   </figcaption>
 </figure>
@@ -279,7 +358,7 @@
     <img referrerpolicy="no-referrer" src="images/lg-smart-thermostat.jpg" alt="LG Smart Thermostat Dial" />
   </div>
   <figcaption>
-    <span><strong>FIG 08 — LG & SCHNEIDER SMART THERMOSTATS:</strong> Circular dial (LG) and square panel (Schneider) climate controls featuring through-glass 60 GHz FMCW radar and active power stealing.</span>
+    <span><strong>FIG 09 — LG & SCHNEIDER SMART THERMOSTATS:</strong> Circular dial (LG) and square panel (Schneider) climate controls featuring through-glass 60 GHz FMCW radar and active power stealing.</span>
     <span class="source-tag">IMAGE: LG ELECTRONICS / SCHNEIDER ELECTRIC</span>
   </figcaption>
 </figure>
@@ -301,36 +380,92 @@
   </div>
   <div class="process-grid">
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 01: DIE</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 01: DIE</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Silicon Junction (A18 SoC)</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <rect x="60" y="14" width="40" height="24" rx="2" fill="#DC2626" fill-opacity="0.25" stroke="#DC2626" stroke-width="1.5"/>
+          <circle cx="80" cy="26" r="5" fill="#DC2626"/>
+          <line x1="40" y1="26" x2="55" y2="26" stroke="#DC2626" stroke-width="1.5"/>
+          <line x1="105" y1="26" x2="120" y2="26" stroke="#DC2626" stroke-width="1.5"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         Concentrated heat flux generated during local neural inferencing and camera decoding maintains junction temperature at T_j &approx; 78&deg;C.
       </p>
+      <div class="process-step-metric">T_j &approx; 78&deg;C &bull; A18 SoC Die</div>
     </div>
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 02: TIM</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 02: TIM</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Phase-Change Interface</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <rect x="30" y="16" width="100" height="8" rx="2" fill="#2563EB" fill-opacity="0.3" stroke="#2563EB" stroke-width="1.5"/>
+          <rect x="30" y="28" width="100" height="8" fill="#93C5FD"/>
+          <line x1="30" y1="26" x2="130" y2="26" stroke="#1D4ED8" stroke-width="1" stroke-dasharray="2,2"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         A 0.20 mm phase-change thermal interface material (k = 6.5 W/m&middot;K) wets micro-voids between silicon package and aluminum chassis, minimizing contact resistance.
       </p>
+      <div class="process-step-metric">0.20 mm TIM &bull; k = 6.5 W/m&middot;K</div>
     </div>
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 03: SPREAD</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 03: SPREAD</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Anodized Heat Spreader</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <rect x="25" y="16" width="110" height="18" rx="3" fill="#64748B" fill-opacity="0.3" stroke="#64748B" stroke-width="1.5"/>
+          <line x1="35" y1="25" x2="125" y2="25" stroke="#059669" stroke-width="2"/>
+          <polygon points="35,22 30,25 35,28" fill="#059669"/>
+          <polygon points="125,22 130,25 125,28" fill="#059669"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         A die-cast A380 chassis with low thermal resistance (R_th &lt; 2.2 K/W) routes heat horizontally away from the display cover glass toward perimeter mounting flanges.
       </p>
+      <div class="process-step-metric">R_th &lt; 2.2 K/W &bull; A380 Chassis</div>
     </div>
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 04: DISSIPATE</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 04: DISSIPATE</span>
+        <span class="process-step-arrow">&bull;</span>
+      </div>
       <div class="process-step-title">Drywall Ballast Conduction</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <rect x="25" y="10" width="110" height="32" rx="2" fill="#D97706" fill-opacity="0.15" stroke="#D97706" stroke-width="1.5"/>
+          <line x1="40" y1="18" x2="120" y2="18" stroke="#D97706" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="40" y1="26" x2="120" y2="26" stroke="#D97706" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="40" y1="34" x2="120" y2="34" stroke="#D97706" stroke-width="1" stroke-dasharray="3,3"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         Flanges clamp against 12.7 mm drywall over 180 cm&sup2; of contact area, bleeding thermal flux into building mass to maintain touch glass below 38&deg;C with zero fan noise.
       </p>
+      <div class="process-step-metric">180 cm&sup2; Area &bull; T &lt; 38&deg;C</div>
     </div>
   </div>
   <div class="schematic-caption">
-    <span><strong>FIG 09 — IN-WALL CONDUCTION ARCHITECTURE:</strong> 1D thermal dissipation sequence conducting waste heat from the A18 silicon die into perimeter drywall clamping flanges to sustain sub-38°C touch temperatures without fans.</span>
+    <span><strong>FIG 10 — IN-WALL CONDUCTION ARCHITECTURE:</strong> Thermal dissipation pathway for the flush in-wall HomeView command center, routing 12.5W of peak APU flux through a cast A380 chassis into residential drywall ballast.</span>
+    <span class="source-tag">THERMAL CAD: APPLE HOME COLLECTION</span>
+  </div>
+</div>
+  <div class="schematic-caption">
+    <span><strong>FIG 11 — IN-WALL CONDUCTION ARCHITECTURE:</strong> 1D thermal dissipation sequence conducting waste heat from the A18 silicon die into perimeter drywall clamping flanges to sustain sub-38°C touch temperatures without fans.</span>
     <span class="source-tag">THERMAL ARCHIVE</span>
   </div>
 </div>
