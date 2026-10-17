@@ -142,10 +142,11 @@ STRICT EDITORIAL REQUIREMENTS:
        Never omit the FIG XX prefix, never use standalone figure badges, and always include the <span class="source-tag">.
    - TIER 2 (GENERATED VISUALS — WHEN REAL PHOTOS DO NOT EXIST):
      * NEVER use diffusion AI art for technical mechanisms or schematics (it produces blurry, uninformative blobs).
-     * All generated visuals MUST adhere to one of the 3 approved clean engineering archetypes, strictly conforming to the website theme (--bg: #191918, --surface: #232220, --border: #383734, --accent: #D97757, --text: #EDEDEB) and 'JetBrains Mono' typography:
-       1. SIMPLE CAD CROSS-SECTIONS (e.g. Figure 2 in Issue #003): Clean sectional cutaways with mechanical hatching, clear component boundaries, and strict 3-tier coordinate layout (<svg viewBox="0 0 960 420"> inside <div class="schematic-card">).
-       2. HIGH-LEVEL IDEATION SKETCHES: Industrial design (ID) concept sketches with clean linework, phantom transparency lines showing internal ribs/features, and subtle tone shading.
-       3. STEP-BY-STEP PROCESS BLOCK DIAGRAMS: Horizontal/grid pipeline cards showing Step 1, Step 2, Step 3 (e.g. using a responsive step grid inside <div class="schematic-card">).
+     * STRICT COMPLEXITY CEILING & GOLDEN RULE:
+       - NEVER attempt complicated architectural or multi-zone scene diagrams (e.g. wall assemblies with studs/drywall/boxes, room layouts, doors with approaching people, or complex multipath ray diagrams). AI fails at these and produces cluttered, brittle visuals. If a diagram is too complicated, DO NOT CREATE IT!
+       - PREFERRED ARCHETYPE (FIGURE 2 STYLE — PERFECT): Use clean, responsive HTML process grids (<div class="process-grid"><div class="process-step-card">...</div></div>) inside <div class="schematic-card">. These are 100% responsive, have zero collision risk, and clearly explain sequential workflows, state machines, and thermal/hydraulic pathways.
+       - MAXIMUM COMPLEXITY CEILING (FIGURE 3 STYLE — UPPER LIMIT FOR SVG): If generating an SVG CAD schematic, it MUST be a single-axis, linear horizontal component (e.g. reciprocating screw barrel, fluid conduit, or single-component gear cross-section). It must have plenty of open breathing room, maximum 3 separated zones, and all callout labels isolated in clean cards or headers outside the geometry.
+       - NEVER exceed Figure 3's complexity. If a mechanism cannot be drawn cleanly as a single-axis component, use the Figure 2 process grid instead.
      * ZERO TEXT COLLISION & VIEWBOX MARGIN RULES (HARD GATE):
        - Every schematic header MUST use <div class="schematic-header"><span class="schematic-title">FIG XX — TITLE</span>...</div>.
        - Every <text> element inside an <svg> MUST explicitly specify font-family="'JetBrains Mono', monospace" and font-size between 11 and 14.
