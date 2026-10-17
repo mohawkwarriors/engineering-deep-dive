@@ -384,19 +384,25 @@
     }
     .price-tag {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--accent);
       background: rgba(217, 119, 87, 0.08);
       border: 1px solid rgba(217, 119, 87, 0.28);
-      padding: 2px 9px;
-      border-radius: 9999px;
-      margin-left: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
       display: inline-flex;
       align-items: center;
       vertical-align: middle;
-      letter-spacing: 0;
-      white-space: nowrap;
+      letter-spacing: -0.01em;
+      white-space: nowrap !important;
+      word-break: keep-all !important;
+      overflow-wrap: normal !important;
+      font-variant-numeric: tabular-nums;
+    }
+    h1 .price-tag, h2 .price-tag, h3 .price-tag, h4 .price-tag {
+      margin-left: 8px;
+      font-size: 0.75em;
     }
     p { margin-bottom: 20px; word-break: break-word; overflow-wrap: break-word; }
     ul, ol { margin: 0 0 24px 22px; }
@@ -709,25 +715,46 @@
       margin: 28px 0 36px;
       border: 1px solid var(--border);
       border-radius: 6px;
+      background: var(--card-inner);
     }
     .spec-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 14px;
-      min-width: 580px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      min-width: 720px;
     }
     .spec-table th, .spec-table td {
-      padding: 12px 16px;
+      padding: 12px 14px;
       text-align: left;
       border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      word-break: normal !important;
+      overflow-wrap: normal !important;
+      hyphens: none !important;
     }
     .spec-table th {
       background: var(--surface);
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       color: var(--muted);
+      white-space: nowrap;
+      font-weight: 700;
+    }
+    .spec-table tr:hover td {
+      background: rgba(217, 119, 87, 0.02);
+    }
+    .spec-table td.price-cell,
+    .spec-table td.nowrap,
+    .spec-table td:has(> .price-tag) {
+      white-space: nowrap !important;
+      word-break: keep-all !important;
+      font-variant-numeric: tabular-nums;
+    }
+    .spec-table td .price-tag {
+      margin: 0;
     }
     .spec-table tr:last-child td { border-bottom: none; }
 
@@ -1184,6 +1211,20 @@
       .issue-nav { flex-direction: column !important; align-items: stretch !important; }
       .issue-nav-btn { justify-content: center !important; }
       .sidebar-outline { display: none !important; }
+
+      .spec-table-wrap {
+        margin: 20px -16px 28px !important;
+        width: calc(100% + 32px) !important;
+        max-width: calc(100% + 32px) !important;
+        border-radius: 0 !important;
+        border-left: none !important;
+        border-right: none !important;
+      }
+      .spec-table th, .spec-table td {
+        word-break: normal !important;
+        overflow-wrap: normal !important;
+        hyphens: none !important;
+      }
     }
   </style>
 </head>
@@ -1306,12 +1347,43 @@
       }
     }
 
+    function formatTablePrices(container) {
+      if (!container) return;
+      container.querySelectorAll(".spec-table").forEach(table => {
+        const ths = Array.from(table.querySelectorAll("th"));
+        const priceColIndices = new Set();
+        ths.forEach((th, idx) => {
+          const txt = th.textContent.toLowerCase();
+          if (txt.includes("price") || txt.includes("cost") || txt.includes("bom") || txt.includes("msrp")) {
+            priceColIndices.add(idx);
+          }
+        });
+
+        table.querySelectorAll("tbody tr").forEach(tr => {
+          const tds = Array.from(tr.querySelectorAll("td"));
+          tds.forEach((td, idx) => {
+            const raw = td.textContent.trim();
+            const isPriceCol = priceColIndices.has(idx);
+            const looksLikePrice = /^(\$|&dollar;|USD)\s*[0-9]+(\.[0-9]{2})?(\s*(&ndash;|-|–|—|to)\s*(\$|&dollar;)?\s*[0-9]+(\.[0-9]{2})?)?(\s*(per|\/)\s*[a-zA-Z]+)?$/i.test(raw);
+            
+            if (isPriceCol || looksLikePrice) {
+              td.classList.add("price-cell");
+              if (!td.querySelector(".price-tag") && (raw.includes("$") || raw.includes("USD"))) {
+                td.innerHTML = `<span class="price-tag">${td.innerHTML.trim()}</span>`;
+              }
+            }
+          });
+        });
+      });
+    }
+
     function renderArticleContent(data) {
       const articleEl = document.getElementById("view-article");
       if (data.tangents) {
         TANGENTS = { ...TANGENTS, ...data.tangents };
       }
       articleEl.innerHTML = data.article_html;
+      formatTablePrices(articleEl);
       renderMath(articleEl);
       showView("article");
       buildOutline();
