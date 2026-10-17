@@ -213,6 +213,32 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     if (!header.includes('schematic-title') && !header.includes('schematic-tag')) {
       errors.push(`Schematic header in ${fileLabel} missing standard .schematic-title class: ${header.trim()}`);
     }
+    if (!header.includes('schematic-subtitle')) {
+      errors.push(`Schematic header in ${fileLabel} missing standard .schematic-subtitle class: ${header.trim()}`);
+    }
+  }
+
+  // 3B. Check tables for consistent .spec-table styling
+  const tables = [...html.matchAll(/<table\b([^>]*)>([\s\S]*?)<\/table>/gi)];
+  for (let tIdx = 0; tIdx < tables.length; tIdx++) {
+    const tbl = tables[tIdx];
+    if (!tbl[1].includes('class="spec-table"')) {
+      errors.push(`Table #${tIdx + 1} in ${fileLabel} does not use standard class="spec-table".`);
+    }
+    if (/style=/i.test(tbl[1]) || /style=/i.test(tbl[2])) {
+      errors.push(`Table #${tIdx + 1} in ${fileLabel} contains inline styles; must rely on global .spec-table CSS variables.`);
+    }
+  }
+
+  // 3C. Check meta-line consistency
+  const metaMatch = html.match(/<div class="meta-line">([\s\S]*?)<\/div>/i);
+  if (metaMatch) {
+    if (!metaMatch[1].includes('archive-subject-tag')) {
+      errors.push(`Meta line in ${fileLabel} missing standard .archive-subject-tag.`);
+    }
+    if (!metaMatch[1].includes('read-time-badge')) {
+      errors.push(`Meta line in ${fileLabel} missing #read-time-badge.`);
+    }
   }
 
   // 4. Global SVG Geometry & Text Collision Analysis
