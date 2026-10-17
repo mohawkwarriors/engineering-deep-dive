@@ -1098,10 +1098,10 @@
     const SUBJECTS = ["All", "Product Dives", "Manufacturing", "Design", "Materials", "Mechanisms", "Thermal", "Fluids", "Electromechanical"];
     
     const TOPICS = [
-      { id: "#003", subject: "Manufacturing", title: "How Laptops Get Featherweight Metal Shells", status: "Published", date: "Oct 16, 2026" },
-      { id: "#002", subject: "Thermal", title: "Espresso Machine Boilers: Thermoblocks vs. Dual-Boiler PID Systems", status: "Published", date: "Oct 15, 2026" },
-      { id: "#001", subject: "Product Dives", title: "Apple Home Hardware: HomeView Hub & The LG/Schneider Teardown", status: "Published", date: "Oct 14, 2026" },
-      { id: "#000", subject: "Electromechanical", title: "Apple Vision Pro: Automatic Lens Adjustment & Voice Coil Motors", status: "Published", date: "Oct 13, 2026" }
+      { id: "#003", subject: "Manufacturing", title: "How Laptops Get Featherweight Metal Shells", shortTitle: "Featherweight Laptop Shells", status: "Published", date: "Oct 16, 2026" },
+      { id: "#002", subject: "Thermal", title: "Espresso Machine Boilers: Thermoblocks vs. Dual-Boiler PID Systems", shortTitle: "Espresso Machine Boilers", status: "Published", date: "Oct 15, 2026" },
+      { id: "#001", subject: "Product Dives", title: "Apple Home Hardware: HomeView Hub & The LG/Schneider Teardown", shortTitle: "Apple Home Hardware", status: "Published", date: "Oct 14, 2026" },
+      { id: "#000", subject: "Electromechanical", title: "Apple Vision Pro: Automatic Lens Adjustment & Voice Coil Motors", shortTitle: "Apple Vision Pro", status: "Published", date: "Oct 13, 2026" }
     ];
 
     let TANGENTS = {};
@@ -1189,13 +1189,13 @@
       const prevHtml = prevTopic ? `
         <button class="issue-nav-btn" onclick="loadArticle('${prevTopic.id}')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          <span><strong>Previous:</strong> ${prevTopic.title}</span>
+          <span><strong>Previous:</strong> ${prevTopic.shortTitle || prevTopic.title}</span>
         </button>
       ` : `<div class="issue-nav-btn disabled"><span>Beginning of Archive</span></div>`;
 
       const nextHtml = nextTopic ? `
         <button class="issue-nav-btn" onclick="loadArticle('${nextTopic.id}')">
-          <span><strong>Next:</strong> ${nextTopic.title}</span>
+          <span><strong>Next:</strong> ${nextTopic.shortTitle || nextTopic.title}</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
       ` : `<div class="issue-nav-btn disabled"><span>Latest Dispatch</span></div>`;
