@@ -68,10 +68,88 @@ isoDate: "2026-10-17"
   Coupled with neutral-axis positioning layers (shifting the zero-strain line directly into the neutral plane of the brittle glass core), peak strain in the UTG drops below <strong>1.1%</strong>—well within its infinite fatigue endurance regime ($> 400{,}000$ cycles).
 </p>
 
+<div class="schematic-card" id="fig02-teardrop-geometry">
+  <div class="schematic-header">
+    <span class="schematic-title">FIG 02 — U-SHAPED FOLD VS. EULER CLOTHOID TEARDROP GEOMETRY</span>
+    <span class="schematic-subtitle">COMPARATIVE BENDING RADIUS &amp; CHASSIS GAP KINEMATICS</span>
+  </div>
+  <div class="schematic-viewport">
+    <svg viewBox="0 0 960 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="960" height="340" rx="8" class="svg-canvas-bg" />
+
+      <!-- PANEL A: TRADITIONAL U-SHAPED FOLD (LEFT) -->
+      <g transform="translate(40, 25)">
+        <rect x="0" y="0" width="420" height="245" rx="6" class="svg-panel-bg" stroke="#DC2626" stroke-width="1.8"/>
+        <text x="210" y="30" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700" fill="#DC2626">A. TRADITIONAL U-SHAPED FOLD</text>
+        
+        <!-- Chassis Halves with Wedge Gap -->
+        <rect x="40" y="60" width="140" height="35" rx="4" class="svg-panel-sub" stroke="#78716C" stroke-width="1.5"/>
+        <rect x="40" y="135" width="140" height="35" rx="4" class="svg-panel-sub" stroke="#78716C" stroke-width="1.5"/>
+        
+        <!-- Hinge Pin -->
+        <circle cx="220" cy="115" r="10" fill="#1C1917" stroke="#DC2626" stroke-width="2"/>
+        <circle cx="220" cy="115" r="3" fill="#DC2626"/>
+
+        <!-- Tight U-Shaped Display Curve -->
+        <path d="M 60 95 L 180 95 C 215 95 215 135 180 135 L 60 135" stroke="#EF4444" stroke-width="4" fill="none"/>
+        <circle cx="202" cy="115" r="12" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="2 2" fill="none"/>
+        
+        <!-- High Strain Badge -->
+        <g transform="translate(250, 75)">
+          <rect x="0" y="0" width="150" height="38" rx="4" fill="#1C1917" stroke="#EF4444" stroke-width="1.2"/>
+          <text x="75" y="16" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#EF4444" font-weight="700">TIGHT RADIUS: ρ = 1.25mm</text>
+          <text x="75" y="30" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#FCA5A5">Peak Strain: ε = 16.8%</text>
+        </g>
+
+        <!-- Wedge Gap Indicator -->
+        <line x1="50" y1="95" x2="50" y2="135" stroke="#F87171" stroke-width="1.5" stroke-dasharray="2 2"/>
+        <text x="210" y="200" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#EF4444" font-weight="600">Tapered Gap: 2.2mm • Deep Crease Trench</text>
+        <text x="210" y="222" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" class="svg-text-muted">Exceeds UTG critical Griffith crack limit</text>
+      </g>
+
+      <!-- PANEL B: EULER CLOTHOID TEARDROP FOLD (RIGHT) -->
+      <g transform="translate(500, 25)">
+        <rect x="0" y="0" width="420" height="245" rx="6" class="svg-panel-bg" stroke="#10B981" stroke-width="1.8"/>
+        <text x="210" y="30" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700" fill="#10B981">B. EULER CLOTHOID TEARDROP FOLD</text>
+
+        <!-- Chassis Halves Parallel Flush (0 gap!) -->
+        <rect x="40" y="60" width="140" height="40" rx="4" class="svg-panel-sub" stroke="#78716C" stroke-width="1.5"/>
+        <rect x="40" y="105" width="140" height="40" rx="4" class="svg-panel-sub" stroke="#78716C" stroke-width="1.5"/>
+
+        <!-- Bulbous Waterdrop Internal Cavity Curve -->
+        <path d="M 60 100 L 160 100 C 190 100 200 60 235 60 C 270 60 280 145 235 145 C 200 145 190 105 L 60 105" stroke="#0284C7" stroke-width="4" fill="none"/>
+        <circle cx="245" cy="102" r="28" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+
+        <!-- Low Strain Badge -->
+        <g transform="translate(250, 75)">
+          <rect x="0" y="0" width="150" height="38" rx="4" fill="#1C1917" stroke="#10B981" stroke-width="1.2"/>
+          <text x="75" y="16" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#10B981" font-weight="700">BULBOUS: ρ = 3.45mm</text>
+          <text x="75" y="30" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#6EE7B7">Safe Strain: ε &lt; 6.2%</text>
+        </g>
+
+        <!-- True Zero Gap Callout -->
+        <text x="210" y="200" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#10B981" font-weight="600">True 0.0mm Closed Gap • Flat Display Line</text>
+        <text x="210" y="222" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" class="svg-text-muted">Internal floating cavity eliminates outer pinch</text>
+      </g>
+
+      <!-- BOTTOM SUMMARY BANNER -->
+      <g transform="translate(40, 285)">
+        <rect x="0" y="0" width="880" height="40" rx="5" class="svg-panel-bg" stroke="var(--border)" stroke-width="1.2"/>
+        <text x="440" y="25" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" class="svg-text-primary" font-weight="600">GEOMETRIC PRINCIPLE: Teardrop geometry nearly triples bend radius (3.45mm vs 1.25mm), cutting glass strain by 63%.</text>
+      </g>
+    </svg>
+  </div>
+  <div class="schematic-caption">
+    <span><strong>FIG 02 — FOLD GEOMETRY COMPARISON:</strong> Side-by-side comparison of legacy U-shaped concentric bending versus the Euler clothoid teardrop fold, illustrating how the internal waterdrop loop relieves tensile strain on Ultra-Thin Glass while enabling flush closure.</span>
+    <span class="source-tag">SCHEMATIC: KINEMATIC CAD</span>
+  </div>
+</div>
+
+
 <!-- FIG 02: KINEMATIC WORKFLOW GRID -->
 <div class="schematic-card" id="process-steps-diagram">
   <div class="schematic-header">
-    <span class="schematic-title">FIG 02 — THE 4-STAGE TEARDROP KINEMATIC SEQUENCE</span>
+    <span class="schematic-title">FIG 03 — THE 4-STAGE TEARDROP KINEMATIC SEQUENCE</span>
     <span class="schematic-subtitle">PLANAR (180°) &rarr; BENDING &rarr; SLIDING &rarr; CLOSED (0°)</span>
   </div>
   <div class="process-grid">
@@ -110,7 +188,7 @@ isoDate: "2026-10-17"
 
   </div>
   <div class="schematic-caption">
-    <span><strong>FIG 02 — KINEMATIC SEQUENCE:</strong> The four-phase transition of a teardrop hinge mechanism, demonstrating the synchronized vertical descent of central support wings and the lateral translation of perimeter sliders.</span>
+    <span><strong>FIG 03 — KINEMATIC SEQUENCE:</strong> The four-phase transition of a teardrop hinge mechanism, demonstrating the synchronized vertical descent of central support wings and the lateral translation of perimeter sliders.</span>
     <span class="source-tag">FLOWCHART 01</span>
   </div>
 </div>
@@ -146,7 +224,7 @@ isoDate: "2026-10-17"
 <!-- FIG 03: HIGH-RESOLUTION SVG SCHEMATIC OF TEARDROP HINGE CAD -->
 <div class="schematic-card" id="fig03-teardrop-cad">
   <div class="schematic-header">
-    <span class="schematic-title">FIG 03 — MULTI-LINK TEARDROP HINGE KINEMATIC CROSS-SECTION</span>
+    <span class="schematic-title">FIG 04 — MULTI-LINK TEARDROP HINGE KINEMATIC CROSS-SECTION</span>
     <span class="schematic-subtitle">DUAL SLIDER STROKE: ΔL = 1.42 mm • CAM PRELOAD: 45 N • ZERO-GAP PROFILE</span>
   </div>
   <div class="schematic-viewport">
@@ -231,7 +309,7 @@ isoDate: "2026-10-17"
     </svg>
   </div>
   <div class="schematic-caption">
-    <span><strong>FIG 03 — CAD SCHEMATIC:</strong> Transverse kinematic section view of the multi-link teardrop hinge mechanism, highlighting the synchronized spur gears, lateral slider translation, and the vertical drop path of the internal support wings.</span>
+    <span><strong>FIG 04 — CAD SCHEMATIC:</strong> Transverse kinematic section view of the multi-link teardrop hinge mechanism, highlighting the synchronized spur gears, lateral slider translation, and the vertical drop path of the internal support wings.</span>
     <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
   </div>
 </div>

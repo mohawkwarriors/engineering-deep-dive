@@ -179,6 +179,11 @@ STRICT EDITORIAL REQUIREMENTS:
        <span class="source-tag">ARCHIVE / SOURCE</span>
        Never omit the FIG XX prefix, never use standalone figure badges, and always include the <span class="source-tag">.
    - TIER 2 (GENERATED VISUALS — WHEN REAL PHOTOS DO NOT EXIST):
+      * MANDATORY COMPARATIVE GEOMETRY DIAGRAM (THE VISUAL THESIS RULE):
+        - Whenever an article introduces a new geometry, mechanism, or architecture that replaces a flawed legacy method (e.g. U-Shape vs. Teardrop Fold, Involute Gear vs. Cycloidal Pin, HPDC vs. Thixomolding Slurry, Thermoblock vs. Dual Boiler), you MUST include a dedicated side-by-side comparative vector schematic (<div class="schematic-card"> with <div class="schematic-viewport"><svg ...></div></div>) directly in Section 1 or Section 2 as FIG 02!
+        - Panel A (Left): Traditional Flawed Geometry (highlighting the concentrated stress, gap, or failure mode in red).
+        - Panel B (Right): Engineered Solution (illustrating the distributed load, relief cavity, or improved mechanism in emerald/cyan).
+        - Readers must be able to visually see the core physical breakthrough at a single glance before diving into component-level anatomy.
      * NEVER use diffusion AI art for technical mechanisms or schematics (it produces blurry, uninformative blobs).
      * STRICT COMPLEXITY CEILING & GOLDEN RULE:
        - NEVER attempt complicated architectural or multi-zone scene diagrams (e.g. wall assemblies with studs/drywall/boxes, room layouts, doors with approaching people, or complex multipath ray diagrams). AI fails at these and produces cluttered, brittle visuals. If a diagram is too complicated, DO NOT CREATE IT!
