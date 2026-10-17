@@ -31,6 +31,22 @@ export function autoSanitizeArticleHtml(html) {
     return `<strong>FIG ${padded} — ${title.trim().replace(/^—\s*/, '')}</strong>`;
   });
 
+  // 2C. Sanitize LaTeX control characters and missing backslashes from JSON parsing
+  out = out.replace(/\u0007lpha/g, '\\alpha');
+  out = out.replace(/\u0008eta/g, '\\beta');
+  out = out.replace(/\u000crac/g, '\\frac');
+  out = out.replace(/\u000barepsilon/g, '\\varepsilon');
+  out = out.replace(/\u000b/g, '\\');
+  out = out.replace(/\text/g, '\\text');
+  out = out.replace(/\times/g, '\\times');
+  out = out.replace(/\theta/g, '\\theta');
+  out = out.replace(/\tau/g, '\\tau');
+  // Repair unescaped text{ in math formulas
+  out = out.replace(/(\$[^$]*?)(?<!\\)text\{([^}]*)\}([^$]*?\$)/g, '$1\\text{$2}$3');
+  out = out.replace(/(\$[^$]*?)(?<!\\)text\{([^}]*)\}([^$]*?\$)/g, '$1\\text{$2}$3');
+  out = out.replace(/(\$\$[\s\S]*?)(?<!\\)text\{([^}]*)\}([\s\S]*?\$\$)/g, '$1\\text{$2}$3');
+  out = out.replace(/(\$\$[\s\S]*?)(?<!\\)text\{([^}]*)\}([\s\S]*?\$\$)/g, '$1\\text{$2}$3');
+
   // 3. Auto-separate colliding text baselines inside SVG groups
   out = out.replace(/<g\b([^>]*)>([\s\S]*?)<\/g>/g, (fullG, gAttrs, gBody) => {
     const textRegex = /<text\b([^>]*)>([\s\S]*?)<\/text>/g;
@@ -124,6 +140,24 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     const hit = rawCap.match(amateurPattern);
     if (hit) {
       errors.push(`Amateur/non-premium image caption in ${fileLabel}: "${hit[0]}" detected in "${rawCap.slice(0, 70)}..."`);
+    }
+  }
+
+  // 2B-2. Check for corrupted LaTeX escape sequences or control characters
+  for (let i = 0; i < html.length; i++) {
+    const code = html.charCodeAt(i);
+    if (code < 32 && code !== 10 && code !== 13) {
+      errors.push(
+        `Control character ASCII ${code} detected in ${fileLabel} at "...${html.slice(Math.max(0, i - 15), i + 20).replace(/\n/g, ' ')}...". All LaTeX backslashes must be properly escaped.`
+      );
+      break;
+    }
+  }
+  const mathBlocks = [...html.matchAll(/\$([^$]+)\$/g)].map(m => m[1]);
+  for (const mb of mathBlocks) {
+    if (/(?<!\\)text\{/.test(mb)) {
+      errors.push(`Unescaped text{ in LaTeX formula in ${fileLabel}: "$${mb.slice(0, 50)}$". Must use \\text{...}.`);
+      break;
     }
   }
 
