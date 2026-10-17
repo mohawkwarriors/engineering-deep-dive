@@ -24,11 +24,11 @@ isoDate: "2026-10-17"
 <!-- FIG 01: REAL TEARDOWN PHOTOGRAPHY OF MOBILE HINGE ASSEMBLY -->
 <figure class="product-figure">
   <div class="img-wrapper">
-    <img referrerpolicy="no-referrer" src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Hinge_of_Mobile_Phone.jpg" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/f/f1/Cycloidal_drive_parts.png';" alt="Precision mechanical mobile phone hinge assembly teardown" />
+    <img referrerpolicy="no-referrer" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg/1280px-Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg" alt="Modern foldable smartphones showing display crease and hinge spine architecture" />
   </div>
   <figcaption>
-    <span><strong>FIG 01 — PRECISION HINGE MECHANISM TEARDOWN:</strong> High-magnification bench inspection of a dual-axis mobile friction hinge assembly, revealing the miniature metal injection molded (MIM) helical cams, disc spring packs, and interlocking alignment guides engineered to maintain sub-millimeter axial tolerances.</span>
-    <span class="source-tag">COMMONS TEARDOWN ARCHIVE</span>
+    <span><strong>FIG 01 — COMMERCIAL FOLDABLE SMARTPHONE ARCHITECTURE:</strong> Modern flexible OLED foldable smartphones in flexed and open states. The central challenge of these designs is managing the neutral-axis strain across the Ultra-Thin Glass (UTG) layer while preventing crease formation along the central hinge line.</span>
+    <span class="source-tag">COMMONS HARDWARE ARCHIVE</span>
   </figcaption>
 </figure>
 
