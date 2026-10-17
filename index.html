@@ -1399,15 +1399,46 @@
       activeScrollSpyHandler();
     }
 
+    let activePopoverTerm = null;
+    let popoverHideTimer = null;
+
     function attachTangentListeners() {
-      document.querySelectorAll(".tangent-term").forEach(el => {
-        el.addEventListener("mouseenter", (e) => {
-          if (!isPinned) showPopover(el, el.getAttribute("data-tangent"));
+      const popover = document.getElementById('floating-popover');
+      
+      // Allow user to move cursor onto popover without it vanishing immediately
+      if (popover && !popover.dataset.hoverWired) {
+        popover.dataset.hoverWired = "true";
+        popover.addEventListener('mouseenter', () => {
+          if (popoverHideTimer) {
+            clearTimeout(popoverHideTimer);
+            popoverHideTimer = null;
+          }
         });
+        popover.addEventListener('mouseleave', () => {
+          hidePopover(true);
+        });
+      }
+
+      document.querySelectorAll(".tangent-term").forEach(el => {
+        el.addEventListener("mouseenter", () => {
+          if (popoverHideTimer) {
+            clearTimeout(popoverHideTimer);
+            popoverHideTimer = null;
+          }
+          activePopoverTerm = el;
+          showPopover(el, el.getAttribute("data-tangent"));
+        });
+
+        el.addEventListener("mouseleave", () => {
+          // Grace delay allowing user to bridge into popover if needed, otherwise dismiss
+          popoverHideTimer = setTimeout(() => {
+            hidePopover(true);
+          }, 120);
+        });
+
         el.addEventListener("click", (e) => {
           e.preventDefault();
           showPopover(el, el.getAttribute("data-tangent"));
-          isPinned = true;
         });
       });
     }
@@ -1417,6 +1448,8 @@
       if (!data) return;
 
       const popover = document.getElementById('floating-popover');
+      if (!popover) return;
+
       document.getElementById('popover-tag').textContent = data.tag;
       document.getElementById('popover-title').textContent = data.title;
       const bodyEl = document.getElementById('popover-body');
@@ -1427,18 +1460,23 @@
       popover.style.display = 'block';
       let top = rect.bottom + 8;
       let left = Math.max(16, Math.min(rect.left, window.innerWidth - 400));
-      if (top + 260 > window.innerHeight) {
-        top = Math.max(16, rect.top - 260);
+      if (top + 280 > window.innerHeight) {
+        top = Math.max(16, rect.top - 280);
       }
       popover.style.top = `${top}px`;
       popover.style.left = `${left}px`;
     }
 
     function hidePopover(force = false) {
-      if (force) isPinned = false;
-      if (!isPinned) {
-        document.getElementById('floating-popover').style.display = 'none';
+      if (popoverHideTimer) {
+        clearTimeout(popoverHideTimer);
+        popoverHideTimer = null;
       }
+      const popover = document.getElementById('floating-popover');
+      if (popover) {
+        popover.style.display = 'none';
+      }
+      activePopoverTerm = null;
     }
 
     document.addEventListener("click", (e) => {
