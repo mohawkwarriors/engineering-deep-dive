@@ -22,7 +22,9 @@
     "discipline": "Product Dives",
     "topic": "Foldable Phone Teardrop Hinges",
     "summary": "Multi-link synchronized sliders creating a waterdrop bend radius to prevent permanent display creasing.",
-    "status": "available"
+    "status": "published",
+    "publishedDate": "2026-10-17",
+    "issueId": "#004"
   },
   {
     "id": "B004",
