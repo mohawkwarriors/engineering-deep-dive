@@ -1,16 +1,3 @@
----
-id: "#004"
-title: "The Secret Geometry of Foldable Screens"
-subtitle: "Why multi-link teardrop hinges solve the impossible physics of bending glass without snapping it—and how floating support plates eliminate the crease."
-subject: "Product Dives"
-date: "Oct 17, 2026"
-isoDate: "2026-10-17"
----
-
-# The Secret Geometry of Foldable Screens
-
-*Why multi-link teardrop hinges solve the impossible physics of bending glass without snapping it—and how floating support plates eliminate the crease.*
-
 
 <div class="meta-line">
   <span>ISSUE #004</span><span>•</span><span class="archive-subject-tag sub-product-dives">PRODUCT DIVES</span><span>•</span><span id="read-time-badge">14 MIN READ</span>
@@ -101,9 +88,9 @@ isoDate: "2026-10-17"
         <!-- High Strain Badge (Isolated in Right Margin x=245..400) -->
         <g transform="translate(245, 74)">
           <rect x="0" y="0" width="160" height="82" rx="6" fill="#18181B" stroke="#DC2626" stroke-width="1.5"/>
-          <text x="80" y="24" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#F87171" font-weight="700">TIGHT BEND RADIUS</text>
-          <text x="80" y="47" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#F1F5F9">ρ = 1.25 mm (Sharp)</text>
-          <text x="80" y="68" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#EF4444" font-weight="700">Peak Strain: ε = 16.8%</text>
+          <text x="80" y="46" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#F87171" font-weight="700">TIGHT BEND RADIUS</text>
+          <text x="80" y="69" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#F1F5F9">ρ = 1.25 mm (Sharp)</text>
+          <text x="80" y="90" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#EF4444" font-weight="700">Peak Strain: ε = 16.8%</text>
         </g>
         <line x1="245" y1="117" x2="180" y2="122" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="2 2"/>
 
@@ -130,9 +117,9 @@ isoDate: "2026-10-17"
         <!-- Low Strain Badge (Isolated in Right Margin x=245..400) -->
         <g transform="translate(245, 74)">
           <rect x="0" y="0" width="160" height="82" rx="6" fill="#18181B" stroke="#059669" stroke-width="1.5"/>
-          <text x="80" y="24" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#34D399" font-weight="700">BULBOUS TEARDROP</text>
-          <text x="80" y="47" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#F1F5F9">ρ = 3.45 mm (Gentle)</text>
-          <text x="80" y="68" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#10B981" font-weight="700">Safe Strain: ε &lt; 6.2%</text>
+          <text x="80" y="46" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#34D399" font-weight="700">BULBOUS TEARDROP</text>
+          <text x="80" y="69" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#F1F5F9">ρ = 3.45 mm (Gentle)</text>
+          <text x="80" y="90" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#10B981" font-weight="700">Safe Strain: ε &lt; 6.2%</text>
         </g>
         <line x1="245" y1="117" x2="227" y2="122" stroke="#059669" stroke-width="1.5" stroke-dasharray="2 2"/>
 
@@ -210,14 +197,11 @@ isoDate: "2026-10-17"
   When a smartphone unfolds from $0^\circ$ to $180^\circ$, the screen is a flat plane spanning width $W_0$. However, when folded into a teardrop shape inside a closed chassis, the curved profile traces an elastica curve composed of a central circular arc of radius $\rho$ flanked by two inflection fillets of radius $r_i$. The total contour length $S$ of the curved display path is given by:
 </p>
 <div class="math-block">
-  $$S = \int_0^{\theta_{\text{max}}} \rho(\theta) \, d\theta + 2 \int_0^{\phi} r_i(\phi) \, d\phi$$
+  $\Delta L \approx \theta \cdot (R_{\text{chassis}} - R_{\text{neutral}}) \approx 1.42\text{ mm}$
 </div>
 <p>
-  Because the chassis frame is rigid and fixed to the hinge rotation pins, the distance along the outer perimeter differs from the inner neutral axis by a geometric stroke:
+  <strong>Physical Intuition:</strong> When folding a rigid chassis, the outer perimeter sweeps a longer arc than the internal neutral axis. This geometric arc difference creates an immediate <strong>1.42 mm stroke deficit</strong> that lateral sliding wing carriages must absorb to prevent the flexible glass from buckling or wrinkling along the spine.
 </p>
-<div class="math-block">
-  $$\Delta L = S_{\text{curved}} - L_{\text{flat}} \approx 1.25\text{ mm} - 1.65\text{ mm}$$
-</div>
 <p>
   If the display were anchored firmly to both sides of the chassis without compliance, this $\Delta L$ differential would induce violent mechanical stress:
 </p>
@@ -297,13 +281,13 @@ isoDate: "2026-10-17"
 
         <!-- High-Contrast Badge Callouts -->
         <g transform="translate(100, 220)">
-          <rect x="0" y="0" width="180" height="42" rx="4" fill="#1C1917" stroke="#38BDF8" stroke-width="1.5"/>
+          <rect x="0" y="0" width="180" height="42" rx="4" class="svg-canvas-bg" stroke="#38BDF8" stroke-width="1.5"/>
           <text x="90" y="18" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#38BDF8" font-weight="700">LATERAL SLIDER</text>
           <text x="90" y="33" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94A3B8">Absorbs ΔL = 1.42mm</text>
         </g>
 
         <g transform="translate(680, 220)">
-          <rect x="0" y="0" width="180" height="42" rx="4" fill="#1C1917" stroke="#10B981" stroke-width="1.5"/>
+          <rect x="0" y="0" width="180" height="42" rx="4" class="svg-canvas-bg" stroke="#10B981" stroke-width="1.5"/>
           <text x="90" y="18" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#10B981" font-weight="700">FLOATING WINGS</text>
           <text x="90" y="33" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" fill="#94A3B8">Recess 1.35mm vertically</text>
         </g>
@@ -313,7 +297,7 @@ isoDate: "2026-10-17"
       <g transform="translate(40, 310)">
         <rect x="0" y="0" width="880" height="50" rx="6" class="svg-panel-bg" stroke="var(--border)" stroke-width="1.5"/>
         <text x="20" y="22" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700" fill="#38BDF8">KINEMATIC PATH EQUILIBRIUM:</text>
-        <text x="20" y="38" font-family="'JetBrains Mono', monospace" font-size="12" class="svg-text-primary">Dual-axis gear synchronization guarantees symmetric 0°–180° rotation with zero screen tension.</text>
+        <text x="20" y="38" font-family="'JetBrains Mono', monospace" font-size="12"  class="svg-text-primary">Dual-axis gear synchronization guarantees symmetric 0°–180° rotation with zero screen tension.</text>
       </g>
     </svg>
   </div>
@@ -469,11 +453,7 @@ isoDate: "2026-10-17"
   <strong>High-Speed Automated Cycling:</strong> Robotic pneumatically actuated test rigs cycle the hinge at $0.5\text{ Hz}$ (one complete open-and-close every two seconds) for <strong>400,000 cycles</strong>—the equivalent of 100 folds per day for over 10 years. Continuous load-cell telemetry monitors torque degradation: if friction torque drifts by more than $\pm 15\%$, the test flags lubrication breakdown or galling.
 </p>
 <p>
-  <strong>Environmental Chambers (-20°C to +65°C):</strong> Because the aluminum chassis ($\alpha_{\text{Al}} \approx 23 \times 10^{-6}\text{ K}^{-1}$) and steel hinge ($\alpha_{\text{steel}} \approx 11 \times 10^{-6}\text{ K}^{-1}$) have vastly different thermal expansion coefficients, temperature extremes shrink operating clearances. At $-20^\circ\text{C}$, the differential thermal contraction:
-</p>
-
-<p>
-  Shrinks the lateral slider clearance by up to $14\,\mu\text{m}$. If the initial manufacturing tolerance is not precisely compensated, the sliders will bind solid in freezing climates.
+  <strong>Environmental Chambers (-20°C to +65°C):</strong> Because the aluminum chassis ($\alpha_{\text{Al}} \approx 23 \times 10^{-6}\text{ K}^{-1}$) and steel hinge ($\alpha_{\text{steel}} \approx 11 \times 10^{-6}\text{ K}^{-1}$) have vastly different thermal expansion coefficients, temperature extremes shrink operating clearances. Because aluminum contracts twice as fast as steel when cold, dropping down to -20°C shrinks the hinge clearances by up to 14 &mu;m. If the initial manufacturing tolerance is not precisely compensated, the sliders will bind solid in freezing climates.
 </p>
 <p>
   <strong>White-Light Optical Profilometry (Crease Metrology):</strong><br>
@@ -500,4 +480,3 @@ isoDate: "2026-10-17"
     </button>
   </div>
 </div>
-
