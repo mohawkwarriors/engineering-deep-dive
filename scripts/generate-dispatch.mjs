@@ -193,16 +193,17 @@ STRICT EDITORIAL REQUIREMENTS:
        - PREFERRED ARCHETYPE (FIGURE 2 STYLE — PERFECT): Use clean, responsive HTML process grids (<div class="process-grid"><div class="process-step-card">...</div></div>) inside <div class="schematic-card">. These are 100% responsive, have zero collision risk, and clearly explain sequential workflows, state machines, and thermal/hydraulic pathways.
        - MAXIMUM COMPLEXITY CEILING (FIGURE 3 STYLE — UPPER LIMIT FOR SVG): If generating an SVG CAD schematic, it MUST be a single-axis, linear horizontal component (e.g. reciprocating screw barrel, fluid conduit, or single-component gear cross-section). It must have plenty of open breathing room, maximum 3 separated zones, and all callout labels isolated in clean cards or headers outside the geometry.
        - NEVER exceed Figure 3's complexity. If a mechanism cannot be drawn cleanly as a single-axis component, use the Figure 2 process grid instead.
-     * ZERO TEXT COLLISION & VIEWBOX MARGIN RULES (HARD GATE):
+     * ZERO TEXT COLLISION, BADGE PROPORTIONALITY & VIEWBOX RULES (HARD GATE):
        - Every schematic header MUST use <div class="schematic-header"><span class="schematic-title">FIG XX — TITLE</span>...</div>.
-       - Every <text> element inside an <svg> MUST explicitly specify font-family="'JetBrains Mono', monospace" and font-size between 11 and 14.
-       - NEVER place two callout <text> elements on the same vertical baseline (or within 22px vertically) unless they are inside separate non-overlapping column cards. Left-anchored callouts and right-anchored (text-anchor="end") callouts MUST always sit on distinct vertical y-baselines separated by at least 24px.
+       - Every <text> element inside an <svg> MUST explicitly specify font-family="'JetBrains Mono', monospace" and font-size between 10.5 and 13.
+       - BADGE BOX BOUNDS (THE NO-OVERFLOW RULE): When placing text inside a card or badge <rect>, the rect's width MUST be at least (characterCount * 7.5px) + 30px (e.g. 18 chars requires width >= 165px). The rect's height MUST be at least (lines * 22px) + 20px. All text Y baselines MUST remain strictly between [rect.y + 16, rect.y + rect.height - 10]. Text must NEVER stick out or override the borders of its container box.
+       - GRAPHIC & BADGE SPATIAL DECOUPLING (THE CLEAR AIRSPACE RULE): Never place callout badges directly on top of physical mechanism curves, teardrop loops, gear meshes, or hinge pins. The physical mechanism must occupy the central coordinate zone, while callout badges must occupy the dedicated whitespace margin zone, connected via dashed leader lines.
+       - NEVER place two callout <text> elements on the same vertical baseline (or within 22px vertically) unless they are inside separate non-overlapping column cards.
        - Every <text> element's horizontal span [left, right] MUST stay strictly within [20, viewBoxWidth - 20]. Bottom summary banners must use font-size="12" and remain under 105 characters per line so they never clip outside the viewBox.
        - NEVER route a <line> or <path> through any <text> bounding box.
-        - CONTRAST & THEME IMMUNITY (HARD GATE):
-          * In SVGs, NEVER place <text class="svg-text-primary"> or <text class="svg-text-muted"> directly over hardcoded dark geometry (e.g. #292524, #1C1917, #18181B, or #222). In Light Mode, svg-text-primary becomes dark charcoal (#1F1E1D), resulting in an illegible black-on-black collision.
-          * Any callout pointing to or sitting over dark hardware components MUST be housed inside a dedicated high-contrast badge pill (<rect fill="#1C1917" stroke="#COLOR" rx="4"/>) with an explicit bright accent font (e.g. fill="#38BDF8", fill="#F59E0B", or fill="#10B981"), guaranteeing crisp contrast in both light and dark themes.
-
+       - CONTRAST & THEME IMMUNITY (HARD GATE):
+         * In SVGs, NEVER place light pastel colors (e.g. #FCA5A5, #6EE7B7, #A7F3D0, #F1F5F9, #FFFFFF) directly on canvas or panel backgrounds. In Light Mode, these become washed-out and unreadable.
+         * All callout badges must be housed inside high-contrast dark pills (<rect fill="#18181B" stroke="#ACCENT" rx="6"/>) with bright accent text (fill="#38BDF8", fill="#34D399", fill="#F87171"), guaranteeing crisp 12:1+ contrast in both light and dark themes. Outside of dark pills, text on the canvas must use deep high-contrast tones (#DC2626, #059669, #0284C7, or class="svg-text-primary").
 RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other text):
 {
   "title": "Clean Plain-English Title",

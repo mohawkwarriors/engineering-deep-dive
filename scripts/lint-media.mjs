@@ -37,8 +37,8 @@ export function autoSanitizeArticleHtml(html) {
     return m;
   });
 
-  // 0D. Normalize SVG canvas backgrounds to use theme-adaptive class
-  out = out.replace(/<rect\b([^>]*)\bfill=["']#(?:18181B|1C1917|111110|000000|0F172A)["']([^>]*)\/?>/gi, (m, pre, post) => {
+  // 0D. Normalize SVG canvas backgrounds to use theme-adaptive class (only root 960px width canvases)
+  out = out.replace(/<rect\b([^>]*\bwidth=["']960["'][^>]*)\bfill=["']#(?:18181B|1C1917|111110|000000|0F172A)["']([^>]*)\/?>/gi, (m, pre, post) => {
     if (!pre.includes('class=') && !post.includes('class=')) {
       return `<rect${pre}class="svg-canvas-bg"${post}/>`;
     }
@@ -374,10 +374,11 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     const vbH = vbMatch ? parseFloat(vbMatch[4]) : 480;
 
     // Walk SVG tokens tracking nested <g transform="translate(tx, ty)">
-    const tagRegex = /<\/?g\b[^>]*>|<text\b[^>]*>[\s\S]*?<\/text>|<line\b[^>]*\/?>/g;
+    const tagRegex = /<\/?g\b[^>]*>|<text\b[^>]*>[\s\S]*?<\/text>|<line\b[^>]*\/?>|<rect\b[^>]*\/?>/g;
     const stack = [{ tx: 0, ty: 0 }];
     const texts = [];
     const lines = [];
+    const rects = [];
 
     let m;
     while ((m = tagRegex.exec(svgStr)) !== null) {
@@ -390,6 +391,15 @@ export function validateArticleHtml(html, fileLabel = 'article') {
         stack.push({ tx: top.tx + dx, ty: top.ty + dy });
       } else if (token.startsWith('</g')) {
         if (stack.length > 1) stack.pop();
+      } else if (token.startsWith('<rect')) {
+        const top = stack[stack.length - 1];
+        const rx = parseFloat((token.match(/\bx=["']([0-9.-]+)["']/) || [0, 0])[1]) + top.tx;
+        const ry = parseFloat((token.match(/\by=["']([0-9.-]+)["']/) || [0, 0])[1]) + top.ty;
+        const rw = parseFloat((token.match(/\bwidth=["']([0-9.-]+)["']/) || [0, 0])[1]);
+        const rh = parseFloat((token.match(/\bheight=["']([0-9.-]+)["']/) || [0, 0])[1]);
+        const fill = (token.match(/\bfill=["']([^"']+)["']/) || [0, ''])[1];
+        const cls = (token.match(/\bclass=["']([^"']+)["']/) || [0, ''])[1];
+        rects.push({ rx, ry, rw, rh, fill, cls });
       } else if (token.startsWith('<text')) {
         const top = stack[stack.length - 1];
         const attrMatch = token.match(/^<text([^>]*)>([\s\S]*?)<\/text>$/);
@@ -487,35 +497,58 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     // 4D. Check for Theme Contrast Collision (adaptive text over hardcoded dark fills)
     for (const t of texts) {
       if (t.rawText && t.attrs && (t.attrs.includes('svg-text-primary') || t.attrs.includes('svg-text-muted'))) {
-        const rects = [...svgStr.matchAll(/<rect([^>]*)>/gi)];
         for (const r of rects) {
-          const rAttr = r[1];
-          const rxMatch = rAttr.match(/\bx=["']([0-9.-]+)["']/);
-          const ryMatch = rAttr.match(/\by=["']([0-9.-]+)["']/);
-          const rwMatch = rAttr.match(/\bwidth=["']([0-9.-]+)["']/);
-          const rhMatch = rAttr.match(/\bheight=["']([0-9.-]+)["']/);
-          const rFillMatch = rAttr.match(/\bfill=["']([^"']+)["']/);
-          const rClassMatch = rAttr.match(/\bclass=["']([^"']+)["']/);
-
-          if (rxMatch && ryMatch && rwMatch && rhMatch) {
-            const rx = parseFloat(rxMatch[1]);
-            const ry = parseFloat(ryMatch[1]);
-            const rw = parseFloat(rwMatch[1]);
-            const rh = parseFloat(rhMatch[1]);
-            const rFill = rFillMatch ? rFillMatch[1] : '';
-            const rClass = rClassMatch ? rClassMatch[1] : '';
-
-            const isDark = /#1[0-9a-f]{5}|#2[0-9a-f]{5}|#0[0-9a-f]{5}|#3[0-9a-f]{5}/i.test(rFill);
-            const isTheme = rClass.includes('svg-panel-bg') || rClass.includes('svg-canvas-bg');
-
-            if (isDark && !isTheme) {
-              if (t.x >= rx && t.x <= rx + rw && t.y >= ry && t.y <= ry + rh) {
-                errors.push(
-                  `SVG #${svgIdx + 1} in ${fileLabel} CONTRAST COLLISION: "${t.rawText}" uses adaptive theme text class directly over hardcoded dark rect (${rFill}). Must use explicit high-contrast badge or light fill.`
-                );
-              }
+          const isDark = /#(?:18181B|1C1917|1E293B|0F172A|000000|111110|292524)/i.test(r.fill);
+          const isTheme = r.cls.includes('svg-panel-bg') || r.cls.includes('svg-canvas-bg');
+          if (isDark && !isTheme) {
+            if (t.x >= r.rx && t.x <= r.rx + r.rw && t.y >= r.ry && t.y <= r.ry + r.rh) {
+              errors.push(
+                `SVG #${svgIdx + 1} in ${fileLabel} CONTRAST COLLISION: "${t.rawText}" uses adaptive theme text class directly over hardcoded dark rect (${r.fill}). Must use explicit high-contrast badge or light fill.`
+              );
             }
           }
+        }
+      }
+    }
+
+    // 4E. Check Badge Box Bounding: text must never overflow enclosing badge <rect>
+    for (const r of rects) {
+      // Small to medium badge callout rects (width 50..350, height 25..120, excluding large canvases/panels)
+      if (r.rw >= 50 && r.rw <= 350 && r.rh >= 25 && r.rh <= 120 && !r.cls.includes('svg-panel-bg') && !r.cls.includes('svg-canvas-bg')) {
+        for (const t of texts) {
+          // If text's center point is situated inside or immediately around this card
+          if (t.x >= r.rx - 5 && t.x <= r.rx + r.rw + 5 && t.y >= r.ry - 5 && t.y <= r.ry + r.rh + 5) {
+            // Horizontal bounds check
+            if (t.left < r.rx - 6 || t.right > r.rx + r.rw + 6) {
+              errors.push(
+                `SVG #${svgIdx + 1} in ${fileLabel} BADGE OVERFLOW: text "${t.rawText}" (${Math.round(t.right - t.left)}px) exceeds enclosing badge box width (${r.rw}px)`
+              );
+            }
+            // Vertical bounds check
+            if (t.topY < r.ry - 8 || t.bottomY > r.ry + r.rh + 8) {
+              errors.push(
+                `SVG #${svgIdx + 1} in ${fileLabel} BADGE HEIGHT OVERFLOW: text "${t.rawText}" (y=${Math.round(t.y)}) is outside enclosing badge box (y: ${r.ry}..${r.ry + r.rh})`
+              );
+            }
+          }
+        }
+      }
+    }
+
+    // 4F. Check for Low-Contrast Pastel / Washed Out Text Colors on Light Backgrounds
+    const paleColorRegex = /#(?:FCA5A5|6EE7B7|A7F3D0|F1F5F9|FFFFFF|FAFAFA|FED7AA|FEF08A|93C5FD)\b/i;
+    for (const t of texts) {
+      const fillMatch = t.attrs && t.attrs.match(/\bfill=["']([^"']+)["']/i);
+      if (fillMatch && paleColorRegex.test(fillMatch[1])) {
+        // Must be enclosed inside an explicit dark background rect!
+        const hasDarkContainer = rects.some(r => {
+          const isDark = /#(?:18181B|1C1917|1E293B|0F172A|000000|111110|292524)/i.test(r.fill);
+          return isDark && t.left >= r.rx - 8 && t.right <= r.rx + r.rw + 8 && t.topY >= r.ry - 8 && t.bottomY <= r.ry + r.rh + 8;
+        });
+        if (!hasDarkContainer) {
+          errors.push(
+            `SVG #${svgIdx + 1} in ${fileLabel} LOW-CONTRAST TEXT: "${t.rawText}" uses pale light fill (${fillMatch[1]}) directly on light canvas. Must use deep accessible tone or house inside a dark pill rect.`
+          );
         }
       }
     }
