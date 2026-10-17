@@ -376,6 +376,24 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     }
   }
 
+  // 3D. Check for blacklisted or watermarked image assets
+  const imgTags = [...html.matchAll(/<img\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi)];
+  const WATERMARK_BLACKLIST_PATTERNS = [
+    /novy-pant/i,
+    /watermark/i,
+    /alamy/i,
+    /shutterstock/i,
+    /gettyimages/i,
+    /stock-photo/i,
+    /vosvete/i
+  ];
+  for (const img of imgTags) {
+    const src = img[1];
+    if (WATERMARK_BLACKLIST_PATTERNS.some(p => p.test(src))) {
+      errors.push(`Image in ${fileLabel} uses disqualified/watermarked asset: ${src}`);
+    }
+  }
+
   // 4. Global SVG Geometry & Text Collision Analysis
   const svgMatches = [...html.matchAll(/<svg[\s\S]*?<\/svg>/g)].map(m => m[0]);
   svgMatches.forEach((svgStr, svgIdx) => {
