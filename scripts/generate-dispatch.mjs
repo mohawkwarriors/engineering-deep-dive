@@ -1,103 +1,209 @@
-import fs from 'fs/promises';
-import path from 'path';
+/**
+ * Engineering Deep Dive: Topic Queue & Veto Automation
+ * Sheet ID: 1p2_66RgIBWeA6G2V4vZhS-868XR7iraM7qK0Gl13y1g
+ */
 
-const INDEX_PATH = path.join(process.cwd(), 'index.html');
-const CONTENT_DIR = path.join(process.cwd(), 'content');
-const QUEUE_PATH = path.join(CONTENT_DIR, 'upcoming-queue.json');
-const VETOES_PATH = path.join(CONTENT_DIR, 'vetoes.json');
+const QUEUE_SHEET = "Weekly Queue";
+const BACKLOG_SHEET = "Backlog";
+const VETO_LOG_SHEET = "Veto Log";
 
-const SUBJECTS = [
-  "Manufacturing",
-  "Mechanisms",
-  "Materials",
-  "Design",
-  "Fluids",
-  "Electromechanical",
-  "Thermal",
-  "Product Dives"
-];
+/**
+ * Real-time trigger: Swaps vetoed topics instantly when checkbox in Column A is checked.
+ */
+function onEdit(e) {
+  if (!e || !e.range) return;
+  const sheet = e.range.getSheet();
+  if (sheet.getName() !== QUEUE_SHEET) return;
 
-async function run() {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    console.error("Error: GEMINI_API_KEY environment variable is missing.");
-    process.exit(1);
+  const row = e.range.getRow();
+  const col = e.range.getColumn();
+
+  // Column 1 is the Veto Checkbox (Row >= 2)
+  if (col === 1 && row >= 2 && e.value === "TRUE") {
+    handleTopicVeto(sheet, row);
   }
-
-  console.log("Reading index.html...");
-  const html = await fs.readFile(INDEX_PATH, 'utf-8');
-
-  const issueMatch = html.match(/"#(\d+)":/);
-  const latestNum = issueMatch ? parseInt(issueMatch[1], 10) : 3;
-  const nextNum = latestNum + 1;
-  const nextId = `#${String(nextNum).padStart(3, '0')}`;
-
-  const now = new Date();
-  const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  const isoDate = now.toISOString().split('T')[0];
-
-  const pastTitles = [...html.matchAll(/title:\s*"([^"]+)"/g)].map(m => m[1]);
-  const recentTitlesList = pastTitles.slice(0, 35).map(t => `• ${t}`).join('\n');
-
-  let vetoedTopics = [];
-  try {
-    const vetoesRaw = await fs.readFile(VETOES_PATH, 'utf-8');
-    vetoedTopics = JSON.parse(vetoesRaw);
-  } catch (e) {}
-  const vetoesList = vetoedTopics.map(v => `• VETOED: ${v.title} (${v.reason || 'Not aligned with core interests'})`).join('\n');
-
-  console.log(`Authoring Issue ${nextId} for ${dateStr}...`);
-
-  const prompt = `You are a Principal Hardware / Mechanical Systems Engineer authoring today's dispatch for "Engineering Deep Dive".
-Your audience consists of elite Product Design Engineers (PD), Mechanical Engineers (ME), and Hardware Architects who demand first-principles physics, real-world DFM tolerances, and deep kinematic/thermal teardowns.
-
-STRICT EDITORIAL REQUIREMENTS:
-1. WORD COUNT: The article body MUST be between 2,750 and 3,300 words (strictly 12 to 15 minutes read duration at 220 WPM). Never write high-level overviews or brief summaries.
-2. TITLE & INTRO HOOK (MORNING DIGEST TONE - CONVERSATIONAL, PLAIN ENGLISH):
-   - Title Standard: Use clean, curiosity-inducing, plain-English titles (e.g. "How Laptops Get Featherweight Metal Shells"). Avoid long, dense compound titles or heavy academic jargon.
-   - Early Technology Definition & Comparison: In Section 1, immediately define the core technology in vivid, plain-English terms early on (e.g. what Thixomolding is: injecting semi-solid metal slurry like plastic instead of melting it), and explicitly contrast why it beats traditional legacy methods (e.g. 18-second cycle times, sub-millimeter walls, zero swarf waste, and double bending rigidity vs. 45-minute 5-axis CNC hogging).
-   - De-Jargonized Section Headings: Clean, punchy headers leading with physical intuition (e.g. "2. The Slurpee State: Why Semi-Solid Metal Flows Like Soft-Serve"). Never include jarring academic parentheticals or styling artifacts in titles.
-   - Retain deep technical precision within the body text and popover tangent annotations, but lead every section with visceral mechanics and functional "aha!" payoffs.
-3. SUBTITLE: A captivating, single-sentence narrative hook highlighting the core mechanical tension or engineering trade-off without meta-announcements or filler.
-4. STRUCTURE: 6 detailed, deeply technical sections with numbers:
-   - 1. Governing Physics & First Principles (Equations, quantitative load paths, boundary conditions)
-   - 2. Component Architecture & Part-Level Anatomy (Detailed exploded breakdown, physical packaging)
-   - 3. Manufacturing, Tooling & DFM Clearances (GD&T tolerances in microns, tooling steels, surface finish Ra, draft angles)
-   - 4. Metallurgy & Materials Science (Exact alloy codes e.g. 6061-T6, 7075, 316L, Ti-6Al-4V, PEEK 450G, Delrin 500P, stress-strain, thermal conductivity)
-   - 5. Failure Modes, Wear Tribology & Reliability Degradation (Fatigue limits, cycle life, wear mechanisms, environmental stress)
-   - 6. Empirical Bench Metrology & Validation (Laser interferometry, strain gauges, Scace/load cell sensors, high-frequency telemetry)
-5. MATHEMATICAL NOTATION & FORMULA RENDERING (MANDATORY RULE):
-   - High-Quality Rendered Notation Only: Equations and mathematical formulas MUST NEVER be presented as raw plain text.
-   - LaTeX Display Math: All primary formulas, governing equations, derivations, and balance relations must be rendered in formal LaTeX display blocks: <div class="math-block">$$...$$</div>.
-   - LaTeX Inline Math: All variables, parameters, and simple expressions embedded in prose must use inline LaTeX syntax: $F = m \cdot a$, $\delta_{\text{max}}$, $\sigma_v$, $\dot{\gamma} > 10^4\text{ s}^{-1}$.
-   - Popover Equations: In the 'tangents' dictionary, format equations as <div class="modal-equation-box"><div class="math-label">Concept Name:</div>$$Formula$$<div class="math-meta">Parameter definitions with inline LaTeX</div></div>.
-6. SPEC COMPARISON TABLE: Include an HTML <table> with class="spec-table" inside a <div class="spec-table-wrap"> comparing 4-5 engineering architectures or materials across 5 technical metrics.
-7. TANGENT ANNOTATIONS: Wrap 4-6 specialized, non-intuitive technical terms in <span class="tangent-term" data-tangent="key">. In the "tangents" dictionary, provide their category tag, title, and detailed junior-friendly definition with a governing formula.
-8. VISUAL MEDIA, PHOTOGRAPHY & CODE-DRIVEN SVG DIAGRAMS:
-   - AUTHENTIC REAL-WORLD PHOTOGRAPHY: Actively source and embed real, authentic public photography from the internet (such as OEM hardware teardowns, Wikimedia Commons engineering archives, patent drawings, or manufacturer machinery photos like JSW injection presses) with high-contrast presentation.
-   - ZERO GENERATED RASTER IMAGES: Strict ban on AI-generated diffusion art (DALL-E/Midjourney/Imagen).
-   - VECTOR DIAGRAM SPATIAL ZONING & ZERO-COLLISION RULES (PREVENTS TEXT OVERRIDING GRAPHICS):
-     * ZERO IN-SHAPE TEXT STAMPING: Text labels MUST NEVER be centered inside small geometric shapes (< 80px), circles, voids, or grain boundaries. This guarantees labels are never clipped, cut off, or overflowing (e.g. never stamp 'GAS VOID' inside a small circle).
-     * LEADER LINE ANNOTATION ARCHITECTURE: All component and microstructural callouts MUST use angled leader lines (`<polyline points="x1,y1 x2,y2 x3,y2" stroke="..." fill="none"/>` with a terminal anchor dot `<circle cx="x1" cy="y1" r="2.5"/>`) pointing from the feature into clear, dedicated whitespace margins.
-     * DEDICATED COORDINATE TIERS: Decouple geometry from annotations into strict vertical bands: Header tier (y = 0 to 25px), Graphic illustration canvas (y = 30 to 180px), and Bottom metric/status banner (y = 185 to 220px). Labels must never float directly across geometry lines or solid fills.
-     * ADAPTIVE LIGHT & DARK THEME CLASSES: Inline SVGs must use CSS classes (`.svg-canvas-bg`, `.svg-panel-bg`, `.svg-panel-sub`, `.svg-text-primary`, `.svg-text-muted`, `.svg-border-muted`) tied to CSS variables so diagrams render on clean white/cream in Light Mode and deep slate in Dark Mode without hardcoded black rectangles.
-
-RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other text):
-{
-  "title": "Clean Plain-English Title",
-  "subtitle": "Single-sentence narrative hook.",
-  "subject": "Discipline Name (One of the 8)",
-  "tangents": {
-    "key1": {
-      "tag": "DISCIPLINE // TOPIC",
-      "title": "Concept Title",
-      "body": "<p>Detailed definition.</p><div class=\"modal-equation-box\"><div class=\"math-label\">Concept:</div>$$Formula$$<div class=\"math-meta\">Legend</div></div><p>Engineering application.</p>"
-    }
-  },
-  "article_html": "full article html starting with <h2>1. ..."
-}`;
-
-  console.log("Dispatch generation prompt ready.");
 }
 
-run().catch(console.error);
+/**
+ * Swaps the vetoed topic with the first available topic in the Backlog.
+ */
+function handleTopicVeto(queueSheet, row) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const backlogSheet = ss.getSheetByName(BACKLOG_SHEET);
+  
+  // Extract vetoed topic data: [Veto, Date, Discipline, Topic, Summary, Status, Backlog_ID]
+  const rowData = queueSheet.getRange(row, 1, 1, 7).getValues()[0];
+  const oldDate = rowData[1];
+  const oldDiscipline = rowData[2];
+  const oldTopic = rowData[3];
+  const oldSummary = rowData[4];
+  const oldId = rowData[6];
+
+  // Search Backlog for the first Available topic
+  const backlogData = backlogSheet.getDataRange().getValues();
+  let replacementRow = -1;
+  let newTopicData = null;
+
+  for (let i = 1; i < backlogData.length; i++) {
+    const status = backlogData[i][4]; // Column E: Used In Queue
+    if (status === "Available") {
+      replacementRow = i + 1;
+      newTopicData = {
+        id: backlogData[i][0],
+        discipline: backlogData[i][1],
+        topic: backlogData[i][2],
+        summary: backlogData[i][3]
+      };
+      break;
+    }
+  }
+
+  if (!newTopicData) {
+    queueSheet.getRange(row, 6).setValue("Vetoed - No Backlog Remaining");
+    queueSheet.getRange(row, 1).setValue(false);
+    SpreadsheetApp.getUi().alert("Backlog exhausted! Please replenish your 100-topic pool.");
+    return;
+  }
+
+  // 1. Update Backlog: Mark old topic Vetoed, mark replacement In Weekly Lineup
+  for (let i = 1; i < backlogData.length; i++) {
+    if (backlogData[i][0] === oldId) {
+      backlogSheet.getRange(i + 1, 5).setValue("Vetoed");
+      break;
+    }
+  }
+  backlogSheet.getRange(replacementRow, 5).setValue("In Weekly Lineup");
+
+  // 2. Log veto for GitHub Actions negative prompt tuning
+  logVeto(ss, oldId, oldDiscipline, oldTopic, oldSummary);
+
+  // 3. Swap topic into the Weekly Queue
+  queueSheet.getRange(row, 1).setValue(false); // Reset checkbox
+  queueSheet.getRange(row, 3).setValue(newTopicData.discipline);
+  queueSheet.getRange(row, 4).setValue(newTopicData.topic);
+  queueSheet.getRange(row, 5).setValue(newTopicData.summary);
+  queueSheet.getRange(row, 6).setValue("Active");
+  queueSheet.getRange(row, 7).setValue(newTopicData.id);
+
+  SpreadsheetApp.getActive().toast(`Replaced "${oldTopic}" with "${newTopicData.topic}" (${newTopicData.id})`, "Topic Vetoed", 4);
+}
+
+/**
+ * Appends vetoed topics to a persistent Veto Log sheet.
+ */
+function logVeto(ss, id, discipline, topic, summary) {
+  let logSheet = ss.getSheetByName(VETO_LOG_SHEET);
+  if (!logSheet) {
+    logSheet = ss.insertSheet(VETO_LOG_SHEET);
+    logSheet.appendRow(["Timestamp", "Backlog_ID", "Discipline", "Topic", "Summary"]);
+    logSheet.getRange("A1:E1").setFontWeight("bold");
+  }
+  logSheet.appendRow([new Date(), id, discipline, topic, summary]);
+}
+
+/**
+ * Populates the Weekly Queue for the next 7 days starting from a given date.
+ */
+function stageNextWeek(startDateStr) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const queueSheet = ss.getSheetByName(QUEUE_SHEET);
+  const backlogSheet = ss.getSheetByName(BACKLOG_SHEET);
+  const backlogData = backlogSheet.getDataRange().getValues();
+
+  let startDate = startDateStr ? new Date(startDateStr) : new Date();
+  let availableIndices = [];
+
+  for (let i = 1; i < backlogData.length; i++) {
+    if (backlogData[i][4] === "Available") {
+      availableIndices.push(i);
+      if (availableIndices.length === 7) break;
+    }
+  }
+
+  if (availableIndices.length < 7) {
+    SpreadsheetApp.getUi().alert("Not enough available backlog items to stage 7 days.");
+    return;
+  }
+
+  // Clear current active queue rows (rows 2 to 8)
+  for (let d = 0; d < 7; d++) {
+    const curDate = new Date(startDate);
+    curDate.setDate(startDate.getDate() + d);
+    const dateFormatted = Utilities.formatDate(curDate, Session.getScriptTimeZone(), "yyyy-MM-dd");
+
+    const bIndex = availableIndices[d];
+    const bRow = bIndex + 1;
+    const bId = backlogData[bIndex][0];
+    const bDiscipline = backlogData[bIndex][1];
+    const bTopic = backlogData[bIndex][2];
+    const bSummary = backlogData[bIndex][3];
+
+    // Mark as In Weekly Lineup in Backlog
+    backlogSheet.getRange(bRow, 5).setValue("In Weekly Lineup");
+
+    // Write to Weekly Queue
+    queueSheet.getRange(d + 2, 1, 1, 7).setValues([[
+      false,
+      dateFormatted,
+      bDiscipline,
+      bTopic,
+      bSummary,
+      "Active",
+      bId
+    ]]);
+  }
+}
+
+/**
+ * Web App endpoint: Exposes active queue and vetoes as JSON for GitHub Actions.
+ */
+function doGet(e) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const queueSheet = ss.getSheetByName(QUEUE_SHEET);
+  const queueData = queueSheet.getDataRange().getValues();
+  
+  const schedule = [];
+  for (let i = 1; i < queueData.length; i++) {
+    if (queueData[i][1]) {
+      schedule.push({
+        date: Utilities.formatDate(new Date(queueData[i][1]), Session.getScriptTimeZone(), "yyyy-MM-dd"),
+        discipline: queueData[i][2],
+        topic: queueData[i][3],
+        summary: queueData[i][4],
+        status: queueData[i][5],
+        id: queueData[i][6]
+      });
+    }
+  }
+
+  const logSheet = ss.getSheetByName(VETO_LOG_SHEET);
+  const vetoes = [];
+  if (logSheet) {
+    const logData = logSheet.getDataRange().getValues();
+    for (let i = 1; i < logData.length; i++) {
+      vetoes.push({
+        id: logData[i][1],
+        discipline: logData[i][2],
+        topic: logData[i][3],
+        summary: logData[i][4]
+      });
+    }
+  }
+
+  return ContentService.createTextOutput(JSON.stringify({ schedule, vetoes }, null, 2))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * Adds a custom menu to the Google Sheet UI.
+ */
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu("Queue Tools")
+    .addItem("Stage Next 7 Days", "stageNextWeekMenu")
+    .addToUi();
+}
+
+function stageNextWeekMenu() {
+  stageNextWeek();
+}

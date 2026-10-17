@@ -129,11 +129,11 @@
       align-items: center;
       gap: 12px;
     }
-    .nav-btn {
+.nav-btn {
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
-      padding: 6px 14px;
-      border-radius: 4px;
+      padding: 6px 16px;
+      border-radius: 9999px; /* Slotted shape */
       border: 1px solid var(--border);
       background: transparent;
       color: var(--text);
@@ -141,31 +141,38 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
       transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
     .nav-btn:hover, .nav-btn.active {
       background: var(--surface);
       border-color: var(--accent);
       color: var(--accent);
     }
+
     .theme-toggle-btn {
       background: transparent;
       border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 6px;
+      border-radius: 50%; /* Perfect circle */
+      padding: 0;
       cursor: pointer;
       color: var(--text);
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       width: 32px;
       height: 32px;
+      min-width: 32px;
+      min-height: 32px;
+      transition: all 0.15s ease;
+      box-sizing: border-box;
     }
-    .theme-toggle-btn svg {
-      width: 16px;
-      height: 16px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
+    .theme-toggle-btn:hover {
+      background: var(--surface);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: scale(1.05);
     }
 
     /* Content Grid & Layout Modes */
@@ -706,15 +713,14 @@
       padding-bottom: 4px;
     }
 
-    /* Slotted Shape Geometry (Obround / Stadium: Straight Sides, Semicircular Ends) */
+   /* Slotted Shape Geometry (Filter Buttons & Article Tags) */
     .subject-pill, .archive-subject-tag {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      border-radius: 9999px; /* Slotted / Stadium / Obround geometry */
-      padding: 5px 14px;
+      border-radius: 9999px !important; /* Slotted / Stadium geometry */
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -726,17 +732,16 @@
     }
 
     .subject-pill {
+      padding: 5px 14px;
       cursor: pointer;
     }
-    .subject-pill:hover:not(.disabled) {
-      transform: translateY(-1.5px);
-      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-      filter: brightness(1.05);
+
+    .archive-subject-tag {
+      padding: 3px 11px;
+      font-size: 10.5px;
     }
 
-    /* ALL DISCIPLINE COLOR-CODED THEMES (Applied to BOTH Filter Buttons & Article Tags) */
-
-    /* All */
+    /* Discipline Color-Coded Themes */
     .sub-all {
       background: var(--surface);
       border-color: var(--border);
@@ -749,11 +754,10 @@
       box-shadow: 0 2px 10px rgba(217, 119, 87, 0.35);
     }
 
-    /* Manufacturing (Precision Blue) */
     .sub-manufacturing {
-      background: rgba(37, 99, 235, 0.1);
-      border-color: rgba(37, 99, 235, 0.4);
-      color: var(--sub-manufacturing);
+      background: rgba(37, 99, 235, 0.1) !important;
+      border-color: rgba(37, 99, 235, 0.45) !important;
+      color: var(--sub-manufacturing) !important;
     }
     .sub-manufacturing.active {
       background: var(--sub-manufacturing) !important;
@@ -762,11 +766,10 @@
       box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35);
     }
 
-    /* Thermal (Hot-Work Rose / Crimson) */
     .sub-thermal {
-      background: rgba(225, 29, 72, 0.1);
-      border-color: rgba(225, 29, 72, 0.4);
-      color: var(--sub-thermal);
+      background: rgba(225, 29, 72, 0.1) !important;
+      border-color: rgba(225, 29, 72, 0.45) !important;
+      color: var(--sub-thermal) !important;
     }
     .sub-thermal.active {
       background: var(--sub-thermal) !important;
@@ -775,11 +778,10 @@
       box-shadow: 0 2px 10px rgba(225, 29, 72, 0.35);
     }
 
-    /* Product Dives (Terracotta) */
     .sub-product-dives {
-      background: rgba(217, 119, 87, 0.12);
-      border-color: rgba(217, 119, 87, 0.45);
-      color: var(--sub-product-dives);
+      background: rgba(217, 119, 87, 0.12) !important;
+      border-color: rgba(217, 119, 87, 0.45) !important;
+      color: var(--sub-product-dives) !important;
     }
     .sub-product-dives.active {
       background: var(--sub-product-dives) !important;
@@ -788,11 +790,10 @@
       box-shadow: 0 2px 10px rgba(217, 119, 87, 0.35);
     }
 
-    /* Electromechanical (High-Voltage Indigo) */
     .sub-electromechanical {
-      background: rgba(79, 70, 229, 0.1);
-      border-color: rgba(79, 70, 229, 0.4);
-      color: var(--sub-electromechanical);
+      background: rgba(79, 70, 229, 0.1) !important;
+      border-color: rgba(79, 70, 229, 0.45) !important;
+      color: var(--sub-electromechanical) !important;
     }
     .sub-electromechanical.active {
       background: var(--sub-electromechanical) !important;
@@ -801,11 +802,10 @@
       box-shadow: 0 2px 10px rgba(79, 70, 229, 0.35);
     }
 
-    /* Design (Royal Purple) */
     .sub-design {
-      background: rgba(124, 58, 237, 0.1);
-      border-color: rgba(124, 58, 237, 0.4);
-      color: var(--sub-design);
+      background: rgba(124, 58, 237, 0.1) !important;
+      border-color: rgba(124, 58, 237, 0.45) !important;
+      color: var(--sub-design) !important;
     }
     .sub-design.active {
       background: var(--sub-design) !important;
@@ -814,11 +814,10 @@
       box-shadow: 0 2px 10px rgba(124, 58, 237, 0.35);
     }
 
-    /* Materials (Metallurgical Emerald) */
     .sub-materials {
-      background: rgba(5, 150, 105, 0.1);
-      border-color: rgba(5, 150, 105, 0.4);
-      color: var(--sub-materials);
+      background: rgba(5, 150, 105, 0.1) !important;
+      border-color: rgba(5, 150, 105, 0.45) !important;
+      color: var(--sub-materials) !important;
     }
     .sub-materials.active {
       background: var(--sub-materials) !important;
@@ -827,11 +826,10 @@
       box-shadow: 0 2px 10px rgba(5, 150, 105, 0.35);
     }
 
-    /* Mechanisms (Kinematic Amber) */
     .sub-mechanisms {
-      background: rgba(217, 119, 6, 0.1);
-      border-color: rgba(217, 119, 6, 0.4);
-      color: var(--sub-mechanisms);
+      background: rgba(217, 119, 6, 0.1) !important;
+      border-color: rgba(217, 119, 6, 0.45) !important;
+      color: var(--sub-mechanisms) !important;
     }
     .sub-mechanisms.active {
       background: var(--sub-mechanisms) !important;
@@ -840,11 +838,10 @@
       box-shadow: 0 2px 10px rgba(217, 119, 6, 0.35);
     }
 
-    /* Fluids (Hydrodynamic Cyan) */
     .sub-fluids {
-      background: rgba(8, 145, 178, 0.1);
-      border-color: rgba(8, 145, 178, 0.4);
-      color: var(--sub-fluids);
+      background: rgba(8, 145, 178, 0.1) !important;
+      border-color: rgba(8, 145, 178, 0.45) !important;
+      color: var(--sub-fluids) !important;
     }
     .sub-fluids.active {
       background: var(--sub-fluids) !important;
@@ -852,6 +849,16 @@
       color: #FFFFFF !important;
       box-shadow: 0 2px 10px rgba(8, 145, 178, 0.35);
     }
+
+    /* Dark Mode Adjustments */
+    [data-theme="dark"] .sub-manufacturing { background: rgba(59, 130, 246, 0.16) !important; border-color: rgba(59, 130, 246, 0.45) !important; color: var(--sub-manufacturing) !important; }
+    [data-theme="dark"] .sub-thermal { background: rgba(244, 63, 94, 0.16) !important; border-color: rgba(244, 63, 94, 0.45) !important; color: var(--sub-thermal) !important; }
+    [data-theme="dark"] .sub-product-dives { background: rgba(217, 119, 87, 0.18) !important; border-color: rgba(217, 119, 87, 0.5) !important; color: var(--sub-product-dives) !important; }
+    [data-theme="dark"] .sub-electromechanical { background: rgba(99, 102, 241, 0.16) !important; border-color: rgba(99, 102, 241, 0.45) !important; color: var(--sub-electromechanical) !important; }
+    [data-theme="dark"] .sub-design { background: rgba(139, 92, 246, 0.16) !important; border-color: rgba(139, 92, 246, 0.45) !important; color: var(--sub-design) !important; }
+    [data-theme="dark"] .sub-materials { background: rgba(16, 185, 129, 0.16) !important; border-color: rgba(16, 185, 129, 0.45) !important; color: var(--sub-materials) !important; }
+    [data-theme="dark"] .sub-mechanisms { background: rgba(245, 158, 11, 0.16) !important; border-color: rgba(245, 158, 11, 0.45) !important; color: var(--sub-mechanisms) !important; }
+    [data-theme="dark"] .sub-fluids { background: rgba(6, 182, 212, 0.16) !important; border-color: rgba(6, 182, 212, 0.45) !important; color: var(--sub-fluids) !important; }
 
     /* Disabled filter buttons (0 published articles) */
     .subject-pill.disabled {
@@ -911,17 +918,7 @@
       color: var(--accent);
       letter-spacing: 0.04em;
     }
-    .archive-subject-tag {
-      padding: 3px 9px;
-      border-radius: 4px;
-      font-size: 10.5px;
-      font-weight: 600;
-      text-transform: uppercase;
-      background: var(--card-inner);
-      color: var(--text);
-      border: 1px solid var(--border);
-      letter-spacing: 0.04em;
-    }
+
     .tag-manufacturing { border-color: rgba(37, 99, 235, 0.45); color: var(--sub-manufacturing); }
     .tag-thermal { border-color: rgba(225, 29, 72, 0.45); color: var(--sub-thermal); }
     .tag-product-dives { border-color: rgba(217, 119, 87, 0.45); color: var(--sub-product-dives); }
@@ -1363,18 +1360,35 @@
       renderArchive();
     }
 
-    function renderArchive() {
-      const list = document.getElementById("archive-list");
-      if (!list) return;
-      const published = TOPICS.filter(t => t.status === "Published");
-      const filtered = (activeSubject === "All") 
-        ? published 
-        : published.filter(t => t.subject === activeSubject);
+function renderArchive() {
+  const list = document.getElementById("archive-list");
+  if (!list) return;
+  const published = TOPICS.filter(t => t.status === "Published");
+  const filtered = (activeSubject === "All") 
+    ? published 
+    : published.filter(t => t.subject === activeSubject);
 
-      if (filtered.length === 0) {
-        list.innerHTML = `<div style="padding: 40px 0; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 13px;">No published dispatches in this discipline yet.</div>`;
-        return;
-      }
+  if (filtered.length === 0) {
+    list.innerHTML = `<div style="padding: 40px 0; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 13px;">No published dispatches in this discipline yet.</div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(item => `
+    <div class="archive-item" onclick="loadArticle('${item.id}')">
+      <div class="archive-main">
+        <div class="archive-meta">
+          <span class="archive-id">${item.id}</span>
+          <span class="archive-subject-tag ${getSubClass(item.subject)}">${item.subject}</span>
+          <span class="archive-date">${item.date}</span>
+        </div>
+        <h3 class="archive-title">${item.title}</h3>
+      </div>
+      <div class="archive-arrow">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+  `).join("");
+}
 
       list.innerHTML = filtered.map(item => `
         <div class="archive-item" onclick="loadArticle('${item.id}')">
