@@ -61,122 +61,82 @@
     <span class="schematic-title">FIG 02 — TEARDROP ZERO-GAP HINGE GEOMETRY VS. CONVENTIONAL U-SHAPE FOLD</span>
     <span class="schematic-subtitle">CROSS-SECTIONAL METROLOGY • BEND RADIUS (ρ) &amp; STRAIN REDUCTION</span>
   </div>
-  <div class="schematic-viewport">
-    <svg viewBox="0 0 1020 480" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto; display: block;">
-      <rect width="1020" height="480" rx="8" class="svg-canvas-bg" />
+  <div class="comparison-grid">
+    <!-- PANEL A: FLAWED TRADITIONAL METHOD -->
+    <div class="comparison-card flawed-card">
+      <div class="comparison-card-tag"><span class="dot danger"></span> PANEL A // CONVENTIONAL U-SHAPE FOLD</div>
+      <h4 class="comparison-card-title">Concentric Pinch Fold</h4>
+      <div class="comparison-visual">
+        <svg viewBox="0 0 360 140" fill="none" xmlns="http://www.w3.org/2000/svg" class="comparison-svg">
+          <rect width="360" height="140" rx="4" class="svg-canvas-bg" />
+          <!-- Top Chassis Wedge -->
+          <path d="M 25 24 L 250 48 L 245 66 L 25 42 Z" fill="#64748B" fill-opacity="0.25" stroke="#64748B" stroke-width="1.5"/>
+          <!-- Bottom Chassis Wedge -->
+          <path d="M 25 116 L 250 92 L 245 74 L 25 98 Z" fill="#64748B" fill-opacity="0.25" stroke="#64748B" stroke-width="1.5"/>
+          <!-- Fixed Support Wings -->
+          <rect x="150" y="52" width="70" height="8" rx="2" fill="#94A3B8"/>
+          <rect x="150" y="80" width="70" height="8" rx="2" fill="#94A3B8"/>
+          <!-- Tight U-Bend Display Laminate -->
+          <path d="M 25 45 L 205 65 C 248 69, 248 71, 248 70 C 248 69, 248 71, 205 75 L 25 95" fill="none" stroke="#DC2626" stroke-width="4.5" stroke-linecap="round"/>
+          <!-- Fracture Stress Concentration Circle -->
+          <circle cx="236" cy="70" r="14" fill="#DC2626" fill-opacity="0.25" stroke="#DC2626" stroke-width="1.5"/>
+          <circle cx="236" cy="70" r="4" fill="#DC2626"/>
+          <!-- 2.5mm Wedge Gap Callout Line -->
+          <line x1="270" y1="48" x2="270" y2="92" stroke="#D97706" stroke-width="2" stroke-dasharray="3,3"/>
+          <polyline points="266,54 270,48 274,54" fill="none" stroke="#D97706" stroke-width="2"/>
+          <polyline points="266,86 270,92 274,86" fill="none" stroke="#D97706" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="comparison-metric-pill danger-pill">
+        <span class="pill-label">PEAK GLASS STRAIN &amp; BEND RADIUS:</span>
+        <span class="pill-value">&epsilon; = 16.8% • &rho; = 1.25 mm</span>
+        <span class="pill-sub">Failure Threshold: <strong>Brittle UTG Fracture (&lt; 5,000 Cycles)</strong></span>
+      </div>
+      <div class="comparison-consequence">
+        <strong>• Physical Bottleneck:</strong> Non-retracting support plates force display into a tight 1.25 mm radius with a 2.5 mm cosmetic outer wedge gap.<br>
+        <strong>• Failure Mode:</strong> Griffith micro-flaw stress magnification causes instant surface crack nucleation and OCA peel delamination.
+      </div>
+    </div>
 
-      <!-- CENTER DIVIDER -->
-      <line x1="510" y1="24" x2="510" y2="456" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4,4" />
-
-      <!-- ========================================== -->
-      <!-- PANEL A: CONVENTIONAL U-SHAPE FOLD (LEFT) -->
-      <!-- ========================================== -->
-      <g id="panel-a-u-shape">
-        <!-- Panel Header Badge -->
-        <rect x="55" y="24" width="400" height="34" rx="4" class="svg-panel-bg" stroke="#EF4444" stroke-width="1.5"/>
-        <text x="255" y="46" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" fill="#DC2626" font-weight="700">PANEL A: CONVENTIONAL U-SHAPE FOLD</text>
-
-        <!-- Subtitle Specs -->
-        <text x="255" y="76" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" class="svg-text-primary">Wedge Gap: 2.5 mm • Radius ρ = 1.25 mm • Peak Strain ε = 16.8%</text>
-
-        <!-- Upper Housing Shell (Angled Wedge) -->
-        <path d="M 80 120 L 290 156 L 285 174 L 80 138 Z" fill="#64748B" opacity="0.4" stroke="#475569" stroke-width="1.5"/>
-        <text x="145" y="112" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#475569" font-weight="700">TOP CHASSIS HALF</text>
-
-        <!-- Lower Housing Shell (Angled Wedge) -->
-        <path d="M 80 280 L 290 244 L 285 226 L 80 262 Z" fill="#64748B" opacity="0.4" stroke="#475569" stroke-width="1.5"/>
-        <text x="145" y="302" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#475569" font-weight="700">BOTTOM CHASSIS HALF</text>
-
-        <!-- Spine Wedge Gap Indicator -->
-        <line x1="315" y1="156" x2="315" y2="244" stroke="#EA580C" stroke-width="2" stroke-dasharray="3,3"/>
-        <polyline points="311,162 315,156 319,162" fill="none" stroke="#EA580C" stroke-width="2"/>
-        <polyline points="311,238 315,244 319,238" fill="none" stroke="#EA580C" stroke-width="2"/>
-        <rect x="325" y="188" width="130" height="24" rx="4" class="svg-panel-bg" stroke="#EA580C" stroke-width="1"/>
-        <text x="390" y="204" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#C2410C" font-weight="700">2.5 mm WEDGE GAP</text>
-
-        <!-- Fixed Display Support (Non-Retractable) -->
-        <rect x="180" y="174" width="80" height="8" rx="2" fill="#94A3B8"/>
-        <rect x="180" y="218" width="80" height="8" rx="2" fill="#94A3B8"/>
-
-        <!-- Display Stack Under Violent U-Bend -->
-        <path d="M 80 144 L 235 174 C 275 178, 275 222, 235 226 L 80 256" fill="none" stroke="#EF4444" stroke-width="5" stroke-linecap="round"/>
-        
-        <!-- High Stress Fracture Apex -->
-        <circle cx="264" cy="200" r="16" fill="#EF4444" opacity="0.25"/>
-        <circle cx="264" cy="200" r="6" fill="#EF4444"/>
-
-        <!-- Bend Radius Arc Indicator -->
-        <path d="M 248 188 A 12 12 0 0 1 248 212" fill="none" stroke="#B91C1C" stroke-width="2" stroke-dasharray="2,2"/>
-        <line x1="240" y1="200" x2="260" y2="200" stroke="#B91C1C" stroke-width="1.5"/>
-        <text x="215" y="204" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="11" fill="#B91C1C" font-weight="700">ρ = 1.25 mm</text>
-
-        <!-- Callout Banner -->
-        <rect x="55" y="325" width="400" height="52" rx="4" class="svg-panel-bg" stroke="#EF4444" stroke-width="1"/>
-        <text x="75" y="346" font-family="'JetBrains Mono', monospace" font-size="11" fill="#DC2626" font-weight="700">• FAILURE MODE: Griffith Micro-Flaw Nucleation</text>
-        <text x="75" y="364" font-family="'JetBrains Mono', monospace" font-size="10.5" class="svg-text-primary">• Non-retracting plates force &lt;1.3 mm radius ➔ UTG snaps</text>
-
-        <!-- Metric Score Pill -->
-        <rect x="85" y="396" width="340" height="32" rx="4" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.5"/>
-        <text x="255" y="417" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#B91C1C" font-weight="700">PEAK STRAIN: ε = 16.8% (FRACTURE &lt; 5k CYCLES)</text>
-      </g>
-
-      <!-- ========================================== -->
-      <!-- PANEL B: TEARDROP ZERO-GAP SPUR (RIGHT)    -->
-      <!-- ========================================== -->
-      <g id="panel-b-teardrop">
-        <!-- Panel Header Badge -->
-        <rect x="565" y="24" width="400" height="34" rx="4" class="svg-panel-bg" stroke="#10B981" stroke-width="1.5"/>
-        <text x="765" y="46" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" fill="#059669" font-weight="700">PANEL B: TEARDROP ZERO-GAP GEOMETRY</text>
-
-        <!-- Subtitle Specs -->
-        <text x="765" y="76" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" class="svg-text-primary">Zero Gap: 0.00 mm • Radius ρ = 3.45 mm • Peak Strain ε = 1.08%</text>
-
-        <!-- Upper Housing Shell (True Parallel Closure) -->
-        <rect x="580" y="140" width="220" height="18" rx="2" fill="#64748B" opacity="0.4" stroke="#475569" stroke-width="1.5"/>
-        <text x="640" y="132" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#475569" font-weight="700">TOP CHASSIS (PARALLEL)</text>
-
-        <!-- Lower Housing Shell (True Parallel Closure) -->
-        <rect x="580" y="242" width="220" height="18" rx="2" fill="#64748B" opacity="0.4" stroke="#475569" stroke-width="1.5"/>
-        <text x="640" y="278" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#475569" font-weight="700">BOTTOM CHASSIS (PARALLEL)</text>
-
-        <!-- Zero Gap Seam Indicator -->
-        <line x1="565" y1="158" x2="565" y2="242" stroke="#10B981" stroke-width="2"/>
-        <polyline points="562,164 565,158 568,164" fill="none" stroke="#10B981" stroke-width="2"/>
-        <polyline points="562,236 565,242 568,236" fill="none" stroke="#10B981" stroke-width="2"/>
-        <rect x="575" y="188" width="130" height="24" rx="4" class="svg-panel-bg" stroke="#10B981" stroke-width="1"/>
-        <text x="640" y="204" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#047857" font-weight="700">0.00 mm ZERO GAP</text>
-
-        <!-- Internal Spine Relief Cavity Shroud -->
-        <path d="M 800 138 C 880 138, 935 155, 935 200 C 935 245, 880 262, 800 262" fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="4,4"/>
-
-        <!-- Dropping Floating Support Wings (Recessed downward Δy = -1.35mm) -->
-        <rect x="735" y="188" width="75" height="10" rx="3" fill="#3B82F6" stroke="#2563EB" stroke-width="1.5"/>
-        <line x1="772" y1="172" x2="772" y2="186" stroke="#2563EB" stroke-width="2"/>
-        <polyline points="768,180 772,186 776,180" fill="none" stroke="#2563EB" stroke-width="2"/>
-        <text x="772" y="166" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" fill="#1D4ED8" font-weight="700">WINGS DROP -1.35mm</text>
-
-        <!-- Flexible Screen Ballooning into Teardrop Euler Clothoid Loop -->
-        <path d="M 580 162 L 740 162 C 785 162, 820 150, 855 168 C 895 188, 895 212, 855 232 C 820 250, 785 238, 740 238 L 580 238" fill="none" stroke="#0284C7" stroke-width="5" stroke-linecap="round"/>
-
-        <!-- Safe Radius Metrology Arc -->
-        <circle cx="852" cy="200" r="30" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="3,3"/>
-        <line x1="852" y1="200" x2="882" y2="200" stroke="#047857" stroke-width="2"/>
-        <circle cx="852" cy="200" r="3" fill="#047857"/>
-        <text x="852" y="192" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#047857" font-weight="700">ρ = 3.45 mm</text>
-
-        <!-- Callout Banner -->
-        <rect x="565" y="325" width="400" height="52" rx="4" class="svg-panel-bg" stroke="#10B981" stroke-width="1"/>
-        <text x="585" y="346" font-family="'JetBrains Mono', monospace" font-size="11" fill="#059669" font-weight="700">• INFINITE ENDURANCE: Euler Clothoid Curvature</text>
-        <text x="585" y="364" font-family="'JetBrains Mono', monospace" font-size="10.5" class="svg-text-primary">• Floating plates create internal cavity ➔ ε drops to 1.08%</text>
-
-        <!-- Metric Score Pill -->
-        <rect x="595" y="396" width="340" height="32" rx="4" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
-        <text x="765" y="417" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#047857" font-weight="700">UTG STRAIN: ε = 1.08% (&gt; 400,000 CYCLES PASSED)</text>
-      </g>
-    </svg>
+    <!-- PANEL B: ENGINEERED BREAKTHROUGH -->
+    <div class="comparison-card solution-card">
+      <div class="comparison-card-tag"><span class="dot success"></span> PANEL B // TEARDROP ZERO-GAP SPUR</div>
+      <h4 class="comparison-card-title">Euler Clothoid Loop</h4>
+      <div class="comparison-visual">
+        <svg viewBox="0 0 360 140" fill="none" xmlns="http://www.w3.org/2000/svg" class="comparison-svg">
+          <rect width="360" height="140" rx="4" class="svg-canvas-bg" />
+          <!-- Parallel Top Chassis (0.00 mm gap) -->
+          <rect x="25" y="24" width="220" height="16" rx="2" fill="#64748B" fill-opacity="0.25" stroke="#64748B" stroke-width="1.5"/>
+          <!-- Parallel Bottom Chassis (0.00 mm gap) -->
+          <rect x="25" y="100" width="220" height="16" rx="2" fill="#64748B" fill-opacity="0.25" stroke="#64748B" stroke-width="1.5"/>
+          <!-- Spine Relief Cavity Shroud -->
+          <path d="M 230 24 C 295 24, 340 44, 340 70 C 340 96, 295 116, 230 116" fill="none" stroke="#64748B" stroke-width="1.5" stroke-dasharray="3,3"/>
+          <!-- Dropping Floating Support Wings (Recessed downward Δy = -1.35mm) -->
+          <rect x="175" y="66" width="65" height="8" rx="2" fill="#2563EB" stroke="#1D4ED8" stroke-width="1.5"/>
+          <!-- Teardrop Display Curve Ballooning into Cavity -->
+          <path d="M 25 44 L 175 44 C 215 44, 245 34, 275 48 C 308 62, 308 78, 275 92 C 245 106, 215 96, 175 96 L 25 96" fill="none" stroke="#0284C7" stroke-width="4.5" stroke-linecap="round"/>
+          <!-- Safe Bend Radius Arc (3.45 mm) -->
+          <circle cx="275" cy="70" r="22" fill="none" stroke="#059669" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <line x1="275" y1="70" x2="297" y2="70" stroke="#059669" stroke-width="2"/>
+          <circle cx="275" cy="70" r="3" fill="#059669"/>
+        </svg>
+      </div>
+      <div class="comparison-metric-pill success-pill">
+        <span class="pill-label">ENDURANCE STRAIN &amp; RADIUS:</span>
+        <span class="pill-value">&epsilon; = 1.08% • &rho; = 3.45 mm</span>
+        <span class="pill-sub">Safety Factor: <strong>&gt; 400,000 Folding Cycles Certified</strong></span>
+      </div>
+      <div class="comparison-consequence">
+        <strong>• Physical Solution:</strong> Internal floating wings drop 1.35 mm downward, allowing display to balloon into a bulbous 3.45 mm teardrop cavity.<br>
+        <strong>• Reliability:</strong> Outer housing folds 100% parallel with true 0.00 mm gap; strain collapses below brittle limit into infinite endurance.
+      </div>
+    </div>
+  </div>
+  <div class="comparison-banner">
+    <strong>CORE PRINCIPLE:</strong> Expanding bend radius from 1.25 mm to 3.45 mm cuts physical bending strain from 16.8% down to 1.08%—shifting brittle ultra-thin glass from immediate fatigue fracture into infinite elastic life.
   </div>
   <div class="schematic-caption">
-    <span><strong>FIG 02 — TEARDROP GEOMETRY METROLOGY:</strong> Cross-sectional vector CAD comparison between the legacy U-shaped fold (left), which forces a tight 1.25 mm bend radius with 16.8% tensile strain and a 2.5 mm wedge gap, versus the engineered teardrop hinge (right), where dropping floating support wings create an internal relief cavity preserving a generous 3.45 mm bend radius and true zero-gap parallel closure.</span>
+    <span><strong>FIG 02 — TEARDROP ZERO-GAP HINGE GEOMETRY VS. CONVENTIONAL U-SHAPE FOLD:</strong> Architectural cross-sectional comparison between the legacy U-shaped fold (Panel A) forcing 16.8% strain with a 2.5 mm wedge gap, versus the engineered teardrop cavity (Panel B) where dropping support wings preserve a 3.45 mm bend radius with zero closed gap.</span>
     <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
   </div>
 </div>
