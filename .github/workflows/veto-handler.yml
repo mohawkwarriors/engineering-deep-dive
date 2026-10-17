@@ -1,0 +1,105 @@
+name: Handle Topic Veto
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  veto:
+    if: startsWith(github.event.comment.body, '/veto')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Process Veto & Swap Topic
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const comment = context.payload.comment.body.trim();
+            const parts = comment.split(/\s+/);
+            const vetoId = parts[1];
+
+            if (!vetoId) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: "⚠️ Please specify a topic ID to veto, e.g.: `/veto B002`"
+              });
+              return;
+            }
+
+            const backlogPath = 'content/backlog.json';
+            const vetoesPath = 'content/vetoes.json';
+            const backlog = JSON.parse(fs.readFileSync(backlogPath, 'utf8'));
+            const vetoes = fs.existsSync(vetoesPath) ? JSON.parse(fs.readFileSync(vetoesPath, 'utf8')) : [];
+
+            const targetIndex = backlog.findIndex(t => t.id === vetoId);
+            if (targetIndex === -1) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: `⚠️ Topic \`${vetoId}\` was not found in backlog.`
+              });
+              return;
+            }
+
+            const oldTopic = backlog[targetIndex];
+            oldTopic.status = 'vetoed';
+            vetoes.push({ id: oldTopic.id, topic: oldTopic.topic, discipline: oldTopic.discipline, summary: oldTopic.summary });
+
+            const replacement = backlog.find(t => t.status === 'available');
+            if (!replacement) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: `⚠️ Vetoed \`${vetoId}\`, but no available topics remain in backlog!`
+              });
+              return;
+            }
+
+            replacement.status = 'staged';
+            replacement.scheduledDate = oldTopic.scheduledDate;
+
+            fs.writeFileSync(backlogPath, JSON.stringify(backlog, null, 2));
+            fs.writeFileSync(vetoesPath, JSON.stringify(vetoes, null, 2));
+
+            // Update Issue Body
+            const issue = await github.rest.issues.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+
+            const oldLineRegex = new RegExp(`- \\[ \\] \\*\\*${oldTopic.scheduledDate}\\*\\* [^\\n]+\\(\\`${oldTopic.id}\\`\\)\\n  >[^\\n]+`, 'g');
+            const newLine = `- [ ] **${oldTopic.scheduledDate}** · \`${replacement.discipline.toUpperCase()}\` · **${replacement.topic}** (\`${replacement.id}\`)\n  > ${replacement.summary}`;
+            const updatedBody = issue.data.body.replace(oldLineRegex, newLine);
+
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: updatedBody
+            });
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `✓ Vetoed **${oldTopic.topic}** (\`${oldTopic.id}\`).\n\nSwapped in **${replacement.topic}** (\`${replacement.id}\` · \`${replacement.discipline}\`).`
+            });
+
+      - name: Commit Veto Updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content/backlog.json content/vetoes.json
+          git diff --staged --quiet || (git commit -m "chore: record topic veto and update staged issue" && git push)

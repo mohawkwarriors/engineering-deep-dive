@@ -1,0 +1,702 @@
+[
+  {
+    "id": "B001",
+    "discipline": "Manufacturing",
+    "topic": "How Laptops Get Featherweight Metal Shells",
+    "summary": "How semi-solid magnesium slurry flows like soft-serve to create ultra-thin, rigid laptop housings.",
+    "status": "available"
+  },
+  {
+    "id": "B002",
+    "discipline": "Mechanisms",
+    "topic": "Surviving 100G Shock Loads in Cycloidal Drives",
+    "summary": "Using rolling pin contact and trochoidal gear curves to endure massive shock loads without tooth shearing.",
+    "status": "available"
+  },
+  {
+    "id": "B003",
+    "discipline": "Product Dives",
+    "topic": "Foldable Phone Teardrop Hinges",
+    "summary": "Multi-link synchronized sliders creating a waterdrop bend radius to prevent permanent display creasing.",
+    "status": "available"
+  },
+  {
+    "id": "B004",
+    "discipline": "Thermal",
+    "topic": "How Vapor Chambers Flatten Die Hotspots",
+    "summary": "Two-phase phase-change flat heat pipes solving extreme localized heat flux across ultra-thin mobile dies.",
+    "status": "available"
+  },
+  {
+    "id": "B005",
+    "discipline": "Fluids",
+    "topic": "Helical Heat Exchanger Coils: Beating Boundary Layers",
+    "summary": "Why curvature-induced secondary Dean flow disrupts thermal boundary layers to dramatically boost heat transfer.",
+    "status": "available"
+  },
+  {
+    "id": "B006",
+    "discipline": "Electromechanical",
+    "topic": "How Voice Coil Linear Actuators Achieve High-Speed Camera Autofocus",
+    "summary": "Using direct Lorentz force and lightweight coil design for ultra-high bandwidth position control.",
+    "status": "available"
+  },
+  {
+    "id": "B007",
+    "discipline": "Design",
+    "topic": "Cantilever Snap-Fits: Permissible Strain Limits",
+    "summary": "Calculating permissible deflection and peak strain limits to prevent plastic failure during automated assembly.",
+    "status": "available"
+  },
+  {
+    "id": "B008",
+    "discipline": "Manufacturing",
+    "topic": "Liquidmetal Casting with Zero Shrinkage",
+    "summary": "Exploiting amorphous vitrification to mold net-shape parts with zero crystalline shrinkage.",
+    "status": "available"
+  },
+  {
+    "id": "B009",
+    "discipline": "Fluids",
+    "topic": "Passive Flow Rectification in Tesla Valves",
+    "summary": "Leveraging asymmetric fluidic loops to choke reverse flow dynamically without moving parts.",
+    "status": "available"
+  },
+  {
+    "id": "B010",
+    "discipline": "Mechanisms",
+    "topic": "Zero-Backlash Reduction with Strain Wave Flexsplines",
+    "summary": "How continuous elastic deformation and strain wave gear meshing achieve zero-backlash high-ratio reduction.",
+    "status": "available"
+  },
+  {
+    "id": "B011",
+    "discipline": "Materials",
+    "topic": "Near-Zero Friction with Diamond-Like Carbon Films",
+    "summary": "Depositing sp3-bonded carbon films for extreme surface hardness and near-zero sliding friction.",
+    "status": "available"
+  },
+  {
+    "id": "B012",
+    "discipline": "Electromechanical",
+    "topic": "Nanometer Positioning Using Piezoelectric Surface Waves",
+    "summary": "Generating high-frequency elliptical stator surface waves to drive direct-drive rotary torque.",
+    "status": "available"
+  },
+  {
+    "id": "B013",
+    "discipline": "Design",
+    "topic": "Stripping vs Shearing in Mismatched Fastener Joints",
+    "summary": "Determining critical engagement depth across mismatched aluminum and steel fasteners.",
+    "status": "available"
+  },
+  {
+    "id": "B014",
+    "discipline": "Product Dives",
+    "topic": "Active Front Grille Shutter Vane Aerodynamics",
+    "summary": "Balancing powertrain cooling airflow and aerodynamic drag reduction using motorized louvers.",
+    "status": "available"
+  },
+  {
+    "id": "B015",
+    "discipline": "Materials",
+    "topic": "Sintering Precision Metal Hardware via MIM",
+    "summary": "Combining polymer binder flow with fine metal powder sintering for high-density micro-parts.",
+    "status": "available"
+  },
+  {
+    "id": "B016",
+    "discipline": "Product Dives",
+    "topic": "Polar Array Geometry in MagSafe Self-Alignment",
+    "summary": "Orienting neodymium arc magnets in alternating polarity arrays to self-align coils with high snap torque.",
+    "status": "available"
+  },
+  {
+    "id": "B017",
+    "discipline": "Thermal",
+    "topic": "Heat Pumping Tradeoffs in Solid-State Peltier Coolers",
+    "summary": "Managing Seebeck back-EMF and Joule internal dissipation in solid-state active cooling stages.",
+    "status": "available"
+  },
+  {
+    "id": "B018",
+    "discipline": "Mechanisms",
+    "topic": "Translating Rotary Motion into Precise Geneva Dwells",
+    "summary": "Translating continuous uniform rotary motion into precise intermittent rotary dwell steps.",
+    "status": "available"
+  },
+  {
+    "id": "B019",
+    "discipline": "Manufacturing",
+    "topic": "Solid-State Foil Scrubbing in Ultrasonic Tab Welding",
+    "summary": "Solid-state acoustic scrubbing to bond copper and aluminum tab foils without melting.",
+    "status": "available"
+  },
+  {
+    "id": "B020",
+    "discipline": "Fluids",
+    "topic": "Taming Cavitation Micro-Jets in Centrifugal Impellers",
+    "summary": "Vapor bubble implosion micro-jets that pit and erode hardened stainless impellers.",
+    "status": "available"
+  },
+  {
+    "id": "B021",
+    "discipline": "Electromechanical",
+    "topic": "Skewing Stator Teeth to Cancel Motor Cogging",
+    "summary": "Skewing stator teeth and shaping permanent magnet arc profiles to achieve zero-ripple torque.",
+    "status": "available"
+  },
+  {
+    "id": "B022",
+    "discipline": "Design",
+    "topic": "RSS Statistical Stacks vs Worst-Case Tolerancing",
+    "summary": "Applying statistical root sum of squares versus deterministic limits across precision datum schemes.",
+    "status": "available"
+  },
+  {
+    "id": "B023",
+    "discipline": "Product Dives",
+    "topic": "Voice Coil and SMA Stabilization in Dual-Axis OIS",
+    "summary": "Integrating miniature shape-memory alloy wires and voice coils to stabilize optical sensor modules.",
+    "status": "available"
+  },
+  {
+    "id": "B024",
+    "discipline": "Materials",
+    "topic": "Nitinol Pseudoelastic Phase Shifts Under Strain",
+    "summary": "Reversible martensitic-austenitic phase shifts that recover massive strains up to 8%.",
+    "status": "available"
+  },
+  {
+    "id": "B025",
+    "discipline": "Manufacturing",
+    "topic": "Vacuum-Assisted Gigacasting for Structural Underbodies",
+    "summary": "Giga-casting automotive underbodies using vacuum-assisted aluminum high-integrity dies.",
+    "status": "available"
+  },
+  {
+    "id": "B026",
+    "discipline": "Thermal",
+    "topic": "Direct Die Heat Collapse via Jet Impingement",
+    "summary": "Blasting high-velocity micro-jets directly onto bare dies to collapse thermal boundary layers.",
+    "status": "available"
+  },
+  {
+    "id": "B027",
+    "discipline": "Mechanisms",
+    "topic": "Elastic Buckling Thresholds in Bistable Mechanisms",
+    "summary": "Exploiting elastic buckling beam thresholds to switch stable mechanical positions with zero sliding parts.",
+    "status": "available"
+  },
+  {
+    "id": "B028",
+    "discipline": "Design",
+    "topic": "Gland Fill and Extrusion Limits in High-Pressure O-Rings",
+    "summary": "Balancing elastomeric volume swell, squeeze percentage, and gland fill to prevent seal extrusion.",
+    "status": "available"
+  },
+  {
+    "id": "B029",
+    "discipline": "Fluids",
+    "topic": "Arresting Water Hammer Waves with Bladder Dampers",
+    "summary": "Managing acoustic shock pulses from fast-closing valves using elastomeric bladder surge arrestors.",
+    "status": "available"
+  },
+  {
+    "id": "B030",
+    "discipline": "Electromechanical",
+    "topic": "Moving-Magnet Low-Inertia Galvanometer Mirrors",
+    "summary": "Moving-magnet low-inertia rotors achieving sub-millisecond step-and-settle laser pointing.",
+    "status": "available"
+  },
+  {
+    "id": "B031",
+    "discipline": "Materials",
+    "topic": "Skidding and Arcing Limits in 100,000 RPM Ceramic Bearings",
+    "summary": "Eliminating electrical arcing and reducing centrifugal ball skidding in ultra-high-RPM EV motors.",
+    "status": "available"
+  },
+  {
+    "id": "B032",
+    "discipline": "Product Dives",
+    "topic": "Pulse-Free 9-Bar Extraction Using Rotary Carbon Vanes",
+    "summary": "Precision balanced carbon vanes providing continuous pulsation-free brewing extraction.",
+    "status": "available"
+  },
+  {
+    "id": "B033",
+    "discipline": "Manufacturing",
+    "topic": "Shaping Stress-Free Inconel via Electrochemical Machining",
+    "summary": "Anodic dissolution of tough nickel superalloys without tool wear or thermal stresses.",
+    "status": "available"
+  },
+  {
+    "id": "B034",
+    "discipline": "Mechanisms",
+    "topic": "Lowering Vehicle Cabin Drone with Hypoid Differential Gears",
+    "summary": "Offsetting spiral bevel pinion axes to maximize tooth contact ratio and lower cabin drive hum.",
+    "status": "available"
+  },
+  {
+    "id": "B035",
+    "discipline": "Design",
+    "topic": "Sub-Micron Repeatability in Kinematic Kelvin Clamps",
+    "summary": "Constraining exactly six degrees of freedom with three balls in V-grooves for sub-micron repeatability.",
+    "status": "available"
+  },
+  {
+    "id": "B036",
+    "discipline": "Thermal",
+    "topic": "Soaking Up Peak Heat Spikes with Phase Change Buffers",
+    "summary": "Paraffin wax latent heat absorption mitigating transient spike temperatures in electronics.",
+    "status": "available"
+  },
+  {
+    "id": "B037",
+    "discipline": "Fluids",
+    "topic": "Splitting Pure Pressure into Hot and Cold Gas Streams",
+    "summary": "Splitting compressed gas streams into hot and cold fractions through peripheral vortex shedding.",
+    "status": "available"
+  },
+  {
+    "id": "B038",
+    "discipline": "Electromechanical",
+    "topic": "Eliminating Mid-Band Resonance in Stepper Microstepping",
+    "summary": "Sinusoidal phase current balancing to suppress low-frequency mid-band resonance.",
+    "status": "available"
+  },
+  {
+    "id": "B039",
+    "discipline": "Materials",
+    "topic": "Squeezing Out Micro-Voids in Carbon Fiber Autoclaves",
+    "summary": "Applying elevated pressure to collapse resin voids and ensure high fiber-volume aerospace laminates.",
+    "status": "available"
+  },
+  {
+    "id": "B040",
+    "discipline": "Product Dives",
+    "topic": "Discriminating Chattering from Falls in Ski Binding Cams",
+    "summary": "Calibrated mechanical spring detents discriminating high-frequency chattering from severe knee-twisting falls.",
+    "status": "available"
+  },
+  {
+    "id": "B041",
+    "discipline": "Manufacturing",
+    "topic": "Achieving Mirror-Finish Stamped Edges with Fineblanking",
+    "summary": "Triple-action tooling and counter-force pads that yield 100% smooth, tear-free sheared edges.",
+    "status": "available"
+  },
+  {
+    "id": "B042",
+    "discipline": "Mechanisms",
+    "topic": "Brutal Thrust Density in Planetary Roller Screws",
+    "summary": "Threading multiple planetary rollers around a screw shaft for brutal thrust density and stiffness.",
+    "status": "available"
+  },
+  {
+    "id": "B043",
+    "discipline": "Design",
+    "topic": "Orienting Polymer Chains for Infinite-Bend Living Hinges",
+    "summary": "Coining and drawing molten polymer through thin gates to orient chains along the bending axis.",
+    "status": "available"
+  },
+  {
+    "id": "B044",
+    "discipline": "Thermal",
+    "topic": "Sizing Vertical Chimneys for Natural Draft Buoyancy",
+    "summary": "Sizing vertical stack heights to optimize draft buoyancy and Rayleigh numbers.",
+    "status": "available"
+  },
+  {
+    "id": "B045",
+    "discipline": "Fluids",
+    "topic": "Pinching Nanoliter Droplets with Immiscible Sheath Flows",
+    "summary": "Using immiscible oil sheath flows to pinch aqueous streams into nanoliter droplet reactors.",
+    "status": "available"
+  },
+  {
+    "id": "B046",
+    "discipline": "Electromechanical",
+    "topic": "Shaping Conical Poles to Flatten Solenoid Pull Force",
+    "summary": "Shaping conical pole pieces to flatten electromagnetic pull force across stroke displacement.",
+    "status": "available"
+  },
+  {
+    "id": "B047",
+    "discipline": "Materials",
+    "topic": "Hexagonal Nano-Pore Architecture in Anodized Aluminum",
+    "summary": "Electrochemically tailoring hexagonal nano-pores for deep dye absorption and scratch barrier sealing.",
+    "status": "available"
+  },
+  {
+    "id": "B048",
+    "discipline": "Product Dives",
+    "topic": "Smoothing Formula 1 Tire Contact Patches with Inerters",
+    "summary": "Flywheel rack-and-pinion inertia transformation smoothing high-frequency tire contact patch loads.",
+    "status": "available"
+  },
+  {
+    "id": "B049",
+    "discipline": "Manufacturing",
+    "topic": "Armor-Plating Carbide Tool Inserts with CVD Films",
+    "summary": "Synthesizing ultra-hard titanium nitride and diamond layers on carbide milling inserts.",
+    "status": "available"
+  },
+  {
+    "id": "B050",
+    "discipline": "Mechanisms",
+    "topic": "Synthesizing Pure Linear Paths Without Slider Rails",
+    "summary": "Arranging rigid pivots to synthesize pure linear motion paths without slider rails.",
+    "status": "available"
+  },
+  {
+    "id": "B051",
+    "discipline": "Design",
+    "topic": "Stopping Flange Corner Tears with Sheet Metal Bend Relief",
+    "summary": "Preventing edge tearing and die roll-over near tight radius bends in stamping.",
+    "status": "available"
+  },
+  {
+    "id": "B052",
+    "discipline": "Thermal",
+    "topic": "Compressing TIM Bond Lines Down to 20 Microns",
+    "summary": "Optimizing filler particle packing distribution to compress TIM thickness down to 20 microns.",
+    "status": "available"
+  },
+  {
+    "id": "B053",
+    "discipline": "Fluids",
+    "topic": "Why Gravity Siphons Cavitate at High Elevations",
+    "summary": "Vapor pressure thresholds that cause cavitation breaks in long-distance gravity conduit flow.",
+    "status": "available"
+  },
+  {
+    "id": "B054",
+    "discipline": "Electromechanical",
+    "topic": "Optical Grating vs Magnetic Hall Arrays Under Vibration",
+    "summary": "Evaluating grating diffraction discs versus Hall-effect interpolators under extreme vibration.",
+    "status": "available"
+  },
+  {
+    "id": "B055",
+    "discipline": "Materials",
+    "topic": "Maintaining Creep Resistance in 250\u00b0C PEEK Bushings",
+    "summary": "Semi-crystalline thermoplastics maintaining creep resistance and sliding stability at 250\u00b0C.",
+    "status": "available"
+  },
+  {
+    "id": "B056",
+    "discipline": "Product Dives",
+    "topic": "Radial Tooth Contact in Co-Axial Watch Escapements",
+    "summary": "Radially pushing escapement teeth to eliminate sliding friction and remove oil degradation.",
+    "status": "available"
+  },
+  {
+    "id": "B057",
+    "discipline": "Manufacturing",
+    "topic": "Cold-Working Grain Flow in Rolled Bolt Roots",
+    "summary": "Cold-working metal grain flow along root contours to prevent fatigue-induced fastener failure.",
+    "status": "available"
+  },
+  {
+    "id": "B058",
+    "discipline": "Mechanisms",
+    "topic": "Transmitting Slip-Safe Torque Through Solid Walls",
+    "summary": "Modulating magnetic flux harmonics with steel poles to achieve slip-safe speed reduction.",
+    "status": "available"
+  },
+  {
+    "id": "B059",
+    "discipline": "Design",
+    "topic": "Calculating Press-Fit Hub Yielding with Lam\u00e9 Equations",
+    "summary": "Calculating Lam\u00e9 thick-cylinder equations to prevent plastic yield in press-fit gear hubs.",
+    "status": "available"
+  },
+  {
+    "id": "B060",
+    "discipline": "Thermal",
+    "topic": "Multi-Layer Aluminized Mylar Heat Shields in Satellite Vacuums",
+    "summary": "Multi-layer aluminized Mylar sheets decoupling radiative heat transfer in space mechanisms.",
+    "status": "available"
+  },
+  {
+    "id": "B061",
+    "discipline": "Fluids",
+    "topic": "Calculating Vena Contracta Recovery in High-Pressure Orifices",
+    "summary": "Calculating vena contracta pressure recovery to measure mass flow rate accurately.",
+    "status": "available"
+  },
+  {
+    "id": "B062",
+    "discipline": "Electromechanical",
+    "topic": "Projecting Traveling Magnetic Waves in Linear Induction Launchers",
+    "summary": "Unrolling stator windings to project traveling magnetic waves across reaction plates.",
+    "status": "available"
+  },
+  {
+    "id": "B063",
+    "discipline": "Materials",
+    "topic": "Acicular Ferrite Phase Shifts in Austempered Ductile Iron",
+    "summary": "Transforming graphite nodule iron into acicular ferrite and austenite for gear-tooth wear endurance.",
+    "status": "available"
+  },
+  {
+    "id": "B064",
+    "discipline": "Product Dives",
+    "topic": "Stripping Microscopic Dust in 100,000G Cyclone Vortexes",
+    "summary": "Generating 100,000G centrifugal acceleration vortexes to strip microscopic dust without HEPA clogging.",
+    "status": "available"
+  },
+  {
+    "id": "B065",
+    "discipline": "Manufacturing",
+    "topic": "Collapsing Internal Casting Porosity with Hot Isostatic Pressing",
+    "summary": "Applying simultaneous high gas pressure and thermal soak to eliminate internal casting porosity.",
+    "status": "available"
+  },
+  {
+    "id": "B066",
+    "discipline": "Mechanisms",
+    "topic": "Splitting High Torque Paths in Epicyclic Wheel Hubs",
+    "summary": "Split-torque power paths that yield compact high reductions inside vehicle wheel hubs.",
+    "status": "available"
+  },
+  {
+    "id": "B067",
+    "discipline": "Design",
+    "topic": "Sizing Rib Thickness Below 60% to Stop Cosmetic Sink Marks",
+    "summary": "Sizing nominal wall ratios below 60% to eliminate cosmetic depression sinks on injection molded exteriors.",
+    "status": "available"
+  },
+  {
+    "id": "B068",
+    "discipline": "Thermal",
+    "topic": "Boiling Dielectric Coolant Directly on Bare Server Dies",
+    "summary": "Direct dielectric boiling on server heatsinks eliminating chillers and secondary loops.",
+    "status": "available"
+  },
+  {
+    "id": "B069",
+    "discipline": "Fluids",
+    "topic": "Self-Sustaining Jet Sweeping via Fluidic Oscillators",
+    "summary": "Self-sustaining jet sweeping across wings without external mechanical actuators.",
+    "status": "available"
+  },
+  {
+    "id": "B070",
+    "discipline": "Electromechanical",
+    "topic": "Spring-Applied Clamping for Fail-Safe Emergency Braking",
+    "summary": "Spring-applied friction pads released via electromagnetic coil pull for emergency stops.",
+    "status": "available"
+  },
+  {
+    "id": "B071",
+    "discipline": "Materials",
+    "topic": "Trapping Gas Molecules in Sub-Mean-Free-Path Aerogel Nanopores",
+    "summary": "Pore diameters smaller than the mean free path of air to eliminate conductive and convective heat.",
+    "status": "available"
+  },
+  {
+    "id": "B072",
+    "discipline": "Product Dives",
+    "topic": "Hydrophobic ePTFE Vents for 50-Meter Water Resistance",
+    "summary": "Hydrophobic ePTFE membranes venting ambient pressure while blocking 50-meter water ingress.",
+    "status": "available"
+  },
+  {
+    "id": "B073",
+    "discipline": "Manufacturing",
+    "topic": "High-Voltage Underwater Shockwaves in Sheet Metal Forming",
+    "summary": "Using underwater high-voltage shockwaves to stretch complex sheet metal panels into single-sided dies.",
+    "status": "available"
+  },
+  {
+    "id": "B074",
+    "discipline": "Mechanisms",
+    "topic": "Asymmetric Cam Wedge Engagement in Sprag Clutches",
+    "summary": "Cammed asymmetrical wedges that instantly lock under drive torque and free-wheel during coast.",
+    "status": "available"
+  },
+  {
+    "id": "B075",
+    "discipline": "Design",
+    "topic": "Friction Variation and Clamp Load Limits in Bolted Joints",
+    "summary": "Managing friction variation across zinc, black oxide, and Loctite coatings to ensure joint clamp force.",
+    "status": "available"
+  },
+  {
+    "id": "B076",
+    "discipline": "Thermal",
+    "topic": "Decoupling Evaporators with Flexible Loop Heat Pipes",
+    "summary": "Decoupling evaporator and condenser across long flexible lines using sub-micron pore wicks.",
+    "status": "available"
+  },
+  {
+    "id": "B077",
+    "discipline": "Fluids",
+    "topic": "Delaying Wing Turbulence with Micro-Perforated Surface Suction",
+    "summary": "Micro-perforated surface suction to delay turbulent transition and eliminate skin-friction drag.",
+    "status": "available"
+  },
+  {
+    "id": "B078",
+    "discipline": "Electromechanical",
+    "topic": "Gold-on-Gold Wire Contacts for Noise-Free Slip Rings",
+    "summary": "Gold-on-gold slip ring contacts eliminating electrical contact resistance noise across rotations.",
+    "status": "available"
+  },
+  {
+    "id": "B079",
+    "discipline": "Materials",
+    "topic": "Capillary Oil Retention in Porous Sintered Bronze Bushings",
+    "summary": "Impregnating porous sintered capillary structures with synthetic oils for lifetime lubrication.",
+    "status": "available"
+  },
+  {
+    "id": "B080",
+    "discipline": "Product Dives",
+    "topic": "Damping Crankshaft Shudder with Dual-Mass Flywheel Arc Springs",
+    "summary": "Arc springs damping engine crankshaft firing torsional vibrations before entering the transmission.",
+    "status": "available"
+  },
+  {
+    "id": "B081",
+    "discipline": "Manufacturing",
+    "topic": "Laser Powder-Feed Deposition in Gradient Alloy Repair",
+    "summary": "Using focused laser powder-feed deposition to repair aerospace turbine blades and build gradient alloys.",
+    "status": "available"
+  },
+  {
+    "id": "B082",
+    "discipline": "Mechanisms",
+    "topic": "Preloaded Dual Pinion Halves in Anti-Backlash Split Gears",
+    "summary": "Spring-loaded dual pinion halves that eliminate gear lash across bi-directional actuator gear trains.",
+    "status": "available"
+  },
+  {
+    "id": "B083",
+    "discipline": "Design",
+    "topic": "Coring Plastic Screw Bosses to Prevent Thermal Voids",
+    "summary": "Coring screw bosses down to parting lines to maintain uniform cooling and prevent void formation.",
+    "status": "available"
+  },
+  {
+    "id": "B084",
+    "discipline": "Thermal",
+    "topic": "In-Plane Thermal Conduction in Oriented Pyrolytic Graphite",
+    "summary": "Oriented graphene planes delivering in-plane thermal conductivity 4x higher than solid copper.",
+    "status": "available"
+  },
+  {
+    "id": "B085",
+    "discipline": "Fluids",
+    "topic": "Taylor Couette Vortex Transitions in Annular Shear",
+    "summary": "Centrifugal instability generating toroidal Taylor vortices across concentric rotating cylinders.",
+    "status": "available"
+  },
+  {
+    "id": "B086",
+    "discipline": "Electromechanical",
+    "topic": "Eddy Current Deceleration in Non-Contact Mag-Brakes",
+    "summary": "Induced eddy current Lorentz drag providing wear-free dynamic braking across high-speed rotors.",
+    "status": "available"
+  },
+  {
+    "id": "B087",
+    "discipline": "Materials",
+    "topic": "Intergranular Stress Corrosion Cracking in 7000-Series Aluminum",
+    "summary": "Zinc-magnesium precipitate grain-boundary segregation driving stress-corrosion cracking under tensile loads.",
+    "status": "available"
+  },
+  {
+    "id": "B088",
+    "discipline": "Product Dives",
+    "topic": "Twin-Clutch Hydraulic Pre-Selection in Automated Transmissions",
+    "summary": "Electro-hydraulic spool valves pre-engaging odd and even gear ratios for 8-millisecond shift transitions.",
+    "status": "available"
+  },
+  {
+    "id": "B089",
+    "discipline": "Manufacturing",
+    "topic": "Compensating Thermal Distortion in Direct Metal Laser Sintering",
+    "summary": "Anchor support geometry and localized laser scan vectors mitigating severe residual thermal warpage.",
+    "status": "available"
+  },
+  {
+    "id": "B090",
+    "discipline": "Mechanisms",
+    "topic": "Spherical 4-Bar Linkages in Spatial Orientation Mechanisms",
+    "summary": "Intersecting pivot axes constraining multi-axis spatial gimbal motion without linear slides.",
+    "status": "available"
+  },
+  {
+    "id": "B091",
+    "discipline": "Design",
+    "topic": "Thermal Fatigue Limits in Soldered Ball Grid Arrays",
+    "summary": "Mismatched CTE shear strains driving solder joint fatigue cracking across power cycling.",
+    "status": "available"
+  },
+  {
+    "id": "B092",
+    "discipline": "Thermal",
+    "topic": "Cryogenic Heat Lift Limits in Closed-Cycle Stirling Coolers",
+    "summary": "Managing regenerator dead-volume losses and helium seal blow-by in miniature Stirling cryocoolers.",
+    "status": "available"
+  },
+  {
+    "id": "B093",
+    "discipline": "Fluids",
+    "topic": "Secondary Vortex Shedding Behind Blunt Body Splitters",
+    "summary": "Using splitter plates and base bleeds to suppress Karman vortex streets and reduce form drag.",
+    "status": "available"
+  },
+  {
+    "id": "B094",
+    "discipline": "Electromechanical",
+    "topic": "Zero-Current Detent Holding in Bistable Permanent Magnet Solenoids",
+    "summary": "Dual permanent magnet latching circuits maintaining actuator position with zero steady-state power.",
+    "status": "available"
+  },
+  {
+    "id": "B095",
+    "discipline": "Materials",
+    "topic": "Anisotropic Friction in Oriented UHMWPE Fibers",
+    "summary": "Ultra-high molecular weight polyethylene chain alignment delivering extreme impact resistance and abrasion wear.",
+    "status": "available"
+  },
+  {
+    "id": "B096",
+    "discipline": "Product Dives",
+    "topic": "Variable Pitch Propeller Hub Governors in Turboprops",
+    "summary": "Flyweight-hydraulic centrifugal governors modulating blade pitch angle to maintain constant shaft RPM.",
+    "status": "available"
+  },
+  {
+    "id": "B097",
+    "discipline": "Manufacturing",
+    "topic": "Sub-Micron Surface Lapping with Diamond Slurry Suspensions",
+    "summary": "Conditioning cast-iron lap plates to uniformly charge diamond abrasives for optical flatness.",
+    "status": "available"
+  },
+  {
+    "id": "B098",
+    "discipline": "Mechanisms",
+    "topic": "Zero-Clearance Cross-Roller Bearings in Robot Joints",
+    "summary": "Alternating 90-degree cylindrical rollers handling combined radial, thrust, and moment loads in compact joints.",
+    "status": "available"
+  },
+  {
+    "id": "B099",
+    "discipline": "Design",
+    "topic": "Preventing Thread Galling in High-Tensile Stainless Bolts",
+    "summary": "Cold welding prevention via anti-seize pastes, thread roughness Ra targets, and galling-resistant Nitronic 60.",
+    "status": "available"
+  },
+  {
+    "id": "B100",
+    "discipline": "Thermal",
+    "topic": "Thermal Expansion Balancing in Apochromatic Lens Barrels",
+    "summary": "Using titanium and invar cell spacers to mechanically shift glass elements and preserve focal point over -40\u00b0C to +85\u00b0C.",
+    "status": "available"
+  }
+]

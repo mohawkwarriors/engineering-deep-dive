@@ -1,0 +1,89 @@
+name: Stage Weekly Topic Queue
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Every Sunday at midnight UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Stage Next 7 Days in GitHub Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const backlogPath = 'content/backlog.json';
+            if (!fs.existsSync(backlogPath)) {
+              core.setFailed('content/backlog.json does not exist');
+              return;
+            }
+
+            const backlog = JSON.parse(fs.readFileSync(backlogPath, 'utf8'));
+            const available = backlog.filter(t => t.status === 'available');
+
+            if (available.length < 7) {
+              core.setFailed(`Fewer than 7 available topics in backlog (found ${available.length})`);
+              return;
+            }
+
+            const staged = available.slice(0, 7);
+            const today = new Date();
+            const days = [];
+
+            for (let i = 0; i < 7; i++) {
+              const d = new Date(today);
+              d.setDate(today.getDate() + i + 1);
+              const dateStr = d.toISOString().split('T')[0];
+              const t = staged[i];
+              t.status = 'staged';
+              t.scheduledDate = dateStr;
+              days.push({ date: dateStr, ...t });
+            }
+
+            fs.writeFileSync(backlogPath, JSON.stringify(backlog, null, 2));
+
+            const startDate = days[0].date;
+            const endDate = days[6].date;
+            const title = `Weekly Topic Queue: ${startDate} to ${endDate}`;
+
+            let body = `## Upcoming Dispatches (${startDate} to ${endDate})\n\n`;
+            body += `Review the upcoming 7-day lineup below. Any topic left as active will be automatically authored and deployed at 4:00 AM PST.\n\n`;
+            body += `### Veto Instructions\n`;
+            body += `To veto any topic, simply comment \`/veto <ID>\` (e.g. \`/veto ${days[0].id}\`). The bot will instantly swap in a fresh topic from the backlog and update this issue.\n\n`;
+            body += `### Scheduled Lineup\n\n`;
+
+            for (const item of days) {
+              body += `- [ ] **${item.date}** · \`${item.discipline.toUpperCase()}\` · **${item.topic}** (\`${item.id}\`)\n`;
+              body += `  > ${item.summary}\n\n`;
+            }
+
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['topic-queue']
+            });
+
+            console.log(`Created topic queue issue #${issue.data.number}`);
+
+      - name: Commit Updated Backlog
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content/backlog.json
+          git diff --staged --quiet || (git commit -m "chore: stage 7-day topic queue in GitHub Issue" && git push)
