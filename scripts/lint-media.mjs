@@ -326,6 +326,21 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     }
   }
 
+  // 2E. Anti-Clustering Rule: Figures must have narrative prose between them (minimum 75 words)
+  const visualBlockRegex = /(?:<figure class="product-figure">[\s\S]*?<\/figure>|<div class="schematic-card"[^>]*>[\s\S]*?<\/div>\s*<\/div>)/gi;
+  let lastVisualEnd = -1;
+  let vMatch;
+  while ((vMatch = visualBlockRegex.exec(html)) !== null) {
+    if (lastVisualEnd !== -1) {
+      const gapHtml = html.slice(lastVisualEnd, vMatch.index);
+      const gapWords = gapHtml.replace(/<[^>]+>/g, ' ').trim().split(/\s+/).filter(Boolean).length;
+      if (gapWords < 75) {
+        errors.push(`Figures stacked back-to-back with only ${gapWords} intervening words in ${fileLabel}. Must include at least 75 words of explanatory prose between figures.`);
+      }
+    }
+    lastVisualEnd = vMatch.index + vMatch[0].length;
+  }
+
   // 3. Check schematic headers for typography consistency
   const schematicHeaders = [...html.matchAll(/<div class="schematic-header">([\s\S]*?)<\/div>/g)].map(m => m[1]);
   for (const header of schematicHeaders) {

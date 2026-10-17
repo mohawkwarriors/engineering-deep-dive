@@ -159,45 +159,7 @@
   </div>
 </div>
 
-<!-- FIG 03: KINEMATIC WORKFLOW GRID -->
-<div class="schematic-card" id="process-steps-diagram">
-  <div class="schematic-header">
-    <span class="schematic-title">FIG 03 — THE 4-STAGE TEARDROP KINEMATIC SEQUENCE</span>
-    <span class="schematic-subtitle">PLANAR (180°) &rarr; BENDING &rarr; SLIDING &rarr; CLOSED (0°)</span>
-  </div>
-  <div class="process-grid">
-    <div class="process-step-card">
-      <div class="process-step-tag">STAGE 01: 180° FLAT</div>
-      <div class="process-step-title">Planar Substrate Lockout</div>
-      <p class="process-step-desc">
-        Floating support wings are locked flush with the chassis by secondary cam detents, forming a rigid 0.10 mm substrate beneath the UTG that resists stylus and finger indentation.
-      </p>
-    </div>
 
-    <div class="process-step-card">
-      <div class="process-step-tag">STAGE 02: 120° UNLATCH</div>
-      <div class="process-step-title">Floating Plate Descent</div>
-      <p class="process-step-desc">
-        As rotation begins, dual synchronization gears drive guide pins along an angled track, dropping the center support plates vertically by 1.35 mm into the housing spine.
-      </p>
-    </div>
-
-    <div class="process-step-card">
-      <div class="process-step-tag">STAGE 03: 60° BENDING</div>
-      <div class="process-step-title">Teardrop Cavity Expansion</div>
-      <p class="process-step-desc">
-        With support plates recessed, the screen enters free-loop deflection. The lateral sliders begin stroking outward along precision curved tracks to absorb display arc-length differential.
-      </p>
-    </div>
-
-    <div class="process-step-card">
-      <div class="process-step-tag">STAGE 04: 0° CLOSED</div>
-      <div class="process-step-title">Zero-Gap Waterdrop Lock</div>
-      <p class="process-step-desc">
-        The housing halves meet parallel with zero gap. The screen loops into a bulbous 3.4 mm waterdrop with &lt;1.1% glass strain, while sliders hold &Delta;L = 1.42 mm tension balance.
-      </p>
-    </div>
-  </div>
   <div class="schematic-caption">
     <span><strong>FIG 03 — KINEMATIC SEQUENCE:</strong> The four-phase transition of a teardrop hinge mechanism, demonstrating the synchronized vertical descent of central support wings and the lateral translation of perimeter sliders.</span>
     <span class="source-tag">FLOWCHART 01</span>
@@ -228,6 +190,94 @@
   <strong>The Multi-Link Synchronized Slider Solution:</strong><br>
   Modern teardrop hinges solve this by mounting the display support plates onto <strong>lateral sliding carriages</strong>. These carriages ride on precision curved tracks machined directly into the outer wing frames. As the hinge closes, a multi-link scissor mechanism pulls the left and right display wings outward by exactly $\Delta L / 2 \approx 0.71\text{ mm}$ each, absorbing the length change with zero net tension.
 </p>
+
+<!-- FIG 03: TEARDROP MULTI-LINK KINEMATIC SEQUENCE (VISUAL FLOWCHART) -->
+<div class="schematic-card" id="fig03-kinematic-sequence" style="margin: 36px 0;">
+  <div class="schematic-header">
+    <span class="schematic-title">FIG 03 — TEARDROP MULTI-LINK KINEMATIC DEPLOYMENT SEQUENCE</span>
+    <span class="schematic-subtitle">4-STAGE KINEMATICS • &Delta;L = 1.42 mm SLIDING DISPLACEMENT</span>
+  </div>
+  <div class="process-grid">
+    <div class="process-step-card">
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 01: 180&deg; FLAT</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
+      <div class="process-step-title">Planar Substrate Lockout</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <line x1="18" y1="26" x2="142" y2="26" stroke="#0284C7" stroke-width="3"/>
+          <rect x="50" y="29" width="60" height="8" rx="2" fill="#2563EB"/>
+        </svg>
+      </div>
+      <p class="process-step-desc">
+        Floating support wings are cammed fully flush against the chassis, providing rigid continuous backing beneath the UTG against stylus and touch inputs.
+      </p>
+      <div class="process-step-metric">&theta; = 180&deg; &bull; &Delta;y = 0.00 mm</div>
+    </div>
+    <div class="process-step-card">
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 02: 120&deg; UNLATCH</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
+      <div class="process-step-title">Floating Plate Descent</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <path d="M 22 36 L 80 20 L 138 36" stroke="#0284C7" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="80" cy="20" r="4" fill="#D97706"/>
+        </svg>
+      </div>
+      <p class="process-step-desc">
+        Dual synchronization gears drive guide pins along an angled track, dropping center support plates vertically into the housing spine to create cavity relief.
+      </p>
+      <div class="process-step-metric">&theta; = 120&deg; &bull; &Delta;y = -0.65 mm</div>
+    </div>
+    <div class="process-step-card">
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 03: 60&deg; BENDING</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
+      <div class="process-step-title">Cavity Expansion &amp; Slide</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <path d="M 26 40 L 68 20 L 92 20 L 134 40" stroke="#0284C7" stroke-width="3"/>
+          <rect x="65" y="27" width="30" height="6" rx="2" fill="#2563EB"/>
+          <line x1="80" y1="23" x2="80" y2="33" stroke="#DC2626" stroke-width="2"/>
+        </svg>
+      </div>
+      <p class="process-step-desc">
+        With support plates fully recessed, lateral sliders stroke outward along precision curved tracks to absorb the display arc-length differential.
+      </p>
+      <div class="process-step-metric">&theta; = 60&deg; &bull; &Delta;y = -1.35 mm</div>
+    </div>
+    <div class="process-step-card">
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 04: 0&deg; CLOSED</span>
+        <span class="process-step-arrow">&bull;</span>
+      </div>
+      <div class="process-step-title">Zero-Gap Teardrop Lock</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <path d="M 22 18 L 82 18 C 112 18, 128 22, 128 26 C 128 30, 112 34, 82 34 L 22 34" stroke="#0284C7" stroke-width="3"/>
+          <circle cx="108" cy="26" r="8" fill="#10B981" fill-opacity="0.2" stroke="#10B981" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <p class="process-step-desc">
+        Housings meet parallel with zero outer gap. The screen loops into a safe 3.45 mm bulbous teardrop with &lt;1.08% strain, while sliders hold 1.42 mm stroke balance.
+      </p>
+      <div class="process-step-metric">&theta; = 0&deg; &bull; &rho; = 3.45 mm (&epsilon; = 1.08%)</div>
+    </div>
+  </div>
+  <div class="schematic-caption">
+    <span><strong>FIG 04 — KINEMATIC SEQUENCE:</strong> The four mechanical stages of hinge folding: floating wings drop 1.35 mm downward into the spine cavity as the device closes, enabling zero-gap closure while preserving a wide 3.45 mm bend radius.</span>
+    <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
+  </div>
+</div>
+
 
 <h2 id="section-torque-engine-cams">3. The Torque Engine: Helical Cams & "Flex Mode" Detents</h2>
 <p>
