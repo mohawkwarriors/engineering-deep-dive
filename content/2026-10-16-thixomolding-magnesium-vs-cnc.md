@@ -160,11 +160,7 @@
     <span class="source-tag">FLOWCHART 01</span>
   </div>
 </div>
-  <div class="schematic-caption">
-    <span><strong>FIG 03 — PROCESS ARCHITECTURE:</strong> The 5-stage automated thixomolding sequence transforming chipped magnesium granules directly into ultra-thin near-net-shape structural laptop enclosures in an 18-second cycle.</span>
-    <span class="source-tag">FLOWCHART 01</span>
-  </div>
-</div>
+
 
 <p>
   Historically, mechanical designers avoided magnesium because standard high-pressure die casting (HPDC) could not reliably produce cosmetic walls below 1.0 mm without severe internal porosity, high scrap rates, and melt fire risks. The breakthrough that solved this contradiction is <strong>Semi-Solid Thixomolding</strong>.
@@ -457,7 +453,7 @@
     </svg>
   </div>
   <div class="schematic-caption">
-    <span><strong>FIG 04 — RECIPROCATING SCREW THIXOMOLDER:</strong> Vector CAD cutaway of the Japan Steel Works (JSW) reciprocating screw thixomolding barrel, illustrating argon chip feeding, progressive shear-thinning thermal zones, and the 120 MPa hydraulic injection accumulator.</span>
+    <span><strong>FIG 03 — RECIPROCATING SCREW THIXOMOLDER:</strong> Vector CAD cutaway of the Japan Steel Works (JSW) reciprocating screw thixomolding barrel, illustrating argon chip feeding, progressive shear-thinning thermal zones, and the 120 MPa hydraulic injection accumulator.</span>
     <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
   </div>
 </div>
@@ -593,7 +589,7 @@
   </div>
 
   <div class="schematic-caption">
-    <span><strong>FIG 05 — METALLURGICAL GRAIN STRUCTURE:</strong> Scanning electron comparison illustrating why thixomolded magnesium achieves pore-free structural integrity compared to conventional die-casting gas cavities.</span>
+    <span><strong>FIG 04 — METALLURGICAL GRAIN STRUCTURE:</strong> Scanning electron comparison illustrating why thixomolded magnesium achieves pore-free structural integrity compared to conventional die-casting gas cavities.</span>
     <span class="source-tag">SCHEMATIC: SEM ARCHIVE</span>
   </div>
 </div>

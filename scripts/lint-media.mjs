@@ -406,6 +406,76 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     }
   }
 
+  // 2D-2. Structural Verification: Ensure every .schematic-caption is inside an active, unclosed .schematic-card
+  const capRegex = /<div class="schematic-caption">([\s\S]*?)<\/div>/g;
+  let cm;
+  while ((cm = capRegex.exec(html)) !== null) {
+    const capStart = cm.index;
+    const before = html.slice(0, capStart);
+    const lastCardOpen = before.lastIndexOf('<div class="schematic-card"');
+    if (lastCardOpen === -1) {
+      errors.push(`Orphaned schematic caption in ${fileLabel}: caption found with no preceding <div class="schematic-card">: "${cm[0].slice(0, 80)}..."`);
+    } else {
+      const between = before.slice(lastCardOpen);
+      const openCount = (between.match(/<div\b[^>]*>/g) || []).length;
+      const closeCount = (between.match(/<\/div>/g) || []).length;
+      if (closeCount >= openCount) {
+        errors.push(`Orphaned schematic caption in ${fileLabel}: caption placed after <div class="schematic-card"> has already closed: "${cm[0].slice(0, 80)}..."`);
+      }
+    }
+  }
+
+  // 2D-3. Visual Payload Verification: Ensure every .schematic-card contains actual visual content
+  const cardStartRegex = /<div class="schematic-card"[^>]*>/g;
+  let csm;
+  while ((csm = cardStartRegex.exec(html)) !== null) {
+    const startIdx = csm.index;
+    let depth = 0;
+    let endIdx = -1;
+    const tagRegex = /<\/?div\b[^>]*>/g;
+    tagRegex.lastIndex = startIdx;
+    let tm;
+    while ((tm = tagRegex.exec(html)) !== null) {
+      if (tm[0].startsWith('</')) {
+        depth--;
+        if (depth === 0) {
+          endIdx = tm.index + tm[0].length;
+          break;
+        }
+      } else {
+        depth++;
+      }
+    }
+    const cardFull = endIdx !== -1 ? html.slice(startIdx, endIdx) : html.slice(startIdx);
+    const hasSvg = cardFull.includes('<svg');
+    const hasImg = cardFull.includes('<img');
+    const hasGrid = cardFull.includes('class="process-grid"');
+    const hasComparison = cardFull.includes('class="comparison-grid"');
+    const hasStepper = cardFull.includes('class="process-stepper-viewport"');
+    if (!hasSvg && !hasImg && !hasGrid && !hasComparison && !hasStepper) {
+      errors.push(`Empty schematic-card in ${fileLabel}: card contains no visual diagram (missing <svg>, <img>, or .process-grid): "${cardFull.slice(0, 100)}..."`);
+    }
+
+    // Ensure header has both title and non-empty subtitle
+    const headerMatch = cardFull.match(/<div class="schematic-header">([\s\S]*?)<\/div>/);
+    if (headerMatch) {
+      const headerInner = headerMatch[1];
+      const hasTitle = headerInner.includes('class="schematic-title"') || headerInner.includes('class="schematic-tag"');
+      const hasSubtitle = headerInner.includes('class="schematic-subtitle"');
+      if (!hasTitle) {
+        errors.push(`Schematic card in ${fileLabel} is missing .schematic-title in header.`);
+      }
+      if (!hasSubtitle) {
+        errors.push(`Schematic card in ${fileLabel} is missing .schematic-subtitle in header.`);
+      } else {
+        const subText = headerInner.match(/<span class="schematic-subtitle">([\s\S]*?)<\/span>/)?.[1]?.trim();
+        if (!subText) {
+          errors.push(`Schematic card in ${fileLabel} has an empty or blank .schematic-subtitle.`);
+        }
+      }
+    }
+  }
+
   // 2E. Anti-Clustering Rule: Figures must have narrative prose between them (minimum 75 words)
   const visualBlockRegex = /(?:<figure class="product-figure">[\s\S]*?<\/figure>|<div class="schematic-card"[^>]*>[\s\S]*?<\/div>\s*<\/div>)/gi;
   let lastVisualEnd = -1;

@@ -441,11 +441,7 @@
     <span class="source-tag">THERMAL CAD: APPLE HOME COLLECTION</span>
   </div>
 </div>
-  <div class="schematic-caption">
-    <span><strong>FIG 10 — IN-WALL CONDUCTION ARCHITECTURE:</strong> 1D thermal dissipation sequence conducting waste heat from the A18 silicon die into perimeter drywall clamping flanges to sustain sub-38°C touch temperatures without fans.</span>
-    <span class="source-tag">THERMAL ARCHIVE</span>
-  </div>
-</div>
+
 
 
 <p>
