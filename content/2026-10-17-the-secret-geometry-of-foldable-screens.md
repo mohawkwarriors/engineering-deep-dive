@@ -188,7 +188,7 @@
       <p class="process-step-desc">
         Floating support wings are cammed fully flush against the chassis, providing rigid continuous backing beneath the UTG against stylus and touch inputs.
       </p>
-      <div class="process-step-metric">&\theta; = 180&deg; &bull; &Delta;y = 0.00 mm</div>
+      <div class="process-step-metric">&theta; = 180&deg; &bull; &Delta;y = 0.00 mm</div>
     </div>
     <div class="process-step-card">
       <div class="process-step-header">
@@ -206,7 +206,7 @@
       <p class="process-step-desc">
         Dual synchronization gears drive guide pins along an angled track, dropping center support plates vertically into the housing spine to create cavity relief.
       </p>
-      <div class="process-step-metric">&\theta; = 120&deg; &bull; &Delta;y = -0.65 mm</div>
+      <div class="process-step-metric">&theta; = 120&deg; &bull; &Delta;y = -0.65 mm</div>
     </div>
     <div class="process-step-card">
       <div class="process-step-header">
@@ -225,7 +225,7 @@
       <p class="process-step-desc">
         With support plates fully recessed, lateral sliders stroke outward along precision curved tracks to absorb the display arc-length differential.
       </p>
-      <div class="process-step-metric">&\theta; = 60&deg; &bull; &Delta;y = -1.35 mm</div>
+      <div class="process-step-metric">&theta; = 60&deg; &bull; &Delta;y = -1.35 mm</div>
     </div>
     <div class="process-step-card">
       <div class="process-step-header">
@@ -243,7 +243,7 @@
       <p class="process-step-desc">
         Housings meet parallel with zero outer gap. The screen loops into a safe 3.45 mm bulbous teardrop with &lt;1.08% strain, while sliders hold 1.42 mm stroke balance.
       </p>
-      <div class="process-step-metric">&\theta; = 0&deg; &bull; &rho; = 3.45 mm (&epsilon; = 1.08%)</div>
+      <div class="process-step-metric">&theta; = 0&deg; &bull; &rho; = 3.45 mm (&epsilon; = 1.08%)</div>
     </div>
   </div>
   <div class="schematic-caption">
@@ -407,7 +407,7 @@
   Traditional liquid greases cannot be used inside phone hinges. Over time, liquid oils migrate outward via capillary action, dissolving display adhesives and collecting abrasive environmental pocket lint. Instead, manufacturers utilize bonded <strong>solid dry-film lubricants</strong>:
 </p>
 <ul>
-  <li><strong>Diamond-Like Carbon (DLC):</strong> Cams are coated with a 2.5 &mu;m thick layer of hydrogenated amorphous carbon (a-C:H), yielding a surface hardness $> 2{,}400 \text{HV}$ and a coefficient of friction $\mu \le 0.08$.</li>
+  <li><strong>Diamond-Like Carbon (DLC):</strong> Cams are coated with a 2.5 &mu;m thick layer of hydrogenated amorphous carbon (a-C:H), yielding a surface hardness $> 2{,}400 \text{HV}$and a coefficient of friction$\mu \le 0.08$.</li>
   <li><strong>PTFE / MoS2 Impregnation:</strong> Sliding links are treated with microscopic fluoropolymer micro-coatings that self-burnish during the first 1,000 cycles, maintaining smooth, grit-free glide without attracting debris.</li>
   <li><strong>Micro-Fiber Bristle Sweepers:</strong> Tiny nylon sweepers ($0.04 \text{mm}$ bristle diameter) are sealed at the hinge-to-bezel gaps, mechanically clearing dust and sand grains every time the phone folds.</li>
 </ul>
@@ -441,7 +441,7 @@
     <img referrerpolicy="no-referrer" src="images/white-light-interferometry-crease-profile.png" alt="White-Light Optical Profilometry 3D Surface Topography Scan" / onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg/1280px-Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg';" />
   </div>
   <figcaption>
-    <span><strong>FIG 06 — WHITE-LIGHT INTERFEROMETRY &amp; 3D CREASE TOPOGRAPHY:</strong> Non-contact optical profilometry surface elevation scan showing 3D micro-topography across the hinge seam. Vertical phase interference fringes measure sub-micron peak-to-valley trench depths ($D_v < 32\,\mu\text{m}$) and verify that angular crease slope gradients remain under $1.2^\circ$.</span>
+    <span><strong>FIG 06 — WHITE-LIGHT INTERFEROMETRY &amp; 3D CREASE TOPOGRAPHY:</strong> Non-contact optical profilometry surface elevation scan showing 3D micro-topography across the hinge seam. Vertical phase interference fringes measure sub-micron peak-to-valley trench depths ($D_v < 32\,\mu\text{m}$) and verify that angular crease slope gradients remain under$1.2^\circ$.</span>
     <span class="source-tag">IMAGE: KEYENCE SURFACE METROLOGY ARCHIVE</span>
   </figcaption>
 </figure>
@@ -451,7 +451,7 @@
   To quantify display crease severity, engineers scan the unfolded screen with a non-contact white-light interferometric optical profiler. The profilometer maps the micro-topography across a $40 \times 40 \text{mm}$ grid, measuring two decisive metrics:
 </p>
 <ul>
-  <li><strong>Peak-to-Valley Trench Depth ($D_v$):</strong> Benchmark teardrop designs achieve $D_v < 32\,\mu\text{m}$ (versus $> 120\,\mu\text{m}$ on first-gen U-shape folds).</li>
+  <li><strong>Peak-to-Valley Trench Depth ($D_v$):</strong> Benchmark teardrop designs achieve $D_v < 32\,\mu\text{m}$(versus$> 120\,\mu\text{m}$ on first-gen U-shape folds).</li>
   <li><strong>Maximum Slope Angle ($heta_{\text{crease}}$):</strong> The human fingertip cannot detect height steps below $40\,\mu\text{m}$ if the transition slope is gradual. By spreading the deformation over a wide $12 \text{mm}$ span, the slope remains below $1.2^\circ$—rendering the crease visually invisible and tactilely undetectable during swipe gestures.</li>
 </ul>
 

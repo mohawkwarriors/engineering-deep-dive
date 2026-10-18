@@ -74,6 +74,7 @@ export function autoSanitizeArticleHtml(html) {
     }
     return m;
   });
+  out = out.replace(/<div class="process-card"[^>]*>\s*(<table class="spec-table")/gi, '<div class="spec-table-wrap">\n  $1');
 
   // 4. Sanitize amateur/casual keywords in captions to engineering terminology
   out = out.replace(/<figcaption>([\s\S]*?)<\/figcaption>/gi, (match, inner) => {
@@ -111,8 +112,9 @@ export function autoSanitizeArticleHtml(html) {
   out = out.replace(/Density \(\$ho\$\)/g, 'Density ($\\rho$)');
   out = out.replace(/Density \(\$rho\$\)/g, 'Density ($\\rho$)');
   out = out.replace(/\^circ\b/g, '^\\circ');
+  out = out.replace(/&\\([a-zA-Z]+;)/g, '&$1');
 
-  out = out.replace(/\$\$([\s\S]*?)\$\$|\$([^\$\n]+?)\$/g, (match, displayMath, inlineMath) => {
+  out = out.replace(/\$\$([\s\S]*?)\$\$|\$([^\$\n<>]+?)\$/g, (match, displayMath, inlineMath) => {
     let formula = displayMath !== undefined ? displayMath : inlineMath;
     const isDisplay = displayMath !== undefined;
 
@@ -133,14 +135,14 @@ export function autoSanitizeArticleHtml(html) {
     formula = formula.replace(/\\;\s*\\mu\\text\{m\}/g, '\\,\\mu\\text{m}');
     formula = formula.replace(/\\{2,}mu/g, '\\mu');
 
-    // Clean Greek letters & symbols safely
-    formula = formula.replace(/(?<![\\a-zA-Z])theta\b/g, '\\theta');
+    // Clean Greek letters & symbols safely (never corrupting &theta; or &times; HTML entities)
+    formula = formula.replace(/(?<![\\a-zA-Z&])theta\b(?!;)/g, '\\theta');
     formula = formula.replace(/\\\s+theta\b/g, '\\theta');
-    formula = formula.replace(/(?<=\W)\s+\\theta\b/g, '\\theta');
+    formula = formula.replace(/(?<![&a-zA-Z\\])\s+\\theta\b/g, '\\theta');
     formula = formula.replace(/\(\s*\\theta\s*\)/g, '(\\theta)');
     formula = formula.replace(/d\s*\\theta/g, 'd\\theta');
     formula = formula.replace(/\\sin\s*\\theta/g, '\\sin\\theta');
-    formula = formula.replace(/(?<![\\a-zA-Z])times\b/g, '\\times');
+    formula = formula.replace(/(?<![\\a-zA-Z&])times\b(?!;)/g, '\\times');
     formula = formula.replace(/\s{2,}\\times/g, ' \\times');
     formula = formula.replace(/\\times\s{2,}/g, '\\times ');
 
@@ -165,6 +167,7 @@ export function autoSanitizeArticleHtml(html) {
 
     return isDisplay ? `$$${formula}$$` : `$${formula}$`;
   });
+  out = out.replace(/&\\([a-zA-Z]+;)/g, '&$1');
 
   // 9. Auto-separate colliding text baselines inside SVG groups
   out = out.replace(/<g\b([^>]*)>([\s\S]*?)<\/g>/g, (fullG, gAttrs, gBody) => {

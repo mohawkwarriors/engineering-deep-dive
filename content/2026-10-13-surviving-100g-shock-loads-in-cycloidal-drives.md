@@ -390,7 +390,7 @@
   <strong>Material Pairings:</strong>
 </p>
 <ul>
-  <li><strong>Roller Pins (AISI 52100 / 100Cr6 Bearing Steel):</strong> The perimeter ring pins and output torque rollers are manufactured from through-hardened 100Cr6 high-carbon chromium bearing alloy steel. Quenched and tempered to <strong>60 to 64 HRC</strong>, 100Cr6 provides extreme yield strength ($R_{p0.2} > 1{,}700 \text{MPa}$) and high dimensional stability under cyclic contact stress. The pins are ground to a mirror surface finish of $Ra \le 0.10\,\mu\text{m}$ to minimize frictional torque.</li>
+  <li><strong>Roller Pins (AISI 52100 / 100Cr6 Bearing Steel):</strong> The perimeter ring pins and output torque rollers are manufactured from through-hardened 100Cr6 high-carbon chromium bearing alloy steel. Quenched and tempered to <strong>60 to 64 HRC</strong>, 100Cr6 provides extreme yield strength ($R_{p0.2} > 1{,}700 \text{MPa}$) and high dimensional stability under cyclic contact stress. The pins are ground to a mirror surface finish of$Ra \le 0.10\,\mu\text{m}$ to minimize frictional torque.</li>
   <li><strong>Cycloidal Discs (AISI 8620 / 20NiCrMo2 Carburized Steel—a low-carbon nickel-chromium-molybdenum alloy steel engineered for extreme core toughness):</strong> The cycloidal discs undergo a deep vacuum carburizing process to create a hardened outer case (<strong>58 to 62 HRC</strong>, case depth $0.8 \text{to }1.2 \text{mm}$) overlying a ductile, impact-absorbing core (<strong>32 to 38 HRC</strong>, Charpy V-notch impact toughness $> 65 \text{J}$). This core ductility prevents catastrophic brittle fracture during violent 100G impact decelerations.</li>
 </ul>
 <p>
@@ -402,7 +402,7 @@
   Selecting an actuator reducer requires balancing shock tolerance, zero-backlash precision, mass, and manufacturing cost:
 </p>
 
-<div class="process-card" style="margin: 28px 0; overflow-x: auto;">
+<div class="spec-table-wrap">
   <table class="spec-table">
     <thead>
       <tr>

@@ -290,15 +290,15 @@
   The material selection for boilers and group heads dictates both <span class="tangent-term" data-tangent="thermal_mass">thermal inertia (thermal mass)</span> and long-term chemical durability. The table below outlines the mechanical and thermal properties of the primary engineering alloys used in espresso machinery:
 </p>
 
-<div class="process-card" style="margin: 28px 0; overflow-x: auto;">
+<div class="spec-table-wrap">
   <table class="spec-table">
     <thead>
       <tr>
         <th>Material Alloy</th>
         <th>Density &rho; (kg/m&sup3;)</th>
-        <th>Specific Heat c_p (J/kg&middot;K)</th>
+        <th>Specific Heat c<sub>p</sub> (J/kg&middot;K)</th>
         <th>Conductivity k (W/m&middot;K)</th>
-        <th>Diffusivity &alpha; (m&sup2;/s &\times; 10&sup6;)</th>
+        <th>Diffusivity &alpha; (m&sup2;/s &times; 10&sup6;)</th>
         <th>Corrosion / Leaching Risk</th>
       </tr>
     </thead>
@@ -496,7 +496,7 @@
   The choice between thermoblock, heat-exchanger (HX), and dual-boiler saturated architectures represents distinct engineering trade-offs between thermal precision, manufacturing complexity, and electrical power budgets:
 </p>
 
-<div class="process-card" style="margin: 28px 0; overflow-x: auto;">
+<div class="spec-table-wrap">
   <table class="spec-table">
     <thead>
       <tr>

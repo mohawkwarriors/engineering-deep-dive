@@ -205,7 +205,7 @@
         </svg>
       </div>
       <p class="process-step-desc">
-        Two patch antennas spaced &lambda;/2 apart measure incoming wavefront phase arrival (&Delta;&phi; = (2&pi;d/&lambda;)sin&\theta;), calculating horizontal azimuth within &plusmn;3.5&deg;.
+        Two patch antennas spaced &lambda;/2 apart measure incoming wavefront phase arrival (&Delta;&phi; = (2&pi;d/&lambda;)sin&theta;), calculating horizontal azimuth within &plusmn;3.5&deg;.
       </p>
       <div class="process-step-metric">&Delta;&phi; Phase Shift &bull; &plusmn;3.5&deg;</div>
     </div>
@@ -227,9 +227,9 @@
         </svg>
       </div>
       <p class="process-step-desc">
-        The deadbolt DSP tracks the user's velocity vector. Inside footsteps and hallway pacing (&\theta; &gt; 90&deg;) are discarded; only forward exterior porch approaches trigger unlock.
+        The deadbolt DSP tracks the user's velocity vector. Inside footsteps and hallway pacing (&theta; &gt; 90&deg;) are discarded; only forward exterior porch approaches trigger unlock.
       </p>
-      <div class="process-step-metric">&\theta; &lt; 90&deg; Approach Vector</div>
+      <div class="process-step-metric">&theta; &lt; 90&deg; Approach Vector</div>
     </div>
     <div class="process-step-card">
       <div class="process-step-header">
@@ -458,7 +458,7 @@
   Apple's co-engineered lineup with LG and Schneider represents a distinct hardware thesis compared to Google Nest's cloud-first machine learning and Amazon Ring's subscription surveillance ecosystem:
 </p>
 
-<div class="process-card" style="margin: 28px 0; overflow-x: auto;">
+<div class="spec-table-wrap">
   <table class="spec-table">
     <thead>
       <tr>
