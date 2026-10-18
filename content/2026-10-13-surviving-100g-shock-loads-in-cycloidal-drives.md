@@ -216,9 +216,9 @@
     </p>
     Because 8 to 12 pins share the total tangential load $F_t$ concurrently, the individual normal load $F_n$ per pin is reduced by nearly an order of magnitude:
     <div class="math-block">
-      $$F_{n,\text{peak}} \approx \frac{2 \cdot T_{\text{output}}}{D_{\text{pitch}} \cdot (0.30 \cdot N)}$$
+      $$F_{n, \text{peak}} \approx \frac{2 \cdot T_{\text{output}}}{D_{\text{pitch}} \cdot (0.30 \cdot N)}$$
     </div>
-    Even during a violent 100G landing impact, the peak compressive stress $\sigma_H$ remains safely below the plastic yield limit of case-hardened alloy steels (typically $1{,}800\text{ to }2{,}200\text{ MPa}$).
+    Even during a violent 100G landing impact, the peak compressive stress $\sigma_H$ remains safely below the plastic yield limit of case-hardened alloy steels (typically $1{,}800 \text{to }2{,}200 \text{MPa}$).
   </li>
 </ul>
 
@@ -227,7 +227,7 @@
   While cycloidal reducers exhibit exceptional torque density and shock resistance, their eccentric orbit introduces a serious dynamic dilemma: <strong>centrifugal unbalance</strong>.
 </p>
 <p>
-  The input shaft is machined with an <span class="tangent-term" data-tangent="eccentric_offset">eccentric cam throw $e$</span> (typically $1.0\text{ to }2.5\text{ mm}$). As the high-speed input motor spins at $3{,}000\text{ RPM}$ ($\omega_{\text{in}} \approx 314\text{ rad/s}$), the cycloidal disc orbits eccentrically around the gearbox center axis.
+  The input shaft is machined with an <span class="tangent-term" data-tangent="eccentric_offset">eccentric cam throw $e$</span> (typically $1.0 \text{to }2.5 \text{mm}$). As the high-speed input motor spins at $3{,}000 \text{RPM}$ ($\omega_{\text{in}} \approx 314 \text{rad/s}$), the cycloidal disc orbits eccentrically around the gearbox center axis.
 </p>
 <p>
   If only a single cycloidal disc were used, this orbiting mass $m_{\text{disc}}$ would generate an immense rotating centrifugal force vector:
@@ -236,10 +236,10 @@
   $$F_c = m_{\text{disc}} \cdot e \cdot \omega_{\text{in}}^2$$
 </div>
 <p>
-  For a modest disc of mass $m = 0.65\text{ kg}$ with eccentric throw $e = 1.8\text{ mm}$ spinning at $3{,}000\text{ RPM}$:
+  For a modest disc of mass $m = 0.65 \text{kg}$ with eccentric throw $e = 1.8 \text{mm}$ spinning at $3{,}000 \text{RPM}$:
 </p>
 <div class="math-block">
-  $$F_c = 0.65 \cdot 0.0018 \cdot (314.16)^2 = 115.5\text{ Newtons}$$
+  $$F_c = 0.65 \cdot 0.0018 \cdot (314.16)^2 = 115.5 \text{Newtons}$$
 </div>
 <p>
   This 115N rotating radial load would continuously hammer the input shaft bearings, generating unacceptable acoustic howling, severe vibration, and accelerated fatigue failure.
@@ -320,11 +320,11 @@
   <strong>Material Pairings:</strong>
 </p>
 <ul>
-  <li><strong>Roller Pins (AISI 52100 / 100Cr6 Bearing Steel):</strong> The perimeter ring pins and output torque rollers are manufactured from through-hardened 100Cr6 high-carbon chromium bearing alloy steel. Quenched and tempered to <strong>60 to 64 HRC</strong>, 100Cr6 provides extreme yield strength ($R_{p0.2} > 1{,}700\text{ MPa}$) and high dimensional stability under cyclic contact stress. The pins are ground to a mirror surface finish of $Ra \le 0.10\;\mu\text{m}$ to minimize frictional torque.</li>
-  <li><strong>Cycloidal Discs (AISI 8620 / 20NiCrMo2 Carburized Steel—a low-carbon nickel-chromium-molybdenum alloy steel engineered for extreme core toughness):</strong> The cycloidal discs undergo a deep vacuum carburizing process to create a hardened outer case (<strong>58 to 62 HRC</strong>, case depth $0.8\text{ to }1.2\text{ mm}$) overlying a ductile, impact-absorbing core (<strong>32 to 38 HRC</strong>, Charpy V-notch impact toughness $> 65\text{ J}$). This core ductility prevents catastrophic brittle fracture during violent 100G impact decelerations.</li>
+  <li><strong>Roller Pins (AISI 52100 / 100Cr6 Bearing Steel):</strong> The perimeter ring pins and output torque rollers are manufactured from through-hardened 100Cr6 high-carbon chromium bearing alloy steel. Quenched and tempered to <strong>60 to 64 HRC</strong>, 100Cr6 provides extreme yield strength ($R_{p0.2} > 1{,}700 \text{MPa}$) and high dimensional stability under cyclic contact stress. The pins are ground to a mirror surface finish of $Ra \le 0.10\,\mu \text{m}$ to minimize frictional torque.</li>
+  <li><strong>Cycloidal Discs (AISI 8620 / 20NiCrMo2 Carburized Steel—a low-carbon nickel-chromium-molybdenum alloy steel engineered for extreme core toughness):</strong> The cycloidal discs undergo a deep vacuum carburizing process to create a hardened outer case (<strong>58 to 62 HRC</strong>, case depth $0.8 \text{to }1.2 \text{mm}$) overlying a ductile, impact-absorbing core (<strong>32 to 38 HRC</strong>, Charpy V-notch impact toughness $> 65 \text{J}$). This core ductility prevents catastrophic brittle fracture during violent 100G impact decelerations.</li>
 </ul>
 <p>
-  <strong>Elastohydrodynamic Lubrication (EHL):</strong> Under typical robotic duty cycles, the pitch-line rolling velocity creates a sub-micron hydrodynamic oil film (film thickness $h_c \approx 0.15\text{ to }0.45\;\mu\text{m}$) using fully synthetic Polyalphaolefin (PAO) grease thickened with lithium complex soap. Under 100G shock events, extreme pressure (EP) additives containing molybdenum disulfide ($\text{MoS}_2$) or sulfur-phosphorus compounds form sacrificial tribofilms, preventing metal-to-metal micro-welding and adhesion galling.
+  <strong>Elastohydrodynamic Lubrication (EHL):</strong> Under typical robotic duty cycles, the pitch-line rolling velocity creates a sub-micron hydrodynamic oil film (film thickness $h_c \approx 0.15 \text{to }0.45\,\mu \text{m}$) using fully synthetic Polyalphaolefin (PAO) grease thickened with lithium complex soap. Under 100G shock events, extreme pressure (EP) additives containing molybdenum disulfide ($\text{MoS}_2$) or sulfur-phosphorus compounds form sacrificial tribofilms, preventing metal-to-metal micro-welding and adhesion galling.
 </p>
 
 <h2 id="section-spec-comparison">6. Spec Comparison Matrix: Cycloidal vs. Harmonic Strain Wave vs. Planetary</h2>

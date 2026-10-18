@@ -42,9 +42,9 @@
     </div>
     Where $E$ is Young's modulus, $h$ is wall thickness, and $\nu$ is Poisson's ratio ($\nu \approx 0.33$). Crucially, rigidity scales linearly with material modulus ($E$), but scales with the <em>cube</em> of thickness ($h^3$).
   </li>
-  <li><strong>The Magnesium Mass Advantage:</strong> Extruded 6061-T6 aluminum exhibits $E = 68.9\text{ GPa}$ with a density of $\rho = 2.70\text{ g/cm}^3$. Structural magnesium alloys (such as AZ91D and AM60B) have a lower modulus ($E = 45.0\text{ GPa}$), but a density of only $\rho = 1.81\text{ g/cm}^3$—fully <strong>33% lighter than aluminum</strong>.
+  <li><strong>The Magnesium Mass Advantage:</strong> Extruded 6061-T6 aluminum exhibits $E = 68.9 \text{GPa}$ with a density of $\rho = 2.70 \text{g/cm}^3$. Structural magnesium alloys (such as AZ91D and AM60B) have a lower modulus ($E = 45.0 \text{GPa}$), but a density of only $\rho = 1.81 \text{g/cm}^3$—fully <strong>33% lighter than aluminum</strong>.
   </li>
-  <li><strong>The Flexural Equivalence Calculation:</strong> Because magnesium is significantly less dense, an engineer can take the exact mass budget of a 0.60 mm aluminum wall and cast an equivalent-weight magnesium wall at $h = 0.895\text{ mm}$ (a $1.49\times$ thickness increase). Evaluating relative rigidity:
+  <li><strong>The Flexural Equivalence Calculation:</strong> Because magnesium is significantly less dense, an engineer can take the exact mass budget of a 0.60 mm aluminum wall and cast an equivalent-weight magnesium wall at $h = 0.895 \text{mm}$ (a $1.49 \times$ thickness increase). Evaluating relative rigidity:
     <div class="math-block">
       $$\frac{D_{\text{Mg}}}{D_{\text{Al}}} = \left(\frac{E_{\text{Mg}}}{E_{\text{Al}}}\right) \cdot \left(\frac{h_{\text{Mg}}}{h_{\text{Al}}}\right)^3 = \left(\frac{45.0}{68.9}\right) \cdot (1.492)^3 \approx 0.653 \cdot 3.32 = 2.17$$
     </div>
@@ -183,7 +183,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><strong>Density ($ho$)</strong></td>
+        <td><strong>Density ($\rho$)</strong></td>
         <td>1.81 g/cm³</td>
         <td>1.79 g/cm³</td>
         <td>2.70 g/cm³</td>
@@ -281,7 +281,7 @@
   <strong>The Physics of Thixotropic Shear-Thinning:</strong> Thixomolding avoids dendritic interlocking through rotational mechanical shear. Subjecting the alloy to continuous shear stress during solidification snaps fragile dendritic arms as soon as they nucleate. These fragments tumble in the shear field, ripening into smooth, spherical <span class="tangent-term" data-tangent="globular_microstructure">globular &alpha;-Mg rosettes</span> (10–30 &mu;m diameter) suspended in a liquid eutectic matrix.
 </p>
 <p>
-  This suspended slurry exhibits profound <span class="tangent-term" data-tangent="thixotropic_slurry">thixotropic shear-thinning rheology</span>. At rest in the barrel, spherical rosettes lightly agglomerate, giving the semi-solid mass the high viscosity of heavy grease (~100 Pa·s). When the screw drives the slurry forward at high shear rates ($\dot{\gamma} > 10^4\text{ s}^{-1}$), inter-particle bonds release instantly. Dynamic viscosity collapses to <strong>0.05 Pa·s</strong>—flowing almost as freely as water.
+  This suspended slurry exhibits profound <span class="tangent-term" data-tangent="thixotropic_slurry">thixotropic shear-thinning rheology</span>. At rest in the barrel, spherical rosettes lightly agglomerate, giving the semi-solid mass the high viscosity of heavy grease (~100 Pa·s). When the screw drives the slurry forward at high shear rates ($\dot{\gamma} > 10^4 \text{s}^{-1}$), inter-particle bonds release instantly. Dynamic viscosity collapses to <strong>0.05 Pa·s</strong>—flowing almost as freely as water.
 </p>
 <p>
   <strong>Laminar Cavity Filling Mechanics:</strong> The slurry acts as a <strong>Bingham pseudoplastic</strong>. When injected at 2.0 to 5.5 m/s, it does not atomize into a turbulent spray like liquid metal in die casting ($\text{Re} > 15{,}000$). Instead, high viscosity along tool boundaries stabilizes the flow front, driving a cohesive <strong>laminar frontal wave</strong> ($\text{Re} < 2{,}100$).
@@ -617,7 +617,7 @@
 <ol>
   <li><strong>Nominal Wall Thickness Bounds:</strong> The target cosmetic wall thickness for unibody laptops should be set between <strong>0.50 mm and 0.65 mm</strong>. While localized flow paths can achieve 0.40 mm over short travel distances (&lt;40 mm), attempting to push 0.40 mm across a 320 mm 14-inch laptop top-case causes excessive pressure drops ($\Delta P \propto \frac{1}{h^3}$), forcing the machine to run at extreme intensification pressures that cause parting-line flash.</li>
   <li><strong>Wall Thickness Transition Slope Ratios:</strong> When transitioning from a thick functional zone (such as a 1.2 mm hinge boss) down to a 0.55 mm nominal cosmetic skin, never use abrupt 90-degree steps. Abrupt steps disrupt the laminar flow front, triggering localized flow separation, air traps, and sink marks. Always incorporate gradual transitional tapers with a minimum <strong>3:1 ramp slope ratio</strong> (length to step height).</li>
-  <li><strong>Structural Stiffening Rib Geometry:</strong> To prevent sink marks on the outer A-surface of the enclosure, the base thickness of internal stiffening ribs should never exceed <strong>0.45x to 0.55x</strong> the nominal wall thickness (e.g. a 0.28 mm rib on a 0.55 mm skin). Ribs must incorporate a minimum draft angle of <strong>1.5° to 2.0° per side</strong> and a generous root fillet radius of $R \ge 0.25\text{ mm}$ to minimize notch stress concentration during drop impacts.</li>
+  <li><strong>Structural Stiffening Rib Geometry:</strong> To prevent sink marks on the outer A-surface of the enclosure, the base thickness of internal stiffening ribs should never exceed <strong>0.45x to 0.55x</strong> the nominal wall thickness (e.g. a 0.28 mm rib on a 0.55 mm skin). Ribs must incorporate a minimum draft angle of <strong>1.5° to 2.0° per side</strong> and a generous root fillet radius of $R \ge 0.25 \text{mm}$ to minimize notch stress concentration during drop impacts.</li>
   <li><strong>Draft Angles and Thermal Shrinkage Clamping:</strong> Magnesium exhibits high volumetric thermal shrinkage during cooling (<strong>0.60% to 0.75% linear shrinkage</strong>). As the enclosure solidifies in the mold cavity, it contracts tightly around male internal core pins. Internal boss features and vertical ribbing require a strict minimum draft angle of <strong>1.5°</strong>, while outer cosmetic perimeter walls can run as tight as <strong>0.75° to 1.0°</strong>. Ejector pins must be positioned generously directly beneath rib intersections, designed with large surface areas to prevent punching holes through warm 0.55 mm walls during ejection.</li>
   <li><strong>Weld Line Positioning:</strong> When slurry flows around internal cutouts (such as keyboard apertures or trackpad windows), the divided flow streams reunite on the downstream side to form a <strong>weld line</strong> (knit line). In semi-solid metals, if the two uniting flow fronts have cooled below 560°C, the solid rosettes fail to fuse across the interface, creating a mechanical notch that reduces tensile strength by up to 45%. Tool designers use sequential valve gates (SVGs) and vacuum chill overflows to draw cold metal beyond the cosmetic boundary, ensuring weld lines fuse at full temperature under active hydraulic pressure.</li>
 </ol>
@@ -652,13 +652,13 @@
       </tr>
       <tr>
         <td><strong>Scrap Swarf Recovery Credit</strong></td>
-        <td>-$1.80 (1.31 kg scrap @ $1.37/kg)</td>
-        <td>-$0.10 (Closed-loop in-house regrind)</td>
+        <td>-$1.80 (1.31 kg scrap @$1.37/kg)</td>
+        <td>-\$0.10 (Closed-loop in-house regrind)</td>
         <td>CNC depends heavily on scrap recycling</td>
       </tr>
       <tr>
         <td><strong>Machine Spindle / Cycle Cost</strong></td>
-        <td>$28.50 (48 min @ $35.60/hr machine rate)</td>
+        <td>$28.50 (48 min @$35.60/hr machine rate)</td>
         <td>$3.20 (18 sec thixo cell + 90 sec CNC trim)</td>
         <td>-$25.30 / part (89% machine time reduction)</td>
       </tr>
@@ -689,25 +689,25 @@
       <tr>
         <td><strong>Total Piece Cost @ 25,000 Units</strong></td>
         <td>$42.68</td>
-        <td>$17.25 (Amortized tooling: $5.80)</td>
+        <td>$17.25 (Amortized tooling:$5.80)</td>
         <td>Thixomolding wins by $25.43 (59% cheaper)</td>
       </tr>
       <tr>
         <td><strong>Total Piece Cost @ 250,000 Units</strong></td>
         <td>$42.25</td>
-        <td>$12.03 (Amortized tooling: $0.58)</td>
+        <td>$12.03 (Amortized tooling:$0.58)</td>
         <td>Thixomolding wins by $30.22 (71% cheaper)</td>
       </tr>
     </tbody>
   </table>
 </div>
 <p>
-  <strong>The Economic Breakeven Curve:</strong> At production volumes below <strong>4,500 units</strong>, CNC machining is economically superior because there is virtually zero hard tooling capital expenditure ($12,000 for vacuum jigs versus $145,000 for a Dievar tool mold). However, as production scales past the <strong>6,000-unit breakeven crossover</strong>, the astronomical cycle time and material waste of CNC hogging penalize the project. At 250,000 units (a typical flagship consumer laptop production run), thixomolding saves over <strong>$7.5 million in unit production costs</strong> while consuming 80% less factory floor space and embodied electricity.
+  <strong>The Economic Breakeven Curve:</strong> At production volumes below <strong>4,500 units</strong>, CNC machining is economically superior because there is virtually zero hard tooling capital expenditure (\$12,000 for vacuum jigs versus \$145,000 for a Dievar tool mold). However, as production scales past the <strong>6,000-unit breakeven crossover</strong>, the astronomical cycle time and material waste of CNC hogging penalize the project. At 250,000 units (a typical flagship consumer laptop production run), thixomolding saves over <strong>\$7.5 million in unit production costs</strong> while consuming 80% less factory floor space and embodied electricity.
 </p>
 
 <h2 id="section-surface-finishing-mao">7. Ceramic Armor: Micro-Arc Oxidation vs. Anodizing</h2>
 <p>
-  Magnesium is the most electrochemically active engineering metal, with a standard reduction potential of $E^\circ = -2.37\text{ V}$ (-1.66 V for aluminum). In contact with noble metals (steel fasteners, brass inserts, copper pipes) in humid, saline conditions (palm sweat), bare magnesium acts as a sacrificial anode, corroding rapidly into white $\text{Mg(OH)}_2$ powder.
+  Magnesium is the most electrochemically active engineering metal, with a standard reduction potential of $E^\circ = -2.37 \text{V}$ (-1.66 V for aluminum). In contact with noble metals (steel fasteners, brass inserts, copper pipes) in humid, saline conditions (palm sweat), bare magnesium acts as a sacrificial anode, corroding rapidly into white $\text{Mg(OH)}_2$ powder.
 </p>
 <p>
   <strong>Why Magnesium Cannot Be Anodized Like Aluminum:</strong> Acidic anodizing vigorously dissolves magnesium while releasing hydrogen gas. In alkaline conditions, it forms magnesium hydroxide, but $\text{Mg(OH)}_2$ has a porous Pilling-Bedworth ratio (&lt;1.0) that spalls off in acidic atmospheric moisture.
@@ -718,7 +718,7 @@
 <ul>
   <li><strong>The Plasma Micro-Discharge Mechanism:</strong> The thixomolded enclosure is submerged in an environmentally friendly alkaline electrolyte bath containing sodium silicate, potassium hydroxide, and sodium aluminate. An immense bipolar pulsed AC electric potential (<strong>380 V to 550 V</strong> at frequencies between 100 Hz and 2 kHz) is applied across the bath.</li>
   <li><strong>Substrate Surface Fusion:</strong> Once the voltage exceeds the dielectric breakdown threshold of the growing surface oxide film, thousands of microscopic plasma micro-arcs erupt continuously across the magnesium surface. Localized temperatures inside these micro-discharge channels exceed <strong>2,500°C</strong> with localized pressures surpassing 100 atmospheres.</li>
-  <li><strong>Crystalline Spinel Ceramic Conversion:</strong> This extreme plasma energy locally melts the substrate magnesium and fuses it with aluminate and silicate ions from the electrolyte, synthesizing an ultra-dense, crystalline <strong>magnesium aluminate spinel ($\text{MgAl}_2\text{O}_4$) and alpha-alumina ceramic phase</strong> directly out of the base metal.</li>
+  <li><strong>Crystalline Spinel Ceramic Conversion:</strong> This extreme plasma energy locally melts the substrate magnesium and fuses it with aluminate and silicate ions from the electrolyte, synthesizing an ultra-dense, crystalline <strong>magnesium aluminate spinel ($\text{MgAl}_2 \text{O}_4$) and alpha-alumina ceramic phase</strong> directly out of the base metal.</li>
   <li><strong>Environmental Robustness:</strong> Unlike standard chromate conversion coatings that offer weak mechanical durability, a 12-micron MAO ceramic layer is metallurgically grown from the metal itself—it cannot peel or delaminate. In standardized ASTM B117 neutral salt spray testing, MAO-treated magnesium enclosures survive over <strong>500 continuous hours</strong> of 5% sodium chloride fog with zero pitting corrosion. Furthermore, the micro-porous outer ceramic crust provides an exceptional mechanical keying anchor for automated robotic electrostatic polyurethane (PU) soft-touch spray coatings, matching the cosmetic hand-feel of luxury ceramics.</li>
 </ul>
 
@@ -727,7 +727,7 @@
   In portable hardware, the ultimate structural test is the <strong>MIL-STD-810H corner drop test</strong>: dropping a 1.2 kg laptop from 1.2 meters (4 feet) onto solid steel plate at a 45-degree angle.
 </p>
 <p>
-  <strong>The Physics of Impact Deceleration:</strong> The 14.1 Joules of kinetic energy must dissipate within 2 to 4 milliseconds. Extruded 6061-T6 aluminum possesses high stiffness but low <span class="tangent-term" data-tangent="damping_capacity">specific damping capacity</span> (SDC = 4% to 8%). Because aluminum cannot absorb shock internally, acoustic stress waves (with sound speed $c = \sqrt{E / \rho} \approx 5{,}050\text{ m/s}$) reflect through the chassis, shattering display cover glass and cracking ceramic capacitors.
+  <strong>The Physics of Impact Deceleration:</strong> The 14.1 Joules of kinetic energy must dissipate within 2 to 4 milliseconds. Extruded 6061-T6 aluminum possesses high stiffness but low <span class="tangent-term" data-tangent="damping_capacity">specific damping capacity</span> (SDC = 4% to 8%). Because aluminum cannot absorb shock internally, acoustic stress waves (with sound speed $c = \sqrt{E / \rho} \approx 5{,}050 \text{m/s}$) reflect through the chassis, shattering display cover glass and cracking ceramic capacitors.
 </p>
 <p>
   <strong>Magnesium's Atomic Damping Engine:</strong> Magnesium exhibits the highest specific damping capacity of any practical engineering metal—absorbing between <strong>42% and 58%</strong> of dynamic vibration energy per cycle. The hexagonal close-packed (HCP) atomic crystal lattice of magnesium contains easily mobile dislocation segments that bow and unpin reversibly under cyclic mechanical shear, converting kinetic stress wave energy directly into harmless microscopic lattice heat via internal anelastic friction.
@@ -736,7 +736,7 @@
   <strong>Alloy Selection for Drop Performance (AZ91D vs. AM60B):</strong> When configuring an enclosure assembly, mechanical engineers exploit two distinct magnesium alloys based on localized strain regimes:
 </p>
 <ul>
-  <li><strong>AZ91D for Rigid Internal Mid-Plates:</strong> With 9.0% aluminum, AZ91D precipitates a high density of brittle intermetallic $\text{Mg}_{17}\text{Al}_{12}$ along its grain boundaries. This boosts tensile yield strength to <strong>160 MPa</strong> with high hardness, making it the premier choice for internal chassis frames and keyboard deck stiffeners that must not bow under heavy typing loads. However, its elongation at break is modest (3.5% to 5.0%), meaning sharp corner impacts can cause brittle fracture.</li>
+  <li><strong>AZ91D for Rigid Internal Mid-Plates:</strong> With 9.0% aluminum, AZ91D precipitates a high density of brittle intermetallic $\text{Mg}_{17} \text{Al}_{12}$ along its grain boundaries. This boosts tensile yield strength to <strong>160 MPa</strong> with high hardness, making it the premier choice for internal chassis frames and keyboard deck stiffeners that must not bow under heavy typing loads. However, its elongation at break is modest (3.5% to 5.0%), meaning sharp corner impacts can cause brittle fracture.</li>
   <li><strong>AM60B for Exterior Corner Shells:</strong> For outer bezel rims and vulnerable corner bumpers, engineers switch to <strong>AM60B</strong> (6.0% aluminum, 0.3% manganese). Lowering the aluminum content drastically reduces the brittle intermetallic phase, allowing the matrix to yield plastically. AM60B delivers an exceptional elongation at break of <strong>8.0% to 12.0%</strong> with an impact energy toughness exceeding <strong>18 Joules</strong>. Under a severe 4-foot corner drop, an AM60B bumper deforms plastically, absorbing energy through controlled collapse without cracking, completely shielding internal glass displays from catastrophic shock failure.</li>
 </ul>
 

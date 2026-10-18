@@ -23,19 +23,19 @@
   A foldable smartphone is an engineering paradox: it demands that brittle silicate glass, copper foil circuitry, and optically clear polymers withstand hundreds of thousands of sharp $180^\circ$ bends without shattering, delaminating, or forming a permanent plastic trench.
 </p>
 <p>
-  When a multi-layer composite sheet is folded, its cross-section is divided by the <span class="tangent-term" data-tangent="neutral_axis">neutral axis</span>—the plane where longitudinal normal stress and axial strain equal zero. Across any cross-section of total thickness $t$ bent to a radius of curvature $\rho$, the peak longitudinal strain $\epsilon_{ ext{max}}$ at the extreme outer and inner fibers is governed by Euler-Bernoulli beam kinematics:
+  When a multi-layer composite sheet is folded, its cross-section is divided by the <span class="tangent-term" data-tangent="neutral_axis">neutral axis</span>—the plane where longitudinal normal stress and axial strain equal zero. Across any cross-section of total thickness $t$ bent to a radius of curvature $\rho$, the peak longitudinal strain $\epsilon_{\text{max}}$ at the extreme outer and inner fibers is governed by Euler-Bernoulli beam kinematics:
 </p>
 <div class="math-block">
-  $$\epsilon_{ ext{max}} = \frac{y}{\rho} = \frac{t}{2\rho}$$
+  $$\epsilon_{\text{max}} = \frac{y}{\rho} = \frac{t}{2\rho}$$
 </div>
 <p>
-  Where $y = t/2$ represents the distance from the neutral axis to the outermost surface. In first-generation foldable devices, industrial designers utilized a traditional <strong>U-shaped hinge</strong>. To minimize the phone's closed thickness, the U-shaped fold forced the display stack into an aggressive bend radius of $\rho = 1.25 ext{ mm}$ to $1.50 ext{ mm}$.
+  Where $y = t/2$ represents the distance from the neutral axis to the outermost surface. In first-generation foldable devices, industrial designers utilized a traditional <strong>U-shaped hinge</strong>. To minimize the phone's closed thickness, the U-shaped fold forced the display stack into an aggressive bend radius of $\rho = 1.25 \text{mm}$ to $1.50 \text{mm}$.
 </p>
 <p>
-  For an ultra-thin display laminate measuring $t = 0.42 ext{ mm}$ (encompassing the PET protective liner, polarizer film, 30 &mu;m <span class="tangent-term" data-tangent="utg_fracture">Ultra-Thin Glass (UTG)</span>, OLED emitter matrix, and stainless steel backplate), evaluating the induced strain reveals the failure mode:
+  For an ultra-thin display laminate measuring $t = 0.42 \text{mm}$ (encompassing the PET protective liner, polarizer film, 30 &mu;m <span class="tangent-term" data-tangent="utg_fracture">Ultra-Thin Glass (UTG)</span>, OLED emitter matrix, and stainless steel backplate), evaluating the induced strain reveals the failure mode:
 </p>
 <div class="math-block">
-  $$\epsilon_{ ext{U-shape}} = \frac{0.42 ext{ mm}}{2 \cdot (1.25 ext{ mm})} = 0.168 \quad (16.8\% ext{ tensile / compressive strain})$$
+  $$\epsilon_{\text{U-shape}} = \frac{0.42 \text{mm}}{2 \cdot (1.25 \text{mm})} = 0.168 \quad (16.8\% \text{tensile / compressive strain})$$
 </div>
 <p>
   This magnitude of mechanical strain is catastrophic. While flexible polymers can elastically accommodate $3\%$ to $5\%$ strain, silicate glass possesses a theoretical elastic limit of only $7\%$ under pristine laboratory vacuum, and an effective production yield limit of under $2.2\%$ due to surface <span class="tangent-term" data-tangent="griffith_flaws">Griffith micro-flaws</span>—microscopic surface scratches and edge micro-cracks that concentrate tensile stress, causing brittle glass to fracture at a tiny fraction of its theoretical atomic strength. Subjecting UTG to $16.8\%$ strain guarantees rapid crack nucleation, delamination of the <span class="tangent-term" data-tangent="oca_viscoelasticity">Optically Clear Adhesive (OCA)</span>, and catastrophic fracture along the hinge centerline within 2,000 to 5,000 duty cycles.
@@ -45,10 +45,10 @@
   To solve this fundamental limitation without expanding the phone's closed thickness, hardware architects abandoned the concentric circle fold in favor of the <strong>Euler clothoid or teardrop geometry</strong>. Instead of squeezing the screen tightly along the seam, the teardrop hinge drops internal mechanical support plates inward, allowing the bent portion of the display to balloon into a bulbous internal cavity while the outer housing folds completely parallel ($0^\circ$ gap).
 </p>
 <p>
-  By expanding the internal bend radius to $\rho \ge 3.40 ext{ mm}$, the peak bending strain collapses by more than half:
+  By expanding the internal bend radius to $\rho \ge 3.40 \text{mm}$, the peak bending strain collapses by more than half:
 </p>
 <div class="math-block">
-  $$\epsilon_{ ext{teardrop}} = \frac{0.42 ext{ mm}}{2 \cdot (3.40 ext{ mm})} = 0.0617 \quad (6.17\% ext{ strain})$$
+  $$\epsilon_{\text{teardrop}} = \frac{0.42 \text{mm}}{2 \cdot (3.40 \text{mm})} = 0.0617 \quad (6.17\% \text{strain})$$
 </div>
 <p>
   Coupled with neutral-axis positioning layers (shifting the zero-strain line directly into the neutral plane of the brittle glass core), peak strain in the UTG drops below <strong>1.1%</strong>—well within its infinite fatigue endurance regime ($> 400{,}000$ cycles).
@@ -148,7 +148,7 @@
   When a smartphone unfolds from $0^\circ$ to $180^\circ$, the screen is a flat plane spanning width $W_0$. However, when folded into a teardrop shape inside a closed chassis, the curved profile traces an elastica curve composed of a central circular arc of radius $\rho$ flanked by two inflection fillets of radius $r_i$. The total contour length $S$ of the curved display path is given by:
 </p>
 <div class="math-block">
-  $\Delta L \approx  heta \cdot (R_{ ext{chassis}} - R_{ ext{neutral}}) \approx 1.42 ext{ mm}$
+  $\Delta L \approx \theta \cdot (R_{\text{chassis}} - R_{\text{neutral}}) \approx 1.42 \text{mm}$
 </div>
 <p>
   <strong>Physical Intuition:</strong> When folding a rigid chassis, the outer perimeter sweeps a longer arc than the internal neutral axis. This geometric arc difference creates an immediate <strong>1.42 mm stroke deficit</strong> that lateral sliding wing carriages must absorb to prevent the flexible glass from buckling or wrinkling along the spine.
@@ -157,12 +157,12 @@
   If the display were anchored firmly to both sides of the chassis without compliance, this $\Delta L$ differential would induce violent mechanical stress:
 </p>
 <ul>
-  <li><strong>During Folding (Tensile Delamination):</strong> The screen stack would be pulled taut over the hinge spine like a guitar string, creating normal peel stresses exceeding the $0.8 ext{ MPa}$ adhesive shear bond of the OCA and ripping the display away from its digitizer.</li>
+  <li><strong>During Folding (Tensile Delamination):</strong> The screen stack would be pulled taut over the hinge spine like a guitar string, creating normal peel stresses exceeding the $0.8 \text{MPa}$ adhesive shear bond of the OCA and ripping the display away from its digitizer.</li>
   <li><strong>During Unfolding (Compressive Buckling):</strong> Excess material would be shoved into the seam under compressive thrust, causing the UTG to buckle upward, generating the permanent high-amplitude "crease trench" that plagues inferior foldables.</li>
 </ul>
 <p>
   <strong>The Multi-Link Synchronized Slider Solution:</strong><br>
-  Modern teardrop hinges solve this by mounting the display support plates onto <strong>lateral sliding carriages</strong>. These carriages ride on precision curved tracks machined directly into the outer wing frames. As the hinge closes, a multi-link scissor mechanism pulls the left and right display wings outward by exactly $\Delta L / 2 \approx 0.71 ext{ mm}$ each, absorbing the length change with zero net tension.
+  Modern teardrop hinges solve this by mounting the display support plates onto <strong>lateral sliding carriages</strong>. These carriages ride on precision curved tracks machined directly into the outer wing frames. As the hinge closes, a multi-link scissor mechanism pulls the left and right display wings outward by exactly $\Delta L / 2 \approx 0.71 \text{mm}$ each, absorbing the length change with zero net tension.
 </p>
 
 <!-- FIG 03: TEARDROP MULTI-LINK KINEMATIC SEQUENCE (VISUAL FLOWCHART) -->
@@ -261,24 +261,24 @@
 </p>
 <p>
   <strong>Cam Kinematics & Torque Derivation:</strong><br>
-  As the user rotates the hinge through angle $ heta$, the follower rides along the inclined helical surface of the drive cam. The profile of the cam determines the axial displacement $z( heta)$ of the springs. The instantaneous torque $T( heta)$ opposing or assisting user motion is derived from the balance of spring force and friction:
+  As the user rotates the hinge through angle $\theta$, the follower rides along the inclined helical surface of the drive cam. The profile of the cam determines the axial displacement $z(\theta)$ of the springs. The instantaneous torque $T(\theta)$ opposing or assisting user motion is derived from the balance of spring force and friction:
 </p>
-<div class="math-block">$T_{ ext{hold}} \approx \mu \cdot R_{ ext{cam}} \cdot F_{ ext{spring}}$</div>
+<div class="math-block">$T_{\text{hold}} \approx \mu \cdot R_{\text{cam}} \cdot F_{\text{spring}}$</div>
 <p>
   Where:
 </p>
 <ul>
-  <li>$R_{ ext{cam}}$ is the mean pitch radius of the cam face ($2.10 ext{ mm}$ to $2.85 ext{ mm}$).</li>
-  <li>$F_{ ext{spring}}(z) = k \cdot (z_0 + z( heta))$ is the normal spring force, where initial preload $F_0 = k \cdot z_0 \approx 38 ext{ N}$ to $48 ext{ N}$.</li>
-  <li>$\alpha = \arctan\left(\frac{1}{R_{ ext{cam}}} \cdot \frac{dz}{d heta}\right)$ is the instantaneous cam helix angle.</li>
+  <li>$R_{\text{cam}}$ is the mean pitch radius of the cam face ($2.10 \text{mm}$ to $2.85 \text{mm}$).</li>
+  <li>$F_{\text{spring}}(z) = k \cdot (z_0 + z(\theta))$ is the normal spring force, where initial preload $F_0 = k \cdot z_0 \approx 38 \text{N}$ to $48 \text{N}$.</li>
+  <li>$\alpha = \arctan\left(\frac{1}{R_{\text{cam}}} \cdot \frac{dz}{d\theta}\right)$ is the instantaneous cam helix angle.</li>
   <li>$\mu$ is the dynamic coefficient of friction across the lubricated metal interface (typically $\mu \approx 0.08 - 0.12$).</li>
 </ul>
 <p>
   <strong>Achieving the "Free-Stop" Hover Regime:</strong><br>
-  To achieve stable hovering without motorized locking pins, the mechanism relies on the <strong>Coulomb friction locking condition</strong>. In the intermediate angle window ($45^\circ \le  heta \le 120^\circ$), the cam slope is designed to be flat ($\frac{dz}{d heta} = 0$, so $\alpha = 0$). The holding friction torque becomes:
+  To achieve stable hovering without motorized locking pins, the mechanism relies on the <strong>Coulomb friction locking condition</strong>. In the intermediate angle window ($45^\circ \le \theta \le 120^\circ$), the cam slope is designed to be flat ($\frac{dz}{d\theta} = 0$, so $\alpha = 0$). The holding friction torque becomes:
 </p>
 <div class="math-block">
-  $T_{ ext{hold}} = \mu \cdot R_{ ext{cam}} \cdot F_{ ext{spring}}$
+  $T_{\text{hold}} = \mu \cdot R_{\text{cam}} \cdot F_{\text{spring}}$
 </div>
 
 <!-- FIG 04: REAL TEARDOWN MACRO PHOTOGRAPHY OF HINGE ASSEMBLY -->
@@ -292,19 +292,19 @@
   </figcaption>
 </figure>
 <p>
-  If the gravitational moment induced by the upper display half ($M_g = m \cdot g \cdot d_{\text{cg}} \cdot \sin\theta \approx 0.045\text{ Nm}$) is less than $T_{\text{hold}}$ ($0.065\text{ Nm}$), the phone remains locked at any arbitrary angle without sagging. As the phone approaches $180^\circ$, the follower enters a steep negative detent groove ($\alpha < 0$), releasing stored spring energy to snap the chassis into a dead-flat plane with satisfying tactile feedback.
+  If the gravitational moment induced by the upper display half ($M_g = m \cdot g \cdot d_{\text{cg}} \cdot \sin\theta \approx 0.045 \text{Nm}$) is less than $T_{\text{hold}}$ ($0.065 \text{Nm}$), the phone remains locked at any arbitrary angle without sagging. As the phone approaches $180^\circ$, the follower enters a steep negative detent groove ($\alpha < 0$), releasing stored spring energy to snap the chassis into a dead-flat plane with satisfying tactile feedback.
 </p>
 
 <h2 id="section-manufacturing-mim-tolerances">4. Manufacturing, Tooling & MIM Clearances</h2>
 <p>
-  A modern teardrop hinge is composed of <strong>45 to 85 precision components</strong> packaged into a spine cavity less than $3.8 ext{ mm}$ deep. Tolerances that would be considered exceptional in watchmaking are strictly required here to prevent tactile "slop" or mechanical binding.
+  A modern teardrop hinge is composed of <strong>45 to 85 precision components</strong> packaged into a spine cavity less than $3.8 \text{mm}$ deep. Tolerances that would be considered exceptional in watchmaking are strictly required here to prevent tactile "slop" or mechanical binding.
 </p>
 <p>
   <strong>Tolerance Stack-Up & The 10-Micron Gate:</strong><br>
-  Because motion transmits through a kinetic chain of gears, pins, link plates, and cam followers, individual clearance errors accumulate rapidly. A tolerance stack-up analysis across 8 mating interfaces demonstrates that a dimensional variance of just $\pm 0.025 ext{ mm}$ ($25\,\\\mu\\text{m}$) per part generates over <strong>0.35 mm of tip play</strong> at the phone's outer display bezel—causing the phone to feel loose, rattling, or misaligned.
+  Because motion transmits through a kinetic chain of gears, pins, link plates, and cam followers, individual clearance errors accumulate rapidly. A tolerance stack-up analysis across 8 mating interfaces demonstrates that a dimensional variance of just $\pm 0.025\text{ mm}$ ($25\,\mu \text{m}$) per part generates over <strong>0.35 mm of tip play</strong> at the phone's outer display bezel—causing the phone to feel loose, rattling, or misaligned.
 </p>
 <p>
-  To maintain a premium rigidity standard, primary hinge pins are centerless ground to $\pm 0.004 ext{ mm}$ ($4\,\\\mu\\text{m}$), while interlocking link carriages are produced via <span class="tangent-term" data-tangent="mim_feedstock">Metal Injection Molding (MIM)</span> followed by secondary CNC diamond profiling of contact lands.
+  To maintain a premium rigidity standard, primary hinge pins are centerless ground to $\pm 0.004\text{ mm}$ ($4\,\mu \text{m}$), while interlocking link carriages are produced via <span class="tangent-term" data-tangent="mim_feedstock">Metal Injection Molding (MIM)</span> followed by secondary CNC diamond profiling of contact lands.
 </p>
 
 <!-- FIG 05: REAL INDUSTRIAL PHOTOGRAPHY OF PRECISION MIM COMPONENTS -->
@@ -331,7 +331,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><strong>Minimum Bend Radius ($ho$)</strong></td>
+        <td><strong>Minimum Bend Radius ($ho$)</strong></td>
         <td>1.35 mm</td>
         <td>2.80 mm</td>
         <td><strong>3.45 mm</strong></td>
@@ -378,7 +378,7 @@
 
 <p>
   <strong>Tooling Steel Selection for MIM:</strong><br>
-  Injecting abrasive, metal-powder-loaded feedstock at $180^\circ ext{C}$ and $110 ext{ MPa}$ causes severe abrasive tool wear. Mold cavities are machined from premium powder-metallurgy super-steels (specifically <span class="tangent-term" data-tangent="pm_tool_steels">Böhler M390 Microclean or Uddeholm Elmax</span>—wear-resistant alloys formed by atomizing liquid steel into microscopic powder to prevent brittle carbide clumps). Vacuum hardened to <strong>58–60 HRC</strong> and coated with Titanium Aluminum Nitride (TiAlN), these tooling inserts resist abrasive erosion across 500,000 injection shots without losing micron-level tolerances.
+  Injecting abrasive, metal-powder-loaded feedstock at $180^\circ\text{C}$ and $110 \text{MPa}$ causes severe abrasive tool wear. Mold cavities are machined from premium powder-metallurgy super-steels (specifically <span class="tangent-term" data-tangent="pm_tool_steels">Böhler M390 Microclean or Uddeholm Elmax</span>—wear-resistant alloys formed by atomizing liquid steel into microscopic powder to prevent brittle carbide clumps). Vacuum hardened to <strong>58–60 HRC</strong> and coated with Titanium Aluminum Nitride (TiAlN), these tooling inserts resist abrasive erosion across 500,000 injection shots without losing micron-level tolerances.
 </p>
 
 <h2 id="section-metallurgy-tribology">5. Metallurgy, Hertzian Cam Stress & Tribology</h2>
@@ -387,7 +387,7 @@
 </p>
 <p>
   <strong>SUS630 / 17-4 PH Precipitation-Hardening Stainless Steel:</strong><br>
-  The structural core of the hinge—including the spine chassis, synchronization gears, and slider links—is molded from 17-4 PH stainless steel. After solvent debinding and hydrogen sintering, components undergo an <strong>H900 age-hardening heat treatment</strong> ($482^\circ ext{C}$ for 1 hour followed by air cooling).
+  The structural core of the hinge—including the spine chassis, synchronization gears, and slider links—is molded from 17-4 PH stainless steel. After solvent debinding and hydrogen sintering, components undergo an <strong>H900 age-hardening heat treatment</strong> ($482^\circ\text{C}$ for 1 hour followed by air cooling).
 </p>
 <p>
   This precipitates sub-microscopic copper-rich clusters throughout the martensitic matrix, driving ultimate tensile strength past <strong>1,310 MPa</strong> with a Rockwell hardness of <strong>43–45 HRC</strong>. This extreme strength prevents synchronization gear teeth from bending or shearing when the user forcefully closes the phone on an obstacle.
@@ -397,19 +397,19 @@
   The contact patch between the cam follower pin and the torque cam experiences severe <span class="tangent-term" data-tangent="hertzian_stress">Hertzian contact pressure</span>:
 </p>
 <div class="math-block">
-  $$P_{ ext{max}} = \sqrt{\frac{F_N \cdot E^*}{\pi \cdot R_{ ext{eff}} \cdot L}}$$
+  $$P_{\text{max}} = \sqrt{\frac{F_N \cdot E^*}{\pi \cdot R_{\text{eff}} \cdot L}}$$
 </div>
 <p>
-  With a $45 ext{ N}$ spring force concentrated onto an effective curvature radius of $R_{ ext{eff}} = 1.1 ext{ mm}$ across a contact line length of $L = 1.8 ext{ mm}$, peak pressure surges to $P_{ ext{max}} \approx 1{,}180 ext{ MPa}$. Under cyclic sliding friction, raw stainless steel would suffer immediate adhesive micro-welding, surface galling, and metal transfer.
+  With a $45 \text{N}$ spring force concentrated onto an effective curvature radius of $R_{\text{eff}} = 1.1 \text{mm}$ across a contact line length of $L = 1.8 \text{mm}$, peak pressure surges to $P_{\text{max}} \approx 1{,}180 \text{MPa}$. Under cyclic sliding friction, raw stainless steel would suffer immediate adhesive micro-welding, surface galling, and metal transfer.
 </p>
 <p>
   <strong>The Dry-Film Tribology Architecture:</strong><br>
   Traditional liquid greases cannot be used inside phone hinges. Over time, liquid oils migrate outward via capillary action, dissolving display adhesives and collecting abrasive environmental pocket lint. Instead, manufacturers utilize bonded <strong>solid dry-film lubricants</strong>:
 </p>
 <ul>
-  <li><strong>Diamond-Like Carbon (DLC):</strong> Cams are coated with a 2.5 &mu;m thick layer of hydrogenated amorphous carbon (a-C:H), yielding a surface hardness $> 2{,}400 ext{ HV}$ and a coefficient of friction $\mu \le 0.08$.</li>
+  <li><strong>Diamond-Like Carbon (DLC):</strong> Cams are coated with a 2.5 &mu;m thick layer of hydrogenated amorphous carbon (a-C:H), yielding a surface hardness $> 2{,}400 \text{HV}$ and a coefficient of friction $\mu \le 0.08$.</li>
   <li><strong>PTFE / MoS2 Impregnation:</strong> Sliding links are treated with microscopic fluoropolymer micro-coatings that self-burnish during the first 1,000 cycles, maintaining smooth, grit-free glide without attracting debris.</li>
-  <li><strong>Micro-Fiber Bristle Sweepers:</strong> Tiny nylon sweepers ($0.04 ext{ mm}$ bristle diameter) are sealed at the hinge-to-bezel gaps, mechanically clearing dust and sand grains every time the phone folds.</li>
+  <li><strong>Micro-Fiber Bristle Sweepers:</strong> Tiny nylon sweepers ($0.04 \text{mm}$ bristle diameter) are sealed at the hinge-to-bezel gaps, mechanically clearing dust and sand grains every time the phone folds.</li>
 </ul>
 
 <div class="callout-box">
@@ -419,8 +419,8 @@
   </p>
   <ul style="margin-bottom:4px;">
     <li><strong>Capillary Migration into Display Adhesives:</strong> Low-viscosity oils creep along microscopic surface grooves via capillary action, dissolving the optically clear adhesive (OCA) bonding the OLED stack and causing permanent yellow optical delamination bubbles along the hinge seam.</li>
-    <li><strong>Abrasive Lint Magnetism:</strong> Liquid grease traps pocket lint, denim fibers, and silica sand grains ($>50,\\mu\\text{m}$), turning the lubricant into an abrasive lapping paste that grinds down synchronization gear teeth within weeks.</li>
-    <li><strong>The Solid Solution:</strong> Hinge cams use Diamond-Like Carbon (DLC) hard-coatings coupled with micro-burnished solid PTFE/MoS2 dry-film lubricants—delivering a smooth $mu le 0.08$ friction coefficient with zero liquid migration.</li>
+    <li><strong>Abrasive Lint Magnetism:</strong> Liquid grease traps pocket lint, denim fibers, and silica sand grains ($> 50\,\mu \text{m}$), turning the lubricant into an abrasive lapping paste that grinds down synchronization gear teeth within weeks.</li>
+    <li><strong>The Solid Solution:</strong> Hinge cams use Diamond-Like Carbon (DLC) hard-coatings coupled with micro-burnished solid PTFE/MoS2 dry-film lubricants—delivering a smooth $\mu \le 0.08$ friction coefficient with zero liquid migration.</li>
   </ul>
 </div>
 
@@ -429,10 +429,10 @@
   Validating a next-generation teardrop hinge requires rigorous bench torture testing that compresses ten years of human abuse into four weeks of continuous automated cycling.
 </p>
 <p>
-  <strong>High-Speed Automated Cycling:</strong> Robotic pneumatically actuated test rigs cycle the hinge at $0.5 ext{ Hz}$ (one complete open-and-close every two seconds) for <strong>400,000 cycles</strong>—the equivalent of 100 folds per day for over 10 years. Continuous load-cell telemetry monitors torque degradation: if friction torque drifts by more than $\pm 15\%$, the test flags lubrication breakdown or galling.
+  <strong>High-Speed Automated Cycling:</strong> Robotic pneumatically actuated test rigs cycle the hinge at $0.5 \text{Hz}$ (one complete open-and-close every two seconds) for <strong>400,000 cycles</strong>—the equivalent of 100 folds per day for over 10 years. Continuous load-cell telemetry monitors torque degradation: if friction torque drifts by more than $\pm 15\%$, the test flags lubrication breakdown or galling.
 </p>
 <p>
-  <strong>Environmental Chambers (-20°C to +65°C):</strong> Because the aluminum chassis ($\alpha_{ ext{Al}} \approx 23  imes 10^{-6} ext{ K}^{-1}$) and steel hinge ($\alpha_{ ext{steel}} \approx 11  imes 10^{-6} ext{ K}^{-1}$) have vastly different thermal expansion coefficients, temperature extremes shrink operating clearances. Because aluminum contracts twice as fast as steel when cold, dropping down to -20°C shrinks the hinge clearances by up to 14 &mu;m. If the initial manufacturing tolerance is not precisely compensated, the sliders will bind solid in freezing climates.
+  <strong>Environmental Chambers (-20°C to +65°C):</strong> Because the aluminum chassis ($\alpha_{\text{Al}} \approx 23 \times 10^{-6} \text{K}^{-1}$) and steel hinge ($\alpha_{\text{steel}} \approx 11 \times 10^{-6} \text{K}^{-1}$) have vastly different thermal expansion coefficients, temperature extremes shrink operating clearances. Because aluminum contracts twice as fast as steel when cold, dropping down to -20°C shrinks the hinge clearances by up to 14 &mu;m. If the initial manufacturing tolerance is not precisely compensated, the sliders will bind solid in freezing climates.
 </p>
 
 <!-- FIG 06: REAL LABORATORY OPTICAL PROFILOMETRY SCAN -->
@@ -441,18 +441,18 @@
     <img referrerpolicy="no-referrer" src="images/white-light-interferometry-crease-profile.png" alt="White-Light Optical Profilometry 3D Surface Topography Scan" />
   </div>
   <figcaption>
-    <span><strong>FIG 06 — WHITE-LIGHT INTERFEROMETRY &amp; 3D CREASE TOPOGRAPHY:</strong> Non-contact optical profilometry surface elevation scan showing 3D micro-topography across the hinge seam. Vertical phase interference fringes measure sub-micron peak-to-valley trench depths ($D_v &lt; 32,\\mu\\text{m}$) and verify that angular crease slope gradients remain under $1.2^circ$.</span>
+    <span><strong>FIG 06 — WHITE-LIGHT INTERFEROMETRY &amp; 3D CREASE TOPOGRAPHY:</strong> Non-contact optical profilometry surface elevation scan showing 3D micro-topography across the hinge seam. Vertical phase interference fringes measure sub-micron peak-to-valley trench depths ($D_v < 32\,\mu \text{m}$) and verify that angular crease slope gradients remain under $1.2^\circ$.</span>
     <span class="source-tag">IMAGE: KEYENCE SURFACE METROLOGY ARCHIVE</span>
   </figcaption>
 </figure>
 
 <p>
   <strong>White-Light Optical Profilometry (Crease Metrology):</strong><br>
-  To quantify display crease severity, engineers scan the unfolded screen with a non-contact white-light interferometric optical profiler. The profilometer maps the micro-topography across a $40  imes 40 ext{ mm}$ grid, measuring two decisive metrics:
+  To quantify display crease severity, engineers scan the unfolded screen with a non-contact white-light interferometric optical profiler. The profilometer maps the micro-topography across a $40 \times 40 \text{mm}$ grid, measuring two decisive metrics:
 </p>
 <ul>
-  <li><strong>Peak-to-Valley Trench Depth ($D_v$):</strong> Benchmark teardrop designs achieve $D_v < 32\,\\\mu\\text{m}$ (versus $> 120\,\\\mu\\text{m}$ on first-gen U-shape folds).</li>
-  <li><strong>Maximum Slope Angle ($ heta_{ ext{crease}}$):</strong> The human fingertip cannot detect height steps below $40\,\\\mu\\text{m}$ if the transition slope is gradual. By spreading the deformation over a wide $12 ext{ mm}$ span, the slope remains below $1.2^\circ$—rendering the crease visually invisible and tactilely undetectable during swipe gestures.</li>
+  <li><strong>Peak-to-Valley Trench Depth ($D_v$):</strong> Benchmark teardrop designs achieve $D_v < 32\,\mu \text{m}$ (versus $> 120\,\mu \text{m}$ on first-gen U-shape folds).</li>
+  <li><strong>Maximum Slope Angle ($heta_{\text{crease}}$):</strong> The human fingertip cannot detect height steps below $40\,\mu \text{m}$ if the transition slope is gradual. By spreading the deformation over a wide $12 \text{mm}$ span, the slope remains below $1.2^\circ$—rendering the crease visually invisible and tactilely undetectable during swipe gestures.</li>
 </ul>
 
 <div class="telemetry-bar">

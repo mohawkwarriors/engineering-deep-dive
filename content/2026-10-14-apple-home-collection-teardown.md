@@ -26,7 +26,7 @@
   At its landmark residential hardware release, Apple completely dismantled that model by launching two complementary product tiers that bridge the drywall divide:
 </p>
 <ul>
-  <li><strong>First-Party Command Silicon:</strong> The new <strong>Apple HomeView</strong> ($299, shipping November 2026)—Apple’s first dedicated 7-inch smart display and ambient home dashboard powered by the A18 chip and local Apple Intelligence, alongside an upgraded <strong>HomePod mini 2</strong> and <strong>Apple TV 4K</strong>.</li>
+  <li><strong>First-Party Command Silicon:</strong> The new <strong>Apple HomeView</strong> (\$299, shipping November 2026)—Apple’s first dedicated 7-inch smart display and ambient home dashboard powered by the A18 chip and local Apple Intelligence, alongside an upgraded <strong>HomePod mini 2</strong> and <strong>Apple TV 4K</strong>.</li>
   <li><strong>The Apple Home Collection:</strong> A coordinated lineup of seven residential hardware peripherals—spanning smart deadbolts, dual-camera video doorbells, indoor/outdoor security cameras, and smart climate controls—co-engineered from the silicon to the enclosure with <strong>LG Electronics</strong> and <strong>Schneider Electric</strong>.</li>
 </ul>
 <p>
@@ -322,7 +322,7 @@
   Outdoor residential security cameras face intense thermal and optical hurdles: daytime solar loading causes sensor junction temperatures to skyrocket (generating thermal dark-current shot noise), while nighttime infrared LEDs can cause milky internal glare if optical reflections bounce inside the front cover glass.
 </p>
 <p>
-  <strong>Thermal & Optical Packaging:</strong> Both outdoor models are enclosed within heavy-gauge die-cast aluminum enclosures that double as <span class="tangent-term" data-tangent="heatsinks">convective heatsinks</span>. In the Floodlight Cam ($399.95), the dual 2,000-lumen COB LED floodlights are mounted on articulated aluminum outriggers, physically isolating high-wattage LED driver heat from the central 2.5K HDR camera core. The front optical stack uses a dual-durometer black silicone boot that compresses tightly against the interior of the cover glass, mechanically isolating the central camera aperture from the outer 850 nm infrared ring to eliminate internal <span class="tangent-term" data-tangent="fresnel_glare">Fresnel back-scatter reflections</span>.
+  <strong>Thermal & Optical Packaging:</strong> Both outdoor models are enclosed within heavy-gauge die-cast aluminum enclosures that double as <span class="tangent-term" data-tangent="heatsinks">convective heatsinks</span>. In the Floodlight Cam (\$399.95), the dual 2,000-lumen COB LED floodlights are mounted on articulated aluminum outriggers, physically isolating high-wattage LED driver heat from the central 2.5K HDR camera core. The front optical stack uses a dual-durometer black silicone boot that compresses tightly against the interior of the cover glass, mechanically isolating the central camera aperture from the outer 850 nm infrared ring to eliminate internal <span class="tangent-term" data-tangent="fresnel_glare">Fresnel back-scatter reflections</span>.
 </p>
 <p>
   <strong>Apple Intelligence Video Summaries:</strong> Working in conjunction with a home Apple TV 4K or HomeView hub, video feeds are analyzed on-device using local Apple Intelligence neural models. Instead of forcing users to scrub through hours of false motion alerts caused by windblown branches or passing cars, the system generates natural-language text summaries of daily events and enables semantic search queries (e.g., <em>"Show me when a courier in a blue shirt left a box by the side gate yesterday"</em>).
@@ -511,9 +511,9 @@
       </tr>
       <tr>
         <td><strong>Mandatory Subscriptions</strong></td>
-        <td><strong>Zero Paywall:</strong> Included in existing iCloud+ 50GB ($0.99/mo)</td>
-        <td>Nest Aware ($8 &ndash; $15/mo for facial recognition)</td>
-        <td>Ring Protect ($4.99 &ndash; $19.99/mo for video storage)</td>
+        <td><strong>Zero Paywall:</strong> Included in existing iCloud+ 50GB (\$0.99/mo)</td>
+        <td>Nest Aware (\$8 &ndash; \$15/mo for facial recognition)</td>
+        <td>Ring Protect (\$4.99 &ndash; \$19.99/mo for video storage)</td>
       </tr>
     </tbody>
   </table>

@@ -107,15 +107,65 @@ export function autoSanitizeArticleHtml(html) {
     return `<strong>FIG ${padded} — ${title.trim().replace(/^—\s*/, '')}:</strong>`;
   });
 
-  // 8. Sanitize LaTeX control characters and missing backslashes from JSON parsing
-  out = out.replace(/\u0007lpha/g, '\\alpha');
-  out = out.replace(/\u0008eta/g, '\\beta');
-  out = out.replace(/\u000crac/g, '\\frac');
-  out = out.replace(/\u000barepsilon/g, '\\varepsilon');
-  out = out.replace(/\u000b/g, '\\');
-  out = out.replace(/\text(?=[a-zA-Z])/g, '\\text ');
-  out = out.replace(/(\$[^$]*?)(?<!\\)text\{([^}]*)\}([^$]*?\$)/g, '$1\\text{$2}$3');
-  out = out.replace(/(\$\$[\s\S]*?)(?<!\\)text\{([^}]*)\}([\s\S]*?\$\$)/g, '$1\\text{$2}$3');
+  // 8. Sanitize LaTeX math typography, symbols, micrometer units, and JSON escaping artifacts
+  out = out.replace(/Density \(\$ho\$\)/g, 'Density ($\\rho$)');
+  out = out.replace(/Density \(\$rho\$\)/g, 'Density ($\\rho$)');
+  out = out.replace(/\^circ\b/g, '^\\circ');
+
+  out = out.replace(/\$\$([\s\S]*?)\$\$|\$([^\$\n]+?)\$/g, (match, displayMath, inlineMath) => {
+    let formula = displayMath !== undefined ? displayMath : inlineMath;
+    const isDisplay = displayMath !== undefined;
+
+    // Clean raw tabs
+    formula = formula.replace(/\t+/g, ' ');
+
+    // Clean accidental \t artifacts
+    formula = formula.replace(/(?:\\+t)+\s*\\*text\{/g, '\\text{');
+    formula = formula.replace(/(?:\\+t)+\s*/g, ' ');
+
+    // Clean micrometer units ($25\,\mu\text{m}$, $4\,\mu\text{m}$, etc.)
+    formula = formula.replace(/(&lt;|<|>|\\pm|\approx|=|\\le|\\ge)?\s*(\d+(?:\.\d+)?)\s*(?:,\\|,|\\,)?\s*\\+mu(?:\s|\\|t)*text\{m\}/g, (m, op, num) => {
+      const prefix = op ? `${op.replace('&lt;', '<')} ` : '';
+      return `${prefix}${num}\\,\\mu\\text{m}`;
+    });
+    formula = formula.replace(/(\d+(?:\.\d+)?)\s*(?:\\text\{\s*to\s*\}|to)\s*(\d+(?:\.\d+)?)\s*(?:\\;|\\,)?\s*\\+mu(?:\s|\\|t)*text\{m\}/g, '$1\\text{ to }$2\\,\\mu\\text{m}');
+    formula = formula.replace(/\\+mu(?:\s|\\|t)*text\{m\}/g, '\\mu\\text{m}');
+    formula = formula.replace(/\\mu\s+\\text\{m\}/g, '\\mu\\text{m}');
+    formula = formula.replace(/\\;\s*\\mu\\text\{m\}/g, '\\,\\mu\\text{m}');
+    formula = formula.replace(/\\{2,}mu/g, '\\mu');
+
+    // Clean Greek letters & symbols
+    formula = formula.replace(/(^|[^\\])heta\b/g, '$1\\theta');
+    formula = formula.replace(/\\\s+theta\b/g, '\\theta');
+    formula = formula.replace(/(?<=\W)\s+\\theta\b/g, '\\theta');
+    formula = formula.replace(/\(\s*\\theta\s*\)/g, '(\\theta)');
+    formula = formula.replace(/d\s*\\theta/g, 'd\\theta');
+    formula = formula.replace(/\\sin\s*\\theta/g, '\\sin\\theta');
+    formula = formula.replace(/(^|[^\\])imes\b/g, '$1\\times');
+    formula = formula.replace(/\s{2,}\\times/g, ' \\times');
+    formula = formula.replace(/\\times\s{2,}/g, '\\times ');
+
+    // Clean \text commands and subscripts
+    formula = formula.replace(/(^|[^\\])ext\{/g, '$1\\text{');
+    formula = formula.replace(/\\text\{\s+/g, '\\text{');
+    formula = formula.replace(/_\{\s*\\text\{\s*([\w\-]+)\s*\}\s*\}/g, '_{\\text{$1}}');
+    formula = formula.replace(/_\{\s*\\text\{\s*(\w+)\s*\}\s*\}/g, '_{\\text{$1}}');
+    formula = formula.replace(/_\{\s*(\w+)\s*\}/g, '_{$1}');
+
+    // Tolerances
+    formula = formula.replace(/\\pm\s*0\.025\s*\\*text\{\s*mm\s*\}/g, '\\pm 0.025\\text{ mm}');
+    formula = formula.replace(/\\pm\s*0\.004\s*\\*text\{\s*mm\s*\}/g, '\\pm 0.004\\text{ mm}');
+
+    // Degree C
+    formula = formula.replace(/\^\s*\\circ\s*\\*text\{C\}/g, '^\\circ\\text{C}');
+    formula = formula.replace(/\^\s*\\circ\s*C\b/g, '^\\circ\\text{C}');
+    formula = formula.replace(/\^circ\b/g, '^\\circ');
+
+    // Double spaces
+    formula = formula.replace(/ {2,}/g, ' ').trim();
+
+    return isDisplay ? `$$${formula}$$` : `$${formula}$`;
+  });
 
   // 9. Auto-separate colliding text baselines inside SVG groups
   out = out.replace(/<g\b([^>]*)>([\s\S]*?)<\/g>/g, (fullG, gAttrs, gBody) => {
@@ -262,7 +312,7 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     }
   }
 
-  // 2B-2. Check for corrupted LaTeX escape sequences or control characters
+  // 2B-2. Check for corrupted LaTeX escape sequences, control characters, and unescaped math
   for (let i = 0; i < html.length; i++) {
     const code = html.charCodeAt(i);
     if (code < 32 && code !== 10 && code !== 13) {
@@ -272,12 +322,42 @@ export function validateArticleHtml(html, fileLabel = 'article') {
       break;
     }
   }
-  const mathBlocks = [...html.matchAll(/\$([^$]+)\$/g)].map(m => m[1]);
-  for (const mb of mathBlocks) {
-    if (/(?<!\\)text\{/.test(mb)) {
-      errors.push(`Unescaped text{ in LaTeX formula in ${fileLabel}: "$${mb.slice(0, 50)}$". Must use \\text{...}.`);
-      break;
+
+  const mathRegex = /\$\$([\s\S]*?)\$\$|\$([^\$\n]+?)\$/g;
+  let mbMatch;
+  while ((mbMatch = mathRegex.exec(html)) !== null) {
+    const isDisplay = !!mbMatch[1];
+    const f = isDisplay ? mbMatch[1] : mbMatch[2];
+
+    if (f.includes('\t')) {
+      errors.push(`Raw tab character in math block in ${fileLabel}: "${mbMatch[0]}"`);
     }
+    if (/\\t(?!(?:ext|heta|imes|au|o|op|extbf|ilde|an|anh|iny|frac|ag)\b)/.test(f)) {
+      errors.push(`Invalid \\t escape artifact in math block in ${fileLabel}: "${mbMatch[0]}"`);
+    }
+    if (/(?<![a-zA-Z\\])ext\{/.test(f) || /(?<!\\)text\{/.test(f)) {
+      errors.push(`Unescaped text{ in LaTeX formula in ${fileLabel}: "${mbMatch[0]}". Must use \\text{...}.`);
+    }
+    if (/(?<![a-zA-Z\\])heta\b/.test(f) || /(?<!\\)theta\b/.test(f)) {
+      errors.push(`Unescaped heta in LaTeX formula in ${fileLabel}: "${mbMatch[0]}". Must use \\theta.`);
+    }
+    if (/(?<![a-zA-Z\\])imes\b/.test(f) || /(?<!\\)times\b/.test(f)) {
+      errors.push(`Unescaped imes in LaTeX formula in ${fileLabel}: "${mbMatch[0]}". Must use \\times.`);
+    }
+    if (/\^circ\b/.test(f)) {
+      errors.push(`Missing backslash in ^circ in ${fileLabel}: "${mbMatch[0]}". Must use ^\\circ.`);
+    }
+    if (!isDisplay && /\\{2,}/.test(f)) {
+      errors.push(`Illegal newline break (\\\\) in inline math in ${fileLabel}: "${mbMatch[0]}". Inline units must not break across lines.`);
+    }
+  }
+
+  // Check for unescaped currency in HTML prose (outside tables and math)
+  const noTables = html.replace(/<table[\s\S]*?<\/table>/gi, '');
+  const noMath = noTables.replace(mathRegex, '');
+  const unescapedCurrency = noMath.match(/(?<!\\)\$\d+(?:,\d{3})*(?:\.\d+)?(?:\s*(?:million|billion|k|M|mo|yr))?/gi);
+  if (unescapedCurrency && unescapedCurrency.length > 0) {
+    errors.push(`Unescaped currency dollar sign in prose in ${fileLabel}: ${unescapedCurrency.slice(0, 3).join(', ')}. Must use \\$ to prevent breaking KaTeX.`);
   }
 
   // 2C. Hero Photo Priority: The first visual element must be a product-figure (real photo) with FIG 01
@@ -717,7 +797,18 @@ function runCli() {
         const sanitized = autoSanitizeArticleHtml(data.article_html);
         if (sanitized !== data.article_html) {
           data.article_html = sanitized;
-          fs.writeFileSync(fullPath, JSON.stringify(data, null, 2), 'utf8');
+          fs.writeFileSync(fullPath, JSON.stringify(data, null, 2) + '\n', 'utf8');
+          // Automatically keep markdown mirrors in exact sync
+          if (fs.existsSync('content')) {
+            const mdFiles = fs.readdirSync('content').filter(f => f.endsWith('.md'));
+            for (const mf of mdFiles) {
+              const mdPath = path.join('content', mf);
+              const mdContent = fs.readFileSync(mdPath, 'utf8');
+              if (mdContent.includes(`ISSUE #${data.id}`) || (data.date && mf.includes(data.date))) {
+                fs.writeFileSync(mdPath, sanitized.trim() + '\n', 'utf8');
+              }
+            }
+          }
           console.log(`[AUTO-HEALED] Repaired mechanical formatting in ${file}`);
         }
       }

@@ -31,10 +31,10 @@
   $$q = \dot{m} \cdot C_p \cdot (T_{\text{brew}} - T_{\text{inlet}})$$
 </div>
 <p>
-  Substituting $\dot{m} = 0.002\text{ kg/s}$, isobaric specific heat capacity $C_p = 4{,}184\text{ J/(kg}\cdot^\circ\text{C)}$, and temperature delta $\Delta T = 75.3^\circ\text{C}$:
+  Substituting $\dot{m} = 0.002 \text{kg/s}$, isobaric specific heat capacity $C_p = 4{,}184 \text{J/(kg}\cdot^\circ \text{C)}$, and temperature delta $\Delta T = 75.3^\circ\text{C}$:
 </p>
 <div class="math-block">
-  $$q = 0.002 \cdot 4{,}184 \cdot 75.3 = 630.1\text{ Watts}$$
+  $$q = 0.002 \cdot 4{,}184 \cdot 75.3 = 630.1 \text{Watts}$$
 </div>
 <p>
   While 630 Watts appears modest, this energy must be transferred across a laminar fluid boundary layer inside a tiny spatial volume in less than three seconds of residence time without boiling, phase change, or temperature overshoot.
@@ -49,16 +49,16 @@
 </p>
 <ul>
   <li><strong>Rapid Startup Advantage:</strong> Because the total thermal block weighs only ~550 grams, a 1,350W heating element can heat the dry block from 20°C to 100°C in under 45 seconds.</li>
-  <li><strong>Thermal Capacitance Bottleneck:</strong> The total thermal capacitance of a 550g aluminum block ($c_p \approx 897\text{ J/(kg}\cdot^\circ\text{C)}$) is merely:
+  <li><strong>Thermal Capacitance Bottleneck:</strong> The total thermal capacitance of a 550g aluminum block ($c_p \approx 897 \text{J/(kg}\cdot^\circ \text{C)}$) is merely:
     <div class="math-block">
-      $$C_{\text{th}} = m \cdot c_p = 0.550 \cdot 897 \approx 493.4\text{ J/}^\circ\text{C}$$
+      $$C_{\text{th}} = m \cdot c_p = 0.550 \cdot 897 \approx 493.4 \text{J/}^\circ\text{C}$$
     </div>
   </li>
-  <li><strong>The Drawdown Problem:</strong> During a standard 36-gram double espresso shot (total water dispensed ~65 mL including headspace absorption), the sensible heat demand is $Q = 0.065 \cdot 4{,}184 \cdot 75.3 \approx 20{,}478\text{ Joules}$. If the 1,350W element cannot instantly replenish this energy via conduction, the block's physical temperature drops:
+  <li><strong>The Drawdown Problem:</strong> During a standard 36-gram double espresso shot (total water dispensed ~65 mL including headspace absorption), the sensible heat demand is $Q = 0.065 \cdot 4{,}184 \cdot 75.3 \approx 20{,}478 \text{Joules}$. If the 1,350W element cannot instantly replenish this energy via conduction, the block's physical temperature drops:
     <div class="math-block">
       $$\Delta T_{\text{drop}} = \frac{Q - P \cdot t}{C_{\text{th}}} = \frac{20{,}478 - (1{,}350 \cdot 18)}{493.4} = \frac{20{,}478 - 24{,}300}{493.4}$$
     </div>
-    In real-world dynamics, finite conduction resistance ($k_{\text{Al}} \approx 96\text{ W/m}\cdot\text{K}$) and imperfect sensor coupling cause the water temperature to dip significantly at the start of extraction, followed by overheating toward the tail end as flow slows down during puck compaction.
+    In real-world dynamics, finite conduction resistance ($k_{\text{Al}} \approx 96 \text{W/m}\cdot \text{K}$) and imperfect sensor coupling cause the water temperature to dip significantly at the start of extraction, followed by overheating toward the tail end as flow slows down during puck compaction.
 </ul>
 
 <div class="schematic-card" id="fig02-thermoblock-cad">
@@ -148,10 +148,10 @@
   <strong>The Anatomy of a Saturated Group:</strong> Originating in machines like the La Marzocco GS (Gruppo Saturo), the group head casting is not bolted via a thermal neck gasket; rather, it forms a direct, welded horizontal hollow cylinder extending directly out of the 1.5L to 3.0L brew boiler. Water from the boiler completely floods the group chamber, submerging the dispersion block and three-way brew valve.
 </p>
 <p>
-  <strong>Passive Thermosiphon Convection Physics:</strong> Water density varies inversely with temperature above 4°C. In the idle state, heat radiates from the exposed group face to ambient room air ($h \approx 10\text{ W/m}^2\cdot\text{K}$), cooling the water at the front of the group neck to ~92.8°C ($\rho \approx 964.2\text{ kg/m}^3$). Meanwhile, water in the central boiler core is maintained at 94.0°C by the PID element ($\rho \approx 962.8\text{ kg/m}^3$).
+  <strong>Passive Thermosiphon Convection Physics:</strong> Water density varies inversely with temperature above 4°C. In the idle state, heat radiates from the exposed group face to ambient room air ($h \approx 10 \text{W/m}^2\cdot \text{K}$), cooling the water at the front of the group neck to ~92.8°C ($\rho \approx 964.2 \text{kg/m}^3$). Meanwhile, water in the central boiler core is maintained at 94.0°C by the PID element ($\rho \approx 962.8 \text{kg/m}^3$).
 </p>
 <div class="math-block">
-  $$\Delta \rho = \rho_{\text{group}} - \rho_{\text{boiler}} \approx 1.4\text{ kg/m}^3$$
+  $$\Delta \rho = \rho_{\text{group}} - \rho_{\text{boiler}} \approx 1.4 \text{kg/m}^3$$
 </div>
 <p>
   This density differential generates a continuous, buoyant <span class="tangent-term" data-tangent="thermosiphon_convection">thermosiphon convection current</span>: warmer, less dense water flows along the top ceiling of the saturated neck, while cooler water sinks and returns along the floor of the neck into the boiler.
@@ -270,7 +270,7 @@
   Maintaining thermal equilibrium requires high-speed closed-loop regulation. Modern high-end machines replace crude bimetallic click thermostats (hysteresis &plusmn;4°C) with precision Platinum RTD (Resistance Temperature Detector, Pt100/Pt1000) or NTC thermistors linked to microcontrollers executing discrete <span class="tangent-term" data-tangent="pid_controller">PID control algorithms</span>.
 </p>
 <p>
-  <strong>The Discrete Control Formulation:</strong> At a sampling frequency of 10 Hz ($T_s = 100\text{ ms}$), the digital controller computes the error $e[k] = T_{\text{set}} - T_{\text{sensor}}[k]$ and updates the control effort $u[k]$:
+  <strong>The Discrete Control Formulation:</strong> At a sampling frequency of 10 Hz ($T_s = 100 \text{ms}$), the digital controller computes the error $e[k] = T_{\text{set}} - T_{\text{sensor}}[k]$ and updates the control effort $u[k]$:
 </p>
 <div class="math-block">
   $u[k] = K_p \cdot e[k] + K_i \cdot T_s \sum_{j=0}^{k} e[j] + K_d \cdot \frac{e[k] - e[k-1]}{T_s}$
@@ -340,10 +340,10 @@
 </div>
 
 <p>
-  <strong>Why Stainless Steel Boilers Won the Commercial Market:</strong> Historically, boilers were drawn from C12200 copper or sand-cast brass. While copper has exceptional thermal conductivity ($k = 340\text{ W/m}\cdot\text{K}$), this trait works against thermal stability: an uninsulated copper boiler radiates energy so quickly that drafts cause continuous cycling. Furthermore, brass contains trace lead (up to 2.5% in older OT58 brass) added for machinability, which leaches into hot water under NSF/ANSI 51 limits.
+  <strong>Why Stainless Steel Boilers Won the Commercial Market:</strong> Historically, boilers were drawn from C12200 copper or sand-cast brass. While copper has exceptional thermal conductivity ($k = 340 \text{W/m}\cdot \text{K}$), this trait works against thermal stability: an uninsulated copper boiler radiates energy so quickly that drafts cause continuous cycling. Furthermore, brass contains trace lead (up to 2.5% in older OT58 brass) added for machinability, which leaches into hot water under NSF/ANSI 51 limits.
 </p>
 <p>
-  Modern flagship machines have shifted to <strong>AISI 316L austenitic stainless steel</strong>. Containing 16-18% chromium, 10-14% nickel, and 2.0-3.0% molybdenum, 316L forms a passive chromium oxide ($\text{Cr}_2\text{O}_3$) surface layer that is completely inert to water chemicals. Its low thermal diffusivity ($\alpha = 4.08 \times 10^{-6}\text{ m}^2/\text{s}$) means that localized cold water entering the bottom of the boiler does not instantly chill the water near the group outlet at the top, allowing the boiler to act as a naturally stratified heat buffer.
+  Modern flagship machines have shifted to <strong>AISI 316L austenitic stainless steel</strong>. Containing 16-18% chromium, 10-14% nickel, and 2.0-3.0% molybdenum, 316L forms a passive chromium oxide ($\text{Cr}_2 \text{O}_3$) surface layer that is completely inert to water chemicals. Its low thermal diffusivity ($\alpha = 4.08 \times 10^{-6} \text{m}^2/ \text{s}$) means that localized cold water entering the bottom of the boiler does not instantly chill the water near the group outlet at the top, allowing the boiler to act as a naturally stratified heat buffer.
 </p>
 
 
@@ -362,7 +362,7 @@
   A boiler cannot maintain temperature if incoming water flow surges erratically. The hydraulic engine powering the water circuit is either an oscillating solenoid vibratory pump or an industrial positive displacement <span class="tangent-term" data-tangent="rotary_vane_pump">rotary vane pump</span>.
 </p>
 <ul>
-  <li><strong>Vibratory (Ulka) Pumps:</strong> Rely on a diode-driven electromagnetic coil that pulls a spring-loaded magnetic piston back and forth at 50/60 Hz. Because displacement is variable ($0\text{ to }650\text{ mL/min}$ depending on head pressure), backpressure from the coffee puck drastically alters the flow rate. The pulsating output causes hydraulic water hammer that can fracture the coffee puck bed (channeling).</li>
+  <li><strong>Vibratory (Ulka) Pumps:</strong> Rely on a diode-driven electromagnetic coil that pulls a spring-loaded magnetic piston back and forth at 50/60 Hz. Because displacement is variable ($0 \text{to }650 \text{mL/min}$ depending on head pressure), backpressure from the coffee puck drastically alters the flow rate. The pulsating output causes hydraulic water hammer that can fracture the coffee puck bed (channeling).</li>
   <li><strong>Rotary Vane Pumps:</strong> Utilize an electric motor spinning an eccentric rotor fitted with spring-loaded graphite vanes. Water is trapped in rotating pockets and continuously pressurized against an adjustable mechanical bypass regulator valve. This delivers immediate, completely smooth 9.0 bar pressure at flow rates exceeding 100 liters/hour with zero acoustic or hydraulic flutter.</li>
 </ul>
 
