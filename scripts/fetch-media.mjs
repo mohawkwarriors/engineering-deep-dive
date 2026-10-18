@@ -178,32 +178,52 @@ Return ONLY valid JSON:
   "verdict_reason": "Crisp one-sentence summary"
 }`;
 
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{
-          parts: [
-            { text: prompt },
-            {
-              inline_data: {
-                mime_type: mimeType,
-                data: base64Data
-              }
-            }
-          ]
-        }],
-        generationConfig: { responseMimeType: "application/json", temperature: 0.1 }
-      })
-    });
+    const candidateModels = [
+      'gemini-3.8-flash',
+      'gemini-3-flash-preview',
+      'gemini-2.0-flash'
+    ];
 
-    if (!response.ok) {
-      const errTxt = await response.text();
-      return { passed: false, score: 0, reason: `Vision API error (${response.status}): ${errTxt.slice(0, 100)}` };
+    let resJson = null;
+    let lastErrTxt = '';
+
+    for (const model of candidateModels) {
+      try {
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: prompt },
+                {
+                  inline_data: {
+                    mime_type: mimeType,
+                    data: base64Data
+                  }
+                }
+              ]
+            }],
+            generationConfig: { responseMimeType: "application/json", temperature: 0.1 }
+          })
+        });
+
+        if (response.ok) {
+          resJson = await response.json();
+          break;
+        } else {
+          lastErrTxt = await response.text();
+          console.warn(`Vision model ${model} error (${response.status}): ${lastErrTxt.slice(0, 120)}...`);
+        }
+      } catch (err) {
+        lastErrTxt = err.message;
+      }
     }
 
-    const resJson = await response.json();
+    if (!resJson) {
+      return { passed: false, score: 0, reason: `Vision API error: ${lastErrTxt.slice(0, 100)}` };
+    }
     const resultText = resJson.candidates?.[0]?.content?.parts?.[0]?.text;
     const parsed = JSON.parse(resultText);
     const score = parsed.quality_score_1_to_10 || 0;

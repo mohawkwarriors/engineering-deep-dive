@@ -305,9 +305,9 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other te
 }`;
 
   const candidateModels = [
+    'gemini-3.8-flash',
     'gemini-3-flash-preview',
-    'gemini-3.1-pro-preview',
-    'gemini-2.5-flash'
+    'gemini-2.0-flash'
   ];
 
   let rawContent = null;
@@ -315,39 +315,57 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other te
   let successfulEndpoint = null;
 
   for (const model of candidateModels) {
-    try {
-      console.log(`Calling Gemini API with ${model}...`);
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            responseMimeType: "application/json",
-            temperature: 0.3
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+    const maxAttempts = 3;
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        console.log(`Calling Gemini API with ${model}${attempt > 1 ? ` (attempt ${attempt}/${maxAttempts})` : ''}...`);
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              responseMimeType: "application/json",
+              temperature: 0.3
+            }
+          })
+        });
+
+        if (!response.ok) {
+          const errText = await response.text();
+          console.warn(`Model ${model} returned error (${response.status}): ${errText.slice(0, 200)}...`);
+          lastError = new Error(`Gemini API error (${response.status}): ${errText}`);
+
+          // Retry on 503 (High Demand), 429 (Rate Limit / Quota Spikes), or 5xx transient server errors
+          if ((response.status === 503 || response.status === 429 || response.status >= 500) && attempt < maxAttempts) {
+            const delay = Math.pow(2, attempt) * 1000;
+            console.log(`Temporary API error (${response.status}). Waiting ${delay}ms before retrying ${model}...`);
+            await new Promise(res => setTimeout(res, delay));
+            continue;
           }
-        })
-      });
+          break;
+        }
 
-      if (!response.ok) {
-        const errText = await response.text();
-        console.warn(`Model ${model} returned error (${response.status}): ${errText.slice(0, 200)}...`);
-        lastError = new Error(`Gemini API error (${response.status}): ${errText}`);
-        continue;
+        const resJson = await response.json();
+        rawContent = resJson.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (rawContent) {
+          console.log(`Successfully received content from ${model}.`);
+          successfulEndpoint = endpoint;
+          break;
+        }
+      } catch (err) {
+        console.warn(`Attempt ${attempt} with ${model} failed: ${err.message}`);
+        lastError = err;
+        if (attempt < maxAttempts) {
+          const delay = Math.pow(2, attempt) * 1000;
+          await new Promise(res => setTimeout(res, delay));
+        }
       }
-
-      const resJson = await response.json();
-      rawContent = resJson.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (rawContent) {
-        console.log(`Successfully received content from ${model}.`);
-        successfulEndpoint = endpoint;
-        break;
-      }
-    } catch (err) {
-      console.warn(`Attempt with ${model} failed: ${err.message}`);
-      lastError = err;
     }
+
+    if (rawContent) break;
   }
 
   if (!rawContent) {
@@ -401,23 +419,29 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other te
   if (lintErrors.length > 0) {
     console.warn(`Detected ${lintErrors.length} schematic/media issue(s). Running automated SVG repair pass...`);
     const repairPrompt = `Fix the following SVG geometry / text collision / viewBox clipping errors in this article_html without removing any technical content:\n${lintErrors.join('\n')}\n\nReturn ONLY JSON: { "article_html": "..." }\n\nCURRENT HTML:\n${articleData.article_html}`;
-    const repairRes = await fetch(successfulEndpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: repairPrompt }] }],
-        generationConfig: { responseMimeType: "application/json", temperature: 0.1 }
-      })
-    });
-    if (repairRes.ok) {
-      const repairJson = await repairRes.json();
-      const repairedRaw = repairJson.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (repairedRaw) {
-        const repairedObj = safeJsonParse(repairedRaw);
-        if (repairedObj.article_html) {
-          articleData.article_html = autoSanitizeArticleHtml(repairedObj.article_html);
+    try {
+      const repairRes = await fetch(successfulEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: repairPrompt }] }],
+          generationConfig: { responseMimeType: "application/json", temperature: 0.1 }
+        })
+      });
+      if (repairRes.ok) {
+        const repairJson = await repairRes.json();
+        const repairedRaw = repairJson.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (repairedRaw) {
+          const repairedObj = safeJsonParse(repairedRaw);
+          if (repairedObj.article_html) {
+            articleData.article_html = autoSanitizeArticleHtml(repairedObj.article_html);
+          }
         }
+      } else {
+        console.warn(`Automated SVG repair pass returned status ${repairRes.status}. Continuing with sanitized original.`);
       }
+    } catch (repairErr) {
+      console.warn(`Automated SVG repair pass failed (${repairErr.message}). Continuing with sanitized original.`);
     }
   }
 

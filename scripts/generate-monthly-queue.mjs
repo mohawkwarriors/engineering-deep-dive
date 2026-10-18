@@ -86,41 +86,63 @@ RETURN ONLY A VALID JSON ARRAY OF 30 OBJECTS (no markdown fences, no extra text)
 ]`;
 
   const candidateModels = [
+    'gemini-3.8-flash',
     'gemini-3-flash-preview',
-    'gemini-3.1-pro-preview',
-    'gemini-2.5-flash'
+    'gemini-2.0-flash'
   ];
 
   let textOutput = null;
   let lastErr = null;
 
   for (const model of candidateModels) {
-    try {
-      console.log(`Calling Gemini API for queue curation with ${model}...`);
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            responseMimeType: "application/json"
-          }
-        })
-      });
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+    const maxAttempts = 3;
 
-      if (response.ok) {
-        const result = await response.json();
-        textOutput = result.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (textOutput) {
-          console.log(`Queue successfully generated with ${model}.`);
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        console.log(`Calling Gemini API for queue curation with ${model}${attempt > 1 ? ` (attempt ${attempt}/${maxAttempts})` : ''}...`);
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              responseMimeType: "application/json"
+            }
+          })
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          textOutput = result.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (textOutput) {
+            console.log(`Queue successfully generated with ${model}.`);
+            break;
+          }
+        } else {
+          const errText = await response.text();
+          console.warn(`Model ${model} returned error (${response.status}): ${errText.slice(0, 200)}...`);
+          lastErr = new Error(`Gemini API failed with status ${response.status}: ${errText}`);
+
+          if ((response.status === 503 || response.status === 429 || response.status >= 500) && attempt < maxAttempts) {
+            const delay = Math.pow(2, attempt) * 1000;
+            console.log(`Temporary API error (${response.status}). Waiting ${delay}ms before retrying ${model}...`);
+            await new Promise(res => setTimeout(res, delay));
+            continue;
+          }
           break;
         }
-      } else {
-        lastErr = new Error(`Gemini API failed with status ${response.status}: ${await response.text()}`);
+      } catch (e) {
+        console.warn(`Attempt ${attempt} with ${model} failed: ${e.message}`);
+        lastErr = e;
+        if (attempt < maxAttempts) {
+          const delay = Math.pow(2, attempt) * 1000;
+          await new Promise(res => setTimeout(res, delay));
+        }
       }
-    } catch (e) {
-      lastErr = e;
     }
+
+    if (textOutput) break;
   }
 
   if (!textOutput) throw lastErr || new Error("Empty response from Gemini API.");
