@@ -31,49 +31,56 @@
     "discipline": "Thermal",
     "topic": "How Vapor Chambers Flatten Die Hotspots",
     "summary": "Two-phase phase-change flat heat pipes solving extreme localized heat flux across ultra-thin mobile dies.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-10-19"
   },
   {
     "id": "B005",
     "discipline": "Fluids",
     "topic": "Helical Heat Exchanger Coils: Beating Boundary Layers",
     "summary": "Why curvature-induced secondary Dean flow disrupts thermal boundary layers to dramatically boost heat transfer.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-10-20"
   },
   {
     "id": "B006",
     "discipline": "Electromechanical",
     "topic": "How Voice Coil Linear Actuators Achieve High-Speed Camera Autofocus",
     "summary": "Using direct Lorentz force and lightweight coil design for ultra-high bandwidth position control.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-10-21"
   },
   {
     "id": "B007",
     "discipline": "Design",
     "topic": "Cantilever Snap-Fits: Permissible Strain Limits",
     "summary": "Calculating permissible deflection and peak strain limits to prevent plastic failure during automated assembly.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-10-22"
   },
   {
     "id": "B008",
     "discipline": "Manufacturing",
     "topic": "Liquidmetal Casting with Zero Shrinkage",
     "summary": "Exploiting amorphous vitrification to mold net-shape parts with zero crystalline shrinkage.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-10-23"
   },
   {
     "id": "B009",
     "discipline": "Fluids",
     "topic": "Passive Flow Rectification in Tesla Valves",
     "summary": "Leveraging asymmetric fluidic loops to choke reverse flow dynamically without moving parts.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-10-24"
   },
   {
     "id": "B010",
     "discipline": "Mechanisms",
     "topic": "Zero-Backlash Reduction with Strain Wave Flexsplines",
     "summary": "How continuous elastic deformation and strain wave gear meshing achieve zero-backlash high-ratio reduction.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-10-25"
   },
   {
     "id": "B011",
