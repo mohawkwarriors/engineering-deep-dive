@@ -2763,12 +2763,14 @@
         // Default variant mapping based on data-variant or card archetype
         let defaultVariant = grid.dataset.variant;
         if (!defaultVariant) {
-          if (cardId.includes('spatial') || cardId.includes('flow')) {
-            defaultVariant = 'pipeline';
-          } else if (cardId.includes('thermal') || cardId.includes('conduction')) {
+          if (cardId.includes('thermal') || cardId.includes('conduction')) {
             defaultVariant = 'accordion';
-          } else if (cardId.includes('process-steps') || cardId.includes('workflow')) {
+          } else if (cardId.includes('thixo') || cardId.includes('workflow') || cardId.includes('matrix')) {
+            defaultVariant = 'grid';
+          } else if (cardId.includes('teardrop') || cardId.includes('kinematic') || cardId.includes('fold')) {
             defaultVariant = 'carousel';
+          } else if (cardId.includes('spatial') || cardId.includes('fluidic') || cardId.includes('pipeline')) {
+            defaultVariant = 'pipeline';
           } else {
             defaultVariant = 'stepper';
           }

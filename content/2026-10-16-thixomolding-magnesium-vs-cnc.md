@@ -58,7 +58,7 @@
     <span class="schematic-title">FIG 02 — SEMI-SOLID INJECTION PROCESS WORKFLOW</span>
     <span class="schematic-subtitle">CHIP FEEDSTOCK &rarr; UNIBODY ENCLOSURE</span>
   </div>
-  <div class="process-grid" data-variant="carousel">
+  <div class="process-grid" data-variant="grid">
     <div class="process-step-card">
       <div class="process-step-header">
         <span class="process-step-tag">STEP 01: FEED</span>
