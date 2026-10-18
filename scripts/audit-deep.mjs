@@ -108,6 +108,43 @@ for (const file of issues) {
     console.error(`[ERROR] ${file} is missing standard .meta-line header.`);
     issueErrors++;
   }
+  
+  // 1I. Read duration & pacing check (Issue 001 medium benchmark; strictly 8 to 13 minutes)
+  const pWords = [...html.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+    .map(m => m[1].replace(/<[^>]+>/g, ' '))
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(/\s+/).filter(Boolean).length;
+
+  const totalWords = html
+    .replace(/<svg[\s\S]*?<\/svg>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(/\s+/).filter(Boolean).length;
+
+  const nonP = Math.max(0, totalWords - pWords);
+  const calculatedMinutes = Math.round((pWords / 220) + (nonP / 450));
+
+  const badgeMatch = html.match(/(\d+)\s*MIN\s*READ/i);
+  if (!badgeMatch) {
+    console.error(`[ERROR] ${file} is missing standard '[X] MIN READ' badge in .meta-line.`);
+    issueErrors++;
+  } else {
+    const badgeMin = parseInt(badgeMatch[1], 10);
+    if (badgeMin < 8 || badgeMin > 13) {
+      console.error(`[ERROR] ${file} read time badge (${badgeMin} MIN READ) is outside the mandatory 8-13 minute range.`);
+      issueErrors++;
+    }
+    // Calculated minutes must stay within pacing window with 1 minute margin
+    if (calculatedMinutes < 7 || calculatedMinutes > 14) {
+      console.error(`[ERROR] ${file} calculated read duration (${calculatedMinutes} min) violates 8-13 minute pacing standard.`);
+      issueErrors++;
+    }
+  }
+
   if (!html.includes('class="telemetry-bar"')) {
     console.error(`[ERROR] ${file} is missing standard .telemetry-bar.`);
     issueErrors++;

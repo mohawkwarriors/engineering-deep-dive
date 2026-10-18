@@ -54,6 +54,27 @@ export function safeJsonParse(rawString) {
   }
 }
 
+export function calculateReadTime(html) {
+  const pWords = [...html.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+    .map(m => m[1].replace(/<[^>]+>/g, ' '))
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(/\s+/).filter(Boolean).length;
+
+  const totalWords = html
+    .replace(/<svg[\s\S]*?<\/svg>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(/\s+/).filter(Boolean).length;
+
+  const nonP = Math.max(0, totalWords - pWords);
+  const minutes = Math.round((pWords / 220) + (nonP / 450));
+  return Math.max(8, Math.min(13, minutes));
+}
+
 async function run() {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
@@ -139,7 +160,10 @@ USER VETOED TOPICS (NEGATIVE CONSTRAINTS - DO NOT SELECT OR REPEAT SIMILAR TOPIC
 ${vetoesList}
 
 STRICT EDITORIAL REQUIREMENTS:
-1. WORD COUNT: The article body MUST be between 2,750 and 3,300 words (strictly 12 to 15 minutes read duration at 220 WPM). Never write high-level overviews or brief summaries.
+1. WORD COUNT & READING PACING (ISSUE 001 BENCHMARK — 8 TO 13 MINUTES):
+   - Medium Benchmark: Issue 001 (Apple Home Collection Teardown) is the golden medium standard (~2,000 narrative body words in <p> tags, ~3,200–3,700 total words including schematics, tables, and callouts; exactly ~10–11 minutes read duration).
+   - Strict Tolerance Range: Articles must strictly range from an 8-minute minimum (for punchier single-mechanism teardowns: ~1,500 narrative words) up to a 13-minute maximum (for comprehensive multi-component assemblies: ~2,400 narrative words).
+   - Dynamic Target: Aim for 1,900–2,200 narrative words in the body. Never write brief, high-level summaries, and never create exhausting marathons that exceed 13 minutes.
 2. TITLE & INTRO HOOK (MORNING DIGEST TONE - CONVERSATIONAL, PLAIN ENGLISH):
    - Title Standard: Use clean, curiosity-inducing, plain-English titles (e.g. "How Laptops Get Featherweight Metal Shells"). Avoid long, dense compound titles or heavy academic jargon.
    - Early Technology Definition & Comparison: In Section 1, immediately define the core technology in vivid, plain-English terms early on, and explicitly contrast why it beats traditional legacy methods.
@@ -338,7 +362,7 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other te
     const subClass = `sub-${articleData.subject.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
     const headerBlock = `
 <div class="meta-line">
-  <span>ISSUE ${nextId}</span><span>•</span><span class="archive-subject-tag ${subClass}">${articleData.subject.toUpperCase()}</span><span>•</span><span id="read-time-badge">14 MIN READ</span>
+  <span>ISSUE ${nextId}</span><span>•</span><span class="archive-subject-tag ${subClass}">${articleData.subject.toUpperCase()}</span><span>•</span><span id="read-time-badge">${calculateReadTime(articleData.article_html)} MIN READ</span>
 </div>
 
 <h1>${articleData.title}</h1>
@@ -396,6 +420,14 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other te
       }
     }
   }
+
+  
+  // Ensure read-time badge in meta-line is dynamically calibrated to 8-13 min window (Issue 001 benchmark)
+  const dynamicReadMins = calculateReadTime(articleData.article_html);
+  articleData.article_html = articleData.article_html.replace(
+    /(<div class="meta-line">[\s\S]*?)(\d+\s*MIN\s*READ)([\s\S]*?<\/div>)/i,
+    `$1${dynamicReadMins} MIN READ$3`
+  );
 
   // 3. Write decoupled JSON chunk: content/issues/{num}.json
   const issueJsonPath = path.join(CONTENT_DIR, 'issues', `${nextFileId}.json`);
