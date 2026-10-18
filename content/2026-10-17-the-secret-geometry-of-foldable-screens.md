@@ -36,7 +36,6 @@
   </div>
 </div>
 
-
 <h2 id="section-neutral-axis-physics">1. The Neutral Axis Dilemma & Beam Bending Mechanics</h2>
 <p>
   A foldable smartphone is an engineering paradox: it demands that brittle silicate glass, copper foil circuitry, and optically clear polymers withstand hundreds of thousands of sharp $180^\circ$ bends without shattering, delaminating, or forming a permanent plastic trench.
@@ -159,13 +158,6 @@
   </div>
 </div>
 
-
-  <div class="schematic-caption">
-    <span><strong>FIG 03 — KINEMATIC SEQUENCE:</strong> The four-phase transition of a teardrop hinge mechanism, demonstrating the synchronized vertical descent of central support wings and the lateral translation of perimeter sliders.</span>
-    <span class="source-tag">FLOWCHART 01</span>
-  </div>
-</div>
-
 <h2 id="section-path-length-differential">2. Path-Length Mechanics: Absorbing the Arc-Length Differential (&Delta;L)</h2>
 <p>
   While the teardrop loop eliminates excessive tensile strain, it creates an aggressive kinematic constraint: <strong>Path-Length Mismatch ($\Delta L$)</strong>.
@@ -273,11 +265,10 @@
     </div>
   </div>
   <div class="schematic-caption">
-    <span><strong>FIG 04 — KINEMATIC SEQUENCE:</strong> The four mechanical stages of hinge folding: floating wings drop 1.35 mm downward into the spine cavity as the device closes, enabling zero-gap closure while preserving a wide 3.45 mm bend radius.</span>
+    <span><strong>FIG 03 — KINEMATIC SEQUENCE:</strong> The four mechanical stages of hinge folding: floating wings drop 1.35 mm downward into the spine cavity as the device closes, enabling zero-gap closure while preserving a wide 3.45 mm bend radius.</span>
     <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
   </div>
 </div>
-
 
 <h2 id="section-torque-engine-cams">3. The Torque Engine: Helical Cams & "Flex Mode" Detents</h2>
 <p>
