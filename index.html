@@ -3370,8 +3370,9 @@
         if (window.location.hash !== "#archive") history.replaceState(null, "", "#archive");
         if (grid) grid.classList.add("archive-mode");
         if (btnArchive) {
-          btnArchive.classList.add("active");
-          btnArchive.textContent = "Close Archive";
+          btnArchive.style.display = "none";
+          btnArchive.classList.remove("active");
+          btnArchive.textContent = "Archive";
         }
         if (btnCurrent) {
           btnCurrent.style.display = "inline-flex";
@@ -3384,6 +3385,7 @@
         if (activeArticleId && window.location.hash !== activeArticleId) history.replaceState(null, "", activeArticleId);
         if (grid) grid.classList.remove("archive-mode");
         if (btnArchive) {
+          btnArchive.style.display = "inline-flex";
           btnArchive.classList.remove("active");
           btnArchive.textContent = "Archive";
         }
@@ -3527,8 +3529,12 @@
         showView("archive");
       } else {
         const articleId = currentHash.split('/')[0];
-        if (TOPICS.some(t => t.id === articleId) && articleId !== activeArticleId) {
-          loadArticle(articleId);
+        if (TOPICS.some(t => t.id === articleId)) {
+          if (articleId !== activeArticleId) {
+            loadArticle(articleId);
+          } else {
+            showView("article");
+          }
         }
       }
     });
