@@ -1201,12 +1201,23 @@
     }
 
     /* The Large Stage Showcase Viewport (2 Columns on Desktop) */
+    @keyframes cardStageFade {
+      from {
+        opacity: 0.55;
+        transform: translateY(3px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
     .stepper-stage-viewport {
       display: grid;
       grid-template-columns: 1.25fr 1fr;
       gap: 16px;
       align-items: stretch;
       min-height: 190px;
+      animation: cardStageFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     @media (max-width: 800px) {
       .stepper-stage-viewport {
@@ -1432,6 +1443,7 @@
       gap: 16px;
       align-items: stretch;
       min-height: 190px;
+      animation: cardStageFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     @media (max-width: 800px) {
       .pipeline-stage-view {
@@ -2389,6 +2401,195 @@
         overflow-wrap: normal !important;
         hyphens: none !important;
       }
+
+      /* Interactive Step & Process Cards Mobile Optimization */
+      .process-wheel-viewer {
+        padding: 14px 12px 16px !important;
+        margin: 24px 0 !important;
+        border-radius: 8px !important;
+        touch-action: pan-y pinch-zoom;
+      }
+      .stepper-top-bar {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        padding-bottom: 12px !important;
+        margin-bottom: 12px !important;
+      }
+      .stepper-right-group {
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        margin-left: 0 !important;
+        order: 1 !important;
+      }
+      .stepper-left-group {
+        width: 100% !important;
+        order: 2 !important;
+      }
+      .stepper-nav-controls {
+        gap: 6px !important;
+      }
+      .stepper-nav-btn {
+        width: 34px !important;
+        height: 34px !important;
+        border-radius: 6px !important;
+      }
+      .stepper-nav-btn:active {
+        transform: scale(0.92);
+        background: var(--surface-hover);
+      }
+      .stepper-counter {
+        font-size: 11.5px !important;
+      }
+      .stepper-variant-tabs {
+        padding: 2px !important;
+        gap: 2px !important;
+      }
+      .variant-tab {
+        padding: 6px 8px !important;
+        min-height: 32px !important;
+      }
+      .variant-tab span {
+        display: none !important;
+      }
+      .variant-tab svg {
+        width: 13px !important;
+        height: 13px !important;
+      }
+      .stepper-pills {
+        width: 100% !important;
+        display: flex !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        gap: 6px !important;
+        padding: 2px 0 4px !important;
+      }
+      .stepper-pill {
+        padding: 6px 12px !important;
+        min-height: 32px !important;
+        font-size: 11px !important;
+        border-radius: 5px !important;
+        flex-shrink: 0 !important;
+      }
+      .stepper-stage-viewport,
+      .pipeline-stage-view {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+        min-height: auto !important;
+      }
+      .stepper-visual-large,
+      .pipeline-visual-frame {
+        min-height: 135px !important;
+        max-height: 160px !important;
+        padding: 10px !important;
+      }
+      .stepper-visual-large svg,
+      .pipeline-visual-frame svg {
+        max-height: 135px !important;
+      }
+      .stepper-details,
+      .pipeline-info-frame {
+        padding: 14px !important;
+        gap: 8px !important;
+      }
+      .stepper-stage-title,
+      .pipeline-title {
+        font-size: 15px !important;
+        line-height: 1.35 !important;
+      }
+      .stepper-stage-desc,
+      .pipeline-desc {
+        font-size: 13px !important;
+        line-height: 1.5 !important;
+      }
+      .stepper-stage-metric,
+      .pipeline-metric {
+        font-size: 11px !important;
+        padding: 4px 8px !important;
+        margin-top: 4px !important;
+      }
+      .pipeline-rail-wrap {
+        padding-bottom: 6px !important;
+        margin-bottom: 10px !important;
+      }
+      .pipeline-station {
+        padding: 6px 10px !important;
+        gap: 6px !important;
+      }
+      .pipeline-station-label {
+        font-size: 10.5px !important;
+      }
+      .accordion-stack {
+        gap: 6px !important;
+      }
+      .accordion-header {
+        padding: 10px 12px !important;
+      }
+      .accordion-title {
+        font-size: 13px !important;
+      }
+      .accordion-content {
+        padding: 12px 12px 14px !important;
+      }
+      .accordion-split {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+      }
+      .accordion-visual {
+        max-height: 110px !important;
+        padding: 6px !important;
+      }
+      .accordion-visual svg {
+        max-height: 95px !important;
+      }
+      .filmstrip-viewport {
+        padding: 4px 2px 10px !important;
+      }
+      .filmstrip-card {
+        width: 220px !important;
+        padding: 10px !important;
+      }
+      .filmstrip-visual {
+        height: 60px !important;
+      }
+      .filmstrip-card-title {
+        font-size: 12.5px !important;
+        min-height: 30px !important;
+      }
+      .matrix-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+      }
+      .matrix-card {
+        padding: 10px !important;
+      }
+      .matrix-visual {
+        height: 60px !important;
+      }
+
+      /* Comparison Cards on Mobile */
+      .comparison-grid {
+        padding: 14px 12px !important;
+        gap: 14px !important;
+      }
+      .comparison-card {
+        padding: 16px 14px !important;
+        gap: 12px !important;
+      }
+      .comparison-metric-pill {
+        min-height: auto !important;
+        padding: 12px 14px !important;
+      }
+      .comparison-card-title {
+        font-size: 19px !important;
+        min-height: auto !important;
+      }
+      .comparison-card-tag {
+        min-height: auto !important;
+      }
     }
   </style>
 </head>
@@ -2664,6 +2865,10 @@
                 `).join('')}
               </div>
             `;
+            const activePill = topLeft.querySelector('.stepper-pill.active');
+            if (activePill && typeof activePill.scrollIntoView === 'function') {
+              activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
           } else if (currentVariant === 'pipeline') {
             topLeft.innerHTML = `
               <span class="stepper-pill active" style="cursor:default;">
@@ -2836,6 +3041,50 @@
               throwOnError: false
             });
           }
+
+          if (currentVariant === 'pipeline') {
+            const activeStation = bodyEl.querySelector('.pipeline-station.active');
+            if (activeStation && typeof activeStation.scrollIntoView === 'function') {
+              activeStation.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+          } else if (currentVariant === 'carousel') {
+            const activeCard = bodyEl.querySelector('.filmstrip-card.active');
+            if (activeCard && typeof activeCard.scrollIntoView === 'function') {
+              activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+            const filmstripEl = bodyEl.querySelector('.filmstrip-viewport');
+            if (filmstripEl) {
+              let filmScrollTimer = null;
+              filmstripEl.addEventListener('scroll', () => {
+                clearTimeout(filmScrollTimer);
+                filmScrollTimer = setTimeout(() => {
+                  const cards = Array.from(filmstripEl.querySelectorAll('.filmstrip-card'));
+                  const viewportCenter = filmstripEl.scrollLeft + filmstripEl.clientWidth / 2;
+                  let closestIdx = activeIdx;
+                  let minDiff = Infinity;
+                  cards.forEach((c) => {
+                    const cIdx = parseInt(c.dataset.idx, 10);
+                    const cardCenter = c.offsetLeft + c.offsetWidth / 2;
+                    const diff = Math.abs(cardCenter - viewportCenter);
+                    if (diff < minDiff) {
+                      minDiff = diff;
+                      closestIdx = cIdx;
+                    }
+                  });
+                  if (closestIdx !== activeIdx) {
+                    activeIdx = closestIdx;
+                    const counterEl = document.getElementById(`counter-curr-${wheelId}`);
+                    if (counterEl) counterEl.textContent = `0${activeIdx + 1}`;
+                    updateTopBarLeft();
+                    cards.forEach(c => {
+                      const cIdx = parseInt(c.dataset.idx, 10);
+                      c.classList.toggle('active', cIdx === activeIdx);
+                    });
+                  }
+                }, 80);
+              }, { passive: true });
+            }
+          }
         }
 
         function updateView(idx) {
@@ -2887,6 +3136,15 @@
                 drawer.classList.remove('open');
               } else {
                 updateView(dIdx);
+                setTimeout(() => {
+                  const updatedDrawer = viewer.querySelector(`.accordion-drawer[data-idx="${dIdx}"]`);
+                  if (updatedDrawer) {
+                    const rect = updatedDrawer.getBoundingClientRect();
+                    if (rect.top < 60) {
+                      window.scrollBy({ top: rect.top - 70, behavior: 'smooth' });
+                    }
+                  }
+                }, 60);
               }
             }
             return;
@@ -2920,6 +3178,47 @@
             updateView(activeIdx - 1);
           }
         });
+
+        // Touch swipe handling for mobile devices
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+        let isTouching = false;
+
+        viewer.addEventListener('touchstart', (e) => {
+          if (e.touches.length === 1) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            touchEndX = touchStartX;
+            touchEndY = touchStartY;
+            isTouching = true;
+          }
+        }, { passive: true });
+
+        viewer.addEventListener('touchmove', (e) => {
+          if (!isTouching || e.touches.length !== 1) return;
+          touchEndX = e.touches[0].clientX;
+          touchEndY = e.touches[0].clientY;
+        }, { passive: true });
+
+        viewer.addEventListener('touchend', (e) => {
+          if (!isTouching) return;
+          isTouching = false;
+          const deltaX = touchEndX - touchStartX;
+          const deltaY = touchEndY - touchStartY;
+
+          // Require intentional horizontal swipe gesture (> 40px and > 1.3x vertical movement)
+          if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3) {
+            if (currentVariant === 'stepper' || currentVariant === 'pipeline') {
+              if (deltaX < 0) {
+                updateView(activeIdx + 1);
+              } else {
+                updateView(activeIdx - 1);
+              }
+            }
+          }
+        }, { passive: true });
 
         // Initialize display
         updateTopBarLeft();
