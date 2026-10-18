@@ -1521,6 +1521,7 @@
       </a>
       <div class="nav-actions">
         <button class="nav-btn" id="btn-queue" style="display:none;" onclick="window.location.href='queue.html'">Queue</button>
+        <button class="nav-btn" id="btn-current-issue" style="display:none;" onclick="loadLatestArticle()">Current Issue</button>
         <button class="nav-btn" id="btn-archive" onclick="toggleArchiveView()">Archive</button>
         <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme">
           <svg id="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
@@ -2043,18 +2044,24 @@
       const articleView = document.getElementById("view-article");
       const archiveView = document.getElementById("view-archive");
       const btnArchive = document.getElementById("btn-archive");
+      const btnCurrent = document.getElementById("btn-current-issue");
       const outline = document.getElementById("sidebar-outline");
       const issueNav = document.getElementById("issue-nav");
 
       articleView.classList.toggle("hidden", isArchive);
       archiveView.classList.toggle("hidden", !isArchive);
 
+      const latestId = (typeof TOPICS !== "undefined" && TOPICS.length > 0) ? TOPICS[0].id : null;
+
       if (isArchive) {
         if (window.location.hash !== "#archive") history.replaceState(null, "", "#archive");
         if (grid) grid.classList.add("archive-mode");
         if (btnArchive) {
           btnArchive.classList.add("active");
-          btnArchive.textContent = "Current Issue";
+          btnArchive.textContent = "Close Archive";
+        }
+        if (btnCurrent) {
+          btnCurrent.style.display = "inline-flex";
         }
         if (outline) outline.style.display = "none";
         if (issueNav) issueNav.style.display = "none";
@@ -2066,6 +2073,10 @@
         if (btnArchive) {
           btnArchive.classList.remove("active");
           btnArchive.textContent = "Archive";
+        }
+        if (btnCurrent) {
+          const isOlderArticle = activeArticleId && latestId && activeArticleId !== latestId;
+          btnCurrent.style.display = isOlderArticle ? "inline-flex" : "none";
         }
         const isDesktop = window.innerWidth > 768;
         if (outline) outline.style.display = isDesktop ? "block" : "none";
