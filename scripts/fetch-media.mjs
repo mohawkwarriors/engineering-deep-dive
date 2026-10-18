@@ -25,7 +25,8 @@ export const DISQUALIFYING_TERMS = [
   'tourist', 'garage', 'workshop floor', 'tarp', 'bucket', 'cluttered',
   'latte art', 'coffee cup', 'cafe table', 'living room', 'counter',
   'watermark', 'watermarked', 'alamy', 'shutterstock', 'getty', 'stock photo',
-  'vosvete', 'novy-pant', 'wicker', 'bamboo', 'carpet', 'tablecloth', 'bed'
+  'vosvete', 'novy-pant', 'mobile-phone-hinge-teardown', 'hinge of mobile phone',
+  'wicker', 'bamboo', 'carpet', 'tablecloth', 'bed'
 ];
 
 export async function searchPremiumHardwareMedia(query, limit = 10) {

@@ -284,22 +284,16 @@
 <!-- FIG 04: REAL TEARDOWN MACRO PHOTOGRAPHY OF HINGE ASSEMBLY -->
 <figure class="product-figure">
   <div class="img-wrapper">
-    <img referrerpolicy="no-referrer" src="images/mobile-phone-hinge-teardown.jpg" alt="Mobile Phone Internal Friction Hinge Teardown" />
+    <img referrerpolicy="no-referrer" src="images/foldable-hinge-spine-teardown.jpg" alt="Foldable Smartphone Hinge Spine and Torque Detent Assembly Teardown" />
   </div>
   <figcaption>
-    <span><strong>FIG 04 — MOBILE PHONE HINGE INTERNAL TEARDOWN:</strong> High-magnification macro teardown of a mobile phone hinge mechanism, displaying the cylindrical friction barrel, steel pivot spindle, cast mounting bracket, and flexible printed circuit (FPC) routing wrapped through the hinge axis.</span>
-    <span class="source-tag">COMMONS TEARDOWN ARCHIVE</span>
+    <span><strong>FIG 04 — FOLDABLE SMARTPHONE HINGE SPINE &amp; TORQUE DETENTS:</strong> Macro teardown of a modern foldable smartphone hinge spine assembly, displaying the central gear-synchronization cluster, spring-loaded cam clasps for flat-state lockout and flex detents, dual outer pivot brackets, and the unclipped protective armor shroud.</span>
+    <span class="source-tag">IFIXIT TEARDOWN ARCHIVE</span>
   </figcaption>
 </figure>
 <p>
-  If the gravitational moment induced by the upper display half ($M_g = m \cdot g \cdot d_{ ext{cg}} \cdot \sin heta \approx 0.045 ext{ Nm}$) is less than $T_{ ext{hold}}$ ($0.065 ext{ Nm}$), the phone remains locked at any arbitrary angle without sagging. As the phone approaches $180^\circ$, the follower enters a steep negative detent groove ($alpha < 0$), releasing stored spring energy to snap the chassis into a dead-flat plane with satisfying tactile feedback.
+  If the gravitational moment induced by the upper display half ($M_g = m \cdot g \cdot d_{\text{cg}} \cdot \sin\theta \approx 0.045\text{ Nm}$) is less than $T_{\text{hold}}$ ($0.065\text{ Nm}$), the phone remains locked at any arbitrary angle without sagging. As the phone approaches $180^\circ$, the follower enters a steep negative detent groove ($\alpha < 0$), releasing stored spring energy to snap the chassis into a dead-flat plane with satisfying tactile feedback.
 </p>
-
-  <div class="schematic-caption">
-    <span><strong>FIG 05 — TORQUE ENGINE KINEMATICS:</strong> Four-stage operational sequence of the dual-cam torque engine: Belleville spring preload balances gravitational moment in the hover window (Stage 02) while negative detents deliver crisp snap-action at both ends.</span>
-    <span class="source-tag">MECHANISMS: TORQUE CAD ARCHIVE</span>
-  </div>
-</div>
 
 <h2 id="section-manufacturing-mim-tolerances">4. Manufacturing, Tooling & MIM Clearances</h2>
 <p>
@@ -319,7 +313,7 @@
     <img referrerpolicy="no-referrer" src="images/mim-precision-bracket.jpg" alt="Precision Metal Injection Molded (MIM) Multi-Link Hinge Brackets" />
   </div>
   <figcaption>
-    <span><strong>FIG 06 — METAL INJECTION MOLDED (MIM) KINEMATIC BRACKETS:</strong> Precision 17-4 PH stainless steel pivot brackets and kinematic rocker arms produced via Metal Injection Molding. Sintering at 1,340°C collapses porosity to achieves &gt;98.5% theoretical density, followed by diamond centerless grinding of the bearing bores to &plusmn;4 &mu;m.</span>
+    <span><strong>FIG 05 — METAL INJECTION MOLDED (MIM) KINEMATIC BRACKETS:</strong> Precision 17-4 PH stainless steel pivot brackets and kinematic rocker arms produced via Metal Injection Molding. Sintering at 1,340°C collapses porosity to achieves &gt;98.5% theoretical density, followed by diamond centerless grinding of the bearing bores to &plusmn;4 &mu;m.</span>
     <span class="source-tag">IMAGE: MIMPLUS PRECISION ARCHIVE</span>
   </figcaption>
 </figure>
@@ -382,12 +376,6 @@
   </table>
 </div>
 
-  <div class="schematic-caption">
-    <span><strong>FIG 07 — 10-MICRON MIM SINTERING PIPELINE:</strong> The four-phase manufacturing sequence transforming spherical stainless powder into micro-toleranced kinematic links, achieving precise 16.5% volumetric shrinkage followed by micron-level pin grinding.</span>
-    <span class="source-tag">MANUFACTURING: MIM PROCESS CAD</span>
-  </div>
-</div>
-
 <p>
   <strong>Tooling Steel Selection for MIM:</strong><br>
   Injecting abrasive, metal-powder-loaded feedstock at $180^\circ ext{C}$ and $110 ext{ MPa}$ causes severe abrasive tool wear. Mold cavities are machined from premium powder-metallurgy super-steels (specifically <span class="tangent-term" data-tangent="pm_tool_steels">Böhler M390 Microclean or Uddeholm Elmax</span>—wear-resistant alloys formed by atomizing liquid steel into microscopic powder to prevent brittle carbide clumps). Vacuum hardened to <strong>58–60 HRC</strong> and coated with Titanium Aluminum Nitride (TiAlN), these tooling inserts resist abrasive erosion across 500,000 injection shots without losing micron-level tolerances.
@@ -436,12 +424,6 @@
   </ul>
 </div>
 
-  <div class="schematic-caption">
-    <span><strong>FIG 08 — SOLID DRY-FILM TRIBOLOGY ARCHITECTURE:</strong> The multi-tier surface barrier preventing adhesive galling under 1,180 MPa of cam contact pressure: 17-4 PH substrate with diamond-like carbon (DLC), dry PTFE slip, and perimeter nylon particulate sweepers.</span>
-    <span class="source-tag">TRIBOLOGY: SURFACE METALLURGY</span>
-  </div>
-</div>
-
 <h2 id="section-empirical-metrology">6. Empirical Torture Metrology & Crease Interferometry</h2>
 <p>
   Validating a next-generation teardrop hinge requires rigorous bench torture testing that compresses ten years of human abuse into four weeks of continuous automated cycling.
@@ -453,19 +435,13 @@
   <strong>Environmental Chambers (-20°C to +65°C):</strong> Because the aluminum chassis ($\alpha_{ ext{Al}} \approx 23  imes 10^{-6} ext{ K}^{-1}$) and steel hinge ($\alpha_{ ext{steel}} \approx 11  imes 10^{-6} ext{ K}^{-1}$) have vastly different thermal expansion coefficients, temperature extremes shrink operating clearances. Because aluminum contracts twice as fast as steel when cold, dropping down to -20°C shrinks the hinge clearances by up to 14 &mu;m. If the initial manufacturing tolerance is not precisely compensated, the sliders will bind solid in freezing climates.
 </p>
 
-  <div class="schematic-caption">
-    <span><strong>FIG 09 — OPTICAL PROFILOMETRY METROLOGY:</strong> White-light optical interferometry scanning the hinge seam across 40x40 mm: wide-span curvature distribution reduces peak trench depth below 32 µm and keeps surface slope below 1.2°, eliminating visible reflections and tactile creases.</span>
-    <span class="source-tag">METROLOGY: INTERFEROMETRIC SCAN ARCHIVE</span>
-  </div>
-</div>
-
 <!-- FIG 06: REAL LABORATORY OPTICAL PROFILOMETRY SCAN -->
 <figure class="product-figure">
   <div class="img-wrapper">
     <img referrerpolicy="no-referrer" src="images/white-light-interferometry-crease-profile.png" alt="White-Light Optical Profilometry 3D Surface Topography Scan" />
   </div>
   <figcaption>
-    <span><strong>FIG 10 — WHITE-LIGHT INTERFEROMETRY &amp; 3D CREASE TOPOGRAPHY:</strong> Non-contact optical profilometry surface elevation scan showing 3D micro-topography across the hinge seam. Vertical phase interference fringes measure sub-micron peak-to-valley trench depths ($D_v &lt; 32,\\mu\\text{m}$) and verify that angular crease slope gradients remain under $1.2^circ$.</span>
+    <span><strong>FIG 06 — WHITE-LIGHT INTERFEROMETRY &amp; 3D CREASE TOPOGRAPHY:</strong> Non-contact optical profilometry surface elevation scan showing 3D micro-topography across the hinge seam. Vertical phase interference fringes measure sub-micron peak-to-valley trench depths ($D_v &lt; 32,\\mu\\text{m}$) and verify that angular crease slope gradients remain under $1.2^circ$.</span>
     <span class="source-tag">IMAGE: KEYENCE SURFACE METROLOGY ARCHIVE</span>
   </figcaption>
 </figure>

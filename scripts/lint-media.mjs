@@ -418,7 +418,9 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     /shutterstock/i,
     /gettyimages/i,
     /stock-photo/i,
-    /vosvete/i
+    /vosvete/i,
+    /mobile-phone-hinge-teardown/i,
+    /hinge[-_ ]of[-_ ]mobile[-_ ]phone/i
   ];
   for (const img of imgTags) {
     const src = img[1];
