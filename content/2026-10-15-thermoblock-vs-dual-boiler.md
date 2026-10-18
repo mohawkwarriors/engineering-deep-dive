@@ -372,7 +372,7 @@
     <span class="schematic-title">FIG 05 — DUAL-BOILER EXTRACTION FLUIDIC PIPELINE</span>
     <span class="schematic-subtitle">STEP-BY-STEP HYDRAULIC &amp; THERMAL TOPOLOGY</span>
   </div>
-  <div class="process-grid">
+  <div class="process-grid" data-variant="pipeline">
     <div class="process-step-card">
       <div class="process-step-header">
         <span class="process-step-tag">STAGE 01: INTAKE</span>

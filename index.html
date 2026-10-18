@@ -1147,6 +1147,11 @@
       margin-left: auto;
       flex-shrink: 0;
     }
+    .stepper-nav-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
     .stepper-counter {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
@@ -1294,6 +1299,575 @@
     [data-theme="dark"] .stepper-stage-metric {
       background: rgba(217, 119, 87, 0.16);
       border-color: rgba(217, 119, 87, 0.35);
+    }
+
+    /* Variant Switcher Segmented Control */
+    .stepper-variant-tabs {
+      display: inline-flex;
+      align-items: center;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .variant-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .variant-tab:hover {
+      color: var(--text);
+    }
+    .variant-tab.active {
+      background: var(--surface);
+      color: var(--accent);
+      font-weight: 700;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+    [data-theme="dark"] .variant-tab.active {
+      background: rgba(255,255,255,0.08);
+      color: var(--accent);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    /* Variant 2: Pipeline (Connected Process Rail) */
+    .pipeline-rail-wrap {
+      width: 100%;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+    .pipeline-rail {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      min-width: max-content;
+      padding: 2px 2px;
+    }
+    .pipeline-station {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .pipeline-station:hover {
+      border-color: var(--muted);
+      color: var(--text);
+    }
+    .pipeline-station.active {
+      background: rgba(217, 119, 87, 0.12);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    [data-theme="dark"] .pipeline-station.active {
+      background: rgba(217, 119, 87, 0.22);
+      border-color: var(--accent);
+    }
+    .pipeline-station.completed {
+      border-color: var(--border);
+      opacity: 0.85;
+    }
+    .pipeline-station-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .pipeline-station-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+    .pipeline-station.active .pipeline-station-dot {
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+    }
+    .pipeline-station.completed .pipeline-station-dot {
+      background: #10B981;
+    }
+    .pipeline-station-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .pipeline-station-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .pipeline-connector {
+      display: inline-flex;
+      align-items: center;
+      color: var(--border);
+      padding: 0 2px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      user-select: none;
+    }
+    .pipeline-connector.completed {
+      color: var(--accent);
+    }
+    .pipeline-stage-view {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 16px;
+      align-items: stretch;
+      min-height: 190px;
+    }
+    @media (max-width: 800px) {
+      .pipeline-stage-view {
+        grid-template-columns: 1fr;
+      }
+    }
+    .pipeline-visual-frame {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+      position: relative;
+      background-image: radial-gradient(var(--border) 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+    .pipeline-visual-frame svg {
+      width: 100% !important;
+      height: auto !important;
+      max-height: 175px !important;
+      max-width: 100% !important;
+      display: block !important;
+      margin: 0 auto;
+    }
+    .pipeline-info-frame {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .pipeline-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .pipeline-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .pipeline-counter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      color: var(--muted);
+    }
+    .pipeline-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      margin: 0;
+      line-height: 1.3;
+    }
+    .pipeline-desc {
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--muted);
+      margin: 0;
+      flex: 1;
+    }
+    .pipeline-metric {
+      margin-top: 6px;
+      padding: 6px 10px;
+      background: rgba(217, 119, 87, 0.08);
+      border: 1px solid rgba(217, 119, 87, 0.22);
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      color: var(--accent);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+    }
+    [data-theme="dark"] .pipeline-metric {
+      background: rgba(217, 119, 87, 0.16);
+      border-color: rgba(217, 119, 87, 0.35);
+    }
+
+    /* Variant 3: Drawers (Collapsible Technical Accordion Stack) */
+    .accordion-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+    .accordion-drawer {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--card-inner);
+      overflow: hidden;
+      transition: border-color 0.15s ease;
+    }
+    .accordion-drawer.open {
+      border-color: var(--accent);
+      box-shadow: 0 1px 4px rgba(217, 119, 87, 0.08);
+    }
+    .accordion-header {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--card-inner);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.15s ease;
+    }
+    .accordion-header:hover {
+      background: rgba(217, 119, 87, 0.04);
+    }
+    .accordion-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+    .accordion-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--accent);
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: rgba(217, 119, 87, 0.1);
+    }
+    .accordion-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .accordion-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .accordion-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .accordion-mini-metric {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      max-width: 240px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    @media (max-width: 650px) {
+      .accordion-mini-metric { display: none; }
+    }
+    .accordion-chevron {
+      color: var(--muted);
+      display: inline-flex;
+      transition: transform 0.2s ease;
+    }
+    .accordion-drawer.open .accordion-chevron {
+      transform: rotate(180deg);
+      color: var(--accent);
+    }
+    .accordion-content {
+      display: none;
+      padding: 14px 16px 16px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .accordion-drawer.open .accordion-content {
+      display: block;
+    }
+    .accordion-split {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+    @media (max-width: 700px) {
+      .accordion-split {
+        grid-template-columns: 1fr;
+      }
+    }
+    .accordion-visual {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-height: 120px;
+    }
+    .accordion-visual svg {
+      width: 100% !important;
+      height: auto !important;
+      max-height: 90px !important;
+      display: block !important;
+    }
+    .accordion-body {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .accordion-desc {
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: var(--muted);
+      margin: 0;
+    }
+    .accordion-metric-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: rgba(217, 119, 87, 0.08);
+      border: 1px solid rgba(217, 119, 87, 0.22);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 600;
+      width: fit-content;
+    }
+
+    /* Variant 4: Filmstrip (Horizontal Carousel Storyboard) */
+    .filmstrip-viewport {
+      width: 100%;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scroll-snap-type: x mandatory;
+      padding: 4px 2px 14px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .filmstrip-track {
+      display: flex;
+      gap: 12px;
+      min-width: max-content;
+    }
+    .filmstrip-card {
+      width: 250px;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-sizing: border-box;
+    }
+    .filmstrip-card:hover {
+      border-color: var(--muted);
+      transform: translateY(-2px);
+    }
+    .filmstrip-card.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
+      background: var(--surface);
+    }
+    .filmstrip-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .filmstrip-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--accent);
+      padding: 2px 5px;
+      border-radius: 3px;
+      background: rgba(217, 119, 87, 0.1);
+    }
+    .filmstrip-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .filmstrip-visual {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 70px;
+    }
+    .filmstrip-visual svg {
+      width: 100% !important;
+      height: auto !important;
+      max-height: 55px !important;
+      display: block !important;
+    }
+    .filmstrip-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+      min-height: 34px;
+    }
+    .filmstrip-card-desc {
+      font-size: 11.5px;
+      line-height: 1.45;
+      color: var(--muted);
+      margin: 0;
+      flex: 1;
+    }
+    .filmstrip-card-metric {
+      margin-top: auto;
+      padding: 4px 7px;
+      border-radius: 3px;
+      background: rgba(217, 119, 87, 0.08);
+      border: 1px solid rgba(217, 119, 87, 0.22);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      color: var(--accent);
+      font-weight: 600;
+      width: fit-content;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Variant 5: Matrix (Blueprint Grid) */
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      width: 100%;
+    }
+    .matrix-card {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.15s ease;
+      box-sizing: border-box;
+    }
+    .matrix-card:hover {
+      border-color: var(--accent);
+      background: var(--surface);
+    }
+    .matrix-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .matrix-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+    .matrix-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+    }
+    .matrix-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+      min-height: 34px;
+    }
+    .matrix-visual {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 70px;
+    }
+    .matrix-visual svg {
+      width: 100% !important;
+      height: auto !important;
+      max-height: 55px !important;
+      display: block !important;
+    }
+    .matrix-desc {
+      font-size: 11.5px;
+      line-height: 1.45;
+      color: var(--muted);
+      margin: 0;
+      flex: 1;
+    }
+    .matrix-metric {
+      margin-top: auto;
+      padding: 4px 7px;
+      border-radius: 3px;
+      background: rgba(217, 119, 87, 0.08);
+      border: 1px solid rgba(217, 119, 87, 0.22);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      color: var(--accent);
+      font-weight: 600;
+      width: fit-content;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     /* Spec Comparison Table */
@@ -1982,6 +2556,25 @@
         grid.dataset.wheelInitialized = "true";
         const total = cards.length;
         const wheelId = `pw-${Date.now()}-${gIdx}`;
+        const parentCard = grid.closest('.schematic-card');
+        const cardId = parentCard ? parentCard.id : '';
+
+        // Default variant mapping based on data-variant or card archetype
+        let defaultVariant = grid.dataset.variant;
+        if (!defaultVariant) {
+          if (cardId.includes('spatial') || cardId.includes('flow')) {
+            defaultVariant = 'pipeline';
+          } else if (cardId.includes('thermal') || cardId.includes('conduction')) {
+            defaultVariant = 'accordion';
+          } else if (cardId.includes('process-steps') || cardId.includes('workflow')) {
+            defaultVariant = 'carousel';
+          } else {
+            defaultVariant = 'stepper';
+          }
+        }
+
+        let currentVariant = defaultVariant;
+        let activeIdx = 0;
 
         const steps = cards.map((card, idx) => {
           const tagEl = card.querySelector('.process-step-tag');
@@ -2017,147 +2610,306 @@
 
         viewer.innerHTML = `
           <div class="stepper-top-bar">
-            <div class="stepper-left-group">
+            <div class="stepper-left-group" id="top-left-${wheelId}"></div>
+            <div class="stepper-right-group">
+              <div class="stepper-nav-controls" id="nav-controls-${wheelId}">
+                <span class="stepper-counter"><strong id="counter-curr-${wheelId}">01</strong> / 0${total}</span>
+                <button type="button" class="stepper-nav-btn" id="prev-${wheelId}" title="Previous Stage" aria-label="Previous Stage">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <button type="button" class="stepper-nav-btn" id="next-${wheelId}" title="Next Stage" aria-label="Next Stage">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+              </div>
+              <div class="stepper-variant-tabs" role="tablist" aria-label="Display Variant">
+                <button type="button" class="variant-tab ${currentVariant === 'stepper' ? 'active' : ''}" data-variant="stepper" title="Split Stage Showcase">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="18" rx="2"/><rect x="13" y="3" width="8" height="18" rx="2"/></svg>
+                  <span>Showcase</span>
+                </button>
+                <button type="button" class="variant-tab ${currentVariant === 'pipeline' ? 'active' : ''}" data-variant="pipeline" title="Connected Process Rail">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="12" x2="22" y2="12"/><circle cx="5" cy="12" r="3"/><circle cx="12" cy="12" r="3"/><circle cx="19" cy="12" r="3"/></svg>
+                  <span>Pipeline</span>
+                </button>
+                <button type="button" class="variant-tab ${currentVariant === 'accordion' ? 'active' : ''}" data-variant="accordion" title="Vertical Drawer Stack">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                  <span>Drawers</span>
+                </button>
+                <button type="button" class="variant-tab ${currentVariant === 'carousel' ? 'active' : ''}" data-variant="carousel" title="Horizontal Filmstrip">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="6" height="14" rx="1"/><rect x="9" y="5" width="6" height="14" rx="1"/><rect x="16" y="5" width="6" height="14" rx="1"/></svg>
+                  <span>Filmstrip</span>
+                </button>
+                <button type="button" class="variant-tab ${currentVariant === 'grid' ? 'active' : ''}" data-variant="grid" title="Full Blueprint Matrix">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                  <span>Matrix</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="stepper-body-container" id="body-${wheelId}"></div>
+        `;
+
+        grid.parentNode.insertBefore(viewer, grid);
+
+        function updateTopBarLeft() {
+          const topLeft = document.getElementById(`top-left-${wheelId}`);
+          if (!topLeft) return;
+          if (currentVariant === 'stepper') {
+            topLeft.innerHTML = `
               <div class="stepper-pills" id="pills-${wheelId}">
                 ${steps.map((s, idx) => `
-                  <button type="button" class="stepper-pill ${idx === 0 ? 'active' : ''}" data-idx="${idx}">
+                  <button type="button" class="stepper-pill ${idx === activeIdx ? 'active' : ''}" data-idx="${idx}">
                     <span class="stepper-pill-num">0${idx + 1}</span>
                     <span class="stepper-pill-text">${s.shortLabel}</span>
                   </button>
                 `).join('')}
               </div>
-            </div>
+            `;
+          } else if (currentVariant === 'pipeline') {
+            topLeft.innerHTML = `
+              <span class="stepper-pill active" style="cursor:default;">
+                <span class="stepper-pill-num">STAGE 0${activeIdx + 1}</span>
+                <span class="stepper-pill-text">${steps[activeIdx].shortLabel}</span>
+              </span>
+            `;
+          } else if (currentVariant === 'accordion') {
+            topLeft.innerHTML = `
+              <span class="stepper-pill" style="cursor:default; font-size:10.5px;">
+                <span class="stepper-pill-num">${total}</span>
+                <span class="stepper-pill-text">INSPECTION DRAWERS</span>
+              </span>
+            `;
+          } else if (currentVariant === 'carousel') {
+            topLeft.innerHTML = `
+              <span class="stepper-pill active" style="cursor:default;">
+                <span class="stepper-pill-num">FRAME 0${activeIdx + 1}</span>
+                <span class="stepper-pill-text">${steps[activeIdx].shortLabel}</span>
+              </span>
+            `;
+          } else if (currentVariant === 'grid') {
+            topLeft.innerHTML = `
+              <span class="stepper-pill" style="cursor:default; font-size:10.5px;">
+                <span class="stepper-pill-num">${total}</span>
+                <span class="stepper-pill-text">SPEC STAGES MATRIX</span>
+              </span>
+            `;
+          }
 
-            <div class="stepper-right-group">
-              <span class="stepper-counter"><strong id="counter-curr-${wheelId}">01</strong> / 0${total}</span>
-              <button type="button" class="stepper-nav-btn" id="prev-${wheelId}" title="Previous Stage" aria-label="Previous Stage">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-              </button>
-              <button type="button" class="stepper-nav-btn" id="next-${wheelId}" title="Next Stage" aria-label="Next Stage">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-              </button>
-              <button type="button" class="stepper-view-toggle" id="toggle-${wheelId}" title="Toggle between interactive view and full grid">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                <span id="toggle-label-${wheelId}">Grid</span>
-              </button>
-            </div>
-          </div>
+          const navControls = document.getElementById(`nav-controls-${wheelId}`);
+          if (navControls) {
+            navControls.style.display = (currentVariant === 'grid') ? 'none' : 'inline-flex';
+          }
+        }
 
-          <div class="stepper-stage-viewport">
-            <div class="stepper-visual-large" id="vis-${wheelId}">
-              ${steps[0].visualHtml}
-            </div>
-            <div class="stepper-details" id="det-${wheelId}">
-              <div class="stepper-stage-header">
-                <span class="stepper-stage-tag" id="tag-${wheelId}">${steps[0].tagHtml}</span>
+        function renderVariantBody() {
+          const bodyEl = document.getElementById(`body-${wheelId}`);
+          if (!bodyEl) return;
+          const s = steps[activeIdx];
+
+          if (currentVariant === 'stepper') {
+            bodyEl.innerHTML = `
+              <div class="stepper-stage-viewport">
+                <div class="stepper-visual-large" id="vis-${wheelId}">
+                  ${s.visualHtml}
+                </div>
+                <div class="stepper-details" id="det-${wheelId}">
+                  <div class="stepper-stage-header">
+                    <span class="stepper-stage-tag" id="tag-${wheelId}">${s.tagHtml}</span>
+                  </div>
+                  <h4 class="stepper-stage-title" id="title-${wheelId}">${s.titleHtml}</h4>
+                  <p class="stepper-stage-desc" id="desc-${wheelId}">${s.descHtml}</p>
+                  <div class="stepper-stage-metric" id="metric-${wheelId}" style="${s.metricHtml && s.metricHtml.trim() ? '' : 'display:none;'}">${s.metricHtml}</div>
+                </div>
               </div>
-              <h4 class="stepper-stage-title" id="title-${wheelId}">${steps[0].titleHtml}</h4>
-              <p class="stepper-stage-desc" id="desc-${wheelId}">${steps[0].descHtml}</p>
-              <div class="stepper-stage-metric" id="metric-${wheelId}" style="${steps[0].metricHtml && steps[0].metricHtml.trim() ? '' : 'display:none;'}">${steps[0].metricHtml}</div>
-            </div>
-          </div>
-        `;
+            `;
+          } else if (currentVariant === 'pipeline') {
+            bodyEl.innerHTML = `
+              <div class="pipeline-rail-wrap">
+                <div class="pipeline-rail">
+                  ${steps.map((st, idx) => `
+                    <div class="pipeline-station ${idx === activeIdx ? 'active' : ''} ${idx < activeIdx ? 'completed' : ''}" data-idx="${idx}">
+                      <div class="pipeline-station-indicator">
+                        <span class="pipeline-station-dot"></span>
+                        <span class="pipeline-station-num">0${idx + 1}</span>
+                      </div>
+                      <span class="pipeline-station-label">${st.shortLabel}</span>
+                    </div>
+                    ${idx < total - 1 ? `<div class="pipeline-connector ${idx < activeIdx ? 'completed' : ''}">&rarr;</div>` : ''}
+                  `).join('')}
+                </div>
+              </div>
+              <div class="pipeline-stage-view">
+                <div class="pipeline-visual-frame" id="pipe-vis-${wheelId}">
+                  ${s.visualHtml}
+                </div>
+                <div class="pipeline-info-frame" id="pipe-info-${wheelId}">
+                  <div class="pipeline-header-row">
+                    <span class="pipeline-tag">${s.tagHtml}</span>
+                    <span class="pipeline-counter">STAGE 0${activeIdx + 1} / 0${total}</span>
+                  </div>
+                  <h4 class="pipeline-title">${s.titleHtml}</h4>
+                  <p class="pipeline-desc">${s.descHtml}</p>
+                  <div class="pipeline-metric" style="${s.metricHtml && s.metricHtml.trim() ? '' : 'display:none;'}">${s.metricHtml}</div>
+                </div>
+              </div>
+            `;
+          } else if (currentVariant === 'accordion') {
+            bodyEl.innerHTML = `
+              <div class="accordion-stack">
+                ${steps.map((st, idx) => `
+                  <div class="accordion-drawer ${idx === activeIdx ? 'open' : ''}" data-idx="${idx}">
+                    <button type="button" class="accordion-header" data-idx="${idx}">
+                      <div class="accordion-header-left">
+                        <span class="accordion-num">0${idx + 1}</span>
+                        <span class="accordion-tag">${st.shortLabel}</span>
+                        <span class="accordion-title">${st.titleHtml}</span>
+                      </div>
+                      <div class="accordion-header-right">
+                        ${st.metricHtml ? `<span class="accordion-mini-metric">${st.metricHtml}</span>` : ''}
+                        <span class="accordion-chevron">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                        </span>
+                      </div>
+                    </button>
+                    <div class="accordion-content">
+                      <div class="accordion-split">
+                        <div class="accordion-visual">
+                          ${st.visualHtml}
+                        </div>
+                        <div class="accordion-body">
+                          <p class="accordion-desc">${st.descHtml}</p>
+                          ${st.metricHtml ? `<div class="accordion-metric-badge">${st.metricHtml}</div>` : ''}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+          } else if (currentVariant === 'carousel') {
+            bodyEl.innerHTML = `
+              <div class="filmstrip-viewport" id="filmstrip-${wheelId}">
+                <div class="filmstrip-track">
+                  ${steps.map((st, idx) => `
+                    <div class="filmstrip-card ${idx === activeIdx ? 'active' : ''}" data-idx="${idx}">
+                      <div class="filmstrip-card-header">
+                        <span class="filmstrip-num">0${idx + 1}</span>
+                        <span class="filmstrip-tag">${st.shortLabel}</span>
+                      </div>
+                      <div class="filmstrip-visual">
+                        ${st.visualHtml}
+                      </div>
+                      <div class="filmstrip-card-title">${st.titleHtml}</div>
+                      <p class="filmstrip-card-desc">${st.descHtml}</p>
+                      ${st.metricHtml ? `<div class="filmstrip-card-metric">${st.metricHtml}</div>` : ''}
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            `;
+          } else if (currentVariant === 'grid') {
+            bodyEl.innerHTML = `
+              <div class="matrix-grid">
+                ${steps.map((st, idx) => `
+                  <div class="matrix-card">
+                    <div class="matrix-card-header">
+                      <span class="matrix-tag">${st.tagHtml}</span>
+                      <span class="matrix-num">0${idx + 1}</span>
+                    </div>
+                    <div class="matrix-card-title">${st.titleHtml}</div>
+                    <div class="matrix-visual">
+                      ${st.visualHtml}
+                    </div>
+                    <p class="matrix-desc">${st.descHtml}</p>
+                    ${st.metricHtml ? `<div class="matrix-metric">${st.metricHtml}</div>` : ''}
+                  </div>
+                `).join('')}
+              </div>
+            `;
+          }
 
-        grid.parentNode.insertBefore(viewer, grid);
-
-        let activeIdx = 0;
+          if (typeof renderMathInElement === 'function') {
+            renderMathInElement(bodyEl, {
+              delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false }
+              ],
+              throwOnError: false
+            });
+          }
+        }
 
         function updateView(idx) {
           activeIdx = (idx + total) % total;
-          const s = steps[activeIdx];
-
           const counterEl = document.getElementById(`counter-curr-${wheelId}`);
           if (counterEl) counterEl.textContent = `0${activeIdx + 1}`;
+          updateTopBarLeft();
+          renderVariantBody();
+        }
 
-          const pills = viewer.querySelectorAll('.stepper-pill');
-          pills.forEach((p, pIdx) => {
-            if (pIdx === activeIdx) {
-              p.classList.add('active');
-              p.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
-            } else {
-              p.classList.remove('active');
-            }
+        function setVariant(varName) {
+          currentVariant = varName;
+          const tabs = viewer.querySelectorAll('.variant-tab');
+          tabs.forEach(t => {
+            if (t.dataset.variant === varName) t.classList.add('active');
+            else t.classList.remove('active');
           });
+          updateTopBarLeft();
+          renderVariantBody();
+        }
 
-          const visEl = document.getElementById(`vis-${wheelId}`);
-          const detEl = document.getElementById(`det-${wheelId}`);
-          if (visEl) {
-            visEl.style.opacity = '0.35';
-            visEl.style.transform = 'scale(0.98)';
-            setTimeout(() => {
-              visEl.innerHTML = s.visualHtml;
-              visEl.style.opacity = '1';
-              visEl.style.transform = 'scale(1)';
-            }, 120);
+        // Event delegation for clicks inside viewer
+        viewer.addEventListener('click', (e) => {
+          const tabBtn = e.target.closest('.variant-tab');
+          if (tabBtn && tabBtn.dataset.variant) {
+            setVariant(tabBtn.dataset.variant);
+            return;
           }
-          if (detEl) {
-            detEl.style.opacity = '0.35';
-            setTimeout(() => {
-              const tagEl = document.getElementById(`tag-${wheelId}`);
-              const titleEl = document.getElementById(`title-${wheelId}`);
-              const descEl = document.getElementById(`desc-${wheelId}`);
-              const metricEl = document.getElementById(`metric-${wheelId}`);
-              if (tagEl) tagEl.innerHTML = s.tagHtml;
-              if (titleEl) titleEl.innerHTML = s.titleHtml;
-              if (descEl) descEl.innerHTML = s.descHtml;
-              if (metricEl) {
-                if (s.metricHtml && s.metricHtml.trim()) {
-                  metricEl.style.display = '';
-                  metricEl.innerHTML = s.metricHtml;
-                  if (typeof renderMathInElement === 'function') {
-                    renderMathInElement(metricEl, {
-                      delimiters: [
-                        { left: "$$", right: "$$", display: true },
-                        { left: "$", right: "$", display: false }
-                      ],
-                      throwOnError: false
-                    });
-                  }
-                } else {
-                  metricEl.style.display = 'none';
-                  metricEl.innerHTML = '';
-                }
+
+          const pillBtn = e.target.closest('.stepper-pill');
+          if (pillBtn && pillBtn.dataset.idx !== undefined) {
+            updateView(parseInt(pillBtn.dataset.idx, 10));
+            return;
+          }
+
+          const stationEl = e.target.closest('.pipeline-station');
+          if (stationEl && stationEl.dataset.idx !== undefined) {
+            updateView(parseInt(stationEl.dataset.idx, 10));
+            return;
+          }
+
+          const drawerHeader = e.target.closest('.accordion-header');
+          if (drawerHeader && drawerHeader.dataset.idx !== undefined) {
+            const dIdx = parseInt(drawerHeader.dataset.idx, 10);
+            const drawer = drawerHeader.closest('.accordion-drawer');
+            if (drawer) {
+              const isOpen = drawer.classList.contains('open');
+              if (isOpen && activeIdx === dIdx) {
+                drawer.classList.remove('open');
+              } else {
+                updateView(dIdx);
               }
-              detEl.style.opacity = '1';
-            }, 120);
+            }
+            return;
           }
-        }
 
-        const prevBtn = document.getElementById(`prev-${wheelId}`);
-        if (prevBtn) prevBtn.addEventListener('click', () => updateView(activeIdx - 1));
+          const filmCard = e.target.closest('.filmstrip-card');
+          if (filmCard && filmCard.dataset.idx !== undefined) {
+            updateView(parseInt(filmCard.dataset.idx, 10));
+            return;
+          }
 
-        const nextBtn = document.getElementById(`next-${wheelId}`);
-        if (nextBtn) nextBtn.addEventListener('click', () => updateView(activeIdx + 1));
+          const prevBtn = e.target.closest(`#prev-${wheelId}`);
+          if (prevBtn) {
+            updateView(activeIdx - 1);
+            return;
+          }
 
-        const pillsContainer = document.getElementById(`pills-${wheelId}`);
-        if (pillsContainer) {
-          pillsContainer.addEventListener('click', (e) => {
-            const btn = e.target.closest('.stepper-pill');
-            if (btn && btn.dataset.idx !== undefined) {
-              updateView(parseInt(btn.dataset.idx, 10));
-            }
-          });
-        }
-
-        const toggleBtn = document.getElementById(`toggle-${wheelId}`);
-        const toggleLabel = document.getElementById(`toggle-label-${wheelId}`);
-        let inGridView = false;
-        if (toggleBtn) {
-          toggleBtn.addEventListener('click', () => {
-            inGridView = !inGridView;
-            if (inGridView) {
-              grid.classList.remove('hidden-by-wheel');
-              const vp = viewer.querySelector('.stepper-stage-viewport');
-              if (vp) vp.style.display = 'none';
-              if (toggleLabel) toggleLabel.textContent = 'Steps';
-            } else {
-              grid.classList.add('hidden-by-wheel');
-              const vp = viewer.querySelector('.stepper-stage-viewport');
-              if (vp) vp.style.display = 'grid';
-              if (toggleLabel) toggleLabel.textContent = 'Grid';
-            }
-          });
-        }
+          const nextBtn = e.target.closest(`#next-${wheelId}`);
+          if (nextBtn) {
+            updateView(activeIdx + 1);
+            return;
+          }
+        });
 
         viewer.addEventListener('keydown', (e) => {
           if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
@@ -2169,21 +2921,9 @@
           }
         });
 
-        let touchStartX = 0;
-        const visEl = document.getElementById(`vis-${wheelId}`);
-        if (visEl) {
-          visEl.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX;
-          }, { passive: true });
-          visEl.addEventListener('touchend', (e) => {
-            const touchEndX = e.changedTouches[0].clientX;
-            const diffX = touchEndX - touchStartX;
-            if (Math.abs(diffX) > 40) {
-              if (diffX < 0) updateView(activeIdx + 1);
-              else updateView(activeIdx - 1);
-            }
-          }, { passive: true });
-        }
+        // Initialize display
+        updateTopBarLeft();
+        renderVariantBody();
       });
     }
 

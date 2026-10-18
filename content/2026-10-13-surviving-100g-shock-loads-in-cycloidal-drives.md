@@ -265,7 +265,7 @@
     <span class="schematic-title">FIG 03 — CYCLOIDAL TORQUE TRANSMISSION PIPELINE</span>
     <span class="schematic-subtitle">STEP-BY-STEP KINEMATIC CONVERSION &amp; REDUCTION TOPOLOGY</span>
   </div>
-  <div class="process-grid">
+  <div class="process-grid" data-variant="stepper">
     <div class="process-step-card">
       <div class="process-step-header">
         <span class="process-step-tag">STAGE 01: INPUT</span>

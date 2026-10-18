@@ -171,7 +171,7 @@
     <span class="schematic-title">FIG 03 — TEARDROP MULTI-LINK KINEMATIC DEPLOYMENT SEQUENCE</span>
     <span class="schematic-subtitle">4-STAGE KINEMATICS • &Delta;L = 1.42 mm SLIDING DISPLACEMENT</span>
   </div>
-  <div class="process-grid">
+  <div class="process-grid" data-variant="stepper">
     <div class="process-step-card">
       <div class="process-step-header">
         <span class="process-step-tag">STAGE 01: 180&deg; FLAT</span>

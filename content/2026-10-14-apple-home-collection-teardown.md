@@ -167,7 +167,7 @@
     <span class="schematic-title">FIG 04 — UWB SPATIAL RANGING &amp; ANGLE-OF-ARRIVAL (AOA) PIPELINE</span>
     <span class="schematic-subtitle">IEEE 802.15.4z • ±5 CM VECTOR BOUNDARY • ALIRO PROTOCOL</span>
   </div>
-  <div class="process-grid">
+  <div class="process-grid" data-variant="pipeline">
     <div class="process-step-card">
       <div class="process-step-header">
         <span class="process-step-tag">STAGE 01: TOF</span>
@@ -355,7 +355,7 @@
     <span class="schematic-title">FIG 09 — IN-WALL 1D THERMAL CONDUCTION PATHWAY</span>
     <span class="schematic-subtitle">POWER: 12.5W • ZERO AUDIBLE FANS • T_TOUCH &lt; 38°C</span>
   </div>
-  <div class="process-grid">
+  <div class="process-grid" data-variant="accordion">
     <div class="process-step-card">
       <div class="process-step-header">
         <span class="process-step-tag">STAGE 01: DIE</span>
