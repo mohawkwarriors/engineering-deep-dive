@@ -2053,7 +2053,7 @@
               </div>
               <h4 class="stepper-stage-title" id="title-${wheelId}">${steps[0].titleHtml}</h4>
               <p class="stepper-stage-desc" id="desc-${wheelId}">${steps[0].descHtml}</p>
-              <div class="stepper-stage-metric" id="metric-${wheelId}">${steps[0].metricHtml}</div>
+              <div class="stepper-stage-metric" id="metric-${wheelId}" style="${steps[0].metricHtml && steps[0].metricHtml.trim() ? '' : 'display:none;'}">${steps[0].metricHtml}</div>
             </div>
           </div>
         `;
@@ -2101,15 +2101,21 @@
               if (titleEl) titleEl.innerHTML = s.titleHtml;
               if (descEl) descEl.innerHTML = s.descHtml;
               if (metricEl) {
-                metricEl.innerHTML = s.metricHtml;
-                if (typeof renderMathInElement === 'function') {
-                  renderMathInElement(metricEl, {
-                    delimiters: [
-                      { left: "$$", right: "$$", display: true },
-                      { left: "$", right: "$", display: false }
-                    ],
-                    throwOnError: false
-                  });
+                if (s.metricHtml && s.metricHtml.trim()) {
+                  metricEl.style.display = '';
+                  metricEl.innerHTML = s.metricHtml;
+                  if (typeof renderMathInElement === 'function') {
+                    renderMathInElement(metricEl, {
+                      delimiters: [
+                        { left: "$$", right: "$$", display: true },
+                        { left: "$", right: "$", display: false }
+                      ],
+                      throwOnError: false
+                    });
+                  }
+                } else {
+                  metricEl.style.display = 'none';
+                  metricEl.innerHTML = '';
                 }
               }
               detEl.style.opacity = '1';

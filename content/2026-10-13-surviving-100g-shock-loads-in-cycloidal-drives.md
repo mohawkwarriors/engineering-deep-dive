@@ -267,43 +267,113 @@
   </div>
   <div class="process-grid">
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 01: INPUT</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 01: INPUT</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">High-Speed Motor Shaft</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <rect x="30" y="20" width="85" height="12" rx="2" fill="#64748B" fill-opacity="0.25" stroke="#64748B" stroke-width="1.5"/>
+          <rect x="45" y="18" width="16" height="4" rx="1" fill="#475569" stroke="#475569" stroke-width="1"/>
+          <path d="M 125 18 A 9 9 0 1 1 125 34" stroke="#2563EB" stroke-width="2" fill="none"/>
+          <polygon points="122,15 128,18 122,21" fill="#2563EB"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         Pure high-speed rotational energy (&omega;<sub>in</sub> = 3,000 RPM) enters via the central drive shaft, coupled directly to the input motor.
       </p>
+      <div class="process-step-metric">&omega;_{in} = 3,000 RPM &bull; Central Drive Shaft</div>
     </div>
 
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 02: ECCENTRIC</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 02: ECCENTRIC</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Dual Cam Orbital Translation</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <line x1="20" y1="26" x2="140" y2="26" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3,3"/>
+          <circle cx="65" cy="22" r="14" fill="#0284C7" fill-opacity="0.2" stroke="#0284C7" stroke-width="1.5"/>
+          <circle cx="95" cy="30" r="14" fill="#D97706" fill-opacity="0.2" stroke="#D97706" stroke-width="1.5"/>
+          <circle cx="65" cy="26" r="2" fill="#0284C7"/>
+          <circle cx="95" cy="26" r="2" fill="#D97706"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         Dual eccentric cam lobes offset by e = 1.50 mm and phased 180&deg; apart convert pure rotation into balanced high-frequency orbital epicyclic motion.
       </p>
+      <div class="process-step-metric">e = 1.50 mm &bull; 180&deg; Phased Balance</div>
     </div>
 
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 03: MESHING</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 03: MESHING</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Rolling Pin Multi-Tooth Contact</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <circle cx="50" cy="18" r="4.5" fill="#64748B" stroke="#334155" stroke-width="1.5"/>
+          <circle cx="80" cy="14" r="4.5" fill="#059669" stroke="#059669" stroke-width="1.5"/>
+          <circle cx="110" cy="18" r="4.5" fill="#64748B" stroke="#334155" stroke-width="1.5"/>
+          <path d="M 30 38 Q 80 20 130 38" stroke="#059669" stroke-width="2.5" fill="none"/>
+          <line x1="78" y1="22" x2="78" y2="30" stroke="#059669" stroke-width="2"/>
+          <polygon points="75,28 78,33 81,28" fill="#059669"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         Epitrochoidal disc lobes roll across stationary ring pins with 30% simultaneous contact, completely eliminating cantilever tooth bending fatigue.
       </p>
+      <div class="process-step-metric">30% Tooth Contact &bull; Pure Rolling Meshing</div>
     </div>
 
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 04: RATIO</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 04: RATIO</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Epicyclic Speed Reduction</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <circle cx="80" cy="26" r="20" stroke="#64748B" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
+          <circle cx="82" cy="24" r="14" fill="#6366F1" fill-opacity="0.2" stroke="#6366F1" stroke-width="1.5"/>
+          <circle cx="76" cy="22" r="3" fill="#FFFFFF" stroke="#6366F1" stroke-width="1"/>
+          <circle cx="88" cy="22" r="3" fill="#FFFFFF" stroke="#6366F1" stroke-width="1"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         With N - 1 disc lobes advancing against N ring pins, each full 360&deg; eccentric orbit drives the disc backward by exactly one lobe pitch (R = N - 1 : 1).
       </p>
+      <div class="process-step-metric">R = (N - 1) : 1 &bull; 1 Lobe / Orbit</div>
     </div>
 
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 05: OUTPUT</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 05: OUTPUT</span>
+        <span class="process-step-arrow">&bull;</span>
+      </div>
       <div class="process-step-title">Pure High-Torque Rotation</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <circle cx="80" cy="26" r="21" fill="#059669" fill-opacity="0.15" stroke="#059669" stroke-width="1.5"/>
+          <circle cx="70" cy="20" r="3.5" fill="#059669"/>
+          <circle cx="90" cy="20" r="3.5" fill="#059669"/>
+          <circle cx="70" cy="32" r="3.5" fill="#059669"/>
+          <circle cx="90" cy="32" r="3.5" fill="#059669"/>
+          <circle cx="80" cy="26" r="7" fill="#334155" stroke="#059669" stroke-width="1.5"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         Output flange drive pins cancel the 1.5 mm orbital wobbling, extracting pure, low-speed, shock-proof rotation (&tau;<sub>out</sub> &gt; 500 Nm).
       </p>
+      <div class="process-step-metric">&tau;_{out} &gt; 500 Nm &bull; 100G Shock Proof</div>
     </div>
   </div>
   <div class="schematic-caption">

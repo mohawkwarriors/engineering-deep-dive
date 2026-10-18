@@ -374,43 +374,115 @@
   </div>
   <div class="process-grid">
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 01: INTAKE</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 01: INTAKE</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Ambient Feedwater Intake</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <path d="M 30 12 L 30 40 Q 30 44 34 44 L 90 44 Q 94 44 94 40 L 94 12" stroke="#64748B" stroke-width="1.5" fill="none"/>
+          <path d="M 32 24 Q 45 22 62 24 Q 78 26 92 24 L 92 42 L 32 42 Z" fill="#0284C7" fill-opacity="0.25"/>
+          <rect x="94" y="24" width="36" height="8" rx="2" fill="#0284C7" stroke="#0284C7" stroke-width="1.5"/>
+          <line x1="130" y1="28" x2="148" y2="28" stroke="#0284C7" stroke-width="2"/>
+          <polygon points="146,25 152,28 146,31" fill="#0284C7"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         Fresh de-ionized water (18&deg;C, 1 bar, 50 ppm minerals) enters from the reservoir, filtered to prevent calcium scaling.
       </p>
+      <div class="process-step-metric">18&deg;C &bull; 1.0 bar &bull; 50 ppm TDS</div>
     </div>
 
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 02: PRESSURIZE</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 02: PRESSURIZE</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Rotary Vane Pressurization</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <circle cx="70" cy="26" r="18" stroke="#64748B" stroke-width="1.5" fill="none"/>
+          <circle cx="73" cy="26" r="11" stroke="#2563EB" stroke-width="1.5" fill="#2563EB" fill-opacity="0.2"/>
+          <line x1="73" y1="15" x2="73" y2="37" stroke="#2563EB" stroke-width="1.5"/>
+          <line x1="62" y1="26" x2="84" y2="26" stroke="#2563EB" stroke-width="1.5"/>
+          <line x1="88" y1="26" x2="135" y2="26" stroke="#DC2626" stroke-width="2.5"/>
+          <polygon points="133,22 140,26 133,30" fill="#DC2626"/>
+          <circle cx="112" cy="18" r="6" stroke="#DC2626" stroke-width="1" fill="#FEF2F2"/>
+          <line x1="112" y1="18" x2="115" y2="15" stroke="#DC2626" stroke-width="1.5"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         A balanced bypass rotary vane pump ramps pressure to an instantaneous, ripple-free 9.0 bars without vibratory oscillation.
       </p>
+      <div class="process-step-metric">9.0 bar &bull; Balanced Bypass &bull; Ripple-Free</div>
     </div>
 
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 03: PRE-HEAT</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 03: PRE-HEAT</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Steam Boiler HX Pre-Heating</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <rect x="35" y="10" width="90" height="32" rx="6" fill="#D97706" fill-opacity="0.15" stroke="#D97706" stroke-width="1.5"/>
+          <line x1="45" y1="16" x2="115" y2="16" stroke="#D97706" stroke-width="1" stroke-dasharray="2,2"/>
+          <path d="M 20 26 L 45 26 C 52 16, 58 36, 65 26 C 72 16, 78 36, 85 26 C 92 16, 98 36, 105 26 L 140 26" stroke="#EA580C" stroke-width="2.5" fill="none"/>
+          <polygon points="138,22 145,26 138,30" fill="#EA580C"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         Feedwater travels through a copper heat exchanger immersed in the 125&deg;C steam boiler, raising water temperature from 18&deg;C to 85&deg;C.
       </p>
+      <div class="process-step-metric">18&deg;C &rarr; 85&deg;C &bull; 125&deg;C Steam Jacket</div>
     </div>
 
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 04: ISOTHERM</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 04: ISOTHERM</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Saturated Brew Boiler PID</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <rect x="40" y="10" width="80" height="32" rx="4" fill="#0284C7" fill-opacity="0.15" stroke="#0284C7" stroke-width="1.5"/>
+          <path d="M 50 20 L 95 20 C 100 20, 100 32, 95 32 L 50 32" stroke="#DC2626" stroke-width="2" fill="none"/>
+          <line x1="65" y1="10" x2="65" y2="24" stroke="#059669" stroke-width="2"/>
+          <circle cx="65" cy="24" r="2.5" fill="#059669"/>
+          <line x1="120" y1="26" x2="145" y2="26" stroke="#0284C7" stroke-width="2.5"/>
+          <polygon points="143,22 150,26 143,30" fill="#0284C7"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         Pre-heated water enters the dedicated 1.8 L brew boiler, where a 10 Hz PID loop trims the final temperature to exactly 93.3&deg;C (&plusmn;0.1&deg;C).
       </p>
+      <div class="process-step-metric">93.3&deg;C &plusmn; 0.1&deg;C &bull; 10 Hz PID Loop</div>
     </div>
 
     <div class="process-step-card">
-      <div class="process-step-tag">STAGE 05: EXTRACT</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STAGE 05: EXTRACT</span>
+        <span class="process-step-arrow">&bull;</span>
+      </div>
       <div class="process-step-title">Saturated Group Delivery</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <path d="M 40 14 L 80 14 L 95 24 L 95 36 L 50 36 L 40 24 Z" fill="#D97706" fill-opacity="0.25" stroke="#D97706" stroke-width="1.5"/>
+          <line x1="60" y1="36" x2="90" y2="36" stroke="#475569" stroke-width="2"/>
+          <rect x="62" y="38" width="26" height="6" rx="1" fill="#78350F"/>
+          <path d="M 75 44 Q 75 48 75 51" stroke="#B45309" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
         The massive forged brass group head delivers isothermal water across the coffee puck, extracting 36g espresso in 30s with zero thermal dive.
       </p>
+      <div class="process-step-metric">36g in 30s &bull; 9.0 bar &bull; Zero Thermal Dive</div>
     </div>
   </div>
   <div class="schematic-caption">

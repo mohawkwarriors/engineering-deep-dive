@@ -536,6 +536,30 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     }
   }
 
+  // 3A-4. Strict structural & visual completeness check for process grids & step cards
+  const stepCardTokenRegex = /<div class="[^"]*(?:\s|^)process-step-card(?:\s|")[^"]*">/gi;
+  const stepCardIndices = [...html.matchAll(stepCardTokenRegex)].map(m => m.index);
+  for (let scIdx = 0; scIdx < stepCardIndices.length; scIdx++) {
+    const start = stepCardIndices[scIdx];
+    const nextStart = stepCardIndices[scIdx + 1] !== undefined ? stepCardIndices[scIdx + 1] : html.indexOf('schematic-caption', start);
+    const cardContent = html.slice(start, nextStart !== -1 ? nextStart : start + 3000);
+    if (!cardContent.includes('process-step-tag')) {
+      errors.push(`Process step card #${scIdx + 1} in ${fileLabel} missing mandatory .process-step-tag.`);
+    }
+    if (!cardContent.includes('process-step-title')) {
+      errors.push(`Process step card #${scIdx + 1} in ${fileLabel} missing mandatory .process-step-title.`);
+    }
+    if (!cardContent.includes('process-step-visual') || !cardContent.includes('<svg')) {
+      errors.push(`Process step card #${scIdx + 1} in ${fileLabel} missing mandatory .process-step-visual with SVG payload. Cards cannot be purely text as they render blank in the interactive stepper viewer.`);
+    }
+    if (!cardContent.includes('process-step-desc')) {
+      errors.push(`Process step card #${scIdx + 1} in ${fileLabel} missing mandatory .process-step-desc.`);
+    }
+    if (!cardContent.includes('process-step-metric')) {
+      errors.push(`Process step card #${scIdx + 1} in ${fileLabel} missing mandatory .process-step-metric.`);
+    }
+  }
+
   // 3B. Check tables for consistent .spec-table styling
   const tables = [...html.matchAll(/<table\b([^>]*)>([\s\S]*?)<\/table>/gi)];
   for (let tIdx = 0; tIdx < tables.length; tIdx++) {
