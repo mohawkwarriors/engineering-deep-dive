@@ -1,5 +1,5 @@
 <div class="meta-line">
-  <span>ISSUE #002</span><span>•</span><span class="archive-subject-tag sub-thermal">THERMAL</span><span>•</span><span id="read-time-badge">13 MIN READ</span>
+  <span>ISSUE #002</span><span>•</span><span class="archive-subject-tag sub-thermal">THERMAL</span><span>•</span><span id="read-time-badge">10 MIN READ</span>
 </div>
 
 <h1>Espresso Machine Boilers: Thermoblocks vs. Dual-Boiler PID Systems</h1>
@@ -16,6 +16,25 @@
     <span class="source-tag">IMAGE: HARDWARE TEARDOWN ARCHIVE</span>
   </figcaption>
 </figure>
+
+<div class="morning-brief">
+  <div class="morning-brief-tag">30-SECOND MORNING BRIEF // FIRST-PRINCIPLES OVERVIEW</div>
+  <div class="morning-brief-grid">
+    <div class="brief-col">
+      <div class="brief-label">THE PARADOX</div>
+      <div class="brief-val">Espresso requires 93.3&deg;C water stable within &plusmn;0.5&deg;C under 9 bar pressure, but flash-heating thermoblocks suffer severe 4&ndash;8&deg;C thermal crashes during shots.</div>
+    </div>
+    <div class="brief-col">
+      <div class="brief-label">THE SECRET</div>
+      <div class="brief-val">Saturated group heads with continuous thermosiphon convection eliminate gradients by coupling extraction water directly to a heavy forged brass thermal reservoir.</div>
+    </div>
+    <div class="brief-col">
+      <div class="brief-label">KEY METRIC</div>
+      <div class="brief-val"><strong>&plusmn;0.3&deg;C Shot Stability &bull; 0.55 kg CW510L Brass Thermal Mass</strong></div>
+    </div>
+  </div>
+</div>
+
 
 <h2 id="section-thermal-imperative">1. The Thermodynamic Challenge: Controlling 93.3°C Water Under Pressure</h2>
 <p>

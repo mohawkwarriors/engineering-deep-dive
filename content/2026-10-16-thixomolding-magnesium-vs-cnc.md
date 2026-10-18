@@ -1,5 +1,5 @@
 <div class="meta-line">
-  <span>ISSUE #003</span><span>•</span><span class="archive-subject-tag sub-manufacturing">MANUFACTURING</span><span>•</span><span id="read-time-badge">15 MIN READ</span>
+  <span>ISSUE #003</span><span>•</span><span class="archive-subject-tag sub-manufacturing">MANUFACTURING</span><span>•</span><span id="read-time-badge">12 MIN READ</span>
 </div>
 
 <h1>How Laptops Get Featherweight Metal Shells</h1>
@@ -17,6 +17,25 @@
     <span class="source-tag">COMMONS TEARDOWN ARCHIVE</span>
   </figcaption>
 </figure>
+
+<div class="morning-brief">
+  <div class="morning-brief-tag">30-SECOND MORNING BRIEF // FIRST-PRINCIPLES OVERVIEW</div>
+  <div class="morning-brief-grid">
+    <div class="brief-col">
+      <div class="brief-label">THE PARADOX</div>
+      <div class="brief-val">Laptop chassis demand sub-millimeter thickness with extreme torsional stiffness, but CNC hogging wastes 85% of billet and die-casting causes turbulent gas blisters.</div>
+    </div>
+    <div class="brief-col">
+      <div class="brief-label">THE SECRET</div>
+      <div class="brief-val">Semi-solid thixomolding mechanically shears magnesium crystals into spherical &alpha;-Mg rosettes, allowing the metal to inject like soft-serve at 5.5 m/s with zero porosity.</div>
+    </div>
+    <div class="brief-col">
+      <div class="brief-label">KEY METRIC</div>
+      <div class="brief-val"><strong>0.45 mm Wall Thickness &bull; 68% Cost Reduction vs CNC</strong></div>
+    </div>
+  </div>
+</div>
+
 
 <h2 id="section-thin-wall-imperative">1. The Structural Challenge: Sub-Millimeter Stiffness in Mobile Computing</h2>
 <p>
@@ -59,50 +78,109 @@
     <span class="schematic-subtitle">CHIP FEEDSTOCK &rarr; UNIBODY ENCLOSURE</span>
   </div>
   <div class="process-grid">
-    
     <div class="process-step-card">
-      <div class="process-step-tag">STEP 01: FEED</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STEP 01: FEED</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Argon Hopper Purge</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <path d="M 60 14 L 100 14 L 88 38 L 72 38 Z" fill="#64748B" fill-opacity="0.25" stroke="#64748B" stroke-width="1.5"/>
+          <circle cx="76" cy="22" r="3" fill="#D97706"/>
+          <circle cx="84" cy="24" r="3" fill="#78716C"/>
+          <circle cx="80" cy="30" r="2.5" fill="#D97706"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
-        Cold 1–4 mm AZ91D magnesium alloy chips gravity-feed into a sealed volumetric hopper purged with inert argon gas (O<sub>2</sub> &lt; 50 ppm) to prevent spontaneous melt combustion.
+        Cold 1–4 mm AZ91D magnesium chips gravity-feed into a sealed volumetric hopper purged with inert argon gas (O<sub>2</sub> &lt; 50 ppm) to prevent spontaneous combustion.
       </p>
+      <div class="process-step-metric">O_2 &lt; 50 ppm &bull; Argon Inert</div>
     </div>
-
     <div class="process-step-card">
-      <div class="process-step-tag">STEP 02: SHEAR</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STEP 02: SHEAR</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Slurry Rosette Milling</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <rect x="25" y="18" width="110" height="16" rx="2" fill="#EA580C" fill-opacity="0.2" stroke="#EA580C" stroke-width="1.5"/>
+          <circle cx="55" cy="26" r="5" fill="#EA580C"/>
+          <circle cx="80" cy="26" r="5" fill="#EA580C"/>
+          <circle cx="105" cy="26" r="5" fill="#EA580C"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
-        A reciprocating screw inside a 3-zone bimetallic barrel (350°C &rarr; 520°C &rarr; 575°C) shears dendritic crystal arms as they freeze, producing spherical &alpha;-Mg rosettes in eutectic liquid ($f_s \approx 0.12 - 0.18$).
+        A reciprocating screw inside a 3-zone barrel (350&deg;C &rarr; 575&deg;C) shears dendritic crystals into spherical &alpha;-Mg rosettes suspended in eutectic liquid.
       </p>
+      <div class="process-step-metric">f_s &approx; 0.12 - 0.18 &bull; 575&deg;C</div>
     </div>
-
     <div class="process-step-card">
-      <div class="process-step-tag">STEP 03: INJECT</div>
-      <div class="process-step-title">High-Speed Hydraulic Surge</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STEP 03: INJECT</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
+      <div class="process-step-title">Hydraulic Surge Injection</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <path d="M 25 26 L 115 26" stroke="#DC2626" stroke-width="3"/>
+          <polygon points="115,21 125,26 115,31" fill="#DC2626"/>
+          <rect x="125" y="16" width="15" height="20" rx="1" fill="#DC2626" fill-opacity="0.3"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
-        Nitrogen accumulators surge the screw forward at 5.5 m/s with 120 MPa (1,200 bar) pressure, driving a cohesive laminar wave across the 0.50 mm cavity in 14–18 milliseconds.
+        Nitrogen accumulators surge the screw forward at 5.5 m/s with 120 MPa pressure, driving a cohesive laminar slurry wave across the 0.50 mm cavity in 16 milliseconds.
       </p>
+      <div class="process-step-metric">v = 5.5 m/s &bull; P = 120 MPa</div>
     </div>
-
     <div class="process-step-card">
-      <div class="process-step-tag">STEP 04: SOLIDIFY</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STEP 04: SOLIDIFY</span>
+        <span class="process-step-arrow">&rarr;</span>
+      </div>
       <div class="process-step-title">Conformal Die Chilling</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <rect x="35" y="14" width="90" height="24" rx="3" fill="#2563EB" fill-opacity="0.25" stroke="#2563EB" stroke-width="1.5"/>
+          <line x1="45" y1="26" x2="115" y2="26" stroke="#2563EB" stroke-width="2" stroke-dasharray="3,3"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
-        <span class="tangent-term" data-tangent="dievar_steel">Uddeholm Dievar</span> (a premium hot-work chromium-molybdenum tool steel engineered to resist thermal fatigue cracking under rapid cycle heating) molds with 210°C synthetic oil channels prevent premature freezing. Thin-wall parts cool with &lt;1.5% volumetric shrinkage and &lt;0.2% gas porosity.
+        Uddeholm Dievar hot-work steel tooling chilled with 210&deg;C synthetic oil channels prevents premature freeze, yielding &lt;0.2% gas porosity without blisters.
       </p>
+      <div class="process-step-metric">Dievar Steel &bull; &lt;0.2% Porosity</div>
     </div>
-
     <div class="process-step-card">
-      <div class="process-step-tag">STEP 05: PASSIVATE</div>
-      <div class="process-step-title">CNC Trim & MAO Armor</div>
+      <div class="process-step-header">
+        <span class="process-step-tag">STEP 05: PASSIVATE</span>
+        <span class="process-step-arrow">&bull;</span>
+      </div>
+      <div class="process-step-title">CNC Trim &amp; MAO Armor</div>
+      <div class="process-step-visual">
+        <svg viewBox="0 0 160 52" fill="none" class="flowchart-mini-svg">
+          <rect width="160" height="52" rx="4" class="svg-canvas-bg"/>
+          <rect x="30" y="18" width="100" height="16" rx="2" fill="#059669" fill-opacity="0.3" stroke="#059669" stroke-width="1.5"/>
+          <circle cx="80" cy="26" r="4" fill="#059669"/>
+        </svg>
+      </div>
       <p class="process-step-desc">
-        A 90-second secondary CNC cleanup finishes hinge threads and cosmetic chamfers, followed by Micro-Arc Oxidation (MAO) growing a 12 &mu;m ceramic MgAl<sub>2</sub>O<sub>4</sub> spinel barrier.
+        Secondary 90-second CNC cleanup cuts hinge threads, followed by Micro-Arc Oxidation growing a 12 &mu;m ceramic MgAl<sub>2</sub>O<sub>4</sub> spinel hardness barrier.
       </p>
+      <div class="process-step-metric">12 &mu;m MAO &bull; Ceramic Spinel</div>
     </div>
-
   </div>
   <div class="schematic-caption">
     <span><strong>FIG 02 — PROCESS ARCHITECTURE:</strong> The 5-stage automated thixomolding sequence transforming chipped magnesium granules directly into ultra-thin near-net-shape structural laptop enclosures in an 18-second cycle.</span>
+    <span class="source-tag">FLOWCHART 01</span>
+  </div>
+</div>
+  <div class="schematic-caption">
+    <span><strong>FIG 03 — PROCESS ARCHITECTURE:</strong> The 5-stage automated thixomolding sequence transforming chipped magnesium granules directly into ultra-thin near-net-shape structural laptop enclosures in an 18-second cycle.</span>
     <span class="source-tag">FLOWCHART 01</span>
   </div>
 </div>
@@ -398,7 +476,7 @@
     </svg>
   </div>
   <div class="schematic-caption">
-    <span><strong>FIG 03 — RECIPROCATING SCREW THIXOMOLDER:</strong> Vector CAD cutaway of the Japan Steel Works (JSW) reciprocating screw thixomolding barrel, illustrating argon chip feeding, progressive shear-thinning thermal zones, and the 120 MPa hydraulic injection accumulator.</span>
+    <span><strong>FIG 04 — RECIPROCATING SCREW THIXOMOLDER:</strong> Vector CAD cutaway of the Japan Steel Works (JSW) reciprocating screw thixomolding barrel, illustrating argon chip feeding, progressive shear-thinning thermal zones, and the 120 MPa hydraulic injection accumulator.</span>
     <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
   </div>
 </div>
@@ -534,7 +612,7 @@
   </div>
 
   <div class="schematic-caption">
-    <span><strong>FIG 04 — METALLURGICAL GRAIN STRUCTURE:</strong> Scanning electron comparison illustrating why thixomolded magnesium achieves pore-free structural integrity compared to conventional die-casting gas cavities.</span>
+    <span><strong>FIG 05 — METALLURGICAL GRAIN STRUCTURE:</strong> Scanning electron comparison illustrating why thixomolded magnesium achieves pore-free structural integrity compared to conventional die-casting gas cavities.</span>
     <span class="source-tag">SCHEMATIC: SEM ARCHIVE</span>
   </div>
 </div>

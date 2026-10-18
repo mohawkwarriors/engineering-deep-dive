@@ -1,5 +1,5 @@
 <div class="meta-line">
-  <span>ISSUE #000</span><span>•</span><span class="archive-subject-tag sub-mechanisms">MECHANISMS</span><span>•</span><span id="read-time-badge">14 MIN READ</span>
+  <span>ISSUE #000</span><span>•</span><span class="archive-subject-tag sub-mechanisms">MECHANISMS</span><span>•</span><span id="read-time-badge">10 MIN READ</span>
 </div>
 
 <h1>Surviving 100G Shock Loads in Cycloidal Drives</h1>
@@ -16,6 +16,25 @@
     <span class="source-tag">IMAGE: COMMONS TEARDOWN ARCHIVE</span>
   </figcaption>
 </figure>
+
+<div class="morning-brief">
+  <div class="morning-brief-tag">30-SECOND MORNING BRIEF // FIRST-PRINCIPLES OVERVIEW</div>
+  <div class="morning-brief-grid">
+    <div class="brief-col">
+      <div class="brief-label">THE PARADOX</div>
+      <div class="brief-val">Involute gear teeth act as structural cantilevers under shock, suffering catastrophic bending shear fractures under 100G sudden impacts.</div>
+    </div>
+    <div class="brief-col">
+      <div class="brief-label">THE SECRET</div>
+      <div class="brief-val">Epitrochoidal cycloidal discs engage &sim;30% of pin teeth simultaneously in pure rolling compression, dispersing shock loads across dozens of contact zones.</div>
+    </div>
+    <div class="brief-col">
+      <div class="brief-label">KEY METRIC</div>
+      <div class="brief-val"><strong>500% Shock Load Rating &bull; Zero Backlash (&lt;1 arcmin)</strong></div>
+    </div>
+  </div>
+</div>
+
 
 <h2 id="section-shock-paradox">1. The Shock Load Paradox: Why Involute Gear Teeth Shear at 100G</h2>
 <p>

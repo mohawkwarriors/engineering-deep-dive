@@ -1,5 +1,5 @@
 <div class="meta-line">
-  <span>ISSUE #001</span><span>•</span><span class="archive-subject-tag sub-product-dives">PRODUCT DIVES</span><span>•</span><span id="read-time-badge">14 MIN READ</span>
+  <span>ISSUE #001</span><span>•</span><span class="archive-subject-tag sub-product-dives">PRODUCT DIVES</span><span>•</span><span id="read-time-badge">11 MIN READ</span>
 </div>
 
 <h1>Inside the Apple Home Collection: The Complete Engineering Teardown & JDM Architecture</h1>
@@ -277,11 +277,7 @@
     <span class="source-tag">PIPELINE: IEEE 802.15.4Z</span>
   </div>
 </div>
-  <div class="schematic-caption">
-    <span><strong>FIG 05 — SPATIAL RANGING PIPELINE:</strong> The 4-stage IEEE 802.15.4z UWB localization sequence combining Time-of-Flight ranging with dual-channel Angle-of-Arrival (AoA) phase differentiation to eliminate false unlocks from interior foyer footsteps.</span>
-    <span class="source-tag">CAD ARCHIVE</span>
-  </div>
-</div>
+
 
 
 <p>
@@ -295,7 +291,7 @@
     <img referrerpolicy="no-referrer" src="images/lg-video-doorbell.jpg" alt="LG Video Doorbell Wired with Dual Optics" />
   </div>
   <figcaption>
-    <span><strong>FIG 06 — LG VIDEO DOORBELL (WIRED):</strong> Dual-lens optical split separating the 2.5K upper visitor camera from the 45° downward-canted package camera.</span>
+    <span><strong>FIG 05 — LG VIDEO DOORBELL (WIRED):</strong> Dual-lens optical split separating the 2.5K upper visitor camera from the 45° downward-canted package camera.</span>
     <span class="source-tag">IMAGE: LG ELECTRONICS / APPLE HOME COLLECTION</span>
   </figcaption>
 </figure>
@@ -316,7 +312,7 @@
     <img referrerpolicy="no-referrer" src="images/lg-indoor-cam.jpg" alt="LG Indoor Security Camera with Motorized Privacy Gimbal" />
   </div>
   <figcaption>
-    <span><strong>FIG 07 — LG INDOOR SECURITY CAM:</strong> Motorized dual-axis pan/tilt gimbal with hardware-enforced 95° downward privacy rotation into an aluminum light-absorbing shroud.</span>
+    <span><strong>FIG 06 — LG INDOOR SECURITY CAM:</strong> Motorized dual-axis pan/tilt gimbal with hardware-enforced 95° downward privacy rotation into an aluminum light-absorbing shroud.</span>
     <span class="source-tag">IMAGE: LG ELECTRONICS / APPLE HOME COLLECTION</span>
   </figcaption>
 </figure>
@@ -337,7 +333,7 @@
     <img referrerpolicy="no-referrer" src="images/lg-floodlight-cam.jpg" alt="LG Floodlight Security Camera with Articulated LED Outriggers" />
   </div>
   <figcaption>
-    <span><strong>FIG 08 — LG FLOODLIGHT SECURITY CAM:</strong> Dual 2,000-lumen articulated COB LED floodlights mounted on die-cast aluminum convective heatsink outriggers.</span>
+    <span><strong>FIG 07 — LG FLOODLIGHT SECURITY CAM:</strong> Dual 2,000-lumen articulated COB LED floodlights mounted on die-cast aluminum convective heatsink outriggers.</span>
     <span class="source-tag">IMAGE: LG ELECTRONICS / APPLE HOME COLLECTION</span>
   </figcaption>
 </figure>
@@ -358,7 +354,7 @@
     <img referrerpolicy="no-referrer" src="images/lg-smart-thermostat.jpg" alt="LG Smart Thermostat Dial" />
   </div>
   <figcaption>
-    <span><strong>FIG 09 — LG & SCHNEIDER SMART THERMOSTATS:</strong> Circular dial (LG) and square panel (Schneider) climate controls featuring through-glass 60 GHz FMCW radar and active power stealing.</span>
+    <span><strong>FIG 08 — LG & SCHNEIDER SMART THERMOSTATS:</strong> Circular dial (LG) and square panel (Schneider) climate controls featuring through-glass 60 GHz FMCW radar and active power stealing.</span>
     <span class="source-tag">IMAGE: LG ELECTRONICS / SCHNEIDER ELECTRIC</span>
   </figcaption>
 </figure>
@@ -460,12 +456,12 @@
     </div>
   </div>
   <div class="schematic-caption">
-    <span><strong>FIG 10 — IN-WALL CONDUCTION ARCHITECTURE:</strong> Thermal dissipation pathway for the flush in-wall HomeView command center, routing 12.5W of peak APU flux through a cast A380 chassis into residential drywall ballast.</span>
+    <span><strong>FIG 09 — IN-WALL CONDUCTION ARCHITECTURE:</strong> Thermal dissipation pathway for the flush in-wall HomeView command center, routing 12.5W of peak APU flux through a cast A380 chassis into residential drywall ballast.</span>
     <span class="source-tag">THERMAL CAD: APPLE HOME COLLECTION</span>
   </div>
 </div>
   <div class="schematic-caption">
-    <span><strong>FIG 11 — IN-WALL CONDUCTION ARCHITECTURE:</strong> 1D thermal dissipation sequence conducting waste heat from the A18 silicon die into perimeter drywall clamping flanges to sustain sub-38°C touch temperatures without fans.</span>
+    <span><strong>FIG 10 — IN-WALL CONDUCTION ARCHITECTURE:</strong> 1D thermal dissipation sequence conducting waste heat from the A18 silicon die into perimeter drywall clamping flanges to sustain sub-38°C touch temperatures without fans.</span>
     <span class="source-tag">THERMAL ARCHIVE</span>
   </div>
 </div>

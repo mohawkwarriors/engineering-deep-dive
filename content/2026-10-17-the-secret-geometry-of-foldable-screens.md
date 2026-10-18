@@ -1,5 +1,5 @@
 <div class="meta-line">
-  <span>ISSUE #004</span><span>•</span><span class="archive-subject-tag sub-product-dives">PRODUCT DIVES</span><span>•</span><span id="read-time-badge">14 MIN READ</span>
+  <span>ISSUE #004</span><span>•</span><span class="archive-subject-tag sub-product-dives">PRODUCT DIVES</span><span>•</span><span id="read-time-badge">10 MIN READ</span>
 </div>
 
 <h1>The Secret Geometry of Foldable Screens</h1>
