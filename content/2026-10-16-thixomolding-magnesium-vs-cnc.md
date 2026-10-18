@@ -18,25 +18,6 @@
   </figcaption>
 </figure>
 
-<div class="morning-brief">
-  <div class="morning-brief-tag">30-SECOND MORNING BRIEF // FIRST-PRINCIPLES OVERVIEW</div>
-  <div class="morning-brief-grid">
-    <div class="brief-col">
-      <div class="brief-label">THE PARADOX</div>
-      <div class="brief-val">Laptop chassis demand sub-millimeter thickness with extreme torsional stiffness, but CNC hogging wastes 85% of billet and die-casting causes turbulent gas blisters.</div>
-    </div>
-    <div class="brief-col">
-      <div class="brief-label">THE SECRET</div>
-      <div class="brief-val">Semi-solid thixomolding mechanically shears magnesium crystals into spherical &alpha;-Mg rosettes, allowing the metal to inject like soft-serve at 5.5 m/s with zero porosity.</div>
-    </div>
-    <div class="brief-col">
-      <div class="brief-label">KEY METRIC</div>
-      <div class="brief-val"><strong>0.45 mm Wall Thickness &bull; 68% Cost Reduction vs CNC</strong></div>
-    </div>
-  </div>
-</div>
-
-
 <h2 id="section-thin-wall-imperative">1. The Structural Challenge: Sub-Millimeter Stiffness in Mobile Computing</h2>
 <p>
   Ultra-portable hardware—from flagship ultrabooks to VR headset frames—faces an uncompromising mechanical contradiction. Industrial design demands thinner chassis walls (often dropping below <strong>0.60 mm</strong>) to conserve internal stack height for high-capacity battery pouches, vapor chambers, and keyboard travel. Simultaneously, reliability engineering imposes strict stiffness floors: an enclosure must resist torsional flex under single-handed palm-rest pick-up, survive 4-foot corner drops without crushing internal logic boards, and feel unyielding in the hand.

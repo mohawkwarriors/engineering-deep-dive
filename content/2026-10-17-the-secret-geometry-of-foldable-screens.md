@@ -18,24 +18,6 @@
   </figcaption>
 </figure>
 
-<div class="morning-brief">
-  <div class="morning-brief-tag">30-SECOND MORNING BRIEF // FIRST-PRINCIPLES OVERVIEW</div>
-  <div class="morning-brief-grid">
-    <div class="brief-col">
-      <div class="brief-label">THE PARADOX</div>
-      <div class="brief-val">Bending ultra-thin glass (UTG) like a folded piece of paper creates an acute 1.25 mm radius, generating 16.8% tensile strain that shatters glass in under 5,000 cycles.</div>
-    </div>
-    <div class="brief-col">
-      <div class="brief-label">THE SECRET</div>
-      <div class="brief-val">The teardrop hinge: internal floating support wings drop 1.35 mm downward, allowing the screen to balloon into a generous 3.45 mm Euler clothoid cavity with zero outer gap.</div>
-    </div>
-    <div class="brief-col">
-      <div class="brief-label">KEY METRIC</div>
-      <div class="brief-val"><strong>Strain drops from 16.8% to 1.08% (&gt;400,000 fold cycles)</strong></div>
-    </div>
-  </div>
-</div>
-
 <h2 id="section-neutral-axis-physics">1. The Neutral Axis Dilemma & Beam Bending Mechanics</h2>
 <p>
   A foldable smartphone is an engineering paradox: it demands that brittle silicate glass, copper foil circuitry, and optically clear polymers withstand hundreds of thousands of sharp $180^\circ$ bends without shattering, delaminating, or forming a permanent plastic trench.

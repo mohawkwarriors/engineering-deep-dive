@@ -18,25 +18,6 @@
   </figcaption>
 </figure>
 
-<div class="morning-brief">
-  <div class="morning-brief-tag">30-SECOND MORNING BRIEF // FIRST-PRINCIPLES OVERVIEW</div>
-  <div class="morning-brief-grid">
-    <div class="brief-col">
-      <div class="brief-label">THE PARADOX</div>
-      <div class="brief-val">How to build a seamless luxury smart home ecosystem without taking on low-margin hardware manufacturing or liability for legacy 24V furnace wiring.</div>
-    </div>
-    <div class="brief-col">
-      <div class="brief-label">THE SECRET</div>
-      <div class="brief-val">A JDM partnership with LG and Schneider: Apple dictates custom silicon, industrial design, and Thread/Matter protocols while partners absorb supply chain and warranty risk.</div>
-    </div>
-    <div class="brief-col">
-      <div class="brief-label">KEY METRIC</div>
-      <div class="brief-val"><strong>&plusmn;5 cm UWB Vector Gating &bull; 0 Fans / In-Wall Conduction</strong></div>
-    </div>
-  </div>
-</div>
-
-
 <h2 id="section-news-overview">1. The Big Picture: What Apple Just Announced</h2>
 <p>
   For more than a decade, Apple’s smart home strategy suffered from a fatal hardware gap: Apple controlled the brains (Apple TV, HomePod, and the Apple Home app), but left physical accessories entirely to third-party manufacturers. This fragmented ecosystem forced customers into a frustrating labyrinth of separate companion apps, mandatory third-party cloud logins, unreliable QR-code setups, and mismatched plastic aesthetics. While Google acquired Nest and Amazon acquired Ring and Blink to control their physical hardware footprint, Apple remained confined to the software orchestration layer.

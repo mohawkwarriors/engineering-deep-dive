@@ -17,25 +17,6 @@
   </figcaption>
 </figure>
 
-<div class="morning-brief">
-  <div class="morning-brief-tag">30-SECOND MORNING BRIEF // FIRST-PRINCIPLES OVERVIEW</div>
-  <div class="morning-brief-grid">
-    <div class="brief-col">
-      <div class="brief-label">THE PARADOX</div>
-      <div class="brief-val">Involute gear teeth act as structural cantilevers under shock, suffering catastrophic bending shear fractures under 100G sudden impacts.</div>
-    </div>
-    <div class="brief-col">
-      <div class="brief-label">THE SECRET</div>
-      <div class="brief-val">Epitrochoidal cycloidal discs engage &sim;30% of pin teeth simultaneously in pure rolling compression, dispersing shock loads across dozens of contact zones.</div>
-    </div>
-    <div class="brief-col">
-      <div class="brief-label">KEY METRIC</div>
-      <div class="brief-val"><strong>500% Shock Load Rating &bull; Zero Backlash (&lt;1 arcmin)</strong></div>
-    </div>
-  </div>
-</div>
-
-
 <h2 id="section-shock-paradox">1. The Shock Load Paradox: Why Involute Gear Teeth Shear at 100G</h2>
 <p>
   In precision robotics, aerospace flight-surface actuators, and legged robotic quadruped limbs, actuation systems routinely encounter extreme kinetic shock loads. When a 45-kilogram humanoid or quadruped lands dynamically on concrete, or when an industrial articulated arm experiences an emergency stop collision at 2.5 m/s, ground reaction forces propagate backward into the joint gearbox at deceleration rates exceeding <strong>50G to 100G</strong>.
