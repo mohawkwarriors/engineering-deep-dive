@@ -362,6 +362,30 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     }
   }
 
+  // 3A-3. Strict structural & alignment check for comparison grids
+  const cardTokenRegex = /<div class="[^"]*(?:\s|^)comparison-card(?:\s|")[^"]*">/gi;
+  const cardIndices = [...html.matchAll(cardTokenRegex)].map(m => m.index);
+  for (let cIdx = 0; cIdx < cardIndices.length; cIdx++) {
+    const start = cardIndices[cIdx];
+    const nextStart = cardIndices[cIdx + 1] !== undefined ? cardIndices[cIdx + 1] : html.indexOf('schematic-caption', start);
+    const cardContent = html.slice(start, nextStart !== -1 ? nextStart : start + 3000);
+    if (!cardContent.includes('comparison-card-tag')) {
+      errors.push(`Comparison card #${cIdx + 1} in ${fileLabel} missing mandatory .comparison-card-tag for row alignment.`);
+    }
+    if (!cardContent.includes('comparison-card-title')) {
+      errors.push(`Comparison card #${cIdx + 1} in ${fileLabel} missing mandatory .comparison-card-title for row alignment.`);
+    }
+    if (!cardContent.includes('comparison-visual')) {
+      errors.push(`Comparison card #${cIdx + 1} in ${fileLabel} missing mandatory .comparison-visual.`);
+    }
+    if (!cardContent.includes('comparison-metric-pill')) {
+      errors.push(`Comparison card #${cIdx + 1} in ${fileLabel} missing mandatory .comparison-metric-pill.`);
+    }
+    if (!cardContent.includes('comparison-consequence')) {
+      errors.push(`Comparison card #${cIdx + 1} in ${fileLabel} missing mandatory .comparison-consequence.`);
+    }
+  }
+
   // 3B. Check tables for consistent .spec-table styling
   const tables = [...html.matchAll(/<table\b([^>]*)>([\s\S]*?)<\/table>/gi)];
   for (let tIdx = 0; tIdx < tables.length; tIdx++) {
