@@ -116,12 +116,10 @@ export function autoSanitizeArticleHtml(html) {
     let formula = displayMath !== undefined ? displayMath : inlineMath;
     const isDisplay = displayMath !== undefined;
 
-    // Clean raw tabs
+    // Clean raw tabs and literal \t escapes in math
     formula = formula.replace(/\t+/g, ' ');
-
-    // Clean accidental \t artifacts
-    formula = formula.replace(/(?:\\+t)+\s*\\*text\{/g, '\\text{');
-    formula = formula.replace(/(?:\\+t)+\s*/g, ' ');
+    formula = formula.replace(/(?:\\t)+\s*(?=\\text)/g, '');
+    formula = formula.replace(/\t+(?=\\text)/g, '');
 
     // Clean micrometer units ($25\,\mu\text{m}$, $4\,\mu\text{m}$, etc.)
     formula = formula.replace(/(&lt;|<|>|\\pm|\approx|=|\\le|\\ge)?\s*(\d+(?:\.\d+)?)\s*(?:,\\|,|\\,)?\s*\\+mu(?:\s|\\|t)*text\{m\}/g, (m, op, num) => {
@@ -130,23 +128,24 @@ export function autoSanitizeArticleHtml(html) {
     });
     formula = formula.replace(/(\d+(?:\.\d+)?)\s*(?:\\text\{\s*to\s*\}|to)\s*(\d+(?:\.\d+)?)\s*(?:\\;|\\,)?\s*\\+mu(?:\s|\\|t)*text\{m\}/g, '$1\\text{ to }$2\\,\\mu\\text{m}');
     formula = formula.replace(/\\+mu(?:\s|\\|t)*text\{m\}/g, '\\mu\\text{m}');
-    formula = formula.replace(/\\mu\s+\\text\{m\}/g, '\\mu\\text{m}');
+    formula = formula.replace(/\\mu\s*\\text\{\s*m\s*\}/g, '\\mu\\text{m}');
+    formula = formula.replace(/\\mu\s+m\b/g, '\\mu\\text{m}');
     formula = formula.replace(/\\;\s*\\mu\\text\{m\}/g, '\\,\\mu\\text{m}');
     formula = formula.replace(/\\{2,}mu/g, '\\mu');
 
-    // Clean Greek letters & symbols
-    formula = formula.replace(/(^|[^\\])heta\b/g, '$1\\theta');
+    // Clean Greek letters & symbols safely
+    formula = formula.replace(/(?<![\\a-zA-Z])theta\b/g, '\\theta');
     formula = formula.replace(/\\\s+theta\b/g, '\\theta');
     formula = formula.replace(/(?<=\W)\s+\\theta\b/g, '\\theta');
     formula = formula.replace(/\(\s*\\theta\s*\)/g, '(\\theta)');
     formula = formula.replace(/d\s*\\theta/g, 'd\\theta');
     formula = formula.replace(/\\sin\s*\\theta/g, '\\sin\\theta');
-    formula = formula.replace(/(^|[^\\])imes\b/g, '$1\\times');
+    formula = formula.replace(/(?<![\\a-zA-Z])times\b/g, '\\times');
     formula = formula.replace(/\s{2,}\\times/g, ' \\times');
     formula = formula.replace(/\\times\s{2,}/g, '\\times ');
 
-    // Clean \text commands and subscripts
-    formula = formula.replace(/(^|[^\\])ext\{/g, '$1\\text{');
+    // Clean \text commands and subscripts safely
+    formula = formula.replace(/(?<![\\a-zA-Z])text\{/g, '\\text{');
     formula = formula.replace(/\\text\{\s+/g, '\\text{');
     formula = formula.replace(/_\{\s*\\text\{\s*([\w\-]+)\s*\}\s*\}/g, '_{\\text{$1}}');
     formula = formula.replace(/_\{\s*\\text\{\s*(\w+)\s*\}\s*\}/g, '_{\\text{$1}}');
@@ -352,9 +351,10 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     }
   }
 
-  // Check for unescaped currency in HTML prose (outside tables and math)
+  // Check for unescaped currency in HTML prose (outside tables, price-tags, and math)
   const noTables = html.replace(/<table[\s\S]*?<\/table>/gi, '');
-  const noMath = noTables.replace(mathRegex, '');
+  const noPrices = noTables.replace(/<span class="price-tag">[\s\S]*?<\/span>/gi, '');
+  const noMath = noPrices.replace(mathRegex, '');
   const unescapedCurrency = noMath.match(/(?<!\\)\$\d+(?:,\d{3})*(?:\.\d+)?(?:\s*(?:million|billion|k|M|mo|yr))?/gi);
   if (unescapedCurrency && unescapedCurrency.length > 0) {
     errors.push(`Unescaped currency dollar sign in prose in ${fileLabel}: ${unescapedCurrency.slice(0, 3).join(', ')}. Must use \\$ to prevent breaking KaTeX.`);
@@ -598,9 +598,24 @@ export function validateArticleHtml(html, fileLabel = 'article') {
   ];
   for (const img of imgTags) {
     const src = img[1];
+    const fullTag = img[0];
     if (WATERMARK_BLACKLIST_PATTERNS.some(p => p.test(src))) {
       errors.push(`Image in ${fileLabel} uses disqualified/watermarked asset: ${src}`);
     }
+    if (!fullTag.includes('alt=') || /alt=["']\s*["']/.test(fullTag)) {
+      errors.push(`Image in ${fileLabel} (${src}) missing mandatory descriptive alt attribute.`);
+    }
+    if (!fullTag.includes('onerror=')) {
+      errors.push(`Image in ${fileLabel} (${src}) missing mandatory onerror fallback handler.`);
+    }
+  }
+
+  // 3E. Math formatting & typography safeguards
+  if (/(?:\\t\s*\\text\{|\t+\s*\\text\{|\\t\\t)/.test(html)) {
+    errors.push(`HTML in ${fileLabel} contains corrupted \\t\\text artifact in math formulas.`);
+  }
+  if (/(?:\\mu\s+\\text\{m\}|\\mu\s+m\b)/.test(html)) {
+    errors.push(`HTML in ${fileLabel} contains disjointed micrometer notation (must use \\mu\\text{m} or \\,\\mu\\text{m}).`);
   }
 
   // 4. Global SVG Geometry & Text Collision Analysis
@@ -887,24 +902,50 @@ function runCli() {
         hasViolation = true;
       }
 
+      let jsonModified = false;
+
+      if (data.tangents) {
+        Object.keys(data.tangents).forEach(k => {
+          const tan = data.tangents[k];
+          if (tan.body) {
+            const cleanBody = autoSanitizeArticleHtml(tan.body);
+            if (cleanBody !== tan.body) {
+              tan.body = cleanBody;
+              jsonModified = true;
+            }
+          }
+          if (tan.title) {
+            const cleanTitle = autoSanitizeArticleHtml(tan.title);
+            if (cleanTitle !== tan.title) {
+              tan.title = cleanTitle;
+              jsonModified = true;
+            }
+          }
+        });
+      }
+
       if (data.article_html) {
         const sanitized = autoSanitizeArticleHtml(data.article_html);
         if (sanitized !== data.article_html) {
           data.article_html = sanitized;
-          fs.writeFileSync(fullPath, JSON.stringify(data, null, 2) + '\n', 'utf8');
-          // Automatically keep markdown mirrors in exact sync
-          if (fs.existsSync('content')) {
-            const mdFiles = fs.readdirSync('content').filter(f => f.endsWith('.md'));
-            for (const mf of mdFiles) {
-              const mdPath = path.join('content', mf);
-              const mdContent = fs.readFileSync(mdPath, 'utf8');
-              if (mdContent.includes(`ISSUE #${data.id}`) || (data.date && mf.includes(data.date))) {
-                fs.writeFileSync(mdPath, sanitized.trim() + '\n', 'utf8');
-              }
+          jsonModified = true;
+        }
+      }
+
+      if (jsonModified) {
+        fs.writeFileSync(fullPath, JSON.stringify(data, null, 2) + '\n', 'utf8');
+        // Automatically keep markdown mirrors in exact sync
+        if (fs.existsSync('content')) {
+          const mdFiles = fs.readdirSync('content').filter(f => f.endsWith('.md'));
+          for (const mf of mdFiles) {
+            const mdPath = path.join('content', mf);
+            const mdContent = fs.readFileSync(mdPath, 'utf8');
+            if (mdContent.includes(`ISSUE #${data.id}`) || (data.date && mf.includes(data.date))) {
+              fs.writeFileSync(mdPath, (data.article_html || '').trim() + '\n', 'utf8');
             }
           }
-          console.log(`[AUTO-HEALED] Repaired mechanical formatting in ${file}`);
         }
+        console.log(`[AUTO-HEALED] Repaired mechanical formatting in ${file}`);
       }
 
       const errs = validateArticleHtml(data.article_html || '', file);

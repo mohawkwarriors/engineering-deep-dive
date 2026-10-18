@@ -10,7 +10,7 @@
 <!-- FIG 01: HERO PRESS RELEASE IMAGE -->
 <figure class="product-figure">
   <div class="img-wrapper">
-    <img referrerpolicy="no-referrer" src="images/apple-home-collection-lineup.jpg" alt="Apple Home Collection Co-Engineered with LG Electronics and Schneider Electric" />
+    <img referrerpolicy="no-referrer" src="images/apple-home-collection-lineup.jpg" alt="Apple Home Collection Co-Engineered with LG Electronics and Schneider Electric" / onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Apple-logo.png/600px-Apple-logo.png';" />
   </div>
   <figcaption>
     <span><strong>FIG 01 — THE APPLE HOME COLLECTION:</strong> The complete residential hardware lineup co-developed across Apple, LG Electronics, and Schneider Electric, bridging Apple Silicon compute with permanent residential physical infrastructure.</span>
@@ -26,7 +26,7 @@
   At its landmark residential hardware release, Apple completely dismantled that model by launching two complementary product tiers that bridge the drywall divide:
 </p>
 <ul>
-  <li><strong>First-Party Command Silicon:</strong> The new <strong>Apple HomeView</strong> (\$299, shipping November 2026)—Apple’s first dedicated 7-inch smart display and ambient home dashboard powered by the A18 chip and local Apple Intelligence, alongside an upgraded <strong>HomePod mini 2</strong> and <strong>Apple TV 4K</strong>.</li>
+  <li><strong>First-Party Command Silicon:</strong> The new <strong>Apple HomeView</strong> (<span class="price-tag">$299.00</span>, shipping November 2026)—Apple’s first dedicated 7-inch smart display and ambient home dashboard powered by the A18 chip and local Apple Intelligence, alongside an upgraded <strong>HomePod mini 2</strong> and <strong>Apple TV 4K</strong>.</li>
   <li><strong>The Apple Home Collection:</strong> A coordinated lineup of seven residential hardware peripherals—spanning smart deadbolts, dual-camera video doorbells, indoor/outdoor security cameras, and smart climate controls—co-engineered from the silicon to the enclosure with <strong>LG Electronics</strong> and <strong>Schneider Electric</strong>.</li>
 </ul>
 <p>
@@ -129,7 +129,7 @@
 <h3 id="product-homeview">Apple HomeView (Hub & Audio Base) <span class="price-tag">&dollar;299.00</span></h3>
 <figure class="product-figure">
   <div class="img-wrapper">
-    <img referrerpolicy="no-referrer" src="images/apple-homeview-hub.jpg" alt="Apple HomeView 7-inch Smart Display Command Hub" />
+    <img referrerpolicy="no-referrer" src="images/apple-homeview-hub.jpg" alt="Apple HomeView 7-inch Smart Display Command Hub" / onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Apple-logo.png/600px-Apple-logo.png';" />
   </div>
   <figcaption>
     <span><strong>FIG 02 — APPLE HOMEVIEW COMMAND HUB:</strong> The first-party 7-inch Liquid Retina display mounted on its counterbalanced stainless steel acoustic stand, powered by Apple Silicon A18.</span>
@@ -147,7 +147,7 @@
 <h3 id="product-deadbolt">LG Smart Deadbolt Lock <span class="price-tag">&dollar;349.95</span></h3>
 <figure class="product-figure">
   <div class="img-wrapper">
-    <img referrerpolicy="no-referrer" src="images/lg-smart-deadbolt.jpg" alt="LG Smart Deadbolt Lock in Essence Silver" />
+    <img referrerpolicy="no-referrer" src="images/lg-smart-deadbolt.jpg" alt="LG Smart Deadbolt Lock in Essence Silver" / onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Apple-logo.png/600px-Apple-logo.png';" />
   </div>
   <figcaption>
     <span><strong>FIG 03 — LG SMART DEADBOLT LOCK:</strong> Co-engineered exterior escutcheon with concealed mechanical keyway, capacitive touch matrix, and integrated UWB antenna array.</span>
@@ -205,7 +205,7 @@
         </svg>
       </div>
       <p class="process-step-desc">
-        Two patch antennas spaced &lambda;/2 apart measure incoming wavefront phase arrival (&Delta;&phi; = (2&pi;d/&lambda;)sin&theta;), calculating horizontal azimuth within &plusmn;3.5&deg;.
+        Two patch antennas spaced &lambda;/2 apart measure incoming wavefront phase arrival (&Delta;&phi; = (2&pi;d/&lambda;)sin&\theta;), calculating horizontal azimuth within &plusmn;3.5&deg;.
       </p>
       <div class="process-step-metric">&Delta;&phi; Phase Shift &bull; &plusmn;3.5&deg;</div>
     </div>
@@ -227,9 +227,9 @@
         </svg>
       </div>
       <p class="process-step-desc">
-        The deadbolt DSP tracks the user's velocity vector. Inside footsteps and hallway pacing (&theta; &gt; 90&deg;) are discarded; only forward exterior porch approaches trigger unlock.
+        The deadbolt DSP tracks the user's velocity vector. Inside footsteps and hallway pacing (&\theta; &gt; 90&deg;) are discarded; only forward exterior porch approaches trigger unlock.
       </p>
-      <div class="process-step-metric">&theta; &lt; 90&deg; Approach Vector</div>
+      <div class="process-step-metric">&\theta; &lt; 90&deg; Approach Vector</div>
     </div>
     <div class="process-step-card">
       <div class="process-step-header">
@@ -269,7 +269,7 @@
 <h3 id="product-doorbell">LG Video Doorbell (Wired) <span class="price-tag">&dollar;249.95</span></h3>
 <figure class="product-figure">
   <div class="img-wrapper">
-    <img referrerpolicy="no-referrer" src="images/lg-video-doorbell.jpg" alt="LG Video Doorbell Wired with Dual Optics" />
+    <img referrerpolicy="no-referrer" src="images/lg-video-doorbell.jpg" alt="LG Video Doorbell Wired with Dual Optics" / onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Apple-logo.png/600px-Apple-logo.png';" />
   </div>
   <figcaption>
     <span><strong>FIG 05 — LG VIDEO DOORBELL (WIRED):</strong> Dual-lens optical split separating the 2.5K upper visitor camera from the 45° downward-canted package camera.</span>
@@ -290,7 +290,7 @@
 <h3 id="product-indoor-cam">LG Indoor Security Cam <span class="price-tag">&dollar;199.95</span></h3>
 <figure class="product-figure">
   <div class="img-wrapper">
-    <img referrerpolicy="no-referrer" src="images/lg-indoor-cam.jpg" alt="LG Indoor Security Camera with Motorized Privacy Gimbal" />
+    <img referrerpolicy="no-referrer" src="images/lg-indoor-cam.jpg" alt="LG Indoor Security Camera with Motorized Privacy Gimbal" / onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Apple-logo.png/600px-Apple-logo.png';" />
   </div>
   <figcaption>
     <span><strong>FIG 06 — LG INDOOR SECURITY CAM:</strong> Motorized dual-axis pan/tilt gimbal with hardware-enforced 95° downward privacy rotation into an aluminum light-absorbing shroud.</span>
@@ -311,7 +311,7 @@
 <h3 id="product-outdoor-cams">LG Outdoor Cam & Floodlight Cam <span class="price-tag">&dollar;299.95 &ndash; &dollar;399.95</span></h3>
 <figure class="product-figure">
   <div class="img-wrapper">
-    <img referrerpolicy="no-referrer" src="images/lg-floodlight-cam.jpg" alt="LG Floodlight Security Camera with Articulated LED Outriggers" />
+    <img referrerpolicy="no-referrer" src="images/lg-floodlight-cam.jpg" alt="LG Floodlight Security Camera with Articulated LED Outriggers" / onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Apple-logo.png/600px-Apple-logo.png';" />
   </div>
   <figcaption>
     <span><strong>FIG 07 — LG FLOODLIGHT SECURITY CAM:</strong> Dual 2,000-lumen articulated COB LED floodlights mounted on die-cast aluminum convective heatsink outriggers.</span>
@@ -322,7 +322,7 @@
   Outdoor residential security cameras face intense thermal and optical hurdles: daytime solar loading causes sensor junction temperatures to skyrocket (generating thermal dark-current shot noise), while nighttime infrared LEDs can cause milky internal glare if optical reflections bounce inside the front cover glass.
 </p>
 <p>
-  <strong>Thermal & Optical Packaging:</strong> Both outdoor models are enclosed within heavy-gauge die-cast aluminum enclosures that double as <span class="tangent-term" data-tangent="heatsinks">convective heatsinks</span>. In the Floodlight Cam (\$399.95), the dual 2,000-lumen COB LED floodlights are mounted on articulated aluminum outriggers, physically isolating high-wattage LED driver heat from the central 2.5K HDR camera core. The front optical stack uses a dual-durometer black silicone boot that compresses tightly against the interior of the cover glass, mechanically isolating the central camera aperture from the outer 850 nm infrared ring to eliminate internal <span class="tangent-term" data-tangent="fresnel_glare">Fresnel back-scatter reflections</span>.
+  <strong>Thermal & Optical Packaging:</strong> Both outdoor models are enclosed within heavy-gauge die-cast aluminum enclosures that double as <span class="tangent-term" data-tangent="heatsinks">convective heatsinks</span>. In the Floodlight Cam (<span class="price-tag">$399.95</span>), the dual 2,000-lumen COB LED floodlights are mounted on articulated aluminum outriggers, physically isolating high-wattage LED driver heat from the central 2.5K HDR camera core. The front optical stack uses a dual-durometer black silicone boot that compresses tightly against the interior of the cover glass, mechanically isolating the central camera aperture from the outer 850 nm infrared ring to eliminate internal <span class="tangent-term" data-tangent="fresnel_glare">Fresnel back-scatter reflections</span>.
 </p>
 <p>
   <strong>Apple Intelligence Video Summaries:</strong> Working in conjunction with a home Apple TV 4K or HomeView hub, video feeds are analyzed on-device using local Apple Intelligence neural models. Instead of forcing users to scrub through hours of false motion alerts caused by windblown branches or passing cars, the system generates natural-language text summaries of daily events and enables semantic search queries (e.g., <em>"Show me when a courier in a blue shirt left a box by the side gate yesterday"</em>).
@@ -332,7 +332,7 @@
 <h3 id="product-thermostats">LG & Schneider Smart Thermostats <span class="price-tag">&dollar;199.95</span></h3>
 <figure class="product-figure">
   <div class="img-wrapper">
-    <img referrerpolicy="no-referrer" src="images/lg-smart-thermostat.jpg" alt="LG Smart Thermostat Dial" />
+    <img referrerpolicy="no-referrer" src="images/lg-smart-thermostat.jpg" alt="LG Smart Thermostat Dial" / onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Apple-logo.png/600px-Apple-logo.png';" />
   </div>
   <figcaption>
     <span><strong>FIG 08 — LG & SCHNEIDER SMART THERMOSTATS:</strong> Circular dial (LG) and square panel (Schneider) climate controls featuring through-glass 60 GHz FMCW radar and active power stealing.</span>
@@ -507,9 +507,9 @@
       </tr>
       <tr>
         <td><strong>Mandatory Subscriptions</strong></td>
-        <td><strong>Zero Paywall:</strong> Included in existing iCloud+ 50GB (\$0.99/mo)</td>
-        <td>Nest Aware (\$8 &ndash; \$15/mo for facial recognition)</td>
-        <td>Ring Protect (\$4.99 &ndash; \$19.99/mo for video storage)</td>
+        <td><strong>Zero Paywall:</strong> Included in existing iCloud+ 50GB (<span class="price-tag">$0.99</span>/mo)</td>
+        <td>Nest Aware (<span class="price-tag">$8 &ndash;$15</span>/mo for facial recognition)</td>
+        <td>Ring Protect (<span class="price-tag">$4.99 &ndash;$19.99</span>/mo for video storage)</td>
       </tr>
     </tbody>
   </table>

@@ -298,7 +298,7 @@
         <th>Density &rho; (kg/m&sup3;)</th>
         <th>Specific Heat c_p (J/kg&middot;K)</th>
         <th>Conductivity k (W/m&middot;K)</th>
-        <th>Diffusivity &alpha; (m&sup2;/s &times; 10&sup6;)</th>
+        <th>Diffusivity &alpha; (m&sup2;/s &\times; 10&sup6;)</th>
         <th>Corrosion / Leaching Risk</th>
       </tr>
     </thead>

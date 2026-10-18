@@ -10,7 +10,7 @@
 <!-- FIG 01: REAL TEARDOWN PHOTOGRAPHY OF MOBILE HINGE ASSEMBLY -->
 <figure class="product-figure">
   <div class="img-wrapper">
-    <img referrerpolicy="no-referrer" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg/1280px-Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg" alt="Modern foldable smartphones showing display crease and hinge spine architecture" />
+    <img referrerpolicy="no-referrer" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg/1280px-Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg" alt="Modern foldable smartphones showing display crease and hinge spine architecture" / onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg/1280px-Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg';" />
   </div>
   <figcaption>
     <span><strong>FIG 01 — COMMERCIAL FOLDABLE SMARTPHONE ARCHITECTURE:</strong> Modern flexible OLED foldable smartphones in flexed and open states. The central challenge of these designs is managing the neutral-axis strain across the Ultra-Thin Glass (UTG) layer while preventing crease formation along the central hinge line.</span>
@@ -188,7 +188,7 @@
       <p class="process-step-desc">
         Floating support wings are cammed fully flush against the chassis, providing rigid continuous backing beneath the UTG against stylus and touch inputs.
       </p>
-      <div class="process-step-metric">&theta; = 180&deg; &bull; &Delta;y = 0.00 mm</div>
+      <div class="process-step-metric">&\theta; = 180&deg; &bull; &Delta;y = 0.00 mm</div>
     </div>
     <div class="process-step-card">
       <div class="process-step-header">
@@ -206,7 +206,7 @@
       <p class="process-step-desc">
         Dual synchronization gears drive guide pins along an angled track, dropping center support plates vertically into the housing spine to create cavity relief.
       </p>
-      <div class="process-step-metric">&theta; = 120&deg; &bull; &Delta;y = -0.65 mm</div>
+      <div class="process-step-metric">&\theta; = 120&deg; &bull; &Delta;y = -0.65 mm</div>
     </div>
     <div class="process-step-card">
       <div class="process-step-header">
@@ -225,7 +225,7 @@
       <p class="process-step-desc">
         With support plates fully recessed, lateral sliders stroke outward along precision curved tracks to absorb the display arc-length differential.
       </p>
-      <div class="process-step-metric">&theta; = 60&deg; &bull; &Delta;y = -1.35 mm</div>
+      <div class="process-step-metric">&\theta; = 60&deg; &bull; &Delta;y = -1.35 mm</div>
     </div>
     <div class="process-step-card">
       <div class="process-step-header">
@@ -243,7 +243,7 @@
       <p class="process-step-desc">
         Housings meet parallel with zero outer gap. The screen loops into a safe 3.45 mm bulbous teardrop with &lt;1.08% strain, while sliders hold 1.42 mm stroke balance.
       </p>
-      <div class="process-step-metric">&theta; = 0&deg; &bull; &rho; = 3.45 mm (&epsilon; = 1.08%)</div>
+      <div class="process-step-metric">&\theta; = 0&deg; &bull; &rho; = 3.45 mm (&epsilon; = 1.08%)</div>
     </div>
   </div>
   <div class="schematic-caption">
@@ -284,7 +284,7 @@
 <!-- FIG 04: REAL TEARDOWN MACRO PHOTOGRAPHY OF HINGE ASSEMBLY -->
 <figure class="product-figure">
   <div class="img-wrapper">
-    <img referrerpolicy="no-referrer" src="images/foldable-hinge-spine-teardown.jpg" alt="Foldable Smartphone Hinge Spine and Torque Detent Assembly Teardown" />
+    <img referrerpolicy="no-referrer" src="images/foldable-hinge-spine-teardown.jpg" alt="Foldable Smartphone Hinge Spine and Torque Detent Assembly Teardown" / onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg/1280px-Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg';" />
   </div>
   <figcaption>
     <span><strong>FIG 04 — FOLDABLE SMARTPHONE HINGE SPINE &amp; TORQUE DETENTS:</strong> Macro teardown of a modern foldable smartphone hinge spine assembly, displaying the central gear-synchronization cluster, spring-loaded cam clasps for flat-state lockout and flex detents, dual outer pivot brackets, and the unclipped protective armor shroud.</span>
@@ -301,16 +301,16 @@
 </p>
 <p>
   <strong>Tolerance Stack-Up & The 10-Micron Gate:</strong><br>
-  Because motion transmits through a kinetic chain of gears, pins, link plates, and cam followers, individual clearance errors accumulate rapidly. A tolerance stack-up analysis across 8 mating interfaces demonstrates that a dimensional variance of just $\pm 0.025\text{ mm}$ ($25\,\mu \text{m}$) per part generates over <strong>0.35 mm of tip play</strong> at the phone's outer display bezel—causing the phone to feel loose, rattling, or misaligned.
+  Because motion transmits through a kinetic chain of gears, pins, link plates, and cam followers, individual clearance errors accumulate rapidly. A tolerance stack-up analysis across 8 mating interfaces demonstrates that a dimensional variance of just $\pm 0.025\text{ mm}$ ($25\,\mu\text{m}$) per part generates over <strong>0.35 mm of tip play</strong> at the phone's outer display bezel—causing the phone to feel loose, rattling, or misaligned.
 </p>
 <p>
-  To maintain a premium rigidity standard, primary hinge pins are centerless ground to $\pm 0.004\text{ mm}$ ($4\,\mu \text{m}$), while interlocking link carriages are produced via <span class="tangent-term" data-tangent="mim_feedstock">Metal Injection Molding (MIM)</span> followed by secondary CNC diamond profiling of contact lands.
+  To maintain a premium rigidity standard, primary hinge pins are centerless ground to $\pm 0.004\text{ mm}$ ($4\,\mu\text{m}$), while interlocking link carriages are produced via <span class="tangent-term" data-tangent="mim_feedstock">Metal Injection Molding (MIM)</span> followed by secondary CNC diamond profiling of contact lands.
 </p>
 
 <!-- FIG 05: REAL INDUSTRIAL PHOTOGRAPHY OF PRECISION MIM COMPONENTS -->
 <figure class="product-figure">
   <div class="img-wrapper">
-    <img referrerpolicy="no-referrer" src="images/mim-precision-bracket.jpg" alt="Precision Metal Injection Molded (MIM) Multi-Link Hinge Brackets" />
+    <img referrerpolicy="no-referrer" src="images/mim-precision-bracket.jpg" alt="Precision Metal Injection Molded (MIM) Multi-Link Hinge Brackets" / onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg/1280px-Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg';" />
   </div>
   <figcaption>
     <span><strong>FIG 05 — METAL INJECTION MOLDED (MIM) KINEMATIC BRACKETS:</strong> Precision 17-4 PH stainless steel pivot brackets and kinematic rocker arms produced via Metal Injection Molding. Sintering at 1,340°C collapses porosity to achieves &gt;98.5% theoretical density, followed by diamond centerless grinding of the bearing bores to &plusmn;4 &mu;m.</span>
@@ -419,7 +419,7 @@
   </p>
   <ul style="margin-bottom:4px;">
     <li><strong>Capillary Migration into Display Adhesives:</strong> Low-viscosity oils creep along microscopic surface grooves via capillary action, dissolving the optically clear adhesive (OCA) bonding the OLED stack and causing permanent yellow optical delamination bubbles along the hinge seam.</li>
-    <li><strong>Abrasive Lint Magnetism:</strong> Liquid grease traps pocket lint, denim fibers, and silica sand grains ($> 50\,\mu \text{m}$), turning the lubricant into an abrasive lapping paste that grinds down synchronization gear teeth within weeks.</li>
+    <li><strong>Abrasive Lint Magnetism:</strong> Liquid grease traps pocket lint, denim fibers, and silica sand grains ($> 50\,\mu\text{m}$), turning the lubricant into an abrasive lapping paste that grinds down synchronization gear teeth within weeks.</li>
     <li><strong>The Solid Solution:</strong> Hinge cams use Diamond-Like Carbon (DLC) hard-coatings coupled with micro-burnished solid PTFE/MoS2 dry-film lubricants—delivering a smooth $\mu \le 0.08$ friction coefficient with zero liquid migration.</li>
   </ul>
 </div>
@@ -438,10 +438,10 @@
 <!-- FIG 06: REAL LABORATORY OPTICAL PROFILOMETRY SCAN -->
 <figure class="product-figure">
   <div class="img-wrapper">
-    <img referrerpolicy="no-referrer" src="images/white-light-interferometry-crease-profile.png" alt="White-Light Optical Profilometry 3D Surface Topography Scan" />
+    <img referrerpolicy="no-referrer" src="images/white-light-interferometry-crease-profile.png" alt="White-Light Optical Profilometry 3D Surface Topography Scan" / onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg/1280px-Galaxy_Z_Flip_%26_Galaxy_Z_Fold.jpg';" />
   </div>
   <figcaption>
-    <span><strong>FIG 06 — WHITE-LIGHT INTERFEROMETRY &amp; 3D CREASE TOPOGRAPHY:</strong> Non-contact optical profilometry surface elevation scan showing 3D micro-topography across the hinge seam. Vertical phase interference fringes measure sub-micron peak-to-valley trench depths ($D_v < 32\,\mu \text{m}$) and verify that angular crease slope gradients remain under $1.2^\circ$.</span>
+    <span><strong>FIG 06 — WHITE-LIGHT INTERFEROMETRY &amp; 3D CREASE TOPOGRAPHY:</strong> Non-contact optical profilometry surface elevation scan showing 3D micro-topography across the hinge seam. Vertical phase interference fringes measure sub-micron peak-to-valley trench depths ($D_v < 32\,\mu\text{m}$) and verify that angular crease slope gradients remain under $1.2^\circ$.</span>
     <span class="source-tag">IMAGE: KEYENCE SURFACE METROLOGY ARCHIVE</span>
   </figcaption>
 </figure>
@@ -451,8 +451,8 @@
   To quantify display crease severity, engineers scan the unfolded screen with a non-contact white-light interferometric optical profiler. The profilometer maps the micro-topography across a $40 \times 40 \text{mm}$ grid, measuring two decisive metrics:
 </p>
 <ul>
-  <li><strong>Peak-to-Valley Trench Depth ($D_v$):</strong> Benchmark teardrop designs achieve $D_v < 32\,\mu \text{m}$ (versus $> 120\,\mu \text{m}$ on first-gen U-shape folds).</li>
-  <li><strong>Maximum Slope Angle ($heta_{\text{crease}}$):</strong> The human fingertip cannot detect height steps below $40\,\mu \text{m}$ if the transition slope is gradual. By spreading the deformation over a wide $12 \text{mm}$ span, the slope remains below $1.2^\circ$—rendering the crease visually invisible and tactilely undetectable during swipe gestures.</li>
+  <li><strong>Peak-to-Valley Trench Depth ($D_v$):</strong> Benchmark teardrop designs achieve $D_v < 32\,\mu\text{m}$ (versus $> 120\,\mu\text{m}$ on first-gen U-shape folds).</li>
+  <li><strong>Maximum Slope Angle ($heta_{\text{crease}}$):</strong> The human fingertip cannot detect height steps below $40\,\mu\text{m}$ if the transition slope is gradual. By spreading the deformation over a wide $12 \text{mm}$ span, the slope remains below $1.2^\circ$—rendering the crease visually invisible and tactilely undetectable during swipe gestures.</li>
 </ul>
 
 <div class="telemetry-bar">

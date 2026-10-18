@@ -10,7 +10,7 @@
 <!-- FIG 01: REAL TEARDOWN PHOTOGRAPHY OF PRODUCTION MAGNESIUM CHASSIS -->
 <figure class="product-figure">
   <div class="img-wrapper">
-    <img referrerpolicy="no-referrer" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Inside_of_a_Lenovo_ThinkPad_X220_magnesium_alloy_bottom_case.jpg/1280px-Inside_of_a_Lenovo_ThinkPad_X220_magnesium_alloy_bottom_case.jpg" alt="Lenovo ThinkPad Magnesium Alloy Laptop Chassis Interior" />
+    <img referrerpolicy="no-referrer" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Inside_of_a_Lenovo_ThinkPad_X220_magnesium_alloy_bottom_case.jpg/1280px-Inside_of_a_Lenovo_ThinkPad_X220_magnesium_alloy_bottom_case.jpg" alt="Lenovo ThinkPad Magnesium Alloy Laptop Chassis Interior" / onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Inside_of_a_Lenovo_ThinkPad_X220_magnesium_alloy_bottom_case.jpg/1280px-Inside_of_a_Lenovo_ThinkPad_X220_magnesium_alloy_bottom_case.jpg';" />
   </div>
   <figcaption>
     <span><strong>FIG 01 — PRODUCTION MAGNESIUM CHASSIS:</strong> Internal thin-wall structural ribbing, mounting bosses, and drive bays of a magnesium alloy laptop bottom enclosure (Lenovo ThinkPad architecture), showcasing the complex sub-millimeter net-shape features enabled by semi-solid molding.</span>
@@ -642,63 +642,63 @@
     <tbody>
       <tr>
         <td><strong>Raw Material Feedstock</strong></td>
-        <td>$5.80 (1.45 kg Extruded Billet)</td>
-        <td>$0.75 (0.16 kg Granular Chip)</td>
-        <td>-$5.05 / part (87% material savings)</td>
+        <td><span class="price-tag">$5.80</span> (1.45 kg Extruded Billet)</td>
+        <td><span class="price-tag">$0.75</span> (0.16 kg Granular Chip)</td>
+        <td><span class="price-tag">-$5.05</span> / part (87% material savings)</td>
       </tr>
       <tr>
         <td><strong>Scrap Swarf Recovery Credit</strong></td>
-        <td>-$1.80 (1.31 kg scrap @$1.37/kg)</td>
+        <td><span class="price-tag">-$1.80</span> (1.31 kg scrap @$1.37/kg)</td>
         <td>-\$0.10 (Closed-loop in-house regrind)</td>
         <td>CNC depends heavily on scrap recycling</td>
       </tr>
       <tr>
         <td><strong>Machine Spindle / Cycle Cost</strong></td>
-        <td>$28.50 (48 min @$35.60/hr machine rate)</td>
-        <td>$3.20 (18 sec thixo cell + 90 sec CNC trim)</td>
-        <td>-$25.30 / part (89% machine time reduction)</td>
+        <td><span class="price-tag">$28.50</span> (48 min @$35.60/hr machine rate)</td>
+        <td><span class="price-tag">$3.20</span> (18 sec thixo cell + 90 sec CNC trim)</td>
+        <td><span class="price-tag">-$25.30</span> / part (89% machine time reduction)</td>
       </tr>
       <tr>
         <td><strong>Cutting Tool Wear & Inserts</strong></td>
-        <td>$4.20 (Carbide endmill wear / part)</td>
-        <td>$0.40 (Light finish deburr only)</td>
-        <td>-$3.80 / part (Substantial tool savings)</td>
+        <td><span class="price-tag">$4.20</span> (Carbide endmill wear / part)</td>
+        <td><span class="price-tag">$0.40</span> (Light finish deburr only)</td>
+        <td><span class="price-tag">-$3.80</span> / part (Substantial tool savings)</td>
       </tr>
       <tr>
         <td><strong>Surface Passivation / Finish</strong></td>
-        <td>$5.50 (Bead blast + Type II Anodize)</td>
-        <td>$7.20 (Micro-Arc Oxidation + PU Bake)</td>
-        <td>+$1.70 / part (MAO coating is costlier)</td>
+        <td><span class="price-tag">$5.50</span> (Bead blast + Type II Anodize)</td>
+        <td><span class="price-tag">$7.20</span> (Micro-Arc Oxidation + PU Bake)</td>
+        <td><span class="price-tag">+$1.70</span> / part (MAO coating is costlier)</td>
       </tr>
       <tr>
         <td><strong>Hard Tooling Investment (CapEx)</strong></td>
-        <td>$12,000 (Soft vacuum chuck fixtures)</td>
-        <td>$145,000 (Hardened Dievar Multi-Cavity Mold)</td>
-        <td>+$133,000 Upfront tooling barrier</td>
+        <td><span class="price-tag">$12,000</span> (Soft vacuum chuck fixtures)</td>
+        <td><span class="price-tag">$145,000</span> (Hardened Dievar Multi-Cavity Mold)</td>
+        <td><span class="price-tag">+$133,000</span> Upfront tooling barrier</td>
       </tr>
       <tr>
         <td><strong>Total Piece Cost @ 2,500 Units</strong></td>
-        <td>$47.00</td>
-        <td>$69.45 (Tooling burden dominates)</td>
+        <td><span class="price-tag">$47.00</span></td>
+        <td><span class="price-tag">$69.45</span> (Tooling burden dominates)</td>
         <td>CNC wins by $22.45 at pilot scale</td>
       </tr>
       <tr>
         <td><strong>Total Piece Cost @ 25,000 Units</strong></td>
-        <td>$42.68</td>
-        <td>$17.25 (Amortized tooling:$5.80)</td>
+        <td><span class="price-tag">$42.68</span></td>
+        <td><span class="price-tag">$17.25</span> (Amortized tooling:$5.80)</td>
         <td>Thixomolding wins by $25.43 (59% cheaper)</td>
       </tr>
       <tr>
         <td><strong>Total Piece Cost @ 250,000 Units</strong></td>
-        <td>$42.25</td>
-        <td>$12.03 (Amortized tooling:$0.58)</td>
+        <td><span class="price-tag">$42.25</span></td>
+        <td><span class="price-tag">$12.03</span> (Amortized tooling:$0.58)</td>
         <td>Thixomolding wins by $30.22 (71% cheaper)</td>
       </tr>
     </tbody>
   </table>
 </div>
 <p>
-  <strong>The Economic Breakeven Curve:</strong> At production volumes below <strong>4,500 units</strong>, CNC machining is economically superior because there is virtually zero hard tooling capital expenditure (\$12,000 for vacuum jigs versus \$145,000 for a Dievar tool mold). However, as production scales past the <strong>6,000-unit breakeven crossover</strong>, the astronomical cycle time and material waste of CNC hogging penalize the project. At 250,000 units (a typical flagship consumer laptop production run), thixomolding saves over <strong>\$7.5 million in unit production costs</strong> while consuming 80% less factory floor space and embodied electricity.
+  <strong>The Economic Breakeven Curve:</strong> At production volumes below <strong>4,500 units</strong>, CNC machining is economically superior because there is virtually zero hard tooling capital expenditure (<span class="price-tag">$12,000</span> for vacuum jigs versus <span class="price-tag">$145,000</span> for a Dievar tool mold). However, as production scales past the <strong>6,000-unit breakeven crossover</strong>, the astronomical cycle time and material waste of CNC hogging penalize the project. At 250,000 units (a typical flagship consumer laptop production run), thixomolding saves over <strong><span class="price-tag">$7.5 million</span> in unit production costs</strong> while consuming 80% less factory floor space and embodied electricity.
 </p>
 
 <h2 id="section-surface-finishing-mao">7. Ceramic Armor: Micro-Arc Oxidation vs. Anodizing</h2>
