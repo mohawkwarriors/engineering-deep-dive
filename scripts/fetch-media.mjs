@@ -17,7 +17,8 @@ export const POSITIVE_ENGINEERING_TERMS = [
   'teardown', 'chassis', 'internal', 'internals', 'cutaway', 'cross-section',
   'boiler', 'manifold', 'mechanism', 'machined', 'exploded', 'macro',
   'pcb', 'die-cast', 'forged', 'assembly', 'cad', 'metrology', 'schematic',
-  'vapor chamber', 'heat pipe', 'heatpipe', 'sintered', 'wick', 'calorimeter'
+  'vapor chamber', 'heat pipe', 'heatpipe', 'sintered', 'wick', 'calorimeter',
+  'cold plate', 'coldplate', 'copper base', 'baseplate', 'heat spreader'
 ];
 
 export const DISQUALIFYING_TERMS = [
@@ -28,8 +29,7 @@ export const DISQUALIFYING_TERMS = [
   'watermark', 'watermarked', 'alamy', 'shutterstock', 'getty', 'stock photo',
   'vosvete', 'novy-pant', 'mobile-phone-hinge-teardown', 'hinge of mobile phone',
   'wicker', 'bamboo', 'carpet', 'tablecloth', 'bed',
-  'photo-1591488320449-011701bb6704', 'graphics card', 'graphic card', 'geforce',
-  'gtx 1080', 'rtx 2080', 'rtx 3080', 'rtx 4080', 'gpu fan', 'gpu shroud'
+  'retail box', 'packaging box', 'unboxing', 'rgb lighting', 'plastic shroud'
 ];
 
 export async function searchPremiumHardwareMedia(query, limit = 10) {
