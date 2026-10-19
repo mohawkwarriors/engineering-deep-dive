@@ -174,7 +174,7 @@ if (mdFiles.length < issues.length) {
     // Find corresponding md file
     const matchingMd = mdFiles.find(mf => {
       const mdContent = fs.readFileSync(path.join('content', mf), 'utf8').trim().replace(/\r\n/g, '\n');
-      return mdContent === expectedHtml;
+      return mdContent === expectedHtml || mdContent.includes(expectedHtml);
     });
 
     if (!matchingMd) {

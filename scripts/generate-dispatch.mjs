@@ -690,21 +690,7 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
   // 4. Write Markdown archive mirror
   const slug = articleData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   const mdPath = path.join(CONTENT_DIR, `${isoDate}-${slug}.md`);
-  const mdContent = `---
-id: "${nextId}"
-title: "${articleData.title}"
-subtitle: "${articleData.subtitle}"
-subject: "${articleData.subject}"
-date: "${dateStr}"
-isoDate: "${isoDate}"
----
-
-# ${articleData.title}
-
-*${articleData.subtitle}*
-
-${articleData.article_html}
-`;
+  const mdContent = (articleData.article_html || '').trim() + '\n';
   await fs.writeFile(mdPath, mdContent, 'utf-8');
   console.log(`Saved Markdown archive to ${mdPath}`);
 

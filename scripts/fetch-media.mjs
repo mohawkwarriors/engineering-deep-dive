@@ -16,7 +16,8 @@ import path from 'path';
 export const POSITIVE_ENGINEERING_TERMS = [
   'teardown', 'chassis', 'internal', 'internals', 'cutaway', 'cross-section',
   'boiler', 'manifold', 'mechanism', 'machined', 'exploded', 'macro',
-  'pcb', 'die-cast', 'forged', 'assembly', 'cad', 'metrology', 'schematic'
+  'pcb', 'die-cast', 'forged', 'assembly', 'cad', 'metrology', 'schematic',
+  'vapor chamber', 'heat pipe', 'heatpipe', 'sintered', 'wick', 'calorimeter'
 ];
 
 export const DISQUALIFYING_TERMS = [
@@ -26,7 +27,9 @@ export const DISQUALIFYING_TERMS = [
   'latte art', 'coffee cup', 'cafe table', 'living room', 'counter',
   'watermark', 'watermarked', 'alamy', 'shutterstock', 'getty', 'stock photo',
   'vosvete', 'novy-pant', 'mobile-phone-hinge-teardown', 'hinge of mobile phone',
-  'wicker', 'bamboo', 'carpet', 'tablecloth', 'bed'
+  'wicker', 'bamboo', 'carpet', 'tablecloth', 'bed',
+  'photo-1591488320449-011701bb6704', 'graphics card', 'graphic card', 'geforce',
+  'gtx 1080', 'rtx 2080', 'rtx 3080', 'rtx 4080', 'gpu fan', 'gpu shroud'
 ];
 
 export async function searchPremiumHardwareMedia(query, limit = 10) {

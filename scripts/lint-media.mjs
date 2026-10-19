@@ -620,7 +620,9 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     /stock-photo/i,
     /vosvete/i,
     /mobile-phone-hinge-teardown/i,
-    /hinge[-_ ]of[-_ ]mobile[-_ ]phone/i
+    /hinge[-_ ]of[-_ ]mobile[-_ ]phone/i,
+    /photo-1591488320449-011701bb6704/i,
+    /graphics[-_ ]card/i
   ];
   for (const img of imgTags) {
     const src = img[1];
