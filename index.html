@@ -2325,38 +2325,60 @@
     }
     .inline-rename-box {
       width: 100%;
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px dashed var(--border);
+      margin: 10px 0 16px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     }
-    .rename-inputs-row {
+    .inline-rename-row {
       display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 5px;
     }
-    .score-text-input {
-      flex: 1 1 200px;
-      padding: 7px 10px;
+    .inline-rename-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+    }
+    .inline-rename-input {
+      width: 100%;
+      padding: 8px 12px;
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 6px;
       color: var(--text);
       font-family: inherit;
-      font-size: 12px;
+      font-size: 13px;
       box-sizing: border-box;
       outline: none;
+      transition: border-color 0.15s ease;
     }
-    .score-text-input:focus {
+    .inline-rename-input:focus {
       border-color: var(--accent);
     }
-    .rename-actions-row {
+    .inline-rename-actions {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       align-items: center;
       flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .score-pill-btn.action-save {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+    .score-pill-btn.action-save:hover {
+      opacity: 0.9;
     }
     .score-status-text {
       font-family: 'JetBrains Mono', monospace;
@@ -4162,22 +4184,37 @@
     function injectScoreModeOverlays(articleEl) {
       if (!articleEl) return;
 
-      // 1. Topic & Rename Toolbar (Above H1)
+      // 1. Topic Evaluation Toolbar (Above H1)
       const titleEl = articleEl.querySelector("h1.article-title, h1");
       if (titleEl && !articleEl.querySelector(".score-toolbar-topic")) {
         const topicBar = document.createElement("div");
         topicBar.className = "score-toolbar score-toolbar-topic";
         topicBar.innerHTML = `
           <div class="score-toolbar-label">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-            Topic & Title Evaluation
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Topic Fitness
           </div>
           <div class="score-pill-group" id="score-group-fitness">
             <button class="score-pill-btn active" data-fit="excellent" onclick="scoreTopicFitness('excellent')">⭐️ Elite Topic</button>
             <button class="score-pill-btn" data-fit="marginal" onclick="scoreTopicFitness('marginal')">⚖️ Marginal</button>
             <button class="score-pill-btn" data-fit="unfit" onclick="scoreTopicFitness('unfit')">🚫 Off-Topic</button>
           </div>
-          <button class="score-pill-btn" onclick="toggleRenameBox()">✏️ Rename / Tweak Subject</button>
+          <span id="topic-feedback-status" style="font-size:11px;color:var(--muted);align-self:center;"></span>
+        `;
+
+        // 1B. Title Evaluation & Retraining Toolbar
+        const titleBar = document.createElement("div");
+        titleBar.className = "score-toolbar score-toolbar-title";
+        titleBar.innerHTML = `
+          <div class="score-toolbar-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            Title Evaluation
+          </div>
+          <div class="score-pill-group" id="score-group-title">
+            <button class="score-pill-btn active" data-title-eval="approved" onclick="scoreTitleQuality('approved')">👍 Great Title</button>
+            <button class="score-pill-btn" data-title-eval="rephrase" onclick="toggleRenameBox()">✏️ Rephrase / Change Title</button>
+          </div>
+          <span id="title-eval-feedback-status" style="font-size:11px;color:var(--muted);align-self:center;"></span>
         `;
 
         const renameBox = document.createElement("div");
@@ -4191,21 +4228,22 @@
 
         renameBox.innerHTML = `
           <div class="inline-rename-row">
-            <label class="inline-rename-label">Article Title</label>
-            <input type="text" id="input-rename-title" class="inline-rename-input" value="${curTitle.replace(/"/g, '&quot;')}" />
+            <label class="inline-rename-label">New Article Headline</label>
+            <input type="text" id="input-rename-title" class="inline-rename-input" value="${curTitle.replace(/"/g, '&quot;')}" placeholder="e.g. Planar Vapor Chambers: Sintered Micro-Powder Wick & 0.35mm Packaging" />
           </div>
           <div class="inline-rename-row">
-            <label class="inline-rename-label">Subject / Scope Adjustment</label>
-            <input type="text" id="input-rename-subject" class="inline-rename-input" placeholder="e.g. Needs to focus on vapor chambers specifically, avoid CPU socket tangents" value="${curSubject.replace(/"/g, '&quot;')}" />
+            <label class="inline-rename-label">Editorial Rationale / Headline Rule (Used to train future titles)</label>
+            <input type="text" id="input-rename-rationale" class="inline-rename-input" placeholder="e.g. Include governing phase-change mechanism and DFM dimensional envelope" />
           </div>
           <div class="inline-rename-actions">
-            <button class="score-pill-btn action-save" onclick="applyLiveRename()">💾 Save & Rename Live</button>
+            <button class="score-pill-btn action-save" onclick="applyLiveRename()">💾 Change Title & Train Model</button>
             <button class="score-pill-btn" onclick="toggleRenameBox()">Cancel</button>
             <span id="rename-feedback-status" style="font-size:11px;color:var(--muted);align-self:center;"></span>
           </div>
         `;
 
         titleEl.parentNode.insertBefore(topicBar, titleEl);
+        titleEl.parentNode.insertBefore(titleBar, titleEl);
         titleEl.parentNode.insertBefore(renameBox, titleEl);
       }
 
@@ -4260,20 +4298,45 @@
       }
     }
 
+    async function scoreTitleQuality(quality) {
+      const group = document.getElementById("score-group-title");
+      if (group) {
+        group.querySelectorAll(".score-pill-btn").forEach(btn => {
+          btn.classList.toggle("active", btn.dataset.titleEval === quality);
+        });
+      }
+
+      const statusEl = document.getElementById("title-eval-feedback-status");
+      if (statusEl) statusEl.innerHTML = quality === 'approved' ? '<span style="color:var(--success);">✓ Title approved as positive exemplar!</span>' : '';
+
+      try {
+        await fetch("/api/feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "score-component",
+            issueId: activeArticleId,
+            componentType: "title_quality",
+            value: quality
+          })
+        });
+      } catch (e) {}
+    }
+
     async function applyLiveRename() {
       const titleInput = document.getElementById("input-rename-title");
-      const subjectInput = document.getElementById("input-rename-subject");
+      const rationaleInput = document.getElementById("input-rename-rationale");
       const statusEl = document.getElementById("rename-feedback-status");
       if (!titleInput) return;
 
       const newTitle = titleInput.value.trim();
-      const subjectNotes = subjectInput ? subjectInput.value.trim() : "";
+      const editorialRationale = rationaleInput ? rationaleInput.value.trim() : "";
       if (!newTitle) return;
 
-      if (statusEl) statusEl.innerHTML = '<span style="color:var(--accent);">Updating live...</span>';
+      if (statusEl) statusEl.innerHTML = '<span style="color:var(--accent);">Updating live & training curation model...</span>';
 
       // 1. Live DOM update
-      const titleEl = document.querySelector("#view-article h1.article-title");
+      const titleEl = document.querySelector("#view-article h1.article-title, #view-article h1");
       if (titleEl) titleEl.innerText = newTitle;
       document.title = `${newTitle} | Hardware Engineering Deep Dive`;
 
@@ -4296,11 +4359,13 @@
             action: "rename-issue",
             issueId: activeArticleId,
             newTitle,
-            subjectNotes
+            critiqueNotes: editorialRationale
           })
         });
         if (res.ok) {
-          if (statusEl) statusEl.innerHTML = '<span style="color:var(--success);">✓ Renamed live & memory updated!</span>';
+          if (statusEl) statusEl.innerHTML = '<span style="color:var(--success);">✓ Renamed live & title model trained!</span>';
+          const titleEvalStatus = document.getElementById("title-eval-feedback-status");
+          if (titleEvalStatus) titleEvalStatus.innerHTML = '<span style="color:var(--success);">✓ New title active</span>';
           setTimeout(() => { toggleRenameBox(); }, 1200);
         } else {
           if (statusEl) statusEl.innerHTML = '<span style="color:var(--accent);">✓ Renamed in view (server returned non-200)</span>';
@@ -4318,6 +4383,15 @@
         });
       }
 
+      const statusEl = document.getElementById("topic-feedback-status");
+      if (statusEl) {
+        statusEl.innerHTML = fitness === 'excellent' 
+          ? '<span style="color:var(--success);">✓ Marked Elite Topic</span>'
+          : fitness === 'unfit' 
+            ? '<span style="color:var(--danger);">🚫 Marked Off-Topic</span>'
+            : '<span style="color:var(--muted);">⚖️ Marked Marginal</span>';
+      }
+
       try {
         await fetch("/api/feedback", {
           method: "POST",
@@ -4325,8 +4399,8 @@
           body: JSON.stringify({
             action: "score-component",
             issueId: activeArticleId,
-            component: "topic_fitness",
-            score: fitness
+            componentType: "topic_fitness",
+            value: fitness
           })
         });
       } catch (e) {}

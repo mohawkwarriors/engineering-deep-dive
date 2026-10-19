@@ -149,10 +149,10 @@ export default async function handler(req, res) {
 
     if (newTitle && newTitle.trim()) {
       issueData.title = newTitle.trim();
-      // Also update h1.article-title inside article_html if present
+      // Also update h1 inside article_html if present
       if (issueData.article_html) {
         issueData.article_html = issueData.article_html.replace(
-          /(<h1[^>]*class="[^"]*article-title[^"]*"[^>]*>)([\s\S]*?)(<\/h1>)/i,
+          /(<h1\b[^>]*>)([\s\S]*?)(<\/h1>)/i,
           `$1${newTitle.trim()}$3`
         );
       }
@@ -172,21 +172,26 @@ export default async function handler(req, res) {
       issueId,
       old_title: oldTitle,
       new_title: newTitle.trim(),
-      subject_tweak: newSubject.trim(),
-      notes: critiqueNotes,
+      editorial_rule: critiqueNotes,
       timestamp: new Date().toISOString()
     });
 
     if (newTitle) {
-      const prefRule = `Model headline after "${newTitle.trim()}" (Topic-first engineering phrasing)`;
+      const prefRule = critiqueNotes 
+        ? `Model headline after "${newTitle.trim()}": ${critiqueNotes}`
+        : `Model headline after "${newTitle.trim()}" (Topic-first engineering phrasing)`;
       if (!memory.titles.preferred_patterns.includes(prefRule)) {
         memory.titles.preferred_patterns.push(prefRule);
       }
+      const penalizeRule = `Avoid headline structure like "${oldTitle}": Replaced by editor with "${newTitle.trim()}"`;
+      if (!memory.titles.penalized_patterns.includes(penalizeRule)) {
+        memory.titles.penalized_patterns.push(penalizeRule);
+      }
     }
 
-    if (critiqueNotes && !memory.topics.penalized_themes.includes(critiqueNotes)) {
-      if (critiqueNotes.toLowerCase().includes('tangent') || critiqueNotes.toLowerCase().includes('too specific')) {
-        memory.topics.penalized_themes.push(critiqueNotes);
+    if (critiqueNotes && !memory.topics.preferred_themes.includes(critiqueNotes)) {
+      if (critiqueNotes.toLowerCase().includes('tangent') || critiqueNotes.toLowerCase().includes('avoid')) {
+        if (!memory.topics.penalized_themes.includes(critiqueNotes)) memory.topics.penalized_themes.push(critiqueNotes);
       } else {
         memory.topics.preferred_themes.push(critiqueNotes);
       }
@@ -203,7 +208,7 @@ export default async function handler(req, res) {
   }
 
   // ========================================================
-  // ACTION 3: SCORE COMPONENT (Topic fitness, figure format, etc.)
+  // ACTION 3: SCORE COMPONENT (Topic fitness, title quality, figure format, etc.)
   // ========================================================
   if (action === 'score-component') {
     const { issueId = '#005', componentType, value, reason = '' } = req.body;
@@ -234,6 +239,14 @@ export default async function handler(req, res) {
         }
       } else if (value === 'excellent' && reason) {
         if (!memory.topics.preferred_themes.includes(reason)) memory.topics.preferred_themes.push(reason);
+      }
+    } else if (componentType === 'title_quality') {
+      if (!memory.titles) memory.titles = { preferred_patterns: [], penalized_patterns: [], critiques: [] };
+      if (value === 'approved' && issueData?.title) {
+        const approvedRule = `Model headline after "${issueData.title}" (Approved title exemplar)`;
+        if (!memory.titles.preferred_patterns.includes(approvedRule)) {
+          memory.titles.preferred_patterns.push(approvedRule);
+        }
       }
     } else if (componentType === 'figure_format') {
       if (!memory.media_format_decisions) memory.media_format_decisions = { prefer_real_photos_when: [], prefer_generated_schematics_when: [], format_critiques: [] };
