@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { autoSanitizeArticleHtml, validateArticleHtml } from './lint-media.mjs';
+import { selectHeroImage } from './select-hero-image.mjs';
 
 const INDEX_PATH = path.join(process.cwd(), 'index.html');
 const CONTENT_DIR = path.join(process.cwd(), 'content');
@@ -568,6 +569,23 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
 
   if (!/<h1\b/i.test(articleData.article_html)) {
     articleData.article_html = articleData.article_html.replace(canonicalMetaLine, `${canonicalMetaLine}\n\n<h1>${articleData.title}</h1>\n<p class="subtitle">\n  ${articleData.subtitle}\n</p>`);
+  }
+
+  // Hero image verification: never trust the LLM's guessed <img> URL.
+  // Curated reference -> vision-verified web candidate -> otherwise flag for human review.
+  try {
+    const hero = await selectHeroImage({ title: articleData.title, subject: articleData.subject, apiKey });
+    if (hero) {
+      articleData.article_html = articleData.article_html.replace(
+        /(<figure class="product-figure">[\s\S]*?<img\b[^>]*?\bsrc=")[^"]*(")/i,
+        `$1${hero.src}$2`
+      );
+      console.log(`Hero image: ${hero.src} (${hero.source}${hero.score ? `, vision score ${hero.score}` : ''})`);
+    } else {
+      console.log(`::warning title=Hero image needs review::No verified hero image for "${articleData.title}". Add references to content/visual-references.json (set hero_ok:true) and re-run.`);
+    }
+  } catch (heroErr) {
+    console.warn(`Hero image verification skipped: ${heroErr.message}`);
   }
 
   // Deterministic Executive Metrics & Telemetry Assembly
