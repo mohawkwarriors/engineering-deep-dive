@@ -2192,58 +2192,23 @@
       vertical-align: middle;
     }
 
-    /* Background Quality Telemetry Bar (Hidden in favor of top-level Score mode) */
-    .telemetry-bar {
-      display: none !important;
-      margin: 48px 0 24px;
-      padding: 18px 22px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-      max-width: 100%;
-    }
-    .telemetry-info {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .telemetry-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--accent);
-    }
-    .telemetry-desc { font-size: 13px; color: var(--muted); }
-    .telemetry-actions { display: flex; gap: 10px; }
+    /* Legacy Reader Quality Feedback & Good/Bad Topic Buttons (Hidden - superseded by the interactive Score feature) */
+    .telemetry-bar,
+    .telemetry-info,
+    .telemetry-title,
+    .telemetry-desc,
+    .telemetry-actions,
     .score-btn {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 16px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .score-btn:hover {
-      background: var(--surface-hover);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-    .score-btn.active {
-      background: var(--accent);
-      color: #FFF;
-      border-color: var(--accent);
+      display: none !important;
+      visibility: hidden !important;
+      height: 0 !important;
+      width: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: none !important;
+      pointer-events: none !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
     }
 
     /* ==========================================================================
@@ -3104,23 +3069,14 @@
       }
 
       /* Telemetry & Bottom Issue Navigation on Mobile */
-      .telemetry-bar {
-        flex-direction: column !important;
-        align-items: stretch !important;
-        padding: 16px !important;
-        margin: 32px 0 20px !important;
-        gap: 12px !important;
-      }
-      .telemetry-actions {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        width: 100% !important;
-        gap: 10px !important;
-      }
+      .telemetry-bar,
+      .telemetry-actions,
       .score-btn {
-        justify-content: center !important;
-        padding: 10px 12px !important;
-        min-height: 40px !important;
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
       .issue-nav {
         flex-direction: column !important;
@@ -4141,11 +4097,13 @@
         return `<div class="executive-metrics-bar">\n${fixedInner.trim()}\n</div>`;
       });
 
-      // Remove legacy telemetry bars and editorial drawer from bottom of article
-      html = html.replace(/<div class="telemetry-bar">[\s\S]*?<\/div>/gi, '');
+      // Remove legacy telemetry bars, good/bad topic voting buttons, and editorial drawer
+      html = html.replace(/<div class="telemetry-bar">[\s\S]*?<\/div>\s*<\/div>/gi, '');
+      html = html.replace(/<div class="telemetry-actions">[\s\S]*?<\/div>/gi, '');
       html = html.replace(/<div id="editorial-drawer"[^>]*>[\s\S]*?<\/div>/gi, '');
 
       articleEl.innerHTML = html;
+      articleEl.querySelectorAll('.telemetry-bar, .telemetry-actions, .telemetry-info, #telemetry-up, #telemetry-down, .score-btn').forEach(el => el.remove());
       formatTablePrices(articleEl);
       initProcessWheels(articleEl);
       initMobileSchematicHints(articleEl);
