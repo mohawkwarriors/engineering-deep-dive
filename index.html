@@ -2246,6 +2246,141 @@
       border-color: var(--accent);
     }
 
+    /* Editorial Review & Training Drawer */
+    .editorial-drawer {
+      display: none;
+      margin: -12px 0 28px;
+      padding: 22px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      font-size: 13px;
+      animation: drawerFadeIn 0.2s ease;
+    }
+    .editorial-drawer.open {
+      display: block;
+    }
+    @keyframes drawerFadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .review-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .review-card {
+      padding: 14px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .review-card-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pill-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .pill-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .pill-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .pill-btn.active {
+      background: var(--accent);
+      color: #FFF;
+      border-color: var(--accent);
+    }
+    .review-input {
+      width: 100%;
+      padding: 7px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 12px;
+      box-sizing: border-box;
+      outline: none;
+    }
+    .review-input:focus {
+      border-color: var(--accent);
+    }
+    .review-fig-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--border);
+    }
+    .review-fig-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .review-fig-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .review-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-top: 1px dashed var(--border);
+      padding-top: 14px;
+    }
+    .review-status-msg {
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--muted);
+    }
+    .review-save-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 6px;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #FFF;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .review-save-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
     /* Issue Navigation Footer Bar */
     .issue-nav {
       display: flex;
@@ -3968,8 +4103,13 @@
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg>
       Poor Topic
     </button>
+    <button class="score-btn" id="editorial-review-btn" onclick="toggleEditorialDrawer()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+      Review & Train
+    </button>
   </div>
 </div>
+<div id="editorial-drawer" class="editorial-drawer"></div>
 `;
       }
 
@@ -3983,6 +4123,7 @@
       buildOutline();
       renderIssueNav();
       syncTelemetryUI();
+      renderEditorialDrawer();
       attachTangentListeners();
     }
 
@@ -4057,6 +4198,193 @@
       if (upBtn && downBtn) {
         upBtn.classList.toggle("active", score === "up");
         downBtn.classList.toggle("active", score === "down");
+      }
+    }
+
+    let currentReviewState = {
+      topicFit: 'excellent',
+      titleStatus: 'approved',
+      imageFit: 'authentic',
+      imagePos: 'good_pos',
+      figureFormats: {}
+    };
+
+    function toggleEditorialDrawer() {
+      const drawer = document.getElementById("editorial-drawer");
+      const btn = document.getElementById("editorial-review-btn");
+      if (!drawer) return;
+      const isOpen = drawer.classList.toggle("open");
+      if (btn) btn.classList.toggle("active", isOpen);
+      if (isOpen) {
+        drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    function renderEditorialDrawer() {
+      const drawer = document.getElementById("editorial-drawer");
+      if (!drawer) return;
+
+      const articleEl = document.getElementById("view-article");
+      const schematics = articleEl ? articleEl.querySelectorAll('.schematic-card, figure') : [];
+      let figuresHtml = '';
+
+      if (schematics.length > 0) {
+        schematics.forEach((card, idx) => {
+          const title = card.querySelector('.schematic-title, figcaption')?.innerText || `Figure ${idx + 1}`;
+          const figId = card.id || `fig-${idx + 1}`;
+          figuresHtml += `
+            <div class="review-fig-row">
+              <span class="review-fig-label">${title.slice(0, 48)}...</span>
+              <div class="pill-group" id="pill-fig-${figId}">
+                <button class="pill-btn active" data-fig="${figId}" data-val="svg" onclick="setFigPill('${figId}', 'svg')">📐 SVG Diagram is Good</button>
+                <button class="pill-btn" data-fig="${figId}" data-val="photo" onclick="setFigPill('${figId}', 'photo')">📸 Should be Real Photo!</button>
+              </div>
+            </div>
+          `;
+        });
+      } else {
+        figuresHtml = '<span style="color:var(--muted);font-size:12px;">No schematics detected in this issue.</span>';
+      }
+
+      drawer.innerHTML = `
+        <div class="review-grid">
+          <!-- 1. Topic Fitness -->
+          <div class="review-card">
+            <div class="review-card-title">1. Topic Fitness</div>
+            <div class="pill-group" id="pill-topic-fit">
+              <button class="pill-btn active" data-val="excellent" onclick="setReviewPill('topic-fit', 'excellent')">⭐️ Elite Depth</button>
+              <button class="pill-btn" data-val="marginal" onclick="setReviewPill('topic-fit', 'marginal')">⚖️ Marginal</button>
+              <button class="pill-btn" data-val="unfit" onclick="setReviewPill('topic-fit', 'unfit')">🚫 Off-Topic</button>
+            </div>
+            <input type="text" id="review-topic-notes" class="review-input" placeholder="Feedback or physical critique (optional)" />
+          </div>
+
+          <!-- 2. Headline / Title -->
+          <div class="review-card">
+            <div class="review-card-title">2. Topic Headline</div>
+            <div class="pill-group" id="pill-title-status">
+              <button class="pill-btn active" data-val="approved" onclick="setReviewPill('title-status', 'approved')">👍 Title is Great</button>
+              <button class="pill-btn" data-val="rephrase" onclick="setReviewPill('title-status', 'rephrase')">✏️ Needs Rephrase</button>
+            </div>
+            <input type="text" id="review-better-title" class="review-input" placeholder="Suggest a better headline..." style="display:none;" />
+          </div>
+
+          <!-- 3. Hero Image Fit & Placement -->
+          <div class="review-card">
+            <div class="review-card-title">3. Hero Image</div>
+            <div class="pill-group" id="pill-image-fit">
+              <button class="pill-btn active" data-val="authentic" onclick="setReviewPill('image-fit', 'authentic')">🔬 Authentic</button>
+              <button class="pill-btn" data-val="wrong_subject" onclick="setReviewPill('image-fit', 'wrong_subject')">❌ Wrong Subject / Casing</button>
+            </div>
+            <div class="pill-group" id="pill-image-pos">
+              <button class="pill-btn active" data-val="good_pos" onclick="setReviewPill('image-pos', 'good_pos')">📍 Position OK</button>
+              <button class="pill-btn" data-val="move_pos" onclick="setReviewPill('image-pos', 'move_pos')">🔄 Misplaced</button>
+            </div>
+          </div>
+
+          <!-- 4. Generated Figures (Schematic vs Real Photo) -->
+          <div class="review-card">
+            <div class="review-card-title">4. Graphic vs Real Photo</div>
+            <div id="review-figures-container" style="display:flex;flex-direction:column;gap:10px;">
+              ${figuresHtml}
+            </div>
+          </div>
+        </div>
+
+        <div class="review-footer">
+          <span class="review-status-msg" id="review-status-msg">Click below to train the curation model for future dispatches.</span>
+          <button class="review-save-btn" id="review-save-submit" onclick="saveEditorialReview()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Save & Train Model
+          </button>
+        </div>
+      `;
+    }
+
+    function setReviewPill(group, val) {
+      const container = document.getElementById(`pill-${group}`);
+      if (container) {
+        container.querySelectorAll('.pill-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.val === val);
+        });
+      }
+      if (group === 'topic-fit') currentReviewState.topicFit = val;
+      if (group === 'image-fit') currentReviewState.imageFit = val;
+      if (group === 'image-pos') currentReviewState.imagePos = val;
+      if (group === 'title-status') {
+        currentReviewState.titleStatus = val;
+        const betterInput = document.getElementById("review-better-title");
+        if (betterInput) {
+          betterInput.style.display = val === 'rephrase' ? 'block' : 'none';
+          if (val === 'rephrase') betterInput.focus();
+        }
+      }
+    }
+
+    function setFigPill(figId, val) {
+      const container = document.getElementById(`pill-fig-${figId}`);
+      if (container) {
+        container.querySelectorAll('.pill-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.val === val);
+        });
+      }
+      currentReviewState.figureFormats[figId] = val;
+    }
+
+    async function saveEditorialReview() {
+      const statusEl = document.getElementById("review-status-msg");
+      const saveBtn = document.getElementById("review-save-submit");
+      const topicNotes = document.getElementById("review-topic-notes")?.value || "";
+      const suggestedTitle = document.getElementById("review-better-title")?.value || "";
+
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = 'Saving...';
+      }
+
+      const formatChoices = Object.entries(currentReviewState.figureFormats).map(([figId, val]) => ({
+        figureId: figId,
+        verdict: val === 'photo' ? 'prefer_real_photo' : 'prefer_svg_schematic',
+        reason: val === 'photo' ? 'Marked by editor as requiring authentic hardware teardown photography' : ''
+      }));
+
+      const payload = {
+        issueId: activeArticleId,
+        topicFitness: currentReviewState.topicFit,
+        topicNotes,
+        titleApproved: currentReviewState.titleStatus === 'approved',
+        suggestedTitle: currentReviewState.titleStatus === 'rephrase' ? suggestedTitle : '',
+        imageStatus: currentReviewState.imageFit === 'authentic' ? 'approve' : 'reject',
+        imageReason: currentReviewState.imageFit === 'wrong_subject' ? 'Conceals mechanics or wrong subject' : '',
+        imagePlacement: currentReviewState.imagePos === 'move_pos' ? 'Misplaced in section hierarchy' : '',
+        formatChoices
+      };
+
+      try {
+        localStorage.setItem(`deepdive_review_${activeArticleId}`, JSON.stringify(payload));
+      } catch (e) {}
+
+      try {
+        const res = await fetch('/api/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          if (statusEl) statusEl.innerHTML = '<span style="color:var(--success);">✓ Saved & Trained! Memory bank updated directly.</span>';
+        } else {
+          if (statusEl) statusEl.innerHTML = '<span style="color:var(--accent);">✓ Saved locally! Feedback cached in browser memory.</span>';
+        }
+      } catch (err) {
+        if (statusEl) statusEl.innerHTML = '<span style="color:var(--accent);">✓ Saved locally! Feedback cached in browser memory.</span>';
+      }
+
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Saved';
+        setTimeout(() => {
+          saveBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Update Review';
+        }, 2000);
       }
     }
 
