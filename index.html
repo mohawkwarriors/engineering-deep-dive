@@ -2078,6 +2078,72 @@
     }
     .spec-table tr:last-child td { border-bottom: none; }
 
+    /* Executive Summary Metrics Bar (Technical Key Performance Indicators) */
+    .executive-metrics-bar {
+      margin: 40px 0 24px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    }
+    @media (max-width: 900px) and (min-width: 581px) {
+      .executive-metrics-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 580px) {
+      .executive-metrics-bar {
+        grid-template-columns: 1fr;
+        padding: 14px;
+        gap: 10px;
+      }
+    }
+    .metric-cell,
+    .telemetry-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 14px 16px;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-sizing: border-box;
+      transition: border-color 0.15s ease, transform 0.15s ease;
+    }
+    .metric-cell:hover,
+    .telemetry-cell:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .metric-cell-label,
+    .telemetry-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+    .metric-cell-val,
+    .telemetry-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.25;
+    }
+    .metric-cell-sub,
+    .telemetry-sub {
+      font-size: 11.5px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
     /* Background Quality Telemetry Bar */
     .telemetry-bar {
       margin: 48px 0 24px;
