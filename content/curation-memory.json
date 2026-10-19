@@ -23,6 +23,57 @@
       }
     }
   },
+  "titles": {
+    "preferred_patterns": [
+      "Topic-First, colon-separated architecture: '[Hardware Subject]: [Governing Physics / Failure Mode]'",
+      "Active engineering verbs: 'Flattening', 'Surviving', 'Thixomolding', 'Preloading'",
+      "Specific physical dimensions, load ratings, or metrics: e.g. '0.35 mm', '100g Shock Loads', '50-Bar'",
+      "Model headline after \"Vapor Chambers: Two-Phase Planar Fluidics and Micro-Pillar DFM\" (Topic-first engineering phrasing)"
+    ],
+    "penalized_patterns": [
+      "Vague consumer questions (e.g. 'Is It Really Worth It?')",
+      "Sensationalist buzzwords without mechanism name (e.g. 'The Insane Secret of...')",
+      "Generic software or brand comparisons (e.g. 'Company A vs Company B: Who Wins?')",
+      "Avoid headline structure like \"Why Vapor Chambers Work\": Original title was vague and lacked physical mechanisms"
+    ],
+    "critiques": [
+      {
+        "current_title": "Why Vapor Chambers Work",
+        "is_approved": false,
+        "suggested_title": "Vapor Chambers: Two-Phase Planar Fluidics and Micro-Pillar DFM",
+        "reason": "Original title was vague and lacked physical mechanisms",
+        "timestamp": "2026-10-19T04:27:59.454Z"
+      }
+    ]
+  },
+  "media_format_decisions": {
+    "prefer_real_photos_when": [
+      "Cleaved, sliced, or peeled multi-layer hardware stacks showing authentic physical textures",
+      "Micro-scale sintered copper powder wicks, mesh weaves, and etched dimple/pillar arrays",
+      "Laboratory teardowns, wafer-level packaging cross-sections, and SEM micrographs",
+      "Micro-powder capillary wicking requires authentic macro teardown photography or SEM micrographs; simplified 2D vector schematics fail to convey physical pore diameter and sintered contact necks"
+    ],
+    "prefer_generated_schematics_when": [
+      "Abstract thermodynamic cycle state paths (P-h, T-s, P-v fluid phase diagrams)",
+      "Kinematic link angle diagrams, instantaneous center of rotation, and degree-of-freedom loops",
+      "Lumped thermal resistor circuit networks (R_th, junction-to-case) and vector force balances"
+    ],
+    "format_critiques": [
+      {
+        "topic": "vapor-chamber",
+        "element": "Internal wick & support pillar layer-stack",
+        "verdict": "prefer_real_photo",
+        "reason": "Vector line schematics oversimplify the micro-powder capillary wick texture and pillar array; authentic multi-layer teardown renders or photography provide superior physical understanding."
+      },
+      {
+        "topic": "vapor-chamber",
+        "element": "Internal micro-wick structure",
+        "verdict": "prefer_real_photo",
+        "reason": "Micro-powder capillary wicking requires authentic macro teardown photography or SEM micrographs; simplified 2D vector schematics fail to convey physical pore diameter and sintered contact necks",
+        "timestamp": "2026-10-19T04:28:09.397Z"
+      }
+    ]
+  },
   "images": {
     "positive_exemplars": [
       {
@@ -49,6 +100,12 @@
         "title": "Amateur mobile phone hinge snapshot on wooden table",
         "reason": "Old flip-phone knuckle joint on cluttered surface; lacks modern multi-link kinematic spine and precision studio lighting."
       }
+    ],
+    "placement_rules": [
+      "Hero image MUST be an authentic cleaved cross-section or teardown of the internal core mechanism, never exterior retail housing or fan shrouds.",
+      "Section figures must sit immediately adjacent to their corresponding physical equations or governing principles, not clustered at the end of the dispatch.",
+      "Never place an image before the introductory paragraph sets the physical problem context.",
+      "Never place a figure before its parent section's introductory text"
     ]
   },
   "graphics": {

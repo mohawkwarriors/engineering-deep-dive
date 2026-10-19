@@ -70,6 +70,7 @@ ${recentTitlesList}
 
 ${vetoesList ? `USER VETOES (LEARNED NEGATIVE FEEDBACK - NEVER GENERATE SIMILAR TOPICS):\n${vetoesList}\n` : ''}
 ${getLearnedEditorialDirectives().topicDirectives}
+${getLearnedEditorialDirectives().titleDirectives}
 
 REQUIREMENTS FOR EACH OF THE 30 TOPICS:
 1. Topic-First Title: Clean, direct (e.g. "Harmonic Drive Gearboxes: Strain Wave Kinematics and Tooth Fatigue").

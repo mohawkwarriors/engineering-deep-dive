@@ -11,7 +11,8 @@
     "generate": "node scripts/generate-dispatch.mjs",
     "curate": "node scripts/generate-monthly-queue.mjs",
     "learn": "node scripts/feedback-learner.mjs",
-    "rate": "node scripts/feedback-learner.mjs rate"
+    "rate": "node scripts/feedback-learner.mjs rate",
+    "review": "node scripts/feedback-learner.mjs review"
   },
   "dependencies": {
     "node-fetch": "^3.3.2"

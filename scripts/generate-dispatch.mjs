@@ -334,6 +334,12 @@ ${vetoesList}
 
 ${getLearnedEditorialDirectives().topicDirectives}
 
+${getLearnedEditorialDirectives().titleDirectives}
+
+${getLearnedEditorialDirectives().formatDirectives}
+
+${getLearnedEditorialDirectives().placementDirectives}
+
 ${getLearnedEditorialDirectives().graphicDirectives}
 
 STRICT EDITORIAL REQUIREMENTS:
