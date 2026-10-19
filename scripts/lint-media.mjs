@@ -287,6 +287,68 @@ export function autoSanitizeArticleHtml(html) {
     return `<svg${svgAttrs}>${newSvgBody}</svg>`;
   });
 
+  // 11. Normalize Executive Summary Metrics & Prevent Telemetry Bar Collisions
+  const tbMatches = [...out.matchAll(/<div class="telemetry-bar"[^>]*>/gi)];
+  for (let i = tbMatches.length - 1; i >= 0; i--) {
+    const tbm = tbMatches[i];
+    const startIndex = tbm.index;
+    let depth = 0;
+    let endIndex = startIndex;
+    const tagRegex = /<\/?div\b[^>]*>/gi;
+    tagRegex.lastIndex = startIndex;
+    let tm;
+    while ((tm = tagRegex.exec(out)) !== null) {
+      if (tm[0].startsWith('</')) {
+        depth--;
+        if (depth === 0) {
+          endIndex = tm.index + tm[0].length;
+          break;
+        }
+      } else {
+        depth++;
+      }
+    }
+    const fullBlock = out.slice(startIndex, endIndex);
+    if (fullBlock.includes('telemetry-cell') || fullBlock.includes('metric-cell') || (!fullBlock.includes('telemetry-actions') && !fullBlock.includes('telemetry-info'))) {
+      const fixed = fullBlock
+        .replace(/class="telemetry-bar"/, 'class="executive-metrics-bar"')
+        .replace(/\btelemetry-cell\b/g, 'metric-cell')
+        .replace(/\btelemetry-label\b/g, 'metric-cell-label')
+        .replace(/\btelemetry-val\b/g, 'metric-cell-val')
+        .replace(/\btelemetry-sub\b/g, 'metric-cell-sub');
+      out = out.slice(0, startIndex) + fixed + out.slice(endIndex);
+    }
+  }
+
+  const ebMatches = [...out.matchAll(/<div class="executive-metrics-bar"[^>]*>/gi)];
+  for (let i = ebMatches.length - 1; i >= 0; i--) {
+    const ebm = ebMatches[i];
+    const startIndex = ebm.index;
+    let depth = 0;
+    let endIndex = startIndex;
+    const tagRegex = /<\/?div\b[^>]*>/gi;
+    tagRegex.lastIndex = startIndex;
+    let tm;
+    while ((tm = tagRegex.exec(out)) !== null) {
+      if (tm[0].startsWith('</')) {
+        depth--;
+        if (depth === 0) {
+          endIndex = tm.index + tm[0].length;
+          break;
+        }
+      } else {
+        depth++;
+      }
+    }
+    const fullBlock = out.slice(startIndex, endIndex);
+    const fixed = fullBlock
+      .replace(/\btelemetry-cell\b/g, 'metric-cell')
+      .replace(/\btelemetry-label\b/g, 'metric-cell-label')
+      .replace(/\btelemetry-val\b/g, 'metric-cell-val')
+      .replace(/\btelemetry-sub\b/g, 'metric-cell-sub');
+    out = out.slice(0, startIndex) + fixed + out.slice(endIndex);
+  }
+
   return out;
 }
 
@@ -877,6 +939,77 @@ export function validateArticleHtml(html, fileLabel = 'article') {
       }
     }
   });
+
+  // 5. Executive Summary Metrics Bar & Telemetry Component Integrity
+  const execBarMatches = [...html.matchAll(/<div class="executive-metrics-bar"[^>]*>/gi)];
+  for (const m of execBarMatches) {
+    const startIndex = m.index;
+    let depth = 0;
+    let endIndex = startIndex;
+    const tagRegex = /<\/?div\b[^>]*>/gi;
+    tagRegex.lastIndex = startIndex;
+    let tm;
+    while ((tm = tagRegex.exec(html)) !== null) {
+      if (tm[0].startsWith('</')) {
+        depth--;
+        if (depth === 0) {
+          endIndex = tm.index + tm[0].length;
+          break;
+        }
+      } else {
+        depth++;
+      }
+    }
+    const fullBlock = html.slice(startIndex, endIndex);
+    const cells = [...fullBlock.matchAll(/<div class="(?:metric|telemetry)-cell">/gi)];
+    if (cells.length < 3) {
+      errors.push(`Incomplete .executive-metrics-bar in ${fileLabel}: expected at least 3 metric cells, found ${cells.length}.`);
+    }
+    if (!fullBlock.includes('-label') || !fullBlock.includes('-val')) {
+      errors.push(`.executive-metrics-bar in ${fileLabel} missing mandatory .metric-cell-label or .metric-cell-val.`);
+    }
+  }
+
+  const telemetryBars = [...html.matchAll(/<div class="telemetry-bar"[^>]*>/gi)];
+  for (const m of telemetryBars) {
+    const startIndex = m.index;
+    let depth = 0;
+    let endIndex = startIndex;
+    const tagRegex = /<\/?div\b[^>]*>/gi;
+    tagRegex.lastIndex = startIndex;
+    let tm;
+    while ((tm = tagRegex.exec(html)) !== null) {
+      if (tm[0].startsWith('</')) {
+        depth--;
+        if (depth === 0) {
+          endIndex = tm.index + tm[0].length;
+          break;
+        }
+      } else {
+        depth++;
+      }
+    }
+    const fullBlock = html.slice(startIndex, endIndex);
+    if (fullBlock.includes('telemetry-cell') || fullBlock.includes('metric-cell')) {
+      errors.push(`Class collision in ${fileLabel}: <div class="telemetry-bar"> contains metric cells. Must use <div class="executive-metrics-bar">.`);
+    }
+  }
+
+  // 6. Global CSS Class Coverage Audit against index.html
+  if (fs.existsSync('index.html')) {
+    const indexHtml = fs.readFileSync('index.html', 'utf8');
+    const classMatches = [...html.matchAll(/class=["']([^"']+)["']/g)];
+    const verifiedClasses = new Set();
+    for (const cm of classMatches) {
+      cm[1].split(/\s+/).forEach(cls => {
+        if (!cls || cls.startsWith('sub-') || verifiedClasses.has(cls)) return;
+        verifiedClasses.add(cls);
+        if (!indexHtml.includes(`.${cls}`) && !indexHtml.includes(`"${cls}"`) && !indexHtml.includes(`'${cls}'`)) {
+          errors.push(`Unstyled CSS class in ${fileLabel}: "${cls}" has no corresponding definition in index.html.`);
+        }
+      });
+    }
+  }
 
   return errors;
 }

@@ -232,3 +232,96 @@ if (popoverErrors === 0 && issueErrors === 0 && mirrorErrors === 0) {
 } else {
   process.exit(1);
 }
+
+console.log('\n--- 6. AUDITING EXECUTIVE METRICS & CSS CLASS COVERAGE ---');
+let componentErrors = 0;
+const usedClasses = new Set();
+
+for (const issue of issues) {
+  const jsonPath = path.join('content/issues', issue);
+  const data = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+  const html = data.article_html || '';
+
+  // 1. Audit Executive Metrics Bar
+  const ebMatches = [...html.matchAll(/<div class="executive-metrics-bar"[^>]*>/gi)];
+  for (const m of ebMatches) {
+    const startIndex = m.index;
+    let depth = 0;
+    let endIndex = startIndex;
+    const tagRegex = /<\/?div\b[^>]*>/gi;
+    tagRegex.lastIndex = startIndex;
+    let tm;
+    while ((tm = tagRegex.exec(html)) !== null) {
+      if (tm[0].startsWith('</')) {
+        depth--;
+        if (depth === 0) {
+          endIndex = tm.index + tm[0].length;
+          break;
+        }
+      } else {
+        depth++;
+      }
+    }
+    const fullBlock = html.slice(startIndex, endIndex);
+    const cells = [...fullBlock.matchAll(/<div class="(?:metric|telemetry)-cell">/gi)];
+    if (cells.length < 3) {
+      console.error(`[ERROR] ${issue} has incomplete .executive-metrics-bar: expected at least 3 metric cells, found ${cells.length}`);
+      componentErrors++;
+    }
+    if (!fullBlock.includes('-label') || !fullBlock.includes('-val')) {
+      console.error(`[ERROR] ${issue} .executive-metrics-bar missing mandatory labels or values`);
+      componentErrors++;
+    }
+  }
+
+  // 2. Audit Telemetry Bar Isolation
+  const tbMatches = [...html.matchAll(/<div class="telemetry-bar"[^>]*>/gi)];
+  for (const m of tbMatches) {
+    const startIndex = m.index;
+    let depth = 0;
+    let endIndex = startIndex;
+    const tagRegex = /<\/?div\b[^>]*>/gi;
+    tagRegex.lastIndex = startIndex;
+    let tm;
+    while ((tm = tagRegex.exec(html)) !== null) {
+      if (tm[0].startsWith('</')) {
+        depth--;
+        if (depth === 0) {
+          endIndex = tm.index + tm[0].length;
+          break;
+        }
+      } else {
+        depth++;
+      }
+    }
+    const fullBlock = html.slice(startIndex, endIndex);
+    if (fullBlock.includes('telemetry-cell') || fullBlock.includes('metric-cell')) {
+      console.error(`[ERROR] ${issue} has class collision: .telemetry-bar contains metric cells. Must use .executive-metrics-bar.`);
+      componentErrors++;
+    }
+  }
+
+  // 3. Collect Classes for CSS Coverage Audit
+  const classMatches = [...html.matchAll(/class=["']([^"']+)["']/g)];
+  for (const cm of classMatches) {
+    cm[1].split(/\s+/).forEach(c => {
+      if (c && !c.startsWith('sub-')) usedClasses.add(c);
+    });
+  }
+}
+
+for (const cls of usedClasses) {
+  if (!indexHtml.includes(`.${cls}`) && !indexHtml.includes(`"${cls}"`) && !indexHtml.includes(`'${cls}'`)) {
+    console.error(`[ERROR] Unstyled CSS class found in content without index.html styles: "${cls}"`);
+    componentErrors++;
+  }
+}
+
+if (componentErrors === 0) {
+  console.log(`✓ All ${usedClasses.size} content CSS classes are verified against index.html stylesheet.`);
+  console.log('✓ Executive metrics bars and quality telemetry bars are cleanly isolated and structured.');
+} else {
+  console.error(`FAIL: ${componentErrors} component integrity errors detected.`);
+  process.exit(1);
+}
+

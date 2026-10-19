@@ -2144,6 +2144,54 @@
       line-height: 1.35;
     }
 
+    /* CAD Cutaway Container and Mini Schematics */
+    .cad-cutaway-container {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      display: flex;
+      justify-content: center;
+      background: var(--surface);
+    }
+    .cad-cutaway-svg {
+      width: 100%;
+      min-width: 680px;
+      height: auto;
+      display: block;
+    }
+    .flowchart-mini-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .callout-box {
+      margin: 24px 0;
+      padding: 16px 20px;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+    }
+    .callout-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
     /* Background Quality Telemetry Bar */
     .telemetry-bar {
       margin: 48px 0 24px;
@@ -3879,8 +3927,32 @@
       // Defensive Fallback 3B: Ensure spec-table is wrapped in .spec-table-wrap instead of legacy .process-card
       html = html.replace(/<div class="process-card"[^>]*>\s*(<table class="spec-table")/gi, '<div class="spec-table-wrap">\n  $1');
 
-      // Defensive Fallback 4: Ensure telemetry-bar is present
-      if (!html.includes('class="telemetry-bar"')) {
+      // Defensive Fallback 3C: Auto-heal any legacy or collided metric blocks
+      html = html.replace(/<div class="telemetry-bar">([\s\S]*?)<\/div>/gi, (match, inner) => {
+        if (inner.includes('telemetry-cell') || inner.includes('metric-cell') || (!inner.includes('telemetry-actions') && !inner.includes('telemetry-info'))) {
+          const fixedInner = inner
+            .replace(/\btelemetry-cell\b/g, 'metric-cell')
+            .replace(/\btelemetry-label\b/g, 'metric-cell-label')
+            .replace(/\btelemetry-val\b/g, 'metric-cell-val')
+            .replace(/\btelemetry-sub\b/g, 'metric-cell-sub');
+          return `<div class="executive-metrics-bar">\n${fixedInner.trim()}\n</div>`;
+        }
+        return match;
+      });
+
+      html = html.replace(/<div class="executive-metrics-bar">([\s\S]*?)<\/div>/gi, (match, inner) => {
+        const fixedInner = inner
+          .replace(/\btelemetry-cell\b/g, 'metric-cell')
+          .replace(/\btelemetry-label\b/g, 'metric-cell-label')
+          .replace(/\btelemetry-val\b/g, 'metric-cell-val')
+          .replace(/\btelemetry-sub\b/g, 'metric-cell-sub');
+        return `<div class="executive-metrics-bar">\n${fixedInner.trim()}\n</div>`;
+      });
+
+      // Defensive Fallback 4: Ensure telemetry rating bar is ALWAYS present and never suppressed by metric blocks
+      if (!html.includes('id="telemetry-up"') || !html.includes('class="telemetry-actions"')) {
+        // Remove any hollow/empty telemetry bars
+        html = html.replace(/<div class="telemetry-bar">\s*<\/div>/gi, '');
         html += `
 <div class="telemetry-bar">
   <div class="telemetry-info">

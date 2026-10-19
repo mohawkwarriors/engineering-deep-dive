@@ -472,7 +472,7 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
       "body": "<p>Detailed definition.</p><div class=\\"modal-equation-box\\"><div class=\\"math-label\\">Concept:</div>$$Formula$$<div class=\\"math-meta\\">Legend</div></div><p>Engineering application.</p>"
     }
   },
-  "article_html": "full article html starting with <div class=\"meta-line\">...<h1>Title</h1><p class=\"subtitle\">Subtitle</p><figure class=\"product-figure\"><div class=\"img-wrapper\"><img ...></div><figcaption><span><strong>FIG 01 — TITLE:</strong> ...</span><span class=\"source-tag\">...</span></figcaption></figure><h2>1. ... through <h2>6. ... and ending with <div class=\"telemetry-bar\">"
+  "article_html": "full article html starting with <div class=\"meta-line\">...<h1>Title</h1><p class=\"subtitle\">Subtitle</p><figure class=\"product-figure\"><div class=\"img-wrapper\"><img ...></div><figcaption><span><strong>FIG 01 — TITLE:</strong> ...</span><span class=\"source-tag\">...</span></figcaption></figure><h2>1. ... through <h2>6. ... and ending with an executive summary dashboard <div class=\"executive-metrics-bar\"><div class=\"metric-cell\"><span class=\"metric-cell-label\">LABEL</span><span class=\"metric-cell-val\">VAL</span><span class=\"metric-cell-sub\">SUB</span></div>... (4 cells total)</div>. Do NOT output reader voting buttons (telemetry-bar is injected automatically)."
 }`;
 
   const candidateModels = [
@@ -570,10 +570,33 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
     articleData.article_html = articleData.article_html.replace(canonicalMetaLine, `${canonicalMetaLine}\n\n<h1>${articleData.title}</h1>\n<p class="subtitle">\n  ${articleData.subtitle}\n</p>`);
   }
 
-  // Deterministic Telemetry Assembly: Ensure telemetry-bar exists at the end
-  if (!articleData.article_html.includes('class="telemetry-bar"')) {
-    articleData.article_html += `
-<div class="telemetry-bar">
+  // Deterministic Executive Metrics & Telemetry Assembly
+  // 1. Auto-heal if model used .telemetry-bar for metrics
+  articleData.article_html = articleData.article_html.replace(/<div class="telemetry-bar">([\s\S]*?)<\/div>/gi, (match, inner) => {
+    if (inner.includes('telemetry-cell') || inner.includes('metric-cell') || (!inner.includes('telemetry-actions') && !inner.includes('telemetry-info'))) {
+      const fixedInner = inner
+        .replace(/\btelemetry-cell\b/g, 'metric-cell')
+        .replace(/\btelemetry-label\b/g, 'metric-cell-label')
+        .replace(/\btelemetry-val\b/g, 'metric-cell-val')
+        .replace(/\btelemetry-sub\b/g, 'metric-cell-sub');
+      return `<div class="executive-metrics-bar">\n${fixedInner.trim()}\n</div>`;
+    }
+    return match;
+  });
+
+  articleData.article_html = articleData.article_html.replace(/<div class="executive-metrics-bar">([\s\S]*?)<\/div>/gi, (match, inner) => {
+    const fixedInner = inner
+      .replace(/\btelemetry-cell\b/g, 'metric-cell')
+      .replace(/\btelemetry-label\b/g, 'metric-cell-label')
+      .replace(/\btelemetry-val\b/g, 'metric-cell-val')
+      .replace(/\btelemetry-sub\b/g, 'metric-cell-sub');
+    return `<div class="executive-metrics-bar">\n${fixedInner.trim()}\n</div>`;
+  });
+
+  // 2. Ensure telemetry voting bar is ALWAYS present at the end
+  if (!articleData.article_html.includes('id="telemetry-up"') || !articleData.article_html.includes('class="telemetry-actions"')) {
+    articleData.article_html = articleData.article_html.replace(/<div class="telemetry-bar">\s*<\/div>/gi, '');
+    articleData.article_html += `\n<div class="telemetry-bar">
   <div class="telemetry-info">
     <span class="telemetry-title">Background Quality Telemetry</span>
     <span class="telemetry-desc">Rate this topic to train the automated curation model for future dispatches.</span>
@@ -588,8 +611,7 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
       Poor Topic
     </button>
   </div>
-</div>
-`;
+</div>\n`;
   }
 
   // Deterministic Auto-Sanitizer + Global SVG Geometry Validation Gate
