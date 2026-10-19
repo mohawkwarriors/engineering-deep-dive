@@ -2192,14 +2192,14 @@
       vertical-align: middle;
     }
 
-    /* Background Quality Telemetry Bar */
+    /* Background Quality Telemetry Bar (Hidden in favor of top-level Score mode) */
     .telemetry-bar {
+      display: none !important;
       margin: 48px 0 24px;
       padding: 18px 22px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
-      display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
@@ -2249,7 +2249,7 @@
     /* ==========================================================================
        IN-ARTICLE LIVE SCORING MODE (TOGGLED VIA 'SCORE' HEADER BUTTON)
        ========================================================================== */
-    body.score-mode-active .score-toolbar {
+    .score-mode-active .score-toolbar {
       display: flex !important;
     }
     .score-toolbar {
@@ -4147,6 +4147,7 @@
       const btn = document.getElementById("btn-score-mode");
       if (btn) btn.classList.toggle("active", isScoreModeActive);
 
+      document.body.classList.toggle("score-mode-active", isScoreModeActive);
       const articleEl = document.getElementById("view-article");
       if (!articleEl) return;
 
@@ -4162,7 +4163,7 @@
       if (!articleEl) return;
 
       // 1. Topic & Rename Toolbar (Above H1)
-      const titleEl = articleEl.querySelector("h1.article-title");
+      const titleEl = articleEl.querySelector("h1.article-title, h1");
       if (titleEl && !articleEl.querySelector(".score-toolbar-topic")) {
         const topicBar = document.createElement("div");
         topicBar.className = "score-toolbar score-toolbar-topic";
@@ -4209,7 +4210,7 @@
       }
 
       // 2. Hero Image Toolbar
-      const heroFigure = articleEl.querySelector(".hero-figure, figure.article-hero");
+      const heroFigure = articleEl.querySelector(".hero-figure, figure.article-hero, figure.product-figure, figure");
       if (heroFigure && !heroFigure.querySelector(".score-toolbar-hero")) {
         const imgBar = document.createElement("div");
         imgBar.className = "score-toolbar score-toolbar-hero";
