@@ -978,8 +978,20 @@
       gap: 14px;
       padding: 20px;
       background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 36px 0;
+      overflow: hidden;
       max-width: 100%;
       position: relative;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    }
+    .schematic-card > .process-grid,
+    .schematic-card .process-grid {
+      border: none !important;
+      border-radius: 0 !important;
+      margin: 0 !important;
+      box-shadow: none !important;
     }
     .process-step-card {
       background: var(--card-inner);
@@ -1082,11 +1094,25 @@
       display: flex;
       flex-direction: column;
       background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 36px 0;
+      overflow: hidden;
       padding: 16px 20px 20px;
       box-sizing: border-box;
       max-width: 100%;
       position: relative;
       outline: none;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+      transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .schematic-card > .process-wheel-viewer,
+    .schematic-card .process-wheel-viewer {
+      border: none !important;
+      border-radius: 0 !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+      padding: 16px 20px 20px !important;
     }
     .process-wheel-viewer:focus-visible {
       box-shadow: inset 0 0 0 2px var(--accent);
@@ -1132,14 +1158,14 @@
       gap: 5px;
       background: var(--card-inner);
       border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 5px 10px;
+      border-radius: 6px;
+      padding: 5px 11px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
       font-weight: 500;
       color: var(--muted);
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
       white-space: nowrap;
     }
     .stepper-pill:hover {
@@ -1184,6 +1210,12 @@
     }
     .stepper-counter strong {
       color: var(--text);
+      display: inline-block;
+      transition: opacity 0.12s ease, transform 0.12s ease;
+    }
+    .stepper-counter strong.changing {
+      opacity: 0;
+      transform: translateY(-3px);
     }
     .stepper-nav-btn {
       display: inline-flex;
@@ -1191,7 +1223,7 @@
       justify-content: center;
       width: 28px;
       height: 28px;
-      border-radius: 4px;
+      border-radius: 6px;
       background: var(--card-inner);
       border: 1px solid var(--border);
       color: var(--text);
@@ -1208,7 +1240,7 @@
       gap: 5px;
       height: 28px;
       padding: 0 9px;
-      border-radius: 4px;
+      border-radius: 6px;
       background: var(--card-inner);
       border: 1px solid var(--border);
       font-family: 'JetBrains Mono', monospace;
@@ -1223,52 +1255,115 @@
       border-color: var(--text);
     }
 
-    /* The Large Stage Showcase Viewport (2 Columns on Desktop) */
-    @keyframes cardStageFade {
-      from {
-        opacity: 0.55;
-        transform: translateY(3px);
+    /* Premium Directional & Fluid Keyframe Animations */
+    @keyframes stageSlideInNext {
+      0% {
+        opacity: 0;
+        transform: translate3d(24px, 0, 0);
       }
-      to {
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+    }
+    @keyframes stageSlideInPrev {
+      0% {
+        opacity: 0;
+        transform: translate3d(-24px, 0, 0);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+    }
+    @keyframes stageInitialIn {
+      0% {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      100% {
         opacity: 1;
         transform: translateY(0);
       }
     }
+    @keyframes stageVisualScale {
+      0% {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* The Large Stage Showcase Viewport (Fixed Height Invariant across all stages) */
     .stepper-stage-viewport {
       display: grid;
       grid-template-columns: 1.25fr 1fr;
       gap: 16px;
       align-items: stretch;
-      min-height: 190px;
-      animation: cardStageFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      height: 240px;
+      min-height: 240px;
+      max-height: 240px;
+      box-sizing: border-box;
+      overflow: hidden;
+      contain: layout paint;
     }
     @media (max-width: 800px) {
       .stepper-stage-viewport {
         grid-template-columns: 1fr;
+        height: auto;
+        min-height: 350px;
+        max-height: none;
       }
+    }
+
+    /* Directional Stage Slide Transitions with Subtle Stagger */
+    .stepper-stage-viewport.slide-init {
+      animation: stageInitialIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .stepper-stage-viewport.slide-next .stepper-visual-large {
+      animation: stageSlideInNext 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .stepper-stage-viewport.slide-next .stepper-visual-large svg {
+      animation: stageVisualScale 0.34s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .stepper-stage-viewport.slide-next .stepper-details {
+      animation: stageSlideInNext 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.03s both;
+    }
+    .stepper-stage-viewport.slide-prev .stepper-visual-large {
+      animation: stageSlideInPrev 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .stepper-stage-viewport.slide-prev .stepper-visual-large svg {
+      animation: stageVisualScale 0.34s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .stepper-stage-viewport.slide-prev .stepper-details {
+      animation: stageSlideInPrev 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.03s both;
     }
 
     /* Left: Large Visual Canvas */
     .stepper-visual-large {
       background: var(--card-inner);
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      min-height: 180px;
+      height: 100%;
+      min-height: 0;
+      max-height: 100%;
       position: relative;
       box-sizing: border-box;
       background-image: radial-gradient(var(--border) 1px, transparent 1px);
       background-size: 16px 16px;
-      transition: opacity 0.2s ease, transform 0.2s ease;
     }
     .stepper-visual-large svg {
       width: 100% !important;
       height: auto !important;
-      max-height: 175px !important;
+      max-height: 165px !important;
       max-width: 100% !important;
       display: block !important;
       margin: 0 auto;
@@ -1278,20 +1373,25 @@
     .stepper-details {
       background: var(--card-inner);
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 16px 18px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 10px;
+      justify-content: flex-start;
+      gap: 8px;
       box-sizing: border-box;
-      transition: opacity 0.2s ease;
+      height: 100%;
+      min-height: 0;
+      max-height: 100%;
+      overflow: hidden;
     }
     .stepper-stage-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
+      flex-shrink: 0;
+      height: 18px;
     }
     .stepper-stage-tag {
       font-family: 'JetBrains Mono', monospace;
@@ -1307,6 +1407,10 @@
       color: var(--text);
       margin: 0;
       line-height: 1.3;
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
     }
     .stepper-stage-desc {
       font-size: 13px;
@@ -1314,13 +1418,18 @@
       color: var(--muted);
       margin: 0;
       flex: 1;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
     }
     .stepper-stage-metric {
-      margin-top: 6px;
+      margin-top: auto;
+      flex-shrink: 0;
       padding: 6px 10px;
       background: rgba(217, 119, 87, 0.08);
       border: 1px solid rgba(217, 119, 87, 0.22);
-      border-radius: 4px;
+      border-radius: 6px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 11.5px;
       color: var(--accent);
@@ -1329,6 +1438,8 @@
       align-items: center;
       gap: 6px;
       width: fit-content;
+      min-height: 30px;
+      box-sizing: border-box;
     }
     [data-theme="dark"] .stepper-stage-metric {
       background: rgba(217, 119, 87, 0.16);
@@ -1358,7 +1469,7 @@
       padding: 6px 12px;
       background: var(--card-inner);
       border: 1px solid var(--border);
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
       transition: all 0.15s ease;
     }
@@ -1425,31 +1536,63 @@
       grid-template-columns: 1.25fr 1fr;
       gap: 16px;
       align-items: stretch;
-      min-height: 190px;
-      animation: cardStageFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      height: 240px;
+      min-height: 240px;
+      max-height: 240px;
+      box-sizing: border-box;
+      overflow: hidden;
+      contain: layout paint;
     }
     @media (max-width: 800px) {
       .pipeline-stage-view {
         grid-template-columns: 1fr;
+        height: auto;
+        min-height: 350px;
+        max-height: none;
       }
+    }
+    .pipeline-stage-view.slide-init {
+      animation: stageInitialIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .pipeline-stage-view.slide-next .pipeline-visual-frame {
+      animation: stageSlideInNext 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .pipeline-stage-view.slide-next .pipeline-visual-frame svg {
+      animation: stageVisualScale 0.34s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .pipeline-stage-view.slide-next .pipeline-info-frame {
+      animation: stageSlideInNext 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.03s both;
+    }
+    .pipeline-stage-view.slide-prev .pipeline-visual-frame {
+      animation: stageSlideInPrev 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .pipeline-stage-view.slide-prev .pipeline-visual-frame svg {
+      animation: stageVisualScale 0.34s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .pipeline-stage-view.slide-prev .pipeline-info-frame {
+      animation: stageSlideInPrev 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.03s both;
     }
     .pipeline-visual-frame {
       background: var(--card-inner);
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 180px;
+      height: 100%;
+      min-height: 0;
+      max-height: 100%;
+      overflow: hidden;
       position: relative;
+      box-sizing: border-box;
       background-image: radial-gradient(var(--border) 1px, transparent 1px);
       background-size: 16px 16px;
     }
     .pipeline-visual-frame svg {
       width: 100% !important;
       height: auto !important;
-      max-height: 175px !important;
+      max-height: 165px !important;
       max-width: 100% !important;
       display: block !important;
       margin: 0 auto;
@@ -1457,18 +1600,25 @@
     .pipeline-info-frame {
       background: var(--card-inner);
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 16px 18px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 10px;
+      justify-content: flex-start;
+      gap: 8px;
+      box-sizing: border-box;
+      height: 100%;
+      min-height: 0;
+      max-height: 100%;
+      overflow: hidden;
     }
     .pipeline-header-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
+      flex-shrink: 0;
+      height: 18px;
     }
     .pipeline-tag {
       font-family: 'JetBrains Mono', monospace;
@@ -1489,6 +1639,10 @@
       color: var(--text);
       margin: 0;
       line-height: 1.3;
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
     }
     .pipeline-desc {
       font-size: 13px;
@@ -1496,13 +1650,18 @@
       color: var(--muted);
       margin: 0;
       flex: 1;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
     }
     .pipeline-metric {
-      margin-top: 6px;
+      margin-top: auto;
+      flex-shrink: 0;
       padding: 6px 10px;
       background: rgba(217, 119, 87, 0.08);
       border: 1px solid rgba(217, 119, 87, 0.22);
-      border-radius: 4px;
+      border-radius: 6px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 11.5px;
       color: var(--accent);
@@ -1511,6 +1670,8 @@
       align-items: center;
       gap: 6px;
       width: fit-content;
+      min-height: 30px;
+      box-sizing: border-box;
     }
     [data-theme="dark"] .pipeline-metric {
       background: rgba(217, 119, 87, 0.16);
@@ -1526,7 +1687,7 @@
     }
     .accordion-drawer {
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       background: var(--card-inner);
       overflow: hidden;
       transition: border-color 0.15s ease;
@@ -1564,7 +1725,7 @@
       font-weight: 700;
       color: var(--accent);
       padding: 2px 6px;
-      border-radius: 3px;
+      border-radius: 4px;
       background: rgba(217, 119, 87, 0.1);
     }
     .accordion-tag {
@@ -1633,7 +1794,7 @@
     .accordion-visual {
       background: var(--card-inner);
       border: 1px solid var(--border);
-      border-radius: 4px;
+      border-radius: 6px;
       padding: 8px;
       display: flex;
       align-items: center;
@@ -1661,7 +1822,7 @@
       display: inline-flex;
       align-items: center;
       padding: 4px 8px;
-      border-radius: 4px;
+      border-radius: 6px;
       background: rgba(217, 119, 87, 0.08);
       border: 1px solid rgba(217, 119, 87, 0.22);
       font-family: 'JetBrains Mono', monospace;
@@ -1691,7 +1852,7 @@
       scroll-snap-align: start;
       background: var(--card-inner);
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 12px;
       display: flex;
       flex-direction: column;
@@ -1721,7 +1882,7 @@
       font-weight: 700;
       color: var(--accent);
       padding: 2px 5px;
-      border-radius: 3px;
+      border-radius: 4px;
       background: rgba(217, 119, 87, 0.1);
     }
     .filmstrip-tag {
@@ -1734,7 +1895,7 @@
     .filmstrip-visual {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 4px;
+      border-radius: 6px;
       padding: 8px;
       display: flex;
       align-items: center;
@@ -1764,7 +1925,7 @@
     .filmstrip-card-metric {
       margin-top: auto;
       padding: 4px 7px;
-      border-radius: 3px;
+      border-radius: 6px;
       background: rgba(217, 119, 87, 0.08);
       border: 1px solid rgba(217, 119, 87, 0.22);
       font-family: 'JetBrains Mono', monospace;
@@ -1788,7 +1949,7 @@
     .matrix-card {
       background: var(--card-inner);
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 12px;
       display: flex;
       flex-direction: column;
@@ -1828,7 +1989,7 @@
     .matrix-visual {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 4px;
+      border-radius: 6px;
       padding: 8px;
       display: flex;
       align-items: center;
@@ -1851,7 +2012,7 @@
     .matrix-metric {
       margin-top: auto;
       padding: 4px 7px;
-      border-radius: 3px;
+      border-radius: 6px;
       background: rgba(217, 119, 87, 0.08);
       border: 1px solid rgba(217, 119, 87, 0.22);
       font-family: 'JetBrains Mono', monospace;
@@ -2607,6 +2768,18 @@
         grid-template-columns: 1fr !important;
         padding: 14px !important;
         gap: 10px !important;
+        margin: 26px 0 !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03) !important;
+      }
+      .schematic-card > .process-grid,
+      .schematic-card .process-grid {
+        border: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
       }
       .archive-item {
         padding: 14px 16px !important;
@@ -2668,10 +2841,21 @@
 
       /* Interactive Step & Process Cards Mobile Optimization */
       .process-wheel-viewer {
-        padding: 14px 12px 16px !important;
-        margin: 0 !important;
-        border-radius: 0 !important;
+        padding: 14px 14px 18px !important;
+        margin: 26px 0 !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03) !important;
         touch-action: pan-y pinch-zoom;
+      }
+      .schematic-card > .process-wheel-viewer,
+      .schematic-card .process-wheel-viewer {
+        border: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        padding: 14px 12px 16px !important;
       }
       .stepper-top-bar {
         display: flex !important;
@@ -2730,45 +2914,67 @@
         padding: 6px 12px !important;
         min-height: 32px !important;
         font-size: 11px !important;
-        border-radius: 5px !important;
+        border-radius: 6px !important;
         flex-shrink: 0 !important;
       }
       .stepper-stage-viewport,
       .pipeline-stage-view {
         grid-template-columns: 1fr !important;
         gap: 12px !important;
-        min-height: auto !important;
+        min-height: 350px !important;
+        height: auto !important;
       }
       .stepper-visual-large,
       .pipeline-visual-frame {
-        min-height: 135px !important;
-        max-height: 165px !important;
+        height: 140px !important;
+        min-height: 140px !important;
+        max-height: 140px !important;
         padding: 10px !important;
+        box-sizing: border-box !important;
+        border-radius: 8px !important;
       }
       .stepper-visual-large svg,
       .pipeline-visual-frame svg {
-        max-height: 140px !important;
+        max-height: 118px !important;
       }
       .stepper-details,
       .pipeline-info-frame {
+        height: 198px !important;
+        min-height: 198px !important;
+        max-height: 198px !important;
         padding: 14px !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
         gap: 8px !important;
+        border-radius: 8px !important;
       }
       .stepper-stage-title,
       .pipeline-title {
         font-size: 15px !important;
         line-height: 1.35 !important;
+        min-height: 38px !important;
+        display: flex !important;
+        align-items: center !important;
       }
       .stepper-stage-desc,
       .pipeline-desc {
         font-size: 13px !important;
         line-height: 1.5 !important;
+        -webkit-line-clamp: 4 !important;
+        flex: 1 !important;
+        overflow: hidden !important;
+        display: -webkit-box !important;
+        -webkit-box-orient: vertical !important;
       }
       .stepper-stage-metric,
       .pipeline-metric {
         font-size: 11px !important;
         padding: 4px 8px !important;
-        margin-top: 4px !important;
+        margin-top: auto !important;
+        flex-shrink: 0 !important;
+        min-height: 28px !important;
       }
       .pipeline-rail-wrap {
         padding-bottom: 6px !important;
@@ -2781,6 +2987,7 @@
       .pipeline-station {
         padding: 6px 10px !important;
         gap: 6px !important;
+        border-radius: 6px !important;
       }
       .pipeline-station-label {
         font-size: 10.5px !important;
@@ -3196,14 +3403,15 @@
           }
         }
 
-        function renderVariantBody() {
+        function renderVariantBody(direction = 'init') {
           const bodyEl = document.getElementById(`body-${wheelId}`);
           if (!bodyEl) return;
           const s = steps[activeIdx];
+          const dirClass = direction === 'next' ? 'slide-next' : direction === 'prev' ? 'slide-prev' : 'slide-init';
 
           if (currentVariant === 'stepper') {
             bodyEl.innerHTML = `
-              <div class="stepper-stage-viewport">
+              <div class="stepper-stage-viewport ${dirClass}">
                 <div class="stepper-visual-large" id="vis-${wheelId}">
                   ${s.visualHtml}
                 </div>
@@ -3233,7 +3441,7 @@
                   `).join('')}
                 </div>
               </div>
-              <div class="pipeline-stage-view">
+              <div class="pipeline-stage-view ${dirClass}">
                 <div class="pipeline-visual-frame" id="pipe-vis-${wheelId}">
                   ${s.visualHtml}
                 </div>
@@ -3365,7 +3573,13 @@
                   if (closestIdx !== activeIdx) {
                     activeIdx = closestIdx;
                     const counterEl = document.getElementById(`counter-curr-${wheelId}`);
-                    if (counterEl) counterEl.textContent = `0${activeIdx + 1}`;
+                    if (counterEl) {
+                      counterEl.classList.add('changing');
+                      setTimeout(() => {
+                        counterEl.textContent = `0${activeIdx + 1}`;
+                        counterEl.classList.remove('changing');
+                      }, 100);
+                    }
                     updateTopBarLeft();
                     cards.forEach(c => {
                       const cIdx = parseInt(c.dataset.idx, 10);
@@ -3378,25 +3592,46 @@
           }
         }
 
-        function updateView(idx) {
-          activeIdx = (idx + total) % total;
-          const counterEl = document.getElementById(`counter-curr-${wheelId}`);
-          if (counterEl) counterEl.textContent = `0${activeIdx + 1}`;
+        function updateView(idx, explicitDir) {
+          prevIdx = activeIdx;
+          const newIdx = (idx + total) % total;
+          let direction = explicitDir;
+          if (!direction) {
+            if (activeIdx === total - 1 && newIdx === 0) {
+              direction = 'next';
+            } else if (activeIdx === 0 && newIdx === total - 1) {
+              direction = 'prev';
+            } else {
+              direction = newIdx >= activeIdx ? 'next' : 'prev';
+            }
+          }
+          activeIdx = newIdx;
+
+          const counterCurr = document.getElementById(`counter-curr-${wheelId}`);
+          if (counterCurr) {
+            counterCurr.classList.add('changing');
+            setTimeout(() => {
+              counterCurr.textContent = `0${activeIdx + 1}`;
+              counterCurr.classList.remove('changing');
+            }, 100);
+          }
           updateTopBarLeft();
-          renderVariantBody();
+          renderVariantBody(direction);
         }
 
         // Event delegation for clicks inside viewer
         viewer.addEventListener('click', (e) => {
           const pillBtn = e.target.closest('.stepper-pill');
           if (pillBtn && pillBtn.dataset.idx !== undefined) {
-            updateView(parseInt(pillBtn.dataset.idx, 10));
+            const targetIdx = parseInt(pillBtn.dataset.idx, 10);
+            updateView(targetIdx, targetIdx >= activeIdx ? 'next' : 'prev');
             return;
           }
 
           const stationEl = e.target.closest('.pipeline-station');
           if (stationEl && stationEl.dataset.idx !== undefined) {
-            updateView(parseInt(stationEl.dataset.idx, 10));
+            const targetIdx = parseInt(stationEl.dataset.idx, 10);
+            updateView(targetIdx, targetIdx >= activeIdx ? 'next' : 'prev');
             return;
           }
 
@@ -3409,7 +3644,7 @@
               if (isOpen && activeIdx === dIdx) {
                 drawer.classList.remove('open');
               } else {
-                updateView(dIdx);
+                updateView(dIdx, dIdx >= activeIdx ? 'next' : 'prev');
                 setTimeout(() => {
                   const updatedDrawer = viewer.querySelector(`.accordion-drawer[data-idx="${dIdx}"]`);
                   if (updatedDrawer) {
@@ -3426,19 +3661,20 @@
 
           const filmCard = e.target.closest('.filmstrip-card');
           if (filmCard && filmCard.dataset.idx !== undefined) {
-            updateView(parseInt(filmCard.dataset.idx, 10));
+            const targetIdx = parseInt(filmCard.dataset.idx, 10);
+            updateView(targetIdx, targetIdx >= activeIdx ? 'next' : 'prev');
             return;
           }
 
           const prevBtn = e.target.closest(`#prev-${wheelId}`);
           if (prevBtn) {
-            updateView(activeIdx - 1);
+            updateView(activeIdx - 1, 'prev');
             return;
           }
 
           const nextBtn = e.target.closest(`#next-${wheelId}`);
           if (nextBtn) {
-            updateView(activeIdx + 1);
+            updateView(activeIdx + 1, 'next');
             return;
           }
         });
@@ -3446,10 +3682,10 @@
         viewer.addEventListener('keydown', (e) => {
           if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
             e.preventDefault();
-            updateView(activeIdx + 1);
+            updateView(activeIdx + 1, 'next');
           } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
             e.preventDefault();
-            updateView(activeIdx - 1);
+            updateView(activeIdx - 1, 'prev');
           }
         });
 
@@ -3486,9 +3722,9 @@
           if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3) {
             if (currentVariant === 'stepper' || currentVariant === 'pipeline') {
               if (deltaX < 0) {
-                updateView(activeIdx + 1);
+                updateView(activeIdx + 1, 'next');
               } else {
-                updateView(activeIdx - 1);
+                updateView(activeIdx - 1, 'prev');
               }
             }
           }
@@ -3496,7 +3732,7 @@
 
         // Initialize display
         updateTopBarLeft();
-        renderVariantBody();
+        renderVariantBody('init');
       });
     }
 
