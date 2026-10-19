@@ -18,31 +18,105 @@ const SUBJECTS = [
   "Product Dives"
 ];
 
+export function findMatchingBrace(str, startPos = 0) {
+  let depth = 0;
+  let inString = false;
+  let escape = false;
+
+  for (let i = startPos; i < str.length; i++) {
+    const char = str[i];
+    if (inString) {
+      if (escape) {
+        escape = false;
+      } else if (char === '\\') {
+        escape = true;
+      } else if (char === '"') {
+        inString = false;
+      }
+    } else {
+      if (char === '"') {
+        inString = true;
+      } else if (char === '{' || char === '[') {
+        depth++;
+      } else if (char === '}' || char === ']') {
+        depth--;
+        if (depth === 0) {
+          return i;
+        }
+      }
+    }
+  }
+  return -1;
+}
+
+export function autoCloseJson(str) {
+  let inString = false;
+  let escape = false;
+  const stack = [];
+
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+    if (inString) {
+      if (escape) {
+        escape = false;
+      } else if (char === '\\') {
+        escape = true;
+      } else if (char === '"') {
+        inString = false;
+      }
+    } else {
+      if (char === '"') {
+        inString = true;
+      } else if (char === '{') {
+        stack.push('}');
+      } else if (char === '[') {
+        stack.push(']');
+      } else if (char === '}' || char === ']') {
+        if (stack.length > 0 && stack[stack.length - 1] === char) {
+          stack.pop();
+        }
+      }
+    }
+  }
+
+  let closed = str;
+  if (inString) {
+    closed += '"';
+  }
+  while (stack.length > 0) {
+    closed += stack.pop();
+  }
+  return closed;
+}
+
 export function safeJsonParse(rawString) {
   if (!rawString) throw new Error("Empty JSON string received.");
   let cleaned = rawString.trim();
 
-  // Strip markdown code fences if wrapping the payload
-  if (cleaned.startsWith('```')) {
-    cleaned = cleaned.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
-  }
+  // Strip markdown code fences if present
+  cleaned = cleaned.replace(/^```(?:json)?\s*/i, '').replace(/\s*```[\s\S]*$/i, '').trim();
 
-  // Find outermost JSON structure (object or array)
+  // Find start of outermost JSON
   const firstBrace = cleaned.indexOf('{');
   const firstBracket = cleaned.indexOf('[');
   let startIdx = -1;
-  let endIdx = -1;
 
   if (firstBrace !== -1 && (firstBracket === -1 || firstBrace < firstBracket)) {
     startIdx = firstBrace;
-    endIdx = cleaned.lastIndexOf('}');
   } else if (firstBracket !== -1) {
     startIdx = firstBracket;
-    endIdx = cleaned.lastIndexOf(']');
   }
 
-  if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
-    cleaned = cleaned.slice(startIdx, endIdx + 1);
+  if (startIdx > 0) {
+    cleaned = cleaned.slice(startIdx);
+  }
+
+  // Find matching outermost closing brace
+  const matchingEnd = findMatchingBrace(cleaned, 0);
+  if (matchingEnd !== -1) {
+    cleaned = cleaned.slice(0, matchingEnd + 1);
+  } else {
+    cleaned = autoCloseJson(cleaned);
   }
 
   // 1. Fast path: try standard parsing first
@@ -104,30 +178,47 @@ export function safeJsonParse(rawString) {
           repaired += '\\\\';
           i++;
         }
-      } else if (char === '\n') {
-        repaired += '\\n';
-        i++;
-      } else if (char === '\r') {
-        repaired += '\\r';
-        i++;
-      } else if (char === '\t') {
-        repaired += '\\t';
-        i++;
       } else {
-        repaired += char;
-        i++;
+        const code = char.charCodeAt(0);
+        if (code === 8) {
+          repaired += '\\b';
+          i++;
+        } else if (code === 9) {
+          repaired += '\\t';
+          i++;
+        } else if (code === 10) {
+          repaired += '\\n';
+          i++;
+        } else if (code === 12) {
+          repaired += '\\f';
+          i++;
+        } else if (code === 13) {
+          repaired += '\\r';
+          i++;
+        } else if (code < 32) {
+          repaired += '\\u' + code.toString(16).padStart(4, '0');
+          i++;
+        } else {
+          repaired += char;
+          i++;
+        }
       }
     }
   }
 
   // Remove trailing commas before closing braces or brackets
-  const cleanedCommas = repaired.replace(/,\s*([\]}])/g, '$1');
+  let candidateParsed = repaired.replace(/,\s*([\]}])/g, '$1');
 
   try {
-    return JSON.parse(cleanedCommas);
+    return JSON.parse(candidateParsed);
   } catch (err2) {
     console.warn(`State-machine repair attempt 1 failed (${err2.message}). Attempting unrelaxed parse...`);
-    return JSON.parse(repaired);
+    try {
+      return JSON.parse(repaired);
+    } catch (err3) {
+      const closedAgain = autoCloseJson(candidateParsed);
+      return JSON.parse(closedAgain);
+    }
   }
 }
 
@@ -405,7 +496,8 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
             contents: [{ parts: [{ text: prompt }] }],
             generationConfig: {
               responseMimeType: "application/json",
-              temperature: 0.3
+              temperature: 0.3,
+              maxOutputTokens: 65536
             }
           })
         });
@@ -426,7 +518,15 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
         }
 
         const resJson = await response.json();
-        rawContent = resJson.candidates?.[0]?.content?.parts?.[0]?.text;
+        const candidate = resJson.candidates?.[0];
+        if (candidate?.finishReason && candidate.finishReason !== 'STOP') {
+          console.warn(`Model ${model} completed with finishReason: ${candidate.finishReason}`);
+          if (candidate.finishReason === 'MAX_TOKENS') {
+            lastError = new Error(`Model ${model} output was truncated due to MAX_TOKENS.`);
+            continue;
+          }
+        }
+        rawContent = candidate?.content?.parts?.[0]?.text;
         if (rawContent) {
           console.log(`Successfully received content from ${model}.`);
           successfulEndpoint = endpoint;

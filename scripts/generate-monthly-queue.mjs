@@ -108,14 +108,23 @@ RETURN ONLY A VALID JSON ARRAY OF 30 OBJECTS (no markdown fences, no extra text)
           body: JSON.stringify({
             contents: [{ parts: [{ text: prompt }] }],
             generationConfig: {
-              responseMimeType: "application/json"
+              responseMimeType: "application/json",
+              maxOutputTokens: 65536
             }
           })
         });
 
         if (response.ok) {
           const result = await response.json();
-          textOutput = result.candidates?.[0]?.content?.parts?.[0]?.text;
+          const candidate = result.candidates?.[0];
+          if (candidate?.finishReason && candidate.finishReason !== 'STOP') {
+            console.warn(`Queue model ${model} completed with finishReason: ${candidate.finishReason}`);
+            if (candidate.finishReason === 'MAX_TOKENS') {
+              lastErr = new Error(`Queue model ${model} output was truncated due to MAX_TOKENS.`);
+              continue;
+            }
+          }
+          textOutput = candidate?.content?.parts?.[0]?.text;
           if (textOutput) {
             console.log(`Queue successfully generated with ${model}.`);
             break;
