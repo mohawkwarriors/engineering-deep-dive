@@ -21,36 +21,113 @@ const SUBJECTS = [
 export function safeJsonParse(rawString) {
   if (!rawString) throw new Error("Empty JSON string received.");
   let cleaned = rawString.trim();
+
+  // Strip markdown code fences if wrapping the payload
   if (cleaned.startsWith('```')) {
     cleaned = cleaned.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
   }
 
+  // Find outermost JSON structure (object or array)
+  const firstBrace = cleaned.indexOf('{');
+  const firstBracket = cleaned.indexOf('[');
+  let startIdx = -1;
+  let endIdx = -1;
+
+  if (firstBrace !== -1 && (firstBracket === -1 || firstBrace < firstBracket)) {
+    startIdx = firstBrace;
+    endIdx = cleaned.lastIndexOf('}');
+  } else if (firstBracket !== -1) {
+    startIdx = firstBracket;
+    endIdx = cleaned.lastIndexOf(']');
+  }
+
+  if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
+    cleaned = cleaned.slice(startIdx, endIdx + 1);
+  }
+
+  // 1. Fast path: try standard parsing first
   try {
     return JSON.parse(cleaned);
   } catch (err) {
-    console.warn(`Standard JSON.parse failed (${err.message}). Repairing unescaped LaTeX backslashes...`);
+    console.warn(`Standard JSON.parse failed (${err.message}). Repairing unescaped LaTeX backslashes and JSON escapes...`);
+  }
 
-    // Pass 1: Double any backslash not part of a valid JSON escape sequence (\", \\, \/, \b, \f, \n, \r, \t, \uXXXX)
-    const pass1 = cleaned.replace(/\\(?!["\\/bfnrt]|u[0-9a-fA-F]{4})/g, '\\\\');
-    try {
-      return JSON.parse(pass1);
-    } catch (err2) {
-      console.warn(`Pass 1 backslash repair failed (${err2.message}). Attempting iterative positional repair...`);
-      let s = pass1;
-      for (let attempt = 0; attempt < 50; attempt++) {
-        try {
-          return JSON.parse(s);
-        } catch (posErr) {
-          const match = posErr.message.match(/position (\d+)/);
-          if (!match) throw posErr;
-          const pos = parseInt(match[1], 10);
-          const backslashIdx = s.lastIndexOf('\\', pos);
-          if (backslashIdx === -1 || pos - backslashIdx > 8) throw posErr;
-          s = s.slice(0, backslashIdx) + '\\\\' + s.slice(backslashIdx + 1);
-        }
+  // 2. State-machine string repair
+  const latexCommands = /^(?:frac|flat|forall|text|textbf|textit|textrm|textsf|texttt|times|theta|tau|tilde|top|rho|right|rangle|rightarrow|Rightarrow|real|nabla|nu|neq|neg|newline|bar|beta|bm|begin|big|bmod|bullet)\b/;
+
+  let inString = false;
+  let repaired = '';
+  let i = 0;
+
+  while (i < cleaned.length) {
+    const char = cleaned[i];
+
+    if (!inString) {
+      if (char === '"') {
+        inString = true;
       }
-      throw err2;
+      repaired += char;
+      i++;
+    } else {
+      if (char === '"') {
+        inString = false;
+        repaired += char;
+        i++;
+      } else if (char === '\\') {
+        const next = cleaned[i + 1];
+        if (next === undefined) {
+          repaired += '\\\\';
+          i++;
+        } else if (next === '\\' || next === '"' || next === '/') {
+          repaired += '\\' + next;
+          i += 2;
+        } else if (next === 'u') {
+          const hex = cleaned.slice(i + 2, i + 6);
+          if (/^[0-9a-fA-F]{4}$/.test(hex)) {
+            repaired += '\\u' + hex;
+            i += 6;
+          } else {
+            repaired += '\\\\';
+            i++;
+          }
+        } else if (next === 'b' || next === 'f' || next === 'n' || next === 'r' || next === 't') {
+          const remainder = cleaned.slice(i + 1);
+          if (latexCommands.test(remainder)) {
+            repaired += '\\\\';
+            i++;
+          } else {
+            repaired += '\\' + next;
+            i += 2;
+          }
+        } else {
+          // Unescaped backslash before any character (LaTeX symbols like \Delta, \mu, \approx, etc.)
+          repaired += '\\\\';
+          i++;
+        }
+      } else if (char === '\n') {
+        repaired += '\\n';
+        i++;
+      } else if (char === '\r') {
+        repaired += '\\r';
+        i++;
+      } else if (char === '\t') {
+        repaired += '\\t';
+        i++;
+      } else {
+        repaired += char;
+        i++;
+      }
     }
+  }
+
+  // Remove trailing commas before closing braces or brackets
+  const cleanedCommas = repaired.replace(/,\s*([\]}])/g, '$1');
+
+  try {
+    return JSON.parse(cleanedCommas);
+  } catch (err2) {
+    console.warn(`State-machine repair attempt 1 failed (${err2.message}). Attempting unrelaxed parse...`);
+    return JSON.parse(repaired);
   }
 }
 
@@ -289,7 +366,7 @@ STRICT EDITORIAL REQUIREMENTS:
           * BADGE BOX BOUNDS: All text inside badge rects must have at least 15px horizontal and vertical padding.
           * GRAPHIC DECOUPLING: Never place callout badges directly on top of physical mechanism geometry. Use dedicated margin whitespace and dashed leader lines.
           * CONTRAST IMMUNITY: All callout badges must use high-contrast dark pills (<rect fill="#18181B" stroke="#ACCENT" rx="6"/>) with bright accent text (fill="#38BDF8", fill="#34D399", fill="#F87171"). Outside pills, text must use deep accessible tones.
-RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no other text):
+RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surrounding commentary, and ensure all LaTeX math backslashes like \\frac, \\approx, \\rho, \\mu, \\Delta are strictly escaped as double backslashes within JSON string values):
 {
   "title": "Clean Plain-English Title",
   "subtitle": "Single-sentence narrative hook.",

@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { safeJsonParse } from './generate-dispatch.mjs';
 
 const INDEX_PATH = path.join(process.cwd(), 'index.html');
 const CONTENT_DIR = path.join(process.cwd(), 'content');
