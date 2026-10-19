@@ -31,8 +31,10 @@
     "discipline": "Thermal",
     "topic": "How Vapor Chambers Flatten Die Hotspots",
     "summary": "Two-phase phase-change flat heat pipes solving extreme localized heat flux across ultra-thin mobile dies.",
-    "status": "staged",
-    "scheduledDate": "2026-10-19"
+    "status": "published",
+    "scheduledDate": "2026-10-19",
+    "publishedDate": "2026-10-19",
+    "issueId": "#005"
   },
   {
     "id": "B005",
