@@ -2246,80 +2246,101 @@
       border-color: var(--accent);
     }
 
-    /* Editorial Review & Training Drawer */
-    .editorial-drawer {
+    /* ==========================================================================
+       IN-ARTICLE LIVE SCORING MODE (TOGGLED VIA 'SCORE' HEADER BUTTON)
+       ========================================================================== */
+    body.score-mode-active .score-toolbar {
+      display: flex !important;
+    }
+    .score-toolbar {
       display: none;
-      margin: -12px 0 28px;
-      padding: 22px 24px;
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-top: none;
-      border-radius: 0 0 10px 10px;
-      font-size: 13px;
-      animation: drawerFadeIn 0.2s ease;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin: 14px 0 16px;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      animation: scoreFadeIn 0.2s ease;
+      box-shadow: 0 4px 14px rgba(200, 75, 49, 0.08);
     }
-    .editorial-drawer.open {
-      display: block;
-    }
-    @keyframes drawerFadeIn {
-      from { opacity: 0; transform: translateY(-4px); }
+    @keyframes scoreFadeIn {
+      from { opacity: 0; transform: translateY(-3px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .review-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-      margin-bottom: 18px;
+    .score-header-toolbar {
+      margin-bottom: 24px;
+      border-left: 3px solid var(--accent);
     }
-    .review-card {
-      padding: 14px 16px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .score-image-toolbar {
+      margin-top: 10px;
+      margin-bottom: 16px;
     }
-    .review-card-title {
+    .score-figure-toolbar {
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
+    .score-badge-label {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--accent);
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
     }
-    .pill-group {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .pill-btn {
+    .score-pill-btn {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
       padding: 5px 12px;
       border-radius: 6px;
       border: 1px solid var(--border);
-      background: var(--surface);
+      background: var(--bg);
       color: var(--text);
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
       transition: all 0.15s ease;
     }
-    .pill-btn:hover {
+    .score-pill-btn:hover {
       border-color: var(--accent);
       color: var(--accent);
     }
-    .pill-btn.active {
+    .score-pill-btn.active {
       background: var(--accent);
       color: #FFF;
       border-color: var(--accent);
     }
-    .review-input {
+    .score-pill-btn.replace-image-btn {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .score-pill-btn.replace-image-btn:hover {
+      background: var(--accent);
+      color: #FFF;
+    }
+    .inline-rename-box {
       width: 100%;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .rename-inputs-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .score-text-input {
+      flex: 1 1 200px;
       padding: 7px 10px;
-      background: var(--surface);
+      background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 6px;
       color: var(--text);
@@ -2328,57 +2349,20 @@
       box-sizing: border-box;
       outline: none;
     }
-    .review-input:focus {
+    .score-text-input:focus {
       border-color: var(--accent);
     }
-    .review-fig-row {
+    .rename-actions-row {
       display: flex;
-      flex-direction: column;
-      gap: 6px;
-      padding-bottom: 8px;
-      border-bottom: 1px dashed var(--border);
-    }
-    .review-fig-row:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-    .review-fig-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text);
-    }
-    .review-footer {
-      display: flex;
-      justify-content: space-between;
+      gap: 8px;
       align-items: center;
       flex-wrap: wrap;
-      gap: 12px;
-      border-top: 1px dashed var(--border);
-      padding-top: 14px;
     }
-    .review-status-msg {
-      font-size: 12px;
+    .score-status-text {
       font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
       color: var(--muted);
-    }
-    .review-save-btn {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 8px 18px;
-      border-radius: 6px;
-      border: 1px solid var(--accent);
-      background: var(--accent);
-      color: #FFF;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.15s ease;
-    }
-    .review-save-btn:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
+      margin-left: 6px;
     }
 
     /* Issue Navigation Footer Bar */
@@ -3376,6 +3360,10 @@
         <button class="nav-btn" id="btn-queue" style="display:none;" onclick="window.location.href='queue.html'">Queue</button>
         <button class="nav-btn" id="btn-current-issue" style="display:none;" onclick="loadLatestArticle()">Current Issue</button>
         <button class="nav-btn" id="btn-archive" onclick="toggleArchiveView()">Archive</button>
+        <button class="nav-btn" id="btn-score-mode" onclick="toggleScoreMode()" title="Toggle in-article scoring and review mode">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 9.5-9.5z"></path></svg>
+          Score
+        </button>
         <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme">
           <svg id="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
           <svg id="sun-icon" style="display:none;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -4084,34 +4072,9 @@
         return `<div class="executive-metrics-bar">\n${fixedInner.trim()}\n</div>`;
       });
 
-      // Defensive Fallback 4: Ensure telemetry rating bar is ALWAYS present and never suppressed by metric blocks
-      if (!html.includes('id="telemetry-up"') || !html.includes('class="telemetry-actions"')) {
-        // Remove any hollow/empty telemetry bars
-        html = html.replace(/<div class="telemetry-bar">\s*<\/div>/gi, '');
-        html += `
-<div class="telemetry-bar">
-  <div class="telemetry-info">
-    <span class="telemetry-title">Background Quality Telemetry</span>
-    <span class="telemetry-desc">Rate this topic to train the automated curation model for future dispatches.</span>
-  </div>
-  <div class="telemetry-actions">
-    <button class="score-btn" id="telemetry-up" onclick="recordTelemetry('up')">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-      Good Topic
-    </button>
-    <button class="score-btn" id="telemetry-down" onclick="recordTelemetry('down')">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg>
-      Poor Topic
-    </button>
-    <button class="score-btn" id="editorial-review-btn" onclick="toggleEditorialDrawer()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-      Review & Train
-    </button>
-  </div>
-</div>
-<div id="editorial-drawer" class="editorial-drawer"></div>
-`;
-      }
+      // Remove legacy telemetry bars and editorial drawer from bottom of article
+      html = html.replace(/<div class="telemetry-bar">[\s\S]*?<\/div>/gi, '');
+      html = html.replace(/<div id="editorial-drawer"[^>]*>[\s\S]*?<\/div>/gi, '');
 
       articleEl.innerHTML = html;
       formatTablePrices(articleEl);
@@ -4122,8 +4085,7 @@
       showView("article");
       buildOutline();
       renderIssueNav();
-      syncTelemetryUI();
-      renderEditorialDrawer();
+      injectScoreModeOverlays(articleEl);
       attachTangentListeners();
     }
 
@@ -4178,214 +4140,284 @@
       navEl.innerHTML = prevHtml + nextHtml;
     }
 
-    function recordTelemetry(score) {
-      telemetryScores[activeArticleId] = score;
-      try {
-        localStorage.setItem("deepdive_telemetry", JSON.stringify(telemetryScores));
-      } catch (e) {}
-      const upBtn = document.getElementById("telemetry-up");
-      const downBtn = document.getElementById("telemetry-down");
-      if (upBtn && downBtn) {
-        upBtn.classList.toggle("active", score === "up");
-        downBtn.classList.toggle("active", score === "down");
-      }
-    }
+    let isScoreModeActive = false;
 
-    function syncTelemetryUI() {
-      const score = telemetryScores[activeArticleId];
-      const upBtn = document.getElementById("telemetry-up");
-      const downBtn = document.getElementById("telemetry-down");
-      if (upBtn && downBtn) {
-        upBtn.classList.toggle("active", score === "up");
-        downBtn.classList.toggle("active", score === "down");
-      }
-    }
-
-    let currentReviewState = {
-      topicFit: 'excellent',
-      titleStatus: 'approved',
-      imageFit: 'authentic',
-      imagePos: 'good_pos',
-      figureFormats: {}
-    };
-
-    function toggleEditorialDrawer() {
-      const drawer = document.getElementById("editorial-drawer");
-      const btn = document.getElementById("editorial-review-btn");
-      if (!drawer) return;
-      const isOpen = drawer.classList.toggle("open");
-      if (btn) btn.classList.toggle("active", isOpen);
-      if (isOpen) {
-        drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
-    }
-
-    function renderEditorialDrawer() {
-      const drawer = document.getElementById("editorial-drawer");
-      if (!drawer) return;
+    function toggleScoreMode() {
+      isScoreModeActive = !isScoreModeActive;
+      const btn = document.getElementById("btn-score-mode");
+      if (btn) btn.classList.toggle("active", isScoreModeActive);
 
       const articleEl = document.getElementById("view-article");
-      const schematics = articleEl ? articleEl.querySelectorAll('.schematic-card, figure') : [];
-      let figuresHtml = '';
+      if (!articleEl) return;
 
-      if (schematics.length > 0) {
-        schematics.forEach((card, idx) => {
-          const title = card.querySelector('.schematic-title, figcaption')?.innerText || `Figure ${idx + 1}`;
-          const figId = card.id || `fig-${idx + 1}`;
-          figuresHtml += `
-            <div class="review-fig-row">
-              <span class="review-fig-label">${title.slice(0, 48)}...</span>
-              <div class="pill-group" id="pill-fig-${figId}">
-                <button class="pill-btn active" data-fig="${figId}" data-val="svg" onclick="setFigPill('${figId}', 'svg')">📐 SVG Diagram is Good</button>
-                <button class="pill-btn" data-fig="${figId}" data-val="photo" onclick="setFigPill('${figId}', 'photo')">📸 Should be Real Photo!</button>
-              </div>
+      if (isScoreModeActive) {
+        articleEl.classList.add("score-mode-active");
+        injectScoreModeOverlays(articleEl);
+      } else {
+        articleEl.classList.remove("score-mode-active");
+      }
+    }
+
+    function injectScoreModeOverlays(articleEl) {
+      if (!articleEl) return;
+
+      // 1. Topic & Rename Toolbar (Above H1)
+      const titleEl = articleEl.querySelector("h1.article-title");
+      if (titleEl && !articleEl.querySelector(".score-toolbar-topic")) {
+        const topicBar = document.createElement("div");
+        topicBar.className = "score-toolbar score-toolbar-topic";
+        topicBar.innerHTML = `
+          <div class="score-toolbar-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            Topic & Title Evaluation
+          </div>
+          <div class="score-pill-group" id="score-group-fitness">
+            <button class="score-pill-btn active" data-fit="excellent" onclick="scoreTopicFitness('excellent')">⭐️ Elite Topic</button>
+            <button class="score-pill-btn" data-fit="marginal" onclick="scoreTopicFitness('marginal')">⚖️ Marginal</button>
+            <button class="score-pill-btn" data-fit="unfit" onclick="scoreTopicFitness('unfit')">🚫 Off-Topic</button>
+          </div>
+          <button class="score-pill-btn" onclick="toggleRenameBox()">✏️ Rename / Tweak Subject</button>
+        `;
+
+        const renameBox = document.createElement("div");
+        renameBox.className = "inline-rename-box";
+        renameBox.id = "inline-rename-box";
+        renameBox.style.display = "none";
+
+        const currentTopic = TOPICS.find(t => t.id === activeArticleId) || {};
+        const curTitle = titleEl.innerText.trim();
+        const curSubject = currentTopic.subject || "";
+
+        renameBox.innerHTML = `
+          <div class="inline-rename-row">
+            <label class="inline-rename-label">Article Title</label>
+            <input type="text" id="input-rename-title" class="inline-rename-input" value="${curTitle.replace(/"/g, '&quot;')}" />
+          </div>
+          <div class="inline-rename-row">
+            <label class="inline-rename-label">Subject / Scope Adjustment</label>
+            <input type="text" id="input-rename-subject" class="inline-rename-input" placeholder="e.g. Needs to focus on vapor chambers specifically, avoid CPU socket tangents" value="${curSubject.replace(/"/g, '&quot;')}" />
+          </div>
+          <div class="inline-rename-actions">
+            <button class="score-pill-btn action-save" onclick="applyLiveRename()">💾 Save & Rename Live</button>
+            <button class="score-pill-btn" onclick="toggleRenameBox()">Cancel</button>
+            <span id="rename-feedback-status" style="font-size:11px;color:var(--muted);align-self:center;"></span>
+          </div>
+        `;
+
+        titleEl.parentNode.insertBefore(topicBar, titleEl);
+        titleEl.parentNode.insertBefore(renameBox, titleEl);
+      }
+
+      // 2. Hero Image Toolbar
+      const heroFigure = articleEl.querySelector(".hero-figure, figure.article-hero");
+      if (heroFigure && !heroFigure.querySelector(".score-toolbar-hero")) {
+        const imgBar = document.createElement("div");
+        imgBar.className = "score-toolbar score-toolbar-hero";
+        imgBar.innerHTML = `
+          <div class="score-toolbar-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Hero Image Quality
+          </div>
+          <div class="score-pill-group">
+            <button class="score-pill-btn active" onclick="scoreHeroImage('approve')">🔬 Authentic</button>
+            <button class="score-pill-btn action-replace" id="btn-replace-hero-img" onclick="triggerImageReplacement()">❌ Bad Image — Find Replacement 🔄</button>
+          </div>
+          <span id="hero-img-feedback-status" style="font-size:11px;color:var(--muted);align-self:center;"></span>
+        `;
+        heroFigure.insertBefore(imgBar, heroFigure.firstChild);
+      }
+
+      // 3. Schematics / Figures Overlays
+      const schematics = articleEl.querySelectorAll(".schematic-card");
+      schematics.forEach((card, idx) => {
+        if (!card.querySelector(".score-toolbar-schematic")) {
+          const figId = card.id || `schematic-fig-${idx + 1}`;
+          const figBar = document.createElement("div");
+          figBar.className = "score-toolbar score-toolbar-schematic";
+          figBar.innerHTML = `
+            <div class="score-toolbar-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+              Figure Format
+            </div>
+            <div class="score-pill-group">
+              <button class="score-pill-btn active" onclick="scoreFigureChoice(this, '${figId}', 'diagram_good')">📐 Diagram is Good</button>
+              <button class="score-pill-btn" onclick="scoreFigureChoice(this, '${figId}', 'prefer_photo')">📸 Should Be Real Photo!</button>
             </div>
           `;
-        });
-      } else {
-        figuresHtml = '<span style="color:var(--muted);font-size:12px;">No schematics detected in this issue.</span>';
-      }
-
-      drawer.innerHTML = `
-        <div class="review-grid">
-          <!-- 1. Topic Fitness -->
-          <div class="review-card">
-            <div class="review-card-title">1. Topic Fitness</div>
-            <div class="pill-group" id="pill-topic-fit">
-              <button class="pill-btn active" data-val="excellent" onclick="setReviewPill('topic-fit', 'excellent')">⭐️ Elite Depth</button>
-              <button class="pill-btn" data-val="marginal" onclick="setReviewPill('topic-fit', 'marginal')">⚖️ Marginal</button>
-              <button class="pill-btn" data-val="unfit" onclick="setReviewPill('topic-fit', 'unfit')">🚫 Off-Topic</button>
-            </div>
-            <input type="text" id="review-topic-notes" class="review-input" placeholder="Feedback or physical critique (optional)" />
-          </div>
-
-          <!-- 2. Headline / Title -->
-          <div class="review-card">
-            <div class="review-card-title">2. Topic Headline</div>
-            <div class="pill-group" id="pill-title-status">
-              <button class="pill-btn active" data-val="approved" onclick="setReviewPill('title-status', 'approved')">👍 Title is Great</button>
-              <button class="pill-btn" data-val="rephrase" onclick="setReviewPill('title-status', 'rephrase')">✏️ Needs Rephrase</button>
-            </div>
-            <input type="text" id="review-better-title" class="review-input" placeholder="Suggest a better headline..." style="display:none;" />
-          </div>
-
-          <!-- 3. Hero Image Fit & Placement -->
-          <div class="review-card">
-            <div class="review-card-title">3. Hero Image</div>
-            <div class="pill-group" id="pill-image-fit">
-              <button class="pill-btn active" data-val="authentic" onclick="setReviewPill('image-fit', 'authentic')">🔬 Authentic</button>
-              <button class="pill-btn" data-val="wrong_subject" onclick="setReviewPill('image-fit', 'wrong_subject')">❌ Wrong Subject / Casing</button>
-            </div>
-            <div class="pill-group" id="pill-image-pos">
-              <button class="pill-btn active" data-val="good_pos" onclick="setReviewPill('image-pos', 'good_pos')">📍 Position OK</button>
-              <button class="pill-btn" data-val="move_pos" onclick="setReviewPill('image-pos', 'move_pos')">🔄 Misplaced</button>
-            </div>
-          </div>
-
-          <!-- 4. Generated Figures (Schematic vs Real Photo) -->
-          <div class="review-card">
-            <div class="review-card-title">4. Graphic vs Real Photo</div>
-            <div id="review-figures-container" style="display:flex;flex-direction:column;gap:10px;">
-              ${figuresHtml}
-            </div>
-          </div>
-        </div>
-
-        <div class="review-footer">
-          <span class="review-status-msg" id="review-status-msg">Click below to train the curation model for future dispatches.</span>
-          <button class="review-save-btn" id="review-save-submit" onclick="saveEditorialReview()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Save & Train Model
-          </button>
-        </div>
-      `;
-    }
-
-    function setReviewPill(group, val) {
-      const container = document.getElementById(`pill-${group}`);
-      if (container) {
-        container.querySelectorAll('.pill-btn').forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.val === val);
-        });
-      }
-      if (group === 'topic-fit') currentReviewState.topicFit = val;
-      if (group === 'image-fit') currentReviewState.imageFit = val;
-      if (group === 'image-pos') currentReviewState.imagePos = val;
-      if (group === 'title-status') {
-        currentReviewState.titleStatus = val;
-        const betterInput = document.getElementById("review-better-title");
-        if (betterInput) {
-          betterInput.style.display = val === 'rephrase' ? 'block' : 'none';
-          if (val === 'rephrase') betterInput.focus();
+          card.insertBefore(figBar, card.firstChild);
         }
+      });
+    }
+
+    function toggleRenameBox() {
+      const box = document.getElementById("inline-rename-box");
+      if (!box) return;
+      const isVisible = box.style.display !== "none";
+      box.style.display = isVisible ? "none" : "block";
+      if (!isVisible) {
+        document.getElementById("input-rename-title")?.focus();
       }
     }
 
-    function setFigPill(figId, val) {
-      const container = document.getElementById(`pill-fig-${figId}`);
-      if (container) {
-        container.querySelectorAll('.pill-btn').forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.val === val);
-        });
+    async function applyLiveRename() {
+      const titleInput = document.getElementById("input-rename-title");
+      const subjectInput = document.getElementById("input-rename-subject");
+      const statusEl = document.getElementById("rename-feedback-status");
+      if (!titleInput) return;
+
+      const newTitle = titleInput.value.trim();
+      const subjectNotes = subjectInput ? subjectInput.value.trim() : "";
+      if (!newTitle) return;
+
+      if (statusEl) statusEl.innerHTML = '<span style="color:var(--accent);">Updating live...</span>';
+
+      // 1. Live DOM update
+      const titleEl = document.querySelector("#view-article h1.article-title");
+      if (titleEl) titleEl.innerText = newTitle;
+      document.title = `${newTitle} | Hardware Engineering Deep Dive`;
+
+      // Update Topic object in memory
+      const curTopic = TOPICS.find(t => t.id === activeArticleId);
+      if (curTopic) {
+        curTopic.title = newTitle;
+        curTopic.shortTitle = newTitle;
       }
-      currentReviewState.figureFormats[figId] = val;
-    }
 
-    async function saveEditorialReview() {
-      const statusEl = document.getElementById("review-status-msg");
-      const saveBtn = document.getElementById("review-save-submit");
-      const topicNotes = document.getElementById("review-topic-notes")?.value || "";
-      const suggestedTitle = document.getElementById("review-better-title")?.value || "";
+      // Rebuild outline
+      buildOutline();
 
-      if (saveBtn) {
-        saveBtn.disabled = true;
-        saveBtn.innerHTML = 'Saving...';
-      }
-
-      const formatChoices = Object.entries(currentReviewState.figureFormats).map(([figId, val]) => ({
-        figureId: figId,
-        verdict: val === 'photo' ? 'prefer_real_photo' : 'prefer_svg_schematic',
-        reason: val === 'photo' ? 'Marked by editor as requiring authentic hardware teardown photography' : ''
-      }));
-
-      const payload = {
-        issueId: activeArticleId,
-        topicFitness: currentReviewState.topicFit,
-        topicNotes,
-        titleApproved: currentReviewState.titleStatus === 'approved',
-        suggestedTitle: currentReviewState.titleStatus === 'rephrase' ? suggestedTitle : '',
-        imageStatus: currentReviewState.imageFit === 'authentic' ? 'approve' : 'reject',
-        imageReason: currentReviewState.imageFit === 'wrong_subject' ? 'Conceals mechanics or wrong subject' : '',
-        imagePlacement: currentReviewState.imagePos === 'move_pos' ? 'Misplaced in section hierarchy' : '',
-        formatChoices
-      };
-
+      // 2. Persist to server / curation-memory.json
       try {
-        localStorage.setItem(`deepdive_review_${activeArticleId}`, JSON.stringify(payload));
-      } catch (e) {}
-
-      try {
-        const res = await fetch('/api/feedback', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+        const res = await fetch("/api/feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "rename-issue",
+            issueId: activeArticleId,
+            newTitle,
+            subjectNotes
+          })
         });
         if (res.ok) {
-          if (statusEl) statusEl.innerHTML = '<span style="color:var(--success);">✓ Saved & Trained! Memory bank updated directly.</span>';
+          if (statusEl) statusEl.innerHTML = '<span style="color:var(--success);">✓ Renamed live & memory updated!</span>';
+          setTimeout(() => { toggleRenameBox(); }, 1200);
         } else {
-          if (statusEl) statusEl.innerHTML = '<span style="color:var(--accent);">✓ Saved locally! Feedback cached in browser memory.</span>';
+          if (statusEl) statusEl.innerHTML = '<span style="color:var(--accent);">✓ Renamed in view (server returned non-200)</span>';
         }
       } catch (err) {
-        if (statusEl) statusEl.innerHTML = '<span style="color:var(--accent);">✓ Saved locally! Feedback cached in browser memory.</span>';
+        if (statusEl) statusEl.innerHTML = '<span style="color:var(--accent);">✓ Renamed live in view!</span>';
+      }
+    }
+
+    async function scoreTopicFitness(fitness) {
+      const group = document.getElementById("score-group-fitness");
+      if (group) {
+        group.querySelectorAll(".score-pill-btn").forEach(btn => {
+          btn.classList.toggle("active", btn.dataset.fit === fitness);
+        });
       }
 
-      if (saveBtn) {
-        saveBtn.disabled = false;
-        saveBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Saved';
-        setTimeout(() => {
-          saveBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Update Review';
-        }, 2000);
+      try {
+        await fetch("/api/feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "score-component",
+            issueId: activeArticleId,
+            component: "topic_fitness",
+            score: fitness
+          })
+        });
+      } catch (e) {}
+    }
+
+    async function scoreHeroImage(status) {
+      const statusEl = document.getElementById("hero-img-feedback-status");
+      if (statusEl) statusEl.innerHTML = '<span style="color:var(--success);">✓ Marked authentic</span>';
+      try {
+        await fetch("/api/feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "score-component",
+            issueId: activeArticleId,
+            component: "hero_image",
+            status
+          })
+        });
+      } catch (e) {}
+    }
+
+    async function triggerImageReplacement() {
+      const btn = document.getElementById("btn-replace-hero-img");
+      const statusEl = document.getElementById("hero-img-feedback-status");
+      const heroImg = document.querySelector("#view-article .hero-figure img, #view-article figure.article-hero img");
+      if (!heroImg) return;
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '🔄 Searching & Replacing...';
       }
+      if (statusEl) statusEl.innerHTML = '<span style="color:var(--accent);">Rejecting current image & finding a high-res teardown replacement...</span>';
+
+      try {
+        const res = await fetch("/api/feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "replace-image",
+            issueId: activeArticleId,
+            currentImageSrc: heroImg.getAttribute("src")
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.newImageSrc) {
+            heroImg.style.transition = "opacity 0.4s ease";
+            heroImg.style.opacity = "0.2";
+            setTimeout(() => {
+              heroImg.src = data.newImageSrc;
+              heroImg.style.opacity = "1";
+            }, 400);
+            if (statusEl) statusEl.innerHTML = '<span style="color:var(--success);">✓ New replacement image loaded live!</span>';
+          } else {
+            if (statusEl) statusEl.innerHTML = '<span>Replacement queued. Check refresh.</span>';
+          }
+        } else {
+          if (statusEl) statusEl.innerHTML = '<span style="color:var(--accent);">Replacement requested from curation engine.</span>';
+        }
+      } catch (err) {
+        if (statusEl) statusEl.innerHTML = '<span style="color:var(--accent);">Feedback recorded.</span>';
+      }
+
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '❌ Bad Image — Find Replacement 🔄';
+      }
+    }
+
+    async function scoreFigureChoice(btn, figId, choice) {
+      if (!btn) return;
+      const group = btn.parentElement;
+      if (group) {
+        group.querySelectorAll(".score-pill-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+      }
+
+      try {
+        await fetch("/api/feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "score-component",
+            issueId: activeArticleId,
+            component: "figure_format",
+            figureId: figId,
+            choice
+          })
+        });
+      } catch (e) {}
     }
 
     let activeScrollSpyHandler = null;

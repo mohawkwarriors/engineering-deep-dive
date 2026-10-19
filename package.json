@@ -12,7 +12,9 @@
     "curate": "node scripts/generate-monthly-queue.mjs",
     "learn": "node scripts/feedback-learner.mjs",
     "rate": "node scripts/feedback-learner.mjs rate",
-    "review": "node scripts/feedback-learner.mjs review"
+    "review": "node scripts/feedback-learner.mjs review",
+    "start": "node scripts/serve.mjs",
+    "dev": "node scripts/serve.mjs"
   },
   "dependencies": {
     "node-fetch": "^3.3.2"
