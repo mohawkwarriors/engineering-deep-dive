@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { safeJsonParse } from './generate-dispatch.mjs';
+import { getLearnedEditorialDirectives } from './feedback-learner.mjs';
 
 const INDEX_PATH = path.join(process.cwd(), 'index.html');
 const CONTENT_DIR = path.join(process.cwd(), 'content');
@@ -68,6 +69,7 @@ RECENTLY PUBLISHED TITLES (DO NOT DUPLICATE OR OVERLAP):
 ${recentTitlesList}
 
 ${vetoesList ? `USER VETOES (LEARNED NEGATIVE FEEDBACK - NEVER GENERATE SIMILAR TOPICS):\n${vetoesList}\n` : ''}
+${getLearnedEditorialDirectives().topicDirectives}
 
 REQUIREMENTS FOR EACH OF THE 30 TOPICS:
 1. Topic-First Title: Clean, direct (e.g. "Harmonic Drive Gearboxes: Strain Wave Kinematics and Tooth Fatigue").

@@ -9,7 +9,9 @@
     "test": "node scripts/lint-media.mjs",
     "audit": "node scripts/audit-deep.mjs",
     "generate": "node scripts/generate-dispatch.mjs",
-    "curate": "node scripts/generate-monthly-queue.mjs"
+    "curate": "node scripts/generate-monthly-queue.mjs",
+    "learn": "node scripts/feedback-learner.mjs",
+    "rate": "node scripts/feedback-learner.mjs rate"
   },
   "dependencies": {
     "node-fetch": "^3.3.2"

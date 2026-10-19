@@ -32,91 +32,166 @@ export const DISQUALIFYING_TERMS = [
   'retail box', 'packaging box', 'unboxing', 'rgb lighting', 'plastic shroud'
 ];
 
+export async function searchDuckDuckGoImages(query, limit = 10) {
+  try {
+    const initRes = await fetch(`https://duckduckgo.com/?q=${encodeURIComponent(query)}&t=h_&iax=images&ia=images`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
+    });
+    const html = await initRes.text();
+    const vqdMatch = html.match(/vqd=([0-9-]+)/) || html.match(/vqd=['"]([0-9-]+)['"]/);
+    if (!vqdMatch) return [];
+
+    const vqd = vqdMatch[1];
+    const imgUrl = `https://duckduckgo.com/i.js?l=us-en&o=json&q=${encodeURIComponent(query)}&vqd=${vqd}&f=,,,&p=1`;
+    const imgRes = await fetch(imgUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Referer': 'https://duckduckgo.com/'
+      }
+    });
+    if (!imgRes.ok) return [];
+    const data = await imgRes.json();
+    return (data.results || []).map(r => ({
+      title: r.title,
+      url: r.image,
+      width: r.width,
+      height: r.height,
+      source: 'duckduckgo',
+      pageUrl: r.url
+    })).filter(r => (!r.width || r.width >= 800) && (!r.height || r.height >= 500));
+  } catch (err) {
+    console.warn(`[searchDuckDuckGoImages] Error for "${query}":`, err.message);
+    return [];
+  }
+}
+
+export async function searchGoogleCustomSearch(query, limit = 10) {
+  const apiKey = process.env.GOOGLE_SEARCH_API_KEY;
+  const cx = process.env.GOOGLE_SEARCH_CX;
+  if (!apiKey || !cx) return [];
+  try {
+    const url = `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${cx}&q=${encodeURIComponent(query)}&searchType=image&num=${Math.min(limit, 10)}`;
+    const res = await fetch(url);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data.items || []).map(item => ({
+      title: item.title,
+      url: item.link,
+      width: item.image?.width || 0,
+      height: item.image?.height || 0,
+      source: 'google',
+      pageUrl: item.image?.contextLink
+    })).filter(r => (r.width === 0 || r.width >= 800) && (r.height === 0 || r.height >= 500));
+  } catch (err) {
+    console.warn(`[searchGoogleCustomSearch] Error for "${query}":`, err.message);
+    return [];
+  }
+}
+
 export async function searchPremiumHardwareMedia(query, limit = 10) {
   const cleanSubject = query.trim().replace(/["()+]/g, '');
-
   const searchQueries = [
     `${cleanSubject} teardown`,
     `${cleanSubject} cutaway`,
-    `${cleanSubject} internal`,
-    `${cleanSubject} mechanism`,
+    `${cleanSubject} cross-section`,
+    `${cleanSubject} exploded view`,
+    `${cleanSubject} internal mechanism`,
     cleanSubject
   ];
 
-  try {
-    let hits = [];
-    for (const q of searchQueries) {
-      const url = `https://commons.wikimedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(q)}&srnamespace=6&srlimit=${limit * 3}&format=json`;
-      const res = await fetch(url, {
-        headers: { 'User-Agent': 'EngineeringDeepDive/2.0 (editorial-team@engineering-deep-dive.org)' }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        const results = data.query?.search || [];
-        if (results.length > 0) {
-          hits = results;
-          break;
+  const candidates = [];
+  const seenUrls = new Set();
+  const subjectWords = cleanSubject.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+
+  function addCandidate(cand) {
+    if (!cand.url || seenUrls.has(cand.url)) return;
+    seenUrls.add(cand.url);
+
+    const fullSnippet = `${cand.title || ''} ${cand.url || ''}`.toLowerCase();
+
+    // Check disqualifiers
+    const isDisqualified = DISQUALIFYING_TERMS.some(term => {
+      const regex = new RegExp(`\\b${term.replace('-', '[-_ ]?')}\\b`, 'i');
+      return regex.test(fullSnippet);
+    });
+    if (isDisqualified) return;
+
+    // Compute engineering score
+    let score = cand.score || 0;
+    for (const term of POSITIVE_ENGINEERING_TERMS) {
+      if (fullSnippet.includes(term)) score += 2;
+    }
+    candidates.push({ ...cand, score });
+  }
+
+  // 1. Try Google Custom Search (if keys set)
+  if (process.env.GOOGLE_SEARCH_API_KEY && process.env.GOOGLE_SEARCH_CX) {
+    for (const q of searchQueries.slice(0, 2)) {
+      const googleHits = await searchGoogleCustomSearch(q, limit);
+      for (const h of googleHits) addCandidate(h);
+      if (candidates.length >= limit) break;
+    }
+  }
+
+  // 2. Query DuckDuckGo (Free web search, no API key required)
+  if (candidates.length < limit) {
+    for (const q of searchQueries.slice(0, 3)) {
+      const ddgHits = await searchDuckDuckGoImages(q, limit);
+      for (const h of ddgHits) addCandidate(h);
+      if (candidates.length >= limit) break;
+    }
+  }
+
+  // 3. Fallback to Wikimedia Commons (open archive)
+  if (candidates.length < limit) {
+    try {
+      let hits = [];
+      for (const q of searchQueries.slice(0, 3)) {
+        const url = `https://commons.wikimedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(q)}&srnamespace=6&srlimit=${limit * 2}&format=json`;
+        const res = await fetch(url, {
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const results = data.query?.search || [];
+          if (results.length > 0) {
+            hits = results;
+            break;
+          }
         }
       }
-    }
 
-    const candidates = [];
-    const subjectWords = cleanSubject.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+      for (const hit of hits) {
+        const title = hit.title;
+        if (!title.match(/\.(jpg|jpeg|png)$/i)) continue;
 
-    for (const hit of hits) {
-      const title = hit.title;
-      if (!title.match(/\.(jpg|jpeg|png)$/i)) continue;
+        const infoUrl = `https://commons.wikimedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=imageinfo&iiprop=url|size&format=json`;
+        const infoRes = await fetch(infoUrl, {
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+        });
+        if (!infoRes.ok) continue;
+        const infoData = await infoRes.json();
+        const page = Object.values(infoData.query?.pages || {})[0];
+        const info = page?.imageinfo?.[0];
+        if (!info || info.width < 800 || info.height < 500) continue;
 
-      const fullSnippet = `${hit.title} ${hit.snippet || ''}`.toLowerCase();
-
-      // Ensure at least one primary subject word is in title or snippet
-      if (subjectWords.length > 0 && !subjectWords.some(w => fullSnippet.includes(w))) {
-        continue;
+        addCandidate({
+          title,
+          url: info.url,
+          width: info.width,
+          height: info.height,
+          source: 'wikimedia'
+        });
       }
-
-      // Check disqualifiers
-      const isDisqualified = DISQUALIFYING_TERMS.some(term => {
-        const regex = new RegExp(`\\b${term.replace('-', '[-_ ]?')}\\b`, 'i');
-        return regex.test(fullSnippet);
-      });
-      if (isDisqualified) continue;
-
-      // Compute engineering score
-      let score = 0;
-      for (const term of POSITIVE_ENGINEERING_TERMS) {
-        if (fullSnippet.includes(term)) score += 2;
-      }
-
-      // Fetch metadata & dimensions
-      const infoUrl = `https://commons.wikimedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=imageinfo&iiprop=url|size&format=json`;
-      const infoRes = await fetch(infoUrl, {
-        headers: { 'User-Agent': 'EngineeringDeepDive/2.0 (editorial-team@engineering-deep-dive.org)' }
-      });
-      if (!infoRes.ok) continue;
-      const infoData = await infoRes.json();
-      const page = Object.values(infoData.query?.pages || {})[0];
-      const info = page?.imageinfo?.[0];
-      if (!info) continue;
-
-      // Resolution thresholds
-      if (info.width < 1000 || info.height < 600) continue;
-      if (info.size < 30000) continue;
-
-      candidates.push({
-        title,
-        url: info.url,
-        width: info.width,
-        height: info.height,
-        score
-      });
+    } catch (err) {
+      console.warn(`[searchPremiumHardwareMedia] Wikimedia fallback failed:`, err.message);
     }
-
-    candidates.sort((a, b) => b.score - a.score);
-    return candidates.slice(0, limit);
-  } catch (err) {
-    console.warn(`[searchPremiumHardwareMedia] Query "${query}" failed:`, err.message);
-    return [];
   }
+
+  candidates.sort((a, b) => b.score - a.score);
+  return candidates.slice(0, limit);
 }
 
 export async function downloadVerifiedMedia(imageUrl, localDestPath) {
@@ -124,10 +199,14 @@ export async function downloadVerifiedMedia(imageUrl, localDestPath) {
     const dir = path.dirname(localDestPath);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     const res = await fetch(imageUrl, {
-      headers: { 'User-Agent': 'EngineeringDeepDive/2.0 (editorial-team@engineering-deep-dive.org)' }
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
+      }
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const buf = Buffer.from(await res.arrayBuffer());
+    if (buf.length < 5000) throw new Error(`Image file too small (${buf.length} bytes)`);
     fs.writeFileSync(localDestPath, buf);
     return true;
   } catch (err) {
@@ -202,13 +281,25 @@ export async function verifyMediaWithVision(imageUrl, targetConcept, apiKey = pr
 
     const brief = loadVisualBrief(targetConcept);
     const refParts = brief ? loadReferenceParts(brief) : [];
+    
+    // Load learned global negative exemplars from curation memory
+    let memoryRejections = '';
+    try {
+      const memPath = path.resolve('content/curation-memory.json');
+      if (fs.existsSync(memPath)) {
+        const mem = JSON.parse(fs.readFileSync(memPath, 'utf8'));
+        const rejected = (mem.images?.rejected_exemplars || []).map(r => `  • DO NOT SHOW: ${r.title} (${r.reason})`).join('\n');
+        if (rejected) memoryRejections = `\nHISTORICAL NEGATIVE EXEMPLARS (PREVIOUSLY REJECTED - NEVER SELECT SIMILAR):\n${rejected}\n`;
+      }
+    } catch {}
+
     const briefText = brief
       ? `\nVISUAL BRIEF FOR THIS TOPIC (ground truth of what the real part looks like):\nCanonical form: ${brief.canonical_form}\nMust show: ${brief.must_show.join('; ')}\nMust NOT show: ${brief.must_not_show.join('; ')}\nThe first ${refParts.length} images are REFERENCE examples of the correct subject. The final image is the candidate.\n`
       : '';
 
     const prompt = `You are the Lead Visual Quality Inspector for an elite engineering publication.
 Evaluate this image candidate for an engineering article section about: "${targetConcept}".
-${briefText}
+${briefText}${memoryRejections}
 Criteria to strictly verify:
 1. WATERMARK & LOGO AUDIT: Does the image contain any commercial watermarks, website logo overlays, stock photo banners, or stamps? If yes, it MUST FAIL.
 2. RELEVANCE & ACCURACY: Does the image authentically depict the engineering mechanism, hardware component, or physical system described? Or is it a generic lifestyle, consumer table shot, or casual snapshot?

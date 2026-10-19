@@ -1,0 +1,62 @@
+{
+  "_readme": "Continuous Editorial & Visual Learning Memory Bank. Ingests user ratings, negative exemplars, and visual/graphic guidelines to train topic, image, and graphic generation over time.",
+  "topics": {
+    "preferred_themes": [
+      "Micro-scale mechanical physics and thermal fluidics",
+      "Sub-millimeter DFM tolerances and precision manufacturing",
+      "Multi-link kinematics and non-linear mechanisms",
+      "Metallurgical phase transformations and solid-state bonding",
+      "Deep-dive hardware teardowns with internal cross-sectional metrology"
+    ],
+    "penalized_themes": [
+      "Generic consumer product overviews without internal mechanics",
+      "High-level ecosystem marketing comparisons",
+      "Superficial specs without first-principles mathematical modeling"
+    ],
+    "ratings_history": {
+      "#005": {
+        "title": "How Vapor Chambers Flatten Die Hotspots",
+        "subject": "Thermal",
+        "score": "up",
+        "timestamp": "2026-10-18T21:00:00Z",
+        "feedback": "Praise for deep physical modeling, 0.35mm DFM tolerances, and 2-phase fluidics."
+      }
+    }
+  },
+  "images": {
+    "positive_exemplars": [
+      {
+        "topic": "vapor-chamber",
+        "file": "images/references/vapor-chamber/exploded-layer-stack.png",
+        "reason": "Authentic planar multi-layer exploded stack: top shell with die pad, perforated wick mesh, support pillars, bottom shell."
+      },
+      {
+        "topic": "vapor-chamber",
+        "file": "images/references/vapor-chamber/etched-half-shells-hires.jpg",
+        "reason": "Real chemical-etched copper half-shells showing precision internal dimple and pillar arrays."
+      }
+    ],
+    "rejected_exemplars": [
+      {
+        "title": "GeForce RTX Graphics Card Shroud with Triple Fans",
+        "reason": "Exterior consumer product housing; hides the underlying vapor chamber and shows plastic fan shroud instead of internal mechanics."
+      },
+      {
+        "title": "Laptop CPU Heat Pipe Cross Section (Round Flattened Tube)",
+        "reason": "1D tubular pipe squashed flat; does not represent modern 2D planar stamped vapor chamber plates with internal pillar matrix."
+      },
+      {
+        "title": "Amateur mobile phone hinge snapshot on wooden table",
+        "reason": "Old flip-phone knuckle joint on cluttered surface; lacks modern multi-link kinematic spine and precision studio lighting."
+      }
+    ]
+  },
+  "graphics": {
+    "mandatory_design_rules": [
+      "Always use class='svg-canvas-bg' and class='svg-panel-bg' to inherit site theme CSS variables; never hardcode pitch-black or navy (#090D16, #0B132B) backgrounds.",
+      "All text labels must use font-family=\"'JetBrains Mono', monospace\" with font-size >= 10.5px.",
+      "Flow vectors and leader lines must navigate open aisles; never cross through solid structural pillars, text boxes, or casing boundaries.",
+      "Maintain >= 30px breathing room between bottom plate geometry and lower viewport/legend boundaries."
+    ]
+  }
+}

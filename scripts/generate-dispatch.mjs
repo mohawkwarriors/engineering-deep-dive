@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { autoSanitizeArticleHtml, validateArticleHtml } from './lint-media.mjs';
 import { selectHeroImage } from './select-hero-image.mjs';
+import { getLearnedEditorialDirectives } from './feedback-learner.mjs';
 
 const INDEX_PATH = path.join(process.cwd(), 'index.html');
 const CONTENT_DIR = path.join(process.cwd(), 'content');
@@ -330,6 +331,10 @@ ${recentTitlesList}
 
 USER VETOED TOPICS (NEGATIVE CONSTRAINTS - DO NOT SELECT OR REPEAT SIMILAR TOPICS):
 ${vetoesList}
+
+${getLearnedEditorialDirectives().topicDirectives}
+
+${getLearnedEditorialDirectives().graphicDirectives}
 
 STRICT EDITORIAL REQUIREMENTS:
 1. WORD COUNT & READING PACING (ISSUE 001 BENCHMARK — 8 TO 13 MINUTES):
