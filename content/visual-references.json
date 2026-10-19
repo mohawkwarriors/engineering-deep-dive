@@ -1,0 +1,26 @@
+{
+  "_readme": "Per-topic visual briefs + golden reference images. The image gate compares candidates against these references (few-shot) and the brief's must_show / must_not_show lists. To tune image selection for a topic, add references and edit the brief; no code change needed. Keys are matched against article title/topic keywords.",
+  "vapor-chamber": {
+    "match_keywords": ["vapor chamber", "vapour chamber", "two-phase", "heat spreader"],
+    "canonical_form": "PLANAR_SHEET: a thin flat copper plate (<1 mm) built from two etched half-shells that are diffusion-bonded; NOT a round heat pipe and NOT a finned heatsink or graphics card cooler.",
+    "must_show": [
+      "flat rectangular or irregular (phone-chassis shaped) copper sheet outline",
+      "etched half-shell interior with regular dimple / pillar arrays, or an exploded stack of shell, wick mesh and pillar layers",
+      "clean neutral background (studio, white, grey or black render stage)",
+      "or an exploded view of a phone / device chassis showing where the chamber sits"
+    ],
+    "must_not_show": [
+      "round or squashed cylindrical heat pipes",
+      "complete GPU/CPU coolers with fans, fins or shrouds as the subject",
+      "hobbyist bench clutter, rulers as the main subject, hands, packaging",
+      "AI-invented 'cutaway on a blue mat' scenes with props not found in real teardowns"
+    ],
+    "preferred_sources": ["manufacturer technical pages", "open-access papers (MDPI, Nature Sci. Rep., IEEE Open)", "teardown sites with reuse licenses"],
+    "references": [
+      { "file": "images/references/vapor-chamber/exploded-layer-stack.png", "role": "exploded CAD render: shell, wick mesh, pillars" },
+      { "file": "images/references/vapor-chamber/etched-half-shells-hires.jpg", "role": "real etched copper half-shells with dimple arrays" },
+      { "file": "images/references/vapor-chamber/etched-half-shells.webp", "role": "same part family, alternate angle" },
+      { "file": "images/references/vapor-chamber/phone-exploded-vc.jpg", "role": "device-level exploded view with chamber layer" }
+    ]
+  }
+}

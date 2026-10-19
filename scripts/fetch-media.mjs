@@ -136,8 +136,45 @@ export async function downloadVerifiedMedia(imageUrl, localDestPath) {
   }
 }
 
+const VISUAL_REFS_PATH = path.resolve('content/visual-references.json');
+
+/** Finds the visual brief whose keywords appear in the topic/concept text (null if none). */
+export function loadVisualBrief(concept = '') {
+  try {
+    if (!fs.existsSync(VISUAL_REFS_PATH)) return null;
+    const all = JSON.parse(fs.readFileSync(VISUAL_REFS_PATH, 'utf8'));
+    const text = String(concept).toLowerCase();
+    for (const [key, brief] of Object.entries(all)) {
+      if (key.startsWith('_')) continue;
+      if ((brief.match_keywords || []).some(k => text.includes(k.toLowerCase()))) return brief;
+    }
+  } catch (err) {
+    console.warn(`[loadVisualBrief] ${err.message}`);
+  }
+  return null;
+}
+
+/** Encodes a brief's golden reference images as Gemini inline_data parts. */
+export function loadReferenceParts(brief) {
+  const mimeByExt = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp' };
+  const parts = [];
+  for (const ref of brief.references || []) {
+    try {
+      const p = path.resolve(ref.file);
+      if (!fs.existsSync(p)) continue;
+      parts.push({ text: `REFERENCE (${ref.role}):` });
+      parts.push({ inline_data: { mime_type: mimeByExt[path.extname(p).toLowerCase()] || 'image/jpeg', data: fs.readFileSync(p).toString('base64') } });
+    } catch (err) {
+      console.warn(`[loadReferenceParts] ${ref.file}: ${err.message}`);
+    }
+  }
+  return parts;
+}
+
 /**
  * Automated Multimodal Vision Gate (LLM-as-a-Judge)
+ * When a visual brief exists for the topic (content/visual-references.json), golden reference
+ * images are sent as few-shot context and the candidate must match their physical form.
  * Evaluates candidate images using Gemini Vision for:
  * 1. Watermark / logo presence
  * 2. Visual representation of stated engineering concept (e.g. internal teardown vs lifestyle shot)
@@ -163,13 +200,21 @@ export async function verifyMediaWithVision(imageUrl, targetConcept, apiKey = pr
     }
     const base64Data = imgBuf.toString('base64');
 
+    const brief = loadVisualBrief(targetConcept);
+    const refParts = brief ? loadReferenceParts(brief) : [];
+    const briefText = brief
+      ? `\nVISUAL BRIEF FOR THIS TOPIC (ground truth of what the real part looks like):\nCanonical form: ${brief.canonical_form}\nMust show: ${brief.must_show.join('; ')}\nMust NOT show: ${brief.must_not_show.join('; ')}\nThe first ${refParts.length} images are REFERENCE examples of the correct subject. The final image is the candidate.\n`
+      : '';
+
     const prompt = `You are the Lead Visual Quality Inspector for an elite engineering publication.
 Evaluate this image candidate for an engineering article section about: "${targetConcept}".
-
+${briefText}
 Criteria to strictly verify:
 1. WATERMARK & LOGO AUDIT: Does the image contain any commercial watermarks, website logo overlays, stock photo banners, or stamps? If yes, it MUST FAIL.
 2. RELEVANCE & ACCURACY: Does the image authentically depict the engineering mechanism, hardware component, or physical system described? Or is it a generic lifestyle, consumer table shot, or casual snapshot?
-3. PROFESSIONAL POLISH: Is the image sharp, well-lit, artifact-free, and suitable for a technical teardown journal?
+3. FORM MATCH: Compare the candidate's physical form to the reference images / canonical form. Same kind of object (shape, construction, internal structure), not merely the same material or keywords? Photorealistic-looking scenes with invented props that do not occur in real teardowns must FAIL.
+4. FORBIDDEN SUBJECT: Is the main subject anything on the 'must NOT show' list?
+5. PROFESSIONAL POLISH: Is the image sharp, well-lit, artifact-free, and suitable for a technical teardown journal?
 
 Return ONLY valid JSON:
 {
@@ -177,9 +222,12 @@ Return ONLY valid JSON:
   "has_watermark": true|false,
   "is_lifestyle_shot": true|false,
   "is_authentic_engineering": true|false,
+  "matches_reference_form": true|false,
+  "shows_forbidden_subject": true|false,
   "quality_score_1_to_10": number,
   "verdict_reason": "Crisp one-sentence summary"
 }`;
+
 
     const candidateModels = [
       'gemini-3.8-flash',
@@ -200,6 +248,8 @@ Return ONLY valid JSON:
             contents: [{
               parts: [
                 { text: prompt },
+                ...refParts,
+                { text: 'CANDIDATE IMAGE TO EVALUATE (last image):' },
                 {
                   inline_data: {
                     mime_type: mimeType,
@@ -230,7 +280,8 @@ Return ONLY valid JSON:
     const resultText = resJson.candidates?.[0]?.content?.parts?.[0]?.text;
     const parsed = JSON.parse(resultText);
     const score = parsed.quality_score_1_to_10 || 0;
-    const isPassed = Boolean(parsed.passed && !parsed.has_watermark && !parsed.is_lifestyle_shot && parsed.is_authentic_engineering && score >= 7.5);
+    const formOk = brief ? parsed.matches_reference_form === true && !parsed.shows_forbidden_subject : true;
+    const isPassed = Boolean(parsed.passed && !parsed.has_watermark && !parsed.is_lifestyle_shot && parsed.is_authentic_engineering && formOk && score >= 7.5);
 
     return {
       passed: isPassed,
