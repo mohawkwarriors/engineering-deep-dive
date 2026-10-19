@@ -1298,6 +1298,14 @@
     }
 
     /* The Large Stage Showcase Viewport (Fixed Height Invariant across all stages) */
+    .stepper-body-container {
+      position: relative;
+      overflow: hidden;
+      contain: layout paint;
+      width: 100%;
+      height: 240px;
+      min-height: 240px;
+    }
     .stepper-stage-viewport {
       display: grid;
       grid-template-columns: 1.25fr 1fr;
@@ -1309,13 +1317,19 @@
       box-sizing: border-box;
       overflow: hidden;
       contain: layout paint;
+      touch-action: pan-y pinch-zoom;
     }
     @media (max-width: 800px) {
+      .stepper-body-container {
+        height: 350px !important;
+        min-height: 350px !important;
+        max-height: 350px !important;
+      }
       .stepper-stage-viewport {
         grid-template-columns: 1fr;
-        height: auto;
-        min-height: 350px;
-        max-height: none;
+        height: 350px !important;
+        min-height: 350px !important;
+        max-height: 350px !important;
       }
     }
 
@@ -3144,16 +3158,18 @@
         justify-content: flex-end !important;
       }
       .stepper-nav-btn {
-        width: 34px !important;
-        height: 34px !important;
+        width: 36px !important;
+        height: 36px !important;
         border-radius: 6px !important;
+        touch-action: manipulation !important;
       }
       .stepper-nav-btn:active {
         transform: scale(0.92);
         background: var(--surface-hover);
       }
       .stepper-counter {
-        font-size: 11.5px !important;
+        font-size: 12px !important;
+        font-family: 'JetBrains Mono', monospace !important;
         margin-right: auto !important;
       }
       .stepper-pills {
@@ -3163,6 +3179,12 @@
         -webkit-overflow-scrolling: touch !important;
         gap: 6px !important;
         padding: 2px 0 4px !important;
+        scrollbar-width: none !important;
+        touch-action: pan-x !important;
+        overscroll-behavior-x: contain !important;
+      }
+      .stepper-pills::-webkit-scrollbar {
+        display: none !important;
       }
       .stepper-pill {
         padding: 6px 12px !important;
@@ -3170,13 +3192,26 @@
         font-size: 11px !important;
         border-radius: 6px !important;
         flex-shrink: 0 !important;
+        touch-action: manipulation !important;
+      }
+      .stepper-body-container {
+        height: 350px !important;
+        min-height: 350px !important;
+        max-height: 350px !important;
+        overflow: hidden !important;
+        contain: layout paint !important;
       }
       .stepper-stage-viewport,
       .pipeline-stage-view {
         grid-template-columns: 1fr !important;
         gap: 12px !important;
+        height: 350px !important;
         min-height: 350px !important;
-        height: auto !important;
+        max-height: 350px !important;
+        overflow: hidden !important;
+        contain: layout paint !important;
+        touch-action: pan-y pinch-zoom !important;
+        user-select: none;
       }
       .stepper-visual-large,
       .pipeline-visual-frame {
@@ -3615,19 +3650,34 @@
           const topLeft = document.getElementById(`top-left-${wheelId}`);
           if (!topLeft) return;
           if (currentVariant === 'stepper') {
-            topLeft.innerHTML = `
-              <div class="stepper-pills" id="pills-${wheelId}">
-                ${steps.map((s, idx) => `
-                  <button type="button" class="stepper-pill ${idx === activeIdx ? 'active' : ''}" data-idx="${idx}">
-                    <span class="stepper-pill-num">0${idx + 1}</span>
-                    <span class="stepper-pill-text">${s.shortLabel}</span>
-                  </button>
-                `).join('')}
-              </div>
-            `;
-            const activePill = topLeft.querySelector('.stepper-pill.active');
-            if (activePill && typeof activePill.scrollIntoView === 'function') {
-              activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            let pillsContainer = topLeft.querySelector('.stepper-pills');
+            if (pillsContainer) {
+              const pills = pillsContainer.querySelectorAll('.stepper-pill');
+              pills.forEach((p, idx) => {
+                p.classList.toggle('active', idx === activeIdx);
+              });
+              const activePill = pills[activeIdx];
+              if (activePill) {
+                const targetLeft = activePill.offsetLeft - (pillsContainer.clientWidth / 2) + (activePill.offsetWidth / 2);
+                pillsContainer.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+              }
+            } else {
+              topLeft.innerHTML = `
+                <div class="stepper-pills" id="pills-${wheelId}">
+                  ${steps.map((s, idx) => `
+                    <button type="button" class="stepper-pill ${idx === activeIdx ? 'active' : ''}" data-idx="${idx}">
+                      <span class="stepper-pill-num">0${idx + 1}</span>
+                      <span class="stepper-pill-text">${s.shortLabel}</span>
+                    </button>
+                  `).join('')}
+                </div>
+              `;
+              pillsContainer = topLeft.querySelector('.stepper-pills');
+              const activePill = topLeft.querySelector('.stepper-pill.active');
+              if (pillsContainer && activePill) {
+                const targetLeft = activePill.offsetLeft - (pillsContainer.clientWidth / 2) + (activePill.offsetWidth / 2);
+                pillsContainer.scrollTo({ left: Math.max(0, targetLeft), behavior: 'auto' });
+              }
             }
           } else if (currentVariant === 'pipeline') {
             topLeft.innerHTML = `
@@ -3672,21 +3722,45 @@
           const dirClass = direction === 'next' ? 'slide-next' : direction === 'prev' ? 'slide-prev' : 'slide-init';
 
           if (currentVariant === 'stepper') {
-            bodyEl.innerHTML = `
-              <div class="stepper-stage-viewport ${dirClass}">
-                <div class="stepper-visual-large" id="vis-${wheelId}">
-                  ${s.visualHtml}
-                </div>
-                <div class="stepper-details" id="det-${wheelId}">
-                  <div class="stepper-stage-header">
-                    <span class="stepper-stage-tag" id="tag-${wheelId}">${s.tagHtml}</span>
+            const viewport = bodyEl.querySelector('.stepper-stage-viewport');
+            const visEl = document.getElementById(`vis-${wheelId}`);
+            const tagEl = document.getElementById(`tag-${wheelId}`);
+            const titleEl = document.getElementById(`title-${wheelId}`);
+            const descEl = document.getElementById(`desc-${wheelId}`);
+            const metricEl = document.getElementById(`metric-${wheelId}`);
+
+            if (viewport && visEl && tagEl && titleEl && descEl && metricEl) {
+              viewport.classList.remove('slide-next', 'slide-prev', 'slide-init');
+              visEl.innerHTML = s.visualHtml;
+              tagEl.innerHTML = s.tagHtml;
+              titleEl.innerHTML = s.titleHtml;
+              descEl.innerHTML = s.descHtml;
+              if (s.metricHtml && s.metricHtml.trim()) {
+                metricEl.innerHTML = s.metricHtml;
+                metricEl.style.display = 'inline-flex';
+              } else {
+                metricEl.innerHTML = '';
+                metricEl.style.display = 'none';
+              }
+              void viewport.offsetWidth;
+              viewport.classList.add(dirClass);
+            } else {
+              bodyEl.innerHTML = `
+                <div class="stepper-stage-viewport ${dirClass}">
+                  <div class="stepper-visual-large" id="vis-${wheelId}">
+                    ${s.visualHtml}
                   </div>
-                  <h4 class="stepper-stage-title" id="title-${wheelId}">${s.titleHtml}</h4>
-                  <p class="stepper-stage-desc" id="desc-${wheelId}">${s.descHtml}</p>
-                  <div class="stepper-stage-metric" id="metric-${wheelId}" style="${s.metricHtml && s.metricHtml.trim() ? '' : 'display:none;'}">${s.metricHtml}</div>
+                  <div class="stepper-details" id="det-${wheelId}">
+                    <div class="stepper-stage-header">
+                      <span class="stepper-stage-tag" id="tag-${wheelId}">${s.tagHtml}</span>
+                    </div>
+                    <h4 class="stepper-stage-title" id="title-${wheelId}">${s.titleHtml}</h4>
+                    <p class="stepper-stage-desc" id="desc-${wheelId}">${s.descHtml}</p>
+                    <div class="stepper-stage-metric" id="metric-${wheelId}" style="${s.metricHtml && s.metricHtml.trim() ? '' : 'display:none;'}">${s.metricHtml}</div>
+                  </div>
                 </div>
-              </div>
-            `;
+              `;
+            }
           } else if (currentVariant === 'pipeline') {
             bodyEl.innerHTML = `
               <div class="pipeline-rail-wrap">
@@ -3804,16 +3878,19 @@
           }
 
           if (currentVariant === 'pipeline') {
+            const railWrap = bodyEl.querySelector('.pipeline-rail-wrap');
             const activeStation = bodyEl.querySelector('.pipeline-station.active');
-            if (activeStation && typeof activeStation.scrollIntoView === 'function') {
-              activeStation.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            if (railWrap && activeStation) {
+              const targetLeft = activeStation.offsetLeft - (railWrap.clientWidth / 2) + (activeStation.offsetWidth / 2);
+              railWrap.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
             }
           } else if (currentVariant === 'carousel') {
-            const activeCard = bodyEl.querySelector('.filmstrip-card.active');
-            if (activeCard && typeof activeCard.scrollIntoView === 'function') {
-              activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-            }
             const filmstripEl = bodyEl.querySelector('.filmstrip-viewport');
+            const activeCard = bodyEl.querySelector('.filmstrip-card.active');
+            if (filmstripEl && activeCard) {
+              const targetLeft = activeCard.offsetLeft - (filmstripEl.clientWidth / 2) + (activeCard.offsetWidth / 2);
+              filmstripEl.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+            }
             if (filmstripEl) {
               let filmScrollTimer = null;
               filmstripEl.addEventListener('scroll', () => {
@@ -3951,12 +4028,14 @@
           }
         });
 
-        // Touch swipe handling for mobile devices
+        // Enhanced swipe gesture handling for mobile & touchscreens
         let touchStartX = 0;
         let touchStartY = 0;
         let touchEndX = 0;
         let touchEndY = 0;
+        let touchStartTime = 0;
         let isTouching = false;
+        let isHorizontalSwipe = false;
 
         viewer.addEventListener('touchstart', (e) => {
           if (e.touches.length === 1) {
@@ -3964,7 +4043,9 @@
             touchStartY = e.touches[0].clientY;
             touchEndX = touchStartX;
             touchEndY = touchStartY;
+            touchStartTime = Date.now();
             isTouching = true;
+            isHorizontalSwipe = false;
           }
         }, { passive: true });
 
@@ -3972,6 +4053,27 @@
           if (!isTouching || e.touches.length !== 1) return;
           touchEndX = e.touches[0].clientX;
           touchEndY = e.touches[0].clientY;
+          const diffX = touchEndX - touchStartX;
+          const diffY = touchEndY - touchStartY;
+
+          // Determine gesture intent early
+          if (!isHorizontalSwipe && Math.abs(diffX) > 8) {
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+              isHorizontalSwipe = true;
+            } else {
+              isTouching = false; // User is scrolling vertically down page, do not hijack
+              return;
+            }
+          }
+
+          if (isHorizontalSwipe) {
+            const activeCard = viewer.querySelector('.stepper-stage-viewport, .pipeline-stage-view');
+            if (activeCard) {
+              const clampedX = Math.max(-45, Math.min(45, diffX * 0.35));
+              activeCard.style.transform = `translate3d(${clampedX}px, 0, 0)`;
+              activeCard.style.transition = 'none';
+            }
+          }
         }, { passive: true });
 
         viewer.addEventListener('touchend', (e) => {
@@ -3979,9 +4081,19 @@
           isTouching = false;
           const deltaX = touchEndX - touchStartX;
           const deltaY = touchEndY - touchStartY;
+          const duration = Date.now() - touchStartTime;
 
-          // Require intentional horizontal swipe gesture (> 40px and > 1.3x vertical movement)
-          if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.3) {
+          const activeCard = viewer.querySelector('.stepper-stage-viewport, .pipeline-stage-view');
+          if (activeCard) {
+            activeCard.style.transform = '';
+            activeCard.style.transition = '';
+          }
+
+          // Trigger swipe on quick flick (< 320ms and > 22px) or standard drag (> 28px)
+          const isFlick = duration < 320 && Math.abs(deltaX) > 22 && Math.abs(deltaX) > Math.abs(deltaY);
+          const isStandardSwipe = Math.abs(deltaX) > 28 && Math.abs(deltaX) > Math.abs(deltaY) * 1.1;
+
+          if (isFlick || isStandardSwipe) {
             if (currentVariant === 'stepper' || currentVariant === 'pipeline') {
               if (deltaX < 0) {
                 updateView(activeIdx + 1, 'next');
