@@ -67,14 +67,40 @@ export async function searchDuckDuckGoImages(query, limit = 10) {
   }
 }
 
+export function loadEnvFile() {
+  const envPath = path.resolve('.env');
+  if (fs.existsSync(envPath)) {
+    try {
+      const content = fs.readFileSync(envPath, 'utf8');
+      for (const line of content.split(/\r?\n/)) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#')) continue;
+        const eqIdx = trimmed.indexOf('=');
+        if (eqIdx === -1) continue;
+        const key = trimmed.slice(0, eqIdx).trim();
+        const val = trimmed.slice(eqIdx + 1).trim().replace(/^['"]|['"]$/g, '');
+        if (key && !process.env[key]) {
+          process.env[key] = val;
+        }
+      }
+    } catch {}
+  }
+}
+loadEnvFile();
+
 export async function searchGoogleCustomSearch(query, limit = 10) {
-  const apiKey = process.env.GOOGLE_SEARCH_API_KEY;
-  const cx = process.env.GOOGLE_SEARCH_CX;
+  loadEnvFile();
+  const apiKey = process.env.GOOGLE_SEARCH_API_KEY || process.env.GOOGLE_API_KEY;
+  const cx = process.env.GOOGLE_SEARCH_CX || process.env.GOOGLE_CSE_ID;
   if (!apiKey || !cx) return [];
   try {
     const url = `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${cx}&q=${encodeURIComponent(query)}&searchType=image&num=${Math.min(limit, 10)}`;
     const res = await fetch(url);
-    if (!res.ok) return [];
+    if (!res.ok) {
+      const errTxt = await res.text();
+      console.warn(`[searchGoogleCustomSearch] Google API HTTP ${res.status}: ${errTxt.slice(0, 120)}`);
+      return [];
+    }
     const data = await res.json();
     return (data.items || []).map(item => ({
       title: item.title,
@@ -91,6 +117,7 @@ export async function searchGoogleCustomSearch(query, limit = 10) {
 }
 
 export async function searchPremiumHardwareMedia(query, limit = 10) {
+  loadEnvFile();
   const cleanSubject = query.trim().replace(/["()+]/g, '');
   const searchQueries = [
     `${cleanSubject} teardown`,
@@ -126,17 +153,31 @@ export async function searchPremiumHardwareMedia(query, limit = 10) {
     candidates.push({ ...cand, score });
   }
 
-  // 1. Try Google Custom Search (if keys set)
-  if (process.env.GOOGLE_SEARCH_API_KEY && process.env.GOOGLE_SEARCH_CX) {
+  const hasGoogleCreds = Boolean(
+    (process.env.GOOGLE_SEARCH_API_KEY || process.env.GOOGLE_API_KEY) &&
+    (process.env.GOOGLE_SEARCH_CX || process.env.GOOGLE_CSE_ID)
+  );
+
+  // 1. PRIMARY: Google Image Search (Google Custom Search JSON API)
+  if (hasGoogleCreds) {
+    console.log(`[media-search] Primary: Searching Google Images for "${cleanSubject}"...`);
     for (const q of searchQueries.slice(0, 2)) {
       const googleHits = await searchGoogleCustomSearch(q, limit);
       for (const h of googleHits) addCandidate(h);
       if (candidates.length >= limit) break;
     }
+    if (candidates.length > 0) {
+      console.log(`[media-search] Found ${candidates.length} candidate(s) from Google Image Search.`);
+    } else {
+      console.log(`[media-search] Google returned 0 candidates (or quota reached); engaging DuckDuckGo backup.`);
+    }
+  } else {
+    console.log(`[media-search] Google Search credentials not detected in environment; engaging DuckDuckGo as backup search engine.`);
   }
 
-  // 2. Query DuckDuckGo (Free web search, no API key required)
+  // 2. BACKUP: DuckDuckGo (Free web image search, zero configuration required)
   if (candidates.length < limit) {
+    console.log(`[media-search] Backup: Searching DuckDuckGo Images for "${cleanSubject}"...`);
     for (const q of searchQueries.slice(0, 3)) {
       const ddgHits = await searchDuckDuckGoImages(q, limit);
       for (const h of ddgHits) addCandidate(h);
