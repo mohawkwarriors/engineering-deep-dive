@@ -41,8 +41,10 @@
     "discipline": "Fluids",
     "topic": "Helical Heat Exchanger Coils: Beating Boundary Layers",
     "summary": "Why curvature-induced secondary Dean flow disrupts thermal boundary layers to dramatically boost heat transfer.",
-    "status": "staged",
-    "scheduledDate": "2026-10-20"
+    "status": "published",
+    "scheduledDate": "2026-10-20",
+    "publishedDate": "2026-10-19",
+    "issueId": "#006"
   },
   {
     "id": "B006",

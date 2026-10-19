@@ -45,5 +45,36 @@
         "role": "device-level exploded view with chamber layer"
       }
     ]
+  },
+  "helical-heat-exchangers-beating-boundary-layers-": {
+    "match_keywords": [
+      "helical heat exchanger",
+      "heat flux",
+      "boundary layer",
+      "spiral coil",
+      "fluid dynamics"
+    ],
+    "canonical_form": "A compact industrial cylinder containing a tightly wound spiral of metal tubing, typically shown as a bare coil assembly or a cutaway revealing the internal helical structure.",
+    "must_show": [
+      "continuous spiral or helical metal tubing wound around a central axis",
+      "industrial-grade metallic surfaces like stainless steel, copper, or titanium",
+      "clear inlet and outlet ports at the ends of the coil structure",
+      "compact, dense winding pattern with uniform spacing between coils"
+    ],
+    "must_not_show": [
+      "standard straight-tube shell and tube exchangers",
+      "flat plate heat exchangers or corrugated stacks",
+      "automotive radiator fins or consumer-grade homebrew immersion chillers",
+      "abstract 3D renders with glowing neon fluid paths or non-physical lighting",
+      "macro shots of generic springs or wire coils without fluid fittings"
+    ],
+    "search_queries": [
+      "helical coil heat exchanger cutaway industrial",
+      "spiral tube heat exchanger internal assembly",
+      "compact shell and coil heat exchanger lab photo",
+      "helical coil heat exchanger stainless steel fabrication"
+    ],
+    "auto_generated": true,
+    "references": []
   }
 }
