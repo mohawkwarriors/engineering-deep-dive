@@ -119,6 +119,9 @@ export function safeJsonParse(rawString) {
     cleaned = autoCloseJson(cleaned);
   }
 
+  // Pre-escape common LaTeX commands so single backslashes aren't parsed as JSON control characters
+  cleaned = cleaned.replace(/(?<!\\)\\(text|textbf|textit|textrm|textsf|texttt|times|theta|tau|tilde|top|to|frac|flat|forall|rho|right|rangle|rightarrow|Rightarrow|real|nabla|nu|neq|neg|newline|bar|beta|bm|begin|big|bmod|bullet)\b/g, '\\\\$1');
+
   // 1. Fast path: try standard parsing first
   try {
     return JSON.parse(cleaned);
@@ -552,20 +555,19 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
   const articleData = safeJsonParse(rawContent);
   console.log(`Generated: "${articleData.title}" (${articleData.subject})`);
 
-  // Deterministic Header Assembly: Ensure meta-line, h1, and subtitle are present
-  if (!articleData.article_html.includes('class="meta-line"')) {
-    const subClass = `sub-${articleData.subject.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-    const headerBlock = `
-<div class="meta-line">
-  <span>ISSUE ${nextId}</span><span>•</span><span class="archive-subject-tag ${subClass}">${articleData.subject.toUpperCase()}</span><span>•</span><span id="read-time-badge">${calculateReadTime(articleData.article_html)} MIN READ</span>
-</div>
+  // Deterministic Header Assembly: Ensure canonical meta-line, h1, and subtitle are present
+  const subClass = `sub-${(articleData.subject || 'Hardware').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+  const dynamicReadMins = calculateReadTime(articleData.article_html);
+  const canonicalMetaLine = `<div class="meta-line">\n  <span>ISSUE ${nextId}</span><span>•</span><span class="archive-subject-tag ${subClass}">${(articleData.subject || 'HARDWARE').toUpperCase()}</span><span>•</span><span id="read-time-badge">${dynamicReadMins} MIN READ</span>\n</div>`;
 
-<h1>${articleData.title}</h1>
-<p class="subtitle">
-  ${articleData.subtitle}
-</p>
-`;
-    articleData.article_html = headerBlock + '\n' + articleData.article_html;
+  if (/<div class="meta-line">[\s\S]*?<\/div>/i.test(articleData.article_html)) {
+    articleData.article_html = articleData.article_html.replace(/<div class="meta-line">[\s\S]*?<\/div>/i, canonicalMetaLine);
+  } else {
+    articleData.article_html = canonicalMetaLine + '\n\n' + articleData.article_html;
+  }
+
+  if (!/<h1\b/i.test(articleData.article_html)) {
+    articleData.article_html = articleData.article_html.replace(canonicalMetaLine, `${canonicalMetaLine}\n\n<h1>${articleData.title}</h1>\n<p class="subtitle">\n  ${articleData.subtitle}\n</p>`);
   }
 
   // Deterministic Telemetry Assembly: Ensure telemetry-bar exists at the end
@@ -622,13 +624,54 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
     }
   }
 
-  
   // Ensure read-time badge in meta-line is dynamically calibrated to 8-13 min window (Issue 001 benchmark)
-  const dynamicReadMins = calculateReadTime(articleData.article_html);
+  const finalReadMins = calculateReadTime(articleData.article_html);
   articleData.article_html = articleData.article_html.replace(
-    /(<div class="meta-line">[\s\S]*?)(\d+\s*MIN\s*READ)([\s\S]*?<\/div>)/i,
-    `$1${dynamicReadMins} MIN READ$3`
+    /(<span id="read-time-badge">)[\s\S]*?(<\/span>)/i,
+    `$1${finalReadMins} MIN READ$2`
   );
+
+  // Reconcile tangents: ensure all definitions in 'tangents' are referenced in article_html
+  if (articleData.tangents) {
+    const dictKeys = Object.keys(articleData.tangents);
+    for (const key of dictKeys) {
+      if (!articleData.article_html.includes(`data-tangent="${key}"`)) {
+        const tangentObj = articleData.tangents[key];
+        const title = tangentObj?.title || key.replace(/[-_]+/g, ' ');
+        const cleanTitle = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const keyWords = key.replace(/[-_]+/g, ' ').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+        const termRegex = new RegExp(`\\b(${cleanTitle}|${keyWords})\\b`, 'i');
+        if (termRegex.test(articleData.article_html)) {
+          let replaced = false;
+          articleData.article_html = articleData.article_html.replace(termRegex, (match) => {
+            if (!replaced) {
+              replaced = true;
+              return `<span class="tangent-term" data-tangent="${key}">${match}</span>`;
+            }
+            return match;
+          });
+        } else {
+          console.warn(`Pruning unreferenced tangent definition '${key}' from dictionary.`);
+          delete articleData.tangents[key];
+        }
+      }
+    }
+  }
+
+  // Ensure any data-tangent terms in HTML have an entry in tangents
+  const htmlKeys = [...(articleData.article_html || '').matchAll(/data-tangent="([^"]+)"/g)].map(m => m[1]);
+  if (!articleData.tangents) articleData.tangents = {};
+  for (const hk of htmlKeys) {
+    if (!articleData.tangents[hk]) {
+      const cleanName = hk.replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      articleData.tangents[hk] = {
+        tag: `${(articleData.subject || 'HARDWARE').toUpperCase()} // SPECIFICATION`,
+        title: cleanName,
+        body: `<p>Engineering definition and first-principles operating context for ${cleanName}.</p>`
+      };
+    }
+  }
 
   // 3. Write decoupled JSON chunk: content/issues/{num}.json
   const issueJsonPath = path.join(CONTENT_DIR, 'issues', `${nextFileId}.json`);
