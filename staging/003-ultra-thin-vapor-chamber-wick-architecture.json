@@ -1,0 +1,159 @@
+{
+  "slug": "ultra-thin-vapor-chamber-wick-architecture",
+  "title": "Ultra-Thin Vapor Chambers: Capillary Limits in 0.35 mm Smartphone Spreaders",
+  "subtitle": "How sintered copper micro-meshes and laser-welded pillar arrays prevent cavitation collapse under 80W die loads.",
+  "subject": "Thermal",
+  "category": "Thermal",
+  "readTime": "10 min",
+  "summary": "Comprehensive analysis of two-phase flat vapor chambers, capillary pumping limits, sintered micro-wick pore permeability, and vacuum sealing.",
+  "tags": [
+    "Thermal",
+    "Vapor Chamber",
+    "Two-Phase Cooling",
+    "Smartphones"
+  ],
+  "figures": [
+    {
+      "id": "FIGURE_0",
+      "placeholder": "{{ FIGURE_0 }}",
+      "search_query": "smartphone vapor chamber teardown cross section sintered copper wick",
+      "caption": "FIG 01 — PLANAR VAPOR CHAMBER TEARDOWN: Cleaved 0.35 mm copper envelope displaying internal micro-machined support pillars.",
+      "source": "HARDWARE TEARDOWN ARCHIVE",
+      "selectedIndex": 0,
+      "images": [
+        {
+          "url": "https://pub.mdpi-res.com/energies/energies-16-06464/article_deploy/html/images/energies-16-06464-g001.png?1694082098",
+          "title": "Experimental Investigation on Thermal Performance of Vapor Chambers with Diffident Wick Structures",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/micromachines/micromachines-15-00627/article_deploy/html/images/micromachines-15-00627-g001.png?1715417361",
+          "title": "Experimental Investigation on Ultra-Thin Vapor Chamber with Composite Wick for Electronics ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.gizmochina.com/wp-content/uploads/2024/01/Screenshot-2024-01-24-123111.jpg",
+          "title": "OnePlus 12's massive Cryo Velocity Vapor Chamber revealed in teardown - Gizmochina",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://hottechtrends.com/wp-content/uploads/2025/02/samsung-galaxy-s25-teardown-reveals-enhanced-vapor-chamber-design-2-1000x600.png",
+          "title": "Samsung Galaxy S25+ Teardown Reveals Enh... | Brand",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/energies/energies-16-06464/article_deploy/html/images/energies-16-06464-g002.png?1694082100",
+          "title": "Experimental Investigation on Thermal Performance of Vapor Chambers with Diffident Wick Structures",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.researchgate.net/publication/363495513/figure/fig2/AS:11431281087427437@1664590244723/Shape-and-structure-of-the-wick-and-the-tested-vapor-chamber-type-heat-spreader.png",
+          "title": "Shape and structure of the wick and the tested vapor chamber-type heat... | Download Scientific ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://media.craiyon.com/2026-04-14/69fpmd2JR36FCPUbEy3yQA.webp",
+          "title": "Technical infographic of a smartphone's internal components, highlighting Exynos 2600 chip, heat ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://tonecooling.com/wp-content/uploads/2025/02/Phone-vapor-chamber-1536x1152.jpg",
+          "title": "Vapor Chamber on Phones: Cooling Technology for Smartphones",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.notebookcheck.org/fileadmin/_processed_/7/d/csm_Vivo-X-Fold3-Pro-Teardown-und-Messwerte-9_153c3bedd9.jpg",
+          "title": "Experto en Teardown del Vivo X Fold3 Pro: El primer buque insignia con cámara plegable sin ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.mdpi.com/energies/energies-17-03330/article_deploy/html/images/energies-17-03330-g001.png",
+          "title": "Comparison of Maximum Heat Transfer Rate of Thin Vapor Chambers with Different Wicks under ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.androidheadlines.com/wp-content/uploads/2024/01/Samsung-Galaxy-S24-Ultra-teardown--1420x799.webp",
+          "title": "Galaxy S24 Ultra teardown shows its huge vapor chamber",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/News/_nc4/OP12.jpg",
+          "title": "OnePlus 12 teardown video showcases huge vapor cooling chamber - Notebookcheck News",
+          "source": "Web Search / Teardown"
+        }
+      ]
+    },
+    {
+      "id": "FIGURE_1",
+      "placeholder": "{{ FIGURE_1 }}",
+      "search_query": "sintered copper powder wick SEM micrograph thermal vapor chamber",
+      "caption": "FIG 02 — SINTERED MICRO-POWDER WICK: Scanning electron micrograph showing interconnected capillary pore channels.",
+      "source": "METROLOGY LAB",
+      "selectedIndex": 0,
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
+          "title": "sintered copper powder wick SEM micrograph thermal vapor chamber Reference #1",
+          "source": "Unsplash Engineering"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&q=80&w=2000",
+          "title": "sintered copper powder wick SEM micrograph thermal vapor chamber Reference #2",
+          "source": "Unsplash Engineering"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2000",
+          "title": "sintered copper powder wick SEM micrograph thermal vapor chamber Reference #3",
+          "source": "Unsplash Engineering"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=2000",
+          "title": "sintered copper powder wick SEM micrograph thermal vapor chamber Reference #4",
+          "source": "Unsplash Engineering"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80&w=2000",
+          "title": "sintered copper powder wick SEM micrograph thermal vapor chamber Reference #5",
+          "source": "Unsplash Engineering"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
+          "title": "sintered copper powder wick SEM micrograph thermal vapor chamber Reference #6",
+          "source": "Unsplash Engineering"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&q=80&w=2000",
+          "title": "sintered copper powder wick SEM micrograph thermal vapor chamber Reference #7",
+          "source": "Unsplash Engineering"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2000",
+          "title": "sintered copper powder wick SEM micrograph thermal vapor chamber Reference #8",
+          "source": "Unsplash Engineering"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=2000",
+          "title": "sintered copper powder wick SEM micrograph thermal vapor chamber Reference #9",
+          "source": "Unsplash Engineering"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80&w=2000",
+          "title": "sintered copper powder wick SEM micrograph thermal vapor chamber Reference #10",
+          "source": "Unsplash Engineering"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
+          "title": "sintered copper powder wick SEM micrograph thermal vapor chamber Reference #11",
+          "source": "Unsplash Engineering"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&q=80&w=2000",
+          "title": "sintered copper powder wick SEM micrograph thermal vapor chamber Reference #12",
+          "source": "Unsplash Engineering"
+        }
+      ]
+    }
+  ],
+  "body_mdx": "## 1. Two-Phase Latent Heat Spreading\n\nUnlike solid copper slabs where heat conduction is limited by Fourier's law ($k \\approx 390 \\text{ W/mK}$), vapor chambers exploit the latent heat of vaporization of de-ionized water ($h_{fg} \\approx 2.45 \\times 10^6 \\text{ J/kg}$).\n\n{{ FIGURE_0 }}\n\nFluid evaporates at the die hotspot, expanding at high velocity toward cooler perimeter condensation zones where it releases latent heat before being wicked back through capillary action.\n\n## 2. Capillary Pumping & The Dry-Out Limit\n\nFor continuous operation without localized die thermal runaway, the capillary pressure generated by the sintered copper wick must exceed the cumulative viscous pressure drop of both liquid and vapor flows:\n\n$$\\Delta P_{\\text{capillary, max}} \\ge \\Delta P_{\\text{liquid}} + \\Delta P_{\\text{vapor}} + \\Delta P_{\\text{gravity}}$$\n\n{{ FIGURE_1 }}\n\nWhere maximum capillary pressure is governed by the Young-Laplace equation:\n\n$$\\Delta P_{c} = \\frac{2 \\cdot \\sigma \\cdot \\cos(\\theta)}{r_{\\text{pore}}}$$\n\nAs chamber thickness scales down from 0.8 mm to 0.35 mm, vapor cavity hydraulic diameter drops cubically, causing vapor flow resistance to dominate and requiring micro-machined support column spacing under 1.2 mm.",
+  "date": "2026-10-20"
+}

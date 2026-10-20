@@ -1,0 +1,159 @@
+{
+  "slug": "strain-wave-gearing-flexspline-fatigue",
+  "title": "Strain Wave Gearing: Surviving 10^7 Cycles in Precision Robot Joints",
+  "subtitle": "Metallurgical design and thin-wall elastomechanical stress concentration in elliptical flexspline cups.",
+  "subject": "Mechanisms",
+  "category": "Mechanisms",
+  "readTime": "11 min",
+  "summary": "Analysis of harmonic drive / strain wave gearboxes, flexspline fatigue life, tooth kinematic meshing, and bearing raceway friction.",
+  "tags": [
+    "Mechanisms",
+    "Robotics",
+    "Gears",
+    "Fatigue Life"
+  ],
+  "figures": [
+    {
+      "id": "FIGURE_0",
+      "placeholder": "{{ FIGURE_0 }}",
+      "search_query": "harmonic drive strain wave gearbox flexspline teardown cross section",
+      "caption": "FIG 01 — THE FLEXSPLINE CUP: Thin-walled alloy cup showing precision external gear teeth and elliptical wave generator bore.",
+      "source": "ROBOTICS KINEMATICS LAB",
+      "selectedIndex": 0,
+      "images": [
+        {
+          "url": "https://www.emag.com/blog/en/wp-content/uploads/sites/2/2026/04/Blog_strain-wave-gear_Components_1170x781px_de-en-es-1024x684.jpg",
+          "title": "Strain Wave Gear: Function & benefits",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g003.png?1690939463",
+          "title": "A Novel Strain Wave Gear Reducer with Double Flexsplines",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0554/0567/4694/files/strain-wave-gear-components-exploded-diagram.png?v=1770071038",
+          "title": "Humanoid Robot Actuators: The Complete Engineering Guide",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.smdgearbox.com/assets/images/banner/harmonic.jpg",
+          "title": "Wave Generator",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://hobberdrive.com/wp-content/uploads/2026/01/strain-wave-gear-components-exploded-view.png",
+          "title": "Strain Wave Gear vs. Planetary Gearbox: A Comparison - Hobber Drive",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g001.png?1690939466",
+          "title": "A Novel Strain Wave Gear Reducer with Double Flexsplines",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://ozrobotics.com/wp-content/uploads/2025/10/FSG-II-32-Harmonic-Drive-Strain-Wave-Gear-Boxes.jpg",
+          "title": "FSG-II-32 Harmonic Drive Strain Wave Gear Boxes - Oz Robotics",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://howtomechatronics.com/wp-content/uploads/2020/06/Strain-Wave-Gear-or-Harmonic-Drive-Main-Components.jpg",
+          "title": "What is Strain Wave Gear a.k.a Harmonic Drive? A Perfect Gear Set For Robotics Applications!?",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.zhygear.com/wp-content/uploads/2025/12/harmonic-drive-1.jpg",
+          "title": "Fundamental Mechanics and Accurate Deformation Analysis of the Flexspline in Harmonic Drive ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.researchgate.net/profile/Mohammad-Masaeli-4/publication/245543196/figure/fig74/AS:655154655289358@1533212450376/22-Exploded-view-of-a-typical-harmonic-drive-showing-its-principal-parts-The-flexspline.png",
+          "title": "Exploded view of a typical harmonic drive showing its principal parts.... | Download Scientific ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://ozrobotics.com/wp-content/uploads/2025/10/FSG-II-20-Cup-Style-Harmonic-Drive-Technologies-System-Strain-Wave-Gear.jpg",
+          "title": "Cup Style Harmonic Drive Technologies System Strain Wave Gear FSG-II-20 - Oz Robotics",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://assunmotor.com/upload/2024/12/26/Harmonic-wave-gear.jpg",
+          "title": "Harmonic Drive Gearbox - Assun Motor",
+          "source": "Web Search / Teardown"
+        }
+      ]
+    },
+    {
+      "id": "FIGURE_1",
+      "placeholder": "{{ FIGURE_1 }}",
+      "search_query": "elliptical wave generator flexible ball bearing cross section harmonic drive",
+      "caption": "FIG 02 — WAVE GENERATOR ASSEMBLY: Flexible thin-race ball bearing deflected into an elliptical contour.",
+      "source": "BEARING METROLOGY ARCHIVE",
+      "selectedIndex": 0,
+      "images": [
+        {
+          "url": "https://cdn.britannica.com/50/1150-004-4B8B688B.jpg",
+          "title": "Harmonic Drive, or harmonic gear - Kids | Britannica Kids | Homework Help",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.smdgearbox.com/assets/images/banner/harmonic.jpg",
+          "title": "Wave Generator",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.zhygear.com/wp-content/uploads/2025/12/harmonic-drive-1.jpg",
+          "title": "Fundamental Mechanics and Accurate Deformation Analysis of the Flexspline in Harmonic Drive ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://howtomechatronics.com/wp-content/uploads/2020/06/Harmonic-Drive-Working-Principle-Teeth-Meshing.jpg",
+          "title": "What is Strain Wave Gear a.k.a Harmonic Drive? A Perfect Gear Set For Robotics Applications!?",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://cdn.shopify.com/s/files/1/0554/0567/4694/files/strain-wave-gear-components-exploded-diagram.png?v=1770071038",
+          "title": "Humanoid Robot Actuators: The Complete Engineering Guide",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://mechanical-engineering.com/wp-content/uploads/2017/09/harmonic-drive-exploded-view.jpg",
+          "title": "How does a Harmonic Drive work? Why are they used?",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://howtomechatronics.com/wp-content/uploads/2020/06/Strain-Wave-Gear-or-Harmonic-Drive-Main-Components.jpg",
+          "title": "What is Strain Wave Gear a.k.a Harmonic Drive? A Perfect Gear Set For Robotics Applications!?",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g003.png?1690939463",
+          "title": "A Novel Strain Wave Gear Reducer with Double Flexsplines",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://howtomechatronics.com/wp-content/uploads/2020/06/Flex-spline-moves-in-opposite-direction-relative-to-the-Wave-Generator-1024x576.jpg",
+          "title": "What is Strain Wave Gear a.k.a Harmonic Drive? A Perfect Gear Set For Robotics Applications!?",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.researchgate.net/profile/Mohammad-Masaeli-4/publication/245543196/figure/fig74/AS:655154655289358@1533212450376/22-Exploded-view-of-a-typical-harmonic-drive-showing-its-principal-parts-The-flexspline.png",
+          "title": "Exploded view of a typical harmonic drive showing its principal parts.... | Download Scientific ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://image.slidesharecdn.com/harmonicdrivecatalog-141008202256-conversion-gate02/75/Harmonic-drive-catalog-3-2048.jpg",
+          "title": "Harmonic drive catalog | PDF",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g001.png?1690939466",
+          "title": "A Novel Strain Wave Gear Reducer with Double Flexsplines",
+          "source": "Web Search / Teardown"
+        }
+      ]
+    }
+  ],
+  "body_mdx": "## 1. Kinematic Mechanics of Elastic Deflection\n\nStrain wave gearing achieves zero-backlash torque multiplication up to 160:1 in a single coaxial stage through continuous elastic deformation.\n\n{{ FIGURE_0 }}\n\nAn elliptical cam (the wave generator) inserted into a thin-walled flexible cup (the flexspline) deflects the cup so its external teeth mesh with the internal teeth of a rigid ring (the circular spline) at two opposing diametrical lobes.\n\n<TechnicalCard\n  title=\"Harmonic Flexspline Stress Profile\"\n  subtitle=\"Cyclic Bending Stress at Major Elliptical Axis\"\n  bottleneck=\"Bending fatigue at flexspline tooth root sets strict 10^7 cycle life limit.\"\n>\n  <div className=\"grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs\">\n    <div className=\"rounded bg-neutral-950 p-2.5 border border-neutral-800\">\n      <div className=\"text-amber-500 font-semibold uppercase text-[10px]\">Material Alloy</div>\n      <div className=\"text-neutral-200 mt-1\">SNCM439 / 40CrNiMoA Alloy Steel</div>\n      <div className=\"text-neutral-400 text-[11px] mt-0.5\">Tensile: 1,100 MPa • Yield: 950 MPa</div>\n    </div>\n    <div className=\"rounded bg-neutral-950 p-2.5 border border-neutral-800\">\n      <div className=\"text-amber-500 font-semibold uppercase text-[10px]\">Tooth Meshing Pitch</div>\n      <div className=\"text-neutral-200 mt-1\">Module m = 0.3mm (200 teeth)</div>\n      <div className=\"text-neutral-400 text-[11px] mt-0.5\">2-tooth difference yields 100:1 reduction</div>\n    </div>\n  </div>\n</TechnicalCard>\n\n{{ FIGURE_1 }}\n\n## 2. Flexspline Diaphragm Fatigue Mechanics\n\nBecause the cup rotates relative to the elliptical wave generator, every point along the cup wall undergoes two complete tension-compression strain cycles per revolution.\n\nThe peak cyclic bending stress is given by:\n\n$$\\sigma_b = \\frac{E \\cdot t}{2 \\cdot R^2} \\cdot w_0$$\n\nWhere $t$ is wall thickness ($0.35 \\text{ mm}$), $R$ is nominal radius, and $w_0$ is radial deflection. Controlling surface roughness to $R_a < 0.2 \\mu\\text{m}$ along the cup root radius is essential to eliminate micro-crack nucleation sites.",
+  "date": "2026-10-20"
+}

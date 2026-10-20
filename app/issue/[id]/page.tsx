@@ -6,6 +6,8 @@ import { mdxComponents } from "@/components/mdx-components";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+export const dynamicParams = true;
+
 export function generateStaticParams() {
   const issuesDir = path.join(process.cwd(), "content/issues");
   if (!fs.existsSync(issuesDir)) return [];
@@ -21,6 +23,10 @@ export default function IssuePage({ params }: { params: { id: string } }) {
 
   const fileContent = fs.readFileSync(filePath, "utf8");
   const { data, content } = matter(fileContent);
+
+  const isHtml =
+    content.trim().startsWith("<div") ||
+    (content.includes("class=") && !content.includes("<TechnicalCard") && !content.includes("<ProcessFlow"));
 
   return (
     <article className="prose prose-invert max-w-none">
@@ -41,7 +47,14 @@ export default function IssuePage({ params }: { params: { id: string } }) {
       </div>
 
       <div className="text-neutral-300 leading-relaxed font-sans space-y-6">
-        <MDXRemote source={content} components={mdxComponents} />
+        {isHtml ? (
+          <div
+            className="article-body font-sans"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+        ) : (
+          <MDXRemote source={content} components={mdxComponents} />
+        )}
       </div>
 
       <div className="mt-12 pt-6 border-t border-neutral-800 flex justify-between font-mono text-xs">

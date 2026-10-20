@@ -21,7 +21,7 @@ import {
  */
 
 const REFS_PATH = path.resolve('content/visual-references.json');
-const MODELS = ['gemini-3.8-flash', 'gemini-3-flash-preview', 'gemini-2.0-flash'];
+const MODELS = ['gemini-3.8-flash', 'gemini-2.5-flash'];
 const slugify = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 48);
 
 async function geminiJson(prompt, apiKey) {

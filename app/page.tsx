@@ -8,13 +8,18 @@ import Link from "next/link";
 export default function HomePage() {
   const issuesDir = path.join(process.cwd(), "content/issues");
   let fileContent = "";
-  let issueNumber = "002";
+  let issueNumber = "006";
 
-  const targetFile = path.join(issuesDir, "002.mdx");
-  if (fs.existsSync(targetFile)) {
-    fileContent = fs.readFileSync(targetFile, "utf8");
-  } else {
-    const files = fs.readdirSync(issuesDir).filter((f) => f.endsWith(".mdx")).sort().reverse();
+  if (fs.existsSync(issuesDir)) {
+    const files = fs
+      .readdirSync(issuesDir)
+      .filter((f) => f.endsWith(".mdx"))
+      .sort((a, b) => {
+        const numA = parseInt(a.replace(".mdx", ""), 10) || 0;
+        const numB = parseInt(b.replace(".mdx", ""), 10) || 0;
+        return numB - numA;
+      });
+
     if (files.length > 0) {
       fileContent = fs.readFileSync(path.join(issuesDir, files[0]), "utf8");
       issueNumber = files[0].replace(".mdx", "");
@@ -22,6 +27,10 @@ export default function HomePage() {
   }
 
   const { data, content } = matter(fileContent);
+
+  const isHtml =
+    content.trim().startsWith("<div") ||
+    (content.includes("class=") && !content.includes("<TechnicalCard") && !content.includes("<ProcessFlow"));
 
   return (
     <article className="prose prose-invert max-w-none">
@@ -42,7 +51,14 @@ export default function HomePage() {
       </div>
 
       <div className="text-neutral-300 leading-relaxed font-sans space-y-6">
-        <MDXRemote source={content} components={mdxComponents} />
+        {isHtml ? (
+          <div
+            className="article-body font-sans"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+        ) : (
+          <MDXRemote source={content} components={mdxComponents} />
+        )}
       </div>
 
       <div className="mt-12 pt-6 border-t border-neutral-800 flex justify-between font-mono text-xs">

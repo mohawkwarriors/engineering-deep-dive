@@ -24,6 +24,10 @@ export default function RootLayout({
             <nav className="flex items-center gap-4 text-xs font-mono text-neutral-400">
               <Link href="/" className="hover:text-neutral-200 transition-colors">Current</Link>
               <Link href="/archive" className="hover:text-neutral-200 transition-colors">Archive</Link>
+              <Link href="/drafts" className="text-amber-500/90 hover:text-amber-400 font-semibold transition-colors flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                Editor
+              </Link>
             </nav>
           </div>
         </header>

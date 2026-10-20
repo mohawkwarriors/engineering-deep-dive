@@ -489,8 +489,7 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
 
   const candidateModels = [
     'gemini-3.8-flash',
-    'gemini-3-flash-preview',
-    'gemini-2.0-flash'
+    'gemini-2.5-flash'
   ];
 
   let rawContent = null;

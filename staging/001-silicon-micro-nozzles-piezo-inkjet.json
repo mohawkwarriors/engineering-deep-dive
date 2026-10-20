@@ -1,0 +1,159 @@
+{
+  "slug": "silicon-micro-nozzles-piezo-inkjet",
+  "title": "Silicon Micro-Nozzles: Bosch-Process DRIE in Industrial Piezo Printheads",
+  "subtitle": "How deep reactive-ion etching overcomes fluid cavitation and acoustic crosstalk at 50 kHz droplet firing rates.",
+  "subject": "Fluids",
+  "category": "Fluids",
+  "readTime": "9 min",
+  "summary": "Deep dive into piezoelectric MEMS inkjet printheads, silicon micromachining via Bosch DRIE, and meniscus pinning.",
+  "tags": [
+    "MEMS",
+    "Fluids",
+    "Silicon Micromachining",
+    "Piezo"
+  ],
+  "figures": [
+    {
+      "id": "FIGURE_0",
+      "placeholder": "{{ FIGURE_0 }}",
+      "search_query": "piezoelectric inkjet printhead silicon nozzle teardown cross section",
+      "caption": "FIG 01 — THE SILICON NOZZLE ARRAY: High-aspect ratio DRIE etched micro-nozzles showing sub-micron sidewall scallops.",
+      "source": "MEMS MICROLITHOGRAPHY ARCHIVE",
+      "selectedIndex": 0,
+      "images": [
+        {
+          "url": "https://ietresearch.onlinelibrary.wiley.com/cms/asset/a754eeaf-9de3-42ff-84a1-ee7a9dd47fcc/mna2bf01062-fig-0001-m.jpg",
+          "title": "Process for fabricating microactuator membranes of piezoelectric inkjet print head using multi ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/micromachines/micromachines-14-00768/article_deploy/html/images/micromachines-14-00768-g001.png?1680146207",
+          "title": "Waveform Design Method for Piezoelectric Print-Head Based on Iterative Learning and Equivalent ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/applsci/applsci-13-04452/article_deploy/html/images/applsci-13-04452-g001.png?1680251338",
+          "title": "Numerical Research on the Effects of Process Parameters on Microdroplet Jetting Characteristics ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.researchgate.net/publication/360778389/figure/fig8/AS:1158721124208641@1653272052626/Details-of-the-piezoelectric-printhead.png",
+          "title": "Details of the piezoelectric printhead | Download Scientific Diagram",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.researchgate.net/publication/258790635/figure/fig13/AS:507890517905408@1498101943725/Illustration-of-an-ink-jet-nozzle-device-Each-nozzle-consists-of-a-silicon-heater-at-the.png",
+          "title": "What Are The 2 Types Of Inkjet Nozzles at Sally Esterly blog",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://d3a577syzx0or3.cloudfront.net/images/inkjetinsight/2022/02/Bale-MEMS-Feb22-Fig1.jpg",
+          "title": "Si-MEMS Heads - What is the Fuss About? - WhatTheyThink",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.researchgate.net/profile/Qianli_Ma12/publication/324784772/figure/download/fig2/AS:625085564080134@1526043420720/Colour-online-a-Structure-of-the-piezo-nozzle-b-the-early-ejection-stage-c-the.png",
+          "title": "(Colour online) (a) Structure of the piezo-nozzle, (b) the early... | Download Scientific Diagram",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://img.waimaoniu.net/3665/3665-202402011100238526.png",
+          "title": "TIJ Printhead Customization Solutions - Bentsai",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.researchgate.net/profile/Ji_Suk_Choi/publication/51037583/figure/download/fig4/AS:670351373635603@1536835630914/Schematic-representation-of-the-piezoelectric-inkjet-printing-system-for-fabrication-of-a.ppm",
+          "title": "Schematic representation of the piezoelectric inkjet printing system... | Download Scientific ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://artjetech.com/wp-content/uploads/2024/05/4-1024x542.png",
+          "title": "Printhead Basics ARTJET 2025",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.mdpi.com/technologies/technologies-10-00108/article_deploy/html/images/technologies-10-00108-g001.png",
+          "title": "Thermal Inkjet Printing: Prospects and Applications in the Development of Medicine",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.nanowerk.com/news2/gadget/id66029_1.jpg",
+          "title": "High-performance inkjet print head enhances bioprinting productivity",
+          "source": "Web Search / Teardown"
+        }
+      ]
+    },
+    {
+      "id": "FIGURE_1",
+      "placeholder": "{{ FIGURE_1 }}",
+      "search_query": "piezoelectric actuator lead zirconate titanate PZT membrane printhead",
+      "caption": "FIG 02 — PZT ACTUATOR STACK: Thin-film PZT transducer bonded to silicon acoustic cavity.",
+      "source": "ACOUSTICS METROLOGY",
+      "selectedIndex": 0,
+      "images": [
+        {
+          "url": "https://www.researchgate.net/publication/346225502/figure/fig4/AS:983808937578497@1611569737466/Metal-core-lead-zirconate-titanate-PZT-piezoelectric-fiber-Al-composite-sample.png",
+          "title": "Metal-core lead zirconate titanate (PZT) piezoelectric fiber/Al... | Download Scientific Diagram",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://image.slidesharecdn.com/track1-session4-stdevcon2016-memspiezoactuators-161007094641/75/Track-1-session-4-st-dev-con-2016-mems-piezo-actuators-22-2048.jpg",
+          "title": "Track 1 session 4 - st dev con 2016 - mems piezo actuators | PDF",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://image2.slideserve.com/4832292/pmuts-structure1-l.jpg",
+          "title": "PPT - Piezoelectric Micromachined Ultrasound Transducers ( pMUTs ) PowerPoint Presentation - ID ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.researchgate.net/publication/368893300/figure/fig1/AS:11431281126138543@1678562579504/Miniature-FUS-device-A-Lead-zirconate-titanate-PZT-elements-B-The-coaxial.png",
+          "title": "FACTS ABOUT LEAD ZIRCONATE TITANATE PZT TECHNICAL SPECIFICATIONS AND THE HISTORY OF ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/materials/materials-16-03057/article_deploy/html/images/materials-16-03057-g003.png?1682000894",
+          "title": "Lead Zirconate Titanate Transducers Embedded in Composite Laminates: The Influence of the ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.mdpi.com/sensors/sensors-23-01649/article_deploy/html/images/sensors-23-01649-g002.png",
+          "title": "The 0-3 Lead Zirconate-Titanate (PZT)/Polyvinyl-Butyral (PVB) Composite for Tactile Sensing",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.researchgate.net/profile/Guozhong-Cao-3/publication/307893506/figure/fig1/AS:565258118602752@1511779445005/Schematic-drawing-of-PZT-thin-film-membrane-actuator-placed-in-cochlea-not-to-scale.png",
+          "title": "Schematic drawing of PZT thin-film membrane actuator placed in cochlea... | Download Scientific ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://image.made-in-china.com/2f0j00NCpWHLyRJDfE/Piezo-Actuator-Manufacturer-Lead-Zirconate-Titanate-Pzt-High-Precision-and-Accuracy.jpg",
+          "title": "Piezo Actuator Manufacturer Lead Zirconate Titanate Pzt High Precision and Accuracy - Piezo ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://d3i71xaburhd42.cloudfront.net/ecba3e0e7a7d3d1d4d902e9ae176e88d98d58237/4-Figure1-1.png",
+          "title": "Figure 1 from Substrate dependence of the self-heating in lead zirconate titanate (PZT) MEMS ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://img.alicdn.com/imgextra/i1/6000000004202/O1CN01gp5Fju1guYqKdZvXC_!!6000000004202-0-tbvideo.jpg",
+          "title": "Piezoelectric Transducer Disc,Lead Zirconate Titanate,Piezo Crystal - Buy Piezo Crystal,Lead ...",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://assets.iflscience.com/assets/articleNo/76057/iImg/79038/shutterstock_2209017437.jpg",
+          "title": "What Are Piezoelectric Crystals And How Do They Work? | IFLScience",
+          "source": "Web Search / Teardown"
+        },
+        {
+          "url": "https://www.mdpi.com/micromachines/micromachines-09-00455/article_deploy/html/images/micromachines-09-00455-g001.png",
+          "title": "Fabrication and Characterization of PZT Fibered-Epitaxial Thin Film on Si for Piezoelectric ...",
+          "source": "Web Search / Teardown"
+        }
+      ]
+    }
+  ],
+  "body_mdx": "## 1. The Acoustic Waveguide Bottleneck\n\nIn high-speed drop-on-demand (DoD) piezoelectric printheads, fluid ejection is governed by acoustic wave propagation rather than mechanical displacement. When a piezoelectric transducer (PZT) pulses, it launches an acoustic pressure wave through a microscopic fluid channel.\n\n{{ FIGURE_0 }}\n\n### Governing Acoustic Impedance\nThe pressure wave travels at the acoustic velocity of the ink ($c \\approx 1200 - 1500 \\text{ m/s}$), reflecting off channel boundaries:\n\n$$\\Delta P = \\rho \\cdot c \\cdot \\Delta v$$\n\nIf the nozzle geometry deviates by even $\\pm 0.3 \\mu\\text{m}$, acoustic reflections cause phase cancellation, leading to droplet misdirection and meniscus rupture.\n\n## 2. Micro-Machining via Bosch Deep Reactive-Ion Etching (DRIE)\n\nTo achieve perpendicular sidewall angles ($89.8^\\circ \\pm 0.1^\\circ$) through $100 \\mu\\text{m}$ thick silicon wafers, manufacturers rely on the cyclic Bosch DRIE process.\n\n{{ FIGURE_1 }}\n\n<ProcessFlow>\n  <ProcessStep step=\"01\" title=\"SF6 Plasma Etch Cycle\" parameters=\"1.2s pulse • 800W RF\">\n    Isotropic chemical etch driven by fluorine radicals cuts into the exposed silicon substrate.\n  </ProcessStep>\n  <ProcessStep step=\"02\" title=\"C4F8 Passivation Cycle\" parameters=\"0.8s pulse • Teflon-like film\">\n    Polymer layer deposits over the floor and sidewalls to inhibit lateral undercut.\n  </ProcessStep>\n  <ProcessStep step=\"03\" title=\"Directional Ion Sputtering\" parameters=\"200V bias • Sub-50nm scallops\">\n    Energetic argon ions strip the polymer strictly from the horizontal floor, allowing vertical progression without wall degradation.\n  </ProcessStep>\n</ProcessFlow>\n\n## 3. Meniscus Dynamics & Refill Hydrodynamics\n\nAfter droplet pinch-off, capillary forces draw liquid from the reservoir to replenish the nozzle cavity before the next pulse. The maximum operating frequency is fundamentally bounded by the Helmholtz resonance of the fluid chamber.",
+  "date": "2026-10-20"
+}
