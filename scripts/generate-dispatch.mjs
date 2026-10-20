@@ -321,7 +321,7 @@ Select a high-stakes, first-principles mechanical or hardware engineering dilemm
 `;
   }
 
-  const prompt = `You are a Principal Hardware / Mechanical Systems Engineer authoring today's dispatch for "Engineering Deep Dive".
+  const prompt = `You are a Principal Hardware / Mechanical Systems Engineer authoring today's dispatch for "The HW Insider".
 Your audience consists of elite Product Design Engineers (PD), Mechanical Engineers (ME), and Hardware Architects who demand first-principles physics, real-world DFM tolerances, and deep kinematic/thermal teardowns.
 
 ${topicDirective}

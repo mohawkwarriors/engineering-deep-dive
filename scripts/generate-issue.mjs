@@ -14,4 +14,4 @@ export const GENERATION_CONFIG = {
   ]
 };
 
-console.log('Daily Engineering Deep Dive Generation Engine Initialized (Zero AI Raster Standard).');
+console.log('Daily The HW Insider Generation Engine Initialized (Zero AI Raster Standard).');

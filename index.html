@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>Engineering Deep Dive — Daily Hardware Intelligence</title>
+  <title>The HW Insider — Daily Hardware Intelligence</title>
   <meta name="description" content="A daily intelligence digest delivering rigorous first-principles mechanical engineering deep-dives, electromechanical teardowns, and interactive physics." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23D97757%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><circle cx=%2212%22 cy=%2212%22 r=%228%22/><line x1=%225.5%22 y1=%2218.5%22 x2=%2218.5%22 y2=%225.5%22/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3410,7 +3410,7 @@
     <header>
       <a class="brand-group" onclick="loadLatestArticle()">
         <div class="brand-logo">⌀</div>
-        <span class="brand">Engineering Deep Dive</span>
+        <span class="brand">The HW Insider</span>
       </a>
       <div class="nav-actions">
         <button class="nav-btn" id="btn-queue" style="display:none;" onclick="window.location.href='queue.html'">Queue</button>
@@ -3505,7 +3505,7 @@
       const articleEl = document.getElementById("view-article");
       const currentTopic = TOPICS.find(t => t.id === id);
       if (currentTopic) {
-        document.title = `${currentTopic.title} — Engineering Deep Dive`;
+        document.title = `${currentTopic.title} — The HW Insider`;
       }
 
       if (articleCache[id]) {

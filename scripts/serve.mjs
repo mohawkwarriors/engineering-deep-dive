@@ -86,7 +86,7 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log(`\n==================================================`);
-  console.log(`  Engineering Deep Dive — Local Editorial Server`);
+  console.log(`  The HW Insider — Local Editorial Server`);
   console.log(`  http://localhost:${PORT}`);
   console.log(`==================================================\n`);
 });

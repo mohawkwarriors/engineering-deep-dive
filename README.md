@@ -1,6 +1,6 @@
-# Engineering Deep Dive
+# The HW Insider
 
-A fully automated daily intelligence pipeline delivering high-depth mechanical engineering deep dives with interactive MDX components and zero poor-quality AI raster images.
+A fully automated daily intelligence pipeline delivering high-depth mechanical engineering deep dives with interactive MDX components and live teardown photography.
 
 ## Architecture & Visual Standards
 - **Zero Raster AI Graphics:** No diffusion image generation. Figure 5 and all schematics are rendered natively in React/Tailwind/KaTeX.

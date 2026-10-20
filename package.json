@@ -1,7 +1,7 @@
 {
-  "name": "engineering-deep-dive",
+  "name": "the-hw-insider",
   "version": "1.0.0",
-  "description": "Daily automated mechanical engineering deep dive dispatches.",
+  "description": "The HW Insider — Daily automated mechanical engineering deep dive dispatches.",
   "type": "module",
   "scripts": {
     "dev": "next dev",

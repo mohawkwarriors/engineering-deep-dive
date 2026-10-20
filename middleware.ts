@@ -29,7 +29,7 @@ export function middleware(req: NextRequest) {
     return new NextResponse("Authentication required for Editor Mode", {
       status: 401,
       headers: {
-        "WWW-Authenticate": 'Basic realm="HW Insight Editor"',
+        "WWW-Authenticate": 'Basic realm="The HW Insider Editor"',
       },
     });
   }

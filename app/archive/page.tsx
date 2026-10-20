@@ -22,7 +22,7 @@ export default function ArchivePage() {
     <div>
       <div className="border-b border-neutral-800 pb-4 mb-6">
         <h1 className="text-xl font-bold font-mono tracking-tight text-neutral-100">ARCHIVE</h1>
-        <p className="text-xs font-mono text-neutral-400">All published mechanical engineering deep-dive dispatches</p>
+        <p className="text-xs font-mono text-neutral-400">All published dispatches from The HW Insider</p>
       </div>
 
       <div className="divide-y divide-neutral-800/80">

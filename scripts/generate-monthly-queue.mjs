@@ -49,7 +49,7 @@ async function generateQueue() {
 
   console.log(`Generating 30 upcoming topics starting from Issue #${startNum}...`);
 
-  const prompt = `You are the Lead Editorial Hardware Architect for "Engineering Deep Dive".
+  const prompt = `You are the Lead Editorial Hardware Architect for "The HW Insider".
 Your audience consists of senior Product Design Engineers (PD) and Hardware Architects who demand first-principles physics, real-world DFM tolerances, and mechanical/thermal depth.
 
 GENERATE 30 HIGH-IMPACT, DIVERSE UPCOMING TOPICS FOR THE NEXT 30 DAYS:
@@ -244,7 +244,7 @@ function buildReviewEmail(queue) {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Engineering Deep Dive — 30-Day Queue Review</title>
+  <title>The HW Insider — 30-Day Queue Review</title>
 </head>
 <body style="background-color: #141413; color: #EDEDEB; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; margin: 0; padding: 32px 16px;">
   <div style="max-width: 740px; margin: 0 auto; background: #1C1917; border: 1px solid #2E2D2A; border-radius: 10px; overflow: hidden; box-shadow: 0 12px 36px rgba(0,0,0,0.4);">
@@ -274,7 +274,7 @@ function buildReviewEmail(queue) {
     </table>
 
     <div style="padding: 20px 24px; background: #181715; border-top: 1px solid #2E2D2A; font-family: monospace; font-size: 11px; color: #6B6960; display: flex; justify-content: space-between;">
-      <span>⌀ Engineering Deep Dive Automated Pipeline</span>
+      <span>⌀ The HW Insider Automated Pipeline</span>
       <span>deepdive.saahiressa.com</span>
     </div>
   </div>

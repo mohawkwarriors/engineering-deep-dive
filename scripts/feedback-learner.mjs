@@ -323,7 +323,7 @@ export async function runInteractiveReview(issueIdInput) {
   const rl = readline.createInterface({ input, output });
 
   console.log('\n================================================================');
-  console.log(`  ENGINEERING DEEP DIVE — MULTI-DIMENSIONAL EDITORIAL REVIEW`);
+  console.log(`  THE HW INSIDER — MULTI-DIMENSIONAL EDITORIAL REVIEW`);
   console.log(`  Issue: ${issueId} | "${issueData.title}" (${issueData.subject || 'Hardware'})`);
   console.log('================================================================\n');
 

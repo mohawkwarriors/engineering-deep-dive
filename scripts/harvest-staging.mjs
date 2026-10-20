@@ -139,7 +139,7 @@ export async function harvestStaging() {
     const subject = SUBJECTS[(currentCount + i) % SUBJECTS.length];
     console.log(`\n[Harvester] [${i + 1}/${needed}] Generating candidate draft for subject: "${subject}"...`);
 
-    const prompt = `You are the lead engineering curator for "Engineering Deep Dive", an elite mechanical hardware analysis newsletter.
+    const prompt = `You are the lead engineering curator for "The HW Insider", an elite mechanical hardware analysis newsletter.
 Generate 1 comprehensive, production-ready draft for the category: "${subject}".
 
 NEGATIVE CONSTRAINTS (VETOED TOPICS - NEVER REPEAT OR EMULATE):

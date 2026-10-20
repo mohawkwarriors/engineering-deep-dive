@@ -35,7 +35,7 @@ export async function readFileContent(filePath: string): Promise<{ content: stri
       headers: {
         Authorization: `Bearer ${GITHUB_TOKEN}`,
         Accept: "application/vnd.github+json",
-        "User-Agent": "HW-Insight-Editor",
+        "User-Agent": "The-HW-Insider-Editor",
       },
       cache: "no-store",
     });
@@ -100,7 +100,7 @@ export async function commitFile(filePath: string, content: string, message: str
         Authorization: `Bearer ${GITHUB_TOKEN}`,
         Accept: "application/vnd.github+json",
         "Content-Type": "application/json",
-        "User-Agent": "HW-Insight-Editor",
+        "User-Agent": "The-HW-Insider-Editor",
       },
       body: JSON.stringify(body),
     });
@@ -149,7 +149,7 @@ export async function deleteFile(filePath: string, message: string): Promise<boo
         Authorization: `Bearer ${GITHUB_TOKEN}`,
         Accept: "application/vnd.github+json",
         "Content-Type": "application/json",
-        "User-Agent": "HW-Insight-Editor",
+        "User-Agent": "The-HW-Insider-Editor",
       },
       body: JSON.stringify({
         message,
@@ -189,7 +189,7 @@ export async function listStagingDrafts(): Promise<{ name: string; path: string 
       headers: {
         Authorization: `Bearer ${GITHUB_TOKEN}`,
         Accept: "application/vnd.github+json",
-        "User-Agent": "HW-Insight-Editor",
+        "User-Agent": "The-HW-Insider-Editor",
       },
       cache: "no-store",
     });
