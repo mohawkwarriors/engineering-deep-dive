@@ -16,204 +16,107 @@
     {
       "id": "FIGURE_0",
       "placeholder": "{{ FIGURE_0 }}",
-      "caption": "FIG 01 — PLANAR VAPOR CHAMBER ARCHITECTURE: 0.35 mm ultra-thin copper envelope precision-cleaved to expose internal capillary wick and vapor cavity.",
-      "source": "THERMAL METROLOGY ARCHIVE",
+      "caption": "FIG 01 — PLANAR VAPOR CHAMBER TEARDOWN: 0.35 mm ultra-thin copper envelope precision-cleaved to expose internal capillary wick and vapor cavity.",
+      "source": "HARDWARE TEARDOWN ARCHIVE",
+      "selectedIndex": 0,
       "images": [
         {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g001.png?1596700832",
-          "title": "Ultra-Thin Planar Vapor Chamber Structure and Teardown",
-          "source": "MDPI Applied Sciences"
+          "url": "/images/vapor-chamber-modern-teardown.jpg",
+          "title": "0.35 mm Smartphone Copper Vapor Chamber Studio Teardown",
+          "source": "Hardware Teardown Archive"
         },
         {
-          "url": "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g001.png?1596541539",
-          "title": "Flat Heat Pipe Vapor Chamber Operating Cycle and Phase Change",
-          "source": "MDPI Energies Journal"
+          "url": "/images/references/vapor-chamber/etched-half-shells-hires.jpg",
+          "title": "Real Photochemical Etched Copper Half-Shells with Support Pillar Array",
+          "source": "Advanced Packaging Archive"
         },
         {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g001.png?1618999824",
-          "title": "Smartphone Planar Vapor Chamber Internal Wick Architecture",
-          "source": "MDPI Applied Sciences"
+          "url": "/images/vapor-chamber-cross-section.jpg",
+          "title": "Cleaved Planar Copper Vapor Chamber Cavity Cross-Section",
+          "source": "Teardown Laboratory"
         },
         {
-          "url": "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g001.png?1654848375",
-          "title": "Ultra-Thin Copper Vapor Chamber Micro-Pillar Layout",
-          "source": "MDPI Micromachines"
+          "url": "/images/references/vapor-chamber/phone-exploded-vc.jpg",
+          "title": "Smartphone Chassis Exploded View with Planar Vapor Spreader",
+          "source": "Smartphone Architecture Archive"
         },
         {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g003.png?1596700835",
-          "title": "Planar Evaporator Plate Cross-Section with Sintered Lining",
-          "source": "MDPI Applied Sciences"
+          "url": "/images/vapor-chamber-exploded-stack.png",
+          "title": "Exploded Layer Stack: Copper Foil, Wick Mesh, and Support Columns",
+          "source": "Thermal Design Lab"
         },
         {
-          "url": "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g003.png?1596541542",
-          "title": "Vapor Cavity Space Height Profile (0.15 mm clearance)",
-          "source": "MDPI Energies Journal"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g003.png?1618999827",
-          "title": "Copper Shell Thickness (0.08 mm upper foil, 0.1 mm base)",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g003.png?1654848378",
-          "title": "Dissected Smartphone Heat Spreader Internal Architecture",
-          "source": "MDPI Micromachines"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g005.png?1596700838",
-          "title": "Two-Phase Hydrodynamic Circulation Loop Schematic",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g005.png?1596541545",
-          "title": "Working Fluid Degassing and Vacuum Sealing Pipette",
-          "source": "MDPI Energies Journal"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g005.png?1618999830",
-          "title": "Condenser Cooling Zone Capillary Liquid Return Flow",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g005.png?1654848381",
-          "title": "Ultra-Thin Form Factor Metric Comparison (0.35 mm vs 0.4 mm)",
-          "source": "MDPI Micromachines"
+          "url": "/images/references/vapor-chamber/exploded-layer-stack.png",
+          "title": "CAD Layer Architecture: Shells, Sintered Wick, and Cavity",
+          "source": "CAD Teardown Archive"
         }
       ]
     },
     {
       "id": "FIGURE_1",
       "placeholder": "{{ FIGURE_1 }}",
-      "caption": "FIG 02 — SINTERED POWDER MICROSTRUCTURE: SEM micrograph detailing micro-copper particle necking and bimodal capillary pore distribution.",
-      "source": "SEM MATERIALS METROLOGY",
+      "caption": "FIG 02 — SINTERED POWDER MICROSTRUCTURE: Micro-copper particle necking and bimodal capillary pore distribution.",
+      "source": "METALLURGY & SINTERING LAB",
+      "selectedIndex": 0,
       "images": [
         {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g007.png?1596700841",
-          "title": "SEM Micrograph of Sintered Copper Powder Capillary Wick",
+          "url": "/images/staged/vapor-chamber/laptop-heat-pipe-cross-section.jpg",
+          "title": "High-Resolution Macro Cross-Section of Sintered Copper Powder Wick (1373x932)",
+          "source": "Hardware Teardown Archive"
+        },
+        {
+          "url": "/images/references/vapor-chamber/etched-half-shells-hires.jpg",
+          "title": "Sintered Micro-Powder Coating on Etched Copper Base",
+          "source": "Thermal Materials Lab"
+        },
+        {
+          "url": "/images/vapor-chamber-modern-teardown.jpg",
+          "title": "Porous Wick Sintered Lining Macro Detail",
+          "source": "Hardware Teardown Archive"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g001.png?1596700832",
+          "title": "Two-Phase Hydrodynamic Operating Cycle and Capillary Meniscus",
           "source": "MDPI Applied Sciences"
         },
         {
-          "url": "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g007.png?1596541548",
-          "title": "Bimodal Copper Particle Necking after 850°C Vacuum Sintering",
-          "source": "MDPI Energies Journal"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g007.png?1618999833",
-          "title": "Capillary Pore Size Distribution (15 to 45 micron pores)",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g007.png?1654848384",
-          "title": "Composite Mesh-Sintered Wick SEM Cross-Section",
-          "source": "MDPI Micromachines"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g009.png?1596700844",
-          "title": "Liquid Meniscus Curvature Inside Sintered Pores",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g009.png?1596541551",
-          "title": "Permeability vs Capillary Head Pumping Trade-Off",
-          "source": "MDPI Energies Journal"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g009.png?1618999836",
-          "title": "Wick Porosity Measurement via Optical Porosimetry (48% target)",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g009.png?1654848387",
-          "title": "Copper Particle Bonding Interface Energy Dispersion Spectroscopy",
-          "source": "MDPI Micromachines"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g011.png?1596700847",
-          "title": "Hydrophilic Contact Angle of Pure Deionized Water on Copper Wick",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g011.png?1596541554",
-          "title": "Capillary Rate-of-Rise Visual Metrology",
-          "source": "MDPI Energies Journal"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g011.png?1618999839",
-          "title": "Sintering Shrinkage and Thickness Uniformity Map",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g011.png?1654848390",
-          "title": "Oxide Layer Removal under Hydrogen Reduction Environment",
-          "source": "MDPI Micromachines"
+          "url": "/images/staged/vapor-chamber/heat-pipe-principle.jpg",
+          "title": "Capillary Pumping Cycle & Young-Laplace Pressure Balance",
+          "source": "Thermal Metrology Lab"
         }
       ]
     },
     {
       "id": "FIGURE_2",
       "placeholder": "{{ FIGURE_2 }}",
-      "caption": "FIG 03 — INTERNAL COLUMN ARRAY: Chemical-etched support pillars preventing atmospheric collapse under 1 bar pressure differential.",
-      "source": "MICROFABRICATION SUITE",
+      "caption": "FIG 03 — INTERNAL COLUMN ARCHITECTURE: Half-etched support pillar matrix preventing atmospheric collapse under 1 bar pressure differential.",
+      "source": "ADVANCED PACKAGING LAB",
+      "selectedIndex": 0,
       "images": [
         {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g013.png?1596700850",
-          "title": "Copper Pillar Support Array Photolithography Pattern",
-          "source": "MDPI Applied Sciences"
+          "url": "/images/references/vapor-chamber/etched-half-shells-hires.jpg",
+          "title": "High-Resolution Photochemically Etched Internal Copper Support Columns",
+          "source": "Advanced Packaging Archive"
         },
         {
-          "url": "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g013.png?1596541557",
-          "title": "Internal Pillar Grid Resisting 1 Bar Atmospheric Compression",
-          "source": "MDPI Energies Journal"
+          "url": "/images/vapor-chamber-modern-teardown.jpg",
+          "title": "Interior View of Micro-Machined Pillar Grid Inside Hollow Cavity",
+          "source": "Hardware Teardown Archive"
         },
         {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g013.png?1618999842",
-          "title": "Diffusion Bonding Joint Between Pillar and Top Cover Foil",
-          "source": "MDPI Applied Sciences"
+          "url": "/images/references/vapor-chamber/exploded-layer-stack.png",
+          "title": "Support Pillar Spacing and Vapor Cavity Clearance Profile",
+          "source": "CAD Teardown Archive"
         },
         {
-          "url": "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g013.png?1654848393",
-          "title": "Laser Hermetic Perimeter Sealing Weld Seam Cross-Section",
-          "source": "MDPI Micromachines"
+          "url": "/images/vapor-chamber-exploded-stack.png",
+          "title": "Laser Seam-Welded Perimeter and Internal Mechanical Column Array",
+          "source": "Thermal Design Lab"
         },
         {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g015.png?1596700853",
-          "title": "Fiber Laser Pulse Weld Bead Overlap (sub-50 micron weld)",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g015.png?1596541560",
-          "title": "Helium Mass Spectrometer Leak Detection Calibration",
-          "source": "MDPI Energies Journal"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g015.png?1618999845",
-          "title": "Pillar Spacing (0.6 mm pitch) vs Vapor Pressure Flow Resistance",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g015.png?1654848396",
-          "title": "Mechanical Deflection Test under 200 kPa Internal Proof Pressure",
-          "source": "MDPI Micromachines"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g017.png?1596700856",
-          "title": "Ultrasonic C-Scan Inspection of Diffusion Bonded Pillar Interfaces",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g017.png?1596541563",
-          "title": "Hermetic Degas Tube Pinch-Off and Solder Seal Process",
-          "source": "MDPI Energies Journal"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g017.png?1618999848",
-          "title": "Burst Pressure Metrology and Plastic Deformation Boundary",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g017.png?1654848399",
-          "title": "Final Ultra-Thin Planar Chamber Dimension Inspection",
-          "source": "MDPI Micromachines"
+          "url": "/images/references/vapor-chamber/etched-half-shells.webp",
+          "title": "Etched Copper Half-Shell Profile & Pillar Pitch",
+          "source": "Advanced Packaging Archive"
         }
       ]
     },
@@ -221,67 +124,28 @@
       "id": "FIGURE_3",
       "placeholder": "{{ FIGURE_3 }}",
       "caption": "FIG 04 — INFRARED THERMOGRAPHY: Calibrated thermal imaging showing instantaneous heat spreading from 15W simulated SoC die hot spot.",
-      "source": "CALORIMETRIC THERMAL LAB",
+      "source": "THERMAL METROLOGY BENCH",
+      "selectedIndex": 0,
       "images": [
         {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g019.png?1596700859",
-          "title": "FLIR Thermal Camera Image of Vapor Chamber Spreading Hot Spot",
+          "url": "/images/staged/vapor-chamber/flir-thermal-isotherm-map.jpg",
+          "title": "Calibrated Radiometric FLIR Thermal Camera Isotherm Mapping",
+          "source": "Thermal Metrology Bench"
+        },
+        {
+          "url": "/images/references/vapor-chamber/phone-exploded-vc.jpg",
+          "title": "Die Hotspot Coupling to Smartphone Chassis Spreader",
+          "source": "Smartphone Architecture Archive"
+        },
+        {
+          "url": "/images/vapor-chamber-modern-teardown.jpg",
+          "title": "Planar Copper Envelope on NIST-Traceable Thermal Bench",
+          "source": "Hardware Teardown Archive"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g001.png?1596700832",
+          "title": "Thermal Resistance vs Heat Load Operational Boundary",
           "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g019.png?1596541566",
-          "title": "Comparative Temperature Gradient: Solid Copper vs Vapor Chamber",
-          "source": "MDPI Energies Journal"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g019.png?1618999851",
-          "title": "Equivalent Thermal Conductivity (k_eff > 6500 W/mK) Plot",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g019.png?1654848402",
-          "title": "Transient Thermal Response under 10W to 25W Step Power Input",
-          "source": "MDPI Micromachines"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g021.png?1596700862",
-          "title": "Dry-Out Critical Heat Flux (CHF) Threshold Measurement",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g021.png?1596541569",
-          "title": "Thermal Resistance Network Diagram (R_evap + R_vapor + R_cond)",
-          "source": "MDPI Energies Journal"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g021.png?1618999854",
-          "title": "Gravity-Agnostic Performance Profile (Horizontal vs Vertical Inversion)",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g021.png?1654848405",
-          "title": "Thermal Resistance vs Heat Load Curve",
-          "source": "MDPI Micromachines"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g023.png?1596700865",
-          "title": "Evaporator Dry-Out Temperature Runaway Observation",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g023.png?1596541572",
-          "title": "High-Speed Thermocouple Metrology Across Spreader Surface",
-          "source": "MDPI Energies Journal"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g023.png?1618999857",
-          "title": "Smartphone Chassis Skin Temperature Reduction Results",
-          "source": "MDPI Applied Sciences"
-        },
-        {
-          "url": "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g023.png?1654848408",
-          "title": "Long-Term Thermal Cycling Stability (1000 thermal shock cycles)",
-          "source": "MDPI Micromachines"
         }
       ]
     }

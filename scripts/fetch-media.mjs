@@ -27,9 +27,15 @@ export const DISQUALIFYING_TERMS = [
   'tourist', 'garage', 'workshop floor', 'tarp', 'bucket', 'cluttered',
   'latte art', 'coffee cup', 'cafe table', 'living room', 'counter',
   'watermark', 'watermarked', 'alamy', 'shutterstock', 'getty', 'stock photo',
+  'istock', 'depositphotos', 'dreamstime', '123rf', 'science photo library', 'sciencephoto',
   'vosvete', 'novy-pant', 'mobile-phone-hinge-teardown', 'hinge of mobile phone',
   'wicker', 'bamboo', 'carpet', 'tablecloth', 'bed',
-  'retail box', 'packaging box', 'unboxing', 'rgb lighting', 'plastic shroud'
+  'retail box', 'packaging box', 'unboxing', 'rgb lighting', 'plastic shroud',
+  'mg/kg', 'pharmacology', 'in vivo', 'in vitro', 'rat', 'mouse', 'mice', 'patient',
+  'clinical', 'cancer', 'tumor', 'brainon', 'latency', 'dose', 'extract', 'histology',
+  'textbook', 'scanned', 'vintage', '1899', '1900', '1910', '1920', '1930', '1940',
+  'catalogue', 'handbook', 'encyclopedia', 'treatise',
+  'matlab', 'bar chart', 'plot', 'curve', 'graph', 'histogram', 'scatter plot'
 ];
 
 export async function searchDuckDuckGoImages(query, limit = 10) {
