@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import katex from "katex";
 import {
   Check,
   X,
@@ -409,22 +410,122 @@ export default function DraftViewer({
     );
   };
 
+  // Inline Formatter for Markdown (Bold, Italic, Code) and KaTeX Inline Math ($...$)
+  const renderFormattedText = (text: string): React.ReactNode => {
+    if (!text) return null;
+
+    // Matches: $inline math$, **bold**, *italic*, `code`
+    const regex = /(\$[^$\n]+\$|\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g;
+    const elements: React.ReactNode[] = [];
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+
+    while ((match = regex.exec(text)) !== null) {
+      if (match.index > lastIndex) {
+        elements.push(text.substring(lastIndex, match.index));
+      }
+
+      const token = match[0];
+      const key = `fmt-${match.index}-${elements.length}`;
+
+      if (token.startsWith("$") && token.endsWith("$") && token.length > 2) {
+        const tex = token.slice(1, -1);
+        try {
+          const html = katex.renderToString(tex, {
+            displayMode: false,
+            throwOnError: false,
+          });
+          elements.push(
+            <span
+              key={key}
+              className="inline-math px-0.5"
+              dangerouslySetInnerHTML={{ __html: html }}
+            />
+          );
+        } catch {
+          elements.push(<code key={key} className="font-mono text-amber-400">{token}</code>);
+        }
+      } else if (token.startsWith("**") && token.endsWith("**") && token.length > 4) {
+        elements.push(
+          <strong key={key} className="font-semibold text-[var(--text)]">
+            {renderFormattedText(token.slice(2, -2))}
+          </strong>
+        );
+      } else if (token.startsWith("*") && token.endsWith("*") && token.length > 2) {
+        elements.push(
+          <em key={key} className="italic text-[var(--text)]">
+            {renderFormattedText(token.slice(1, -1))}
+          </em>
+        );
+      } else if (token.startsWith("`") && token.endsWith("`") && token.length > 2) {
+        elements.push(
+          <code
+            key={key}
+            className="px-1.5 py-0.5 rounded bg-[var(--surface)] border border-[var(--border)] font-mono text-xs text-[var(--accent)]"
+          >
+            {token.slice(1, -1)}
+          </code>
+        );
+      }
+
+      lastIndex = match.index + match[0].length;
+    }
+
+    if (lastIndex < text.length) {
+      elements.push(text.substring(lastIndex));
+    }
+
+    return elements.length === 1 ? elements[0] : elements;
+  };
+
   // Text Chunk Renderer (Headings, Paragraphs, Math, ProcessFlow, TechnicalCard)
   const renderTextChunk = (chunk: string, keyPrefix: string) => {
-    const blocks = chunk.split(/\n\s*\n/);
+    if (!chunk || !chunk.trim()) return null;
+
+    // 1. Normalize line endings
+    let normalized = chunk.replace(/\r\n/g, "\n");
+
+    // 2. Ensure ProcessFlow and TechnicalCard blocks have blank lines around them
+    normalized = normalized
+      .replace(/\n*(<ProcessFlow[\s\S]*?<\/ProcessFlow>)\n*/g, "\n\n$1\n\n")
+      .replace(/\n*(<TechnicalCard[\s\S]*?<\/TechnicalCard>)\n*/g, "\n\n$1\n\n");
+
+    // 3. Ensure $$...$$ block math has blank lines around it
+    normalized = normalized.replace(/\n*(\$\$[^\$]+?\$\$)\n*/g, "\n\n$1\n\n");
+
+    // 4. Ensure markdown headers (#, ##, ###, ####) have blank lines around them so they never swallow paragraphs
+    normalized = normalized.replace(/(^|\n)(#{1,4}\s+[^\n]+)(\n|$)/g, (_m, p1, p2, p3) => {
+      return p1 + "\n\n" + p2 + "\n\n" + p3;
+    });
+
+    const blocks = normalized
+      .split(/\n\s*\n+/)
+      .map((b) => b.trim())
+      .filter(Boolean);
 
     return (
       <div key={keyPrefix} className="space-y-4">
         {blocks.map((block, bIdx) => {
-          const trimmed = block.trim();
-          if (!trimmed) return null;
+          const trimmed = block;
+
+          if (trimmed.startsWith("# ")) {
+            return (
+              <h1
+                key={`${keyPrefix}-b-${bIdx}`}
+                className="editorial-heading text-3xl sm:text-4xl font-serif text-[var(--text)] mt-8 mb-4 font-normal tracking-tight"
+              >
+                {renderFormattedText(trimmed.replace(/^#\s+/, ""))}
+              </h1>
+            );
+          }
 
           if (trimmed.startsWith("## ")) {
             return (
               <h2
                 key={`${keyPrefix}-b-${bIdx}`}
+                className="editorial-heading text-2xl sm:text-3xl font-serif text-[var(--text)] mt-10 mb-4 font-normal tracking-tight border-b border-[var(--border)] pb-2"
               >
-                {trimmed.replace(/^##\s+/, "")}
+                {renderFormattedText(trimmed.replace(/^##\s+/, ""))}
               </h2>
             );
           }
@@ -433,18 +534,46 @@ export default function DraftViewer({
             return (
               <h3
                 key={`${keyPrefix}-b-${bIdx}`}
+                className="editorial-heading text-xl sm:text-2xl font-serif text-[var(--text)] mt-8 mb-3 font-normal"
               >
-                {trimmed.replace(/^###\s+/, "")}
+                {renderFormattedText(trimmed.replace(/^###\s+/, ""))}
               </h3>
+            );
+          }
+
+          if (trimmed.startsWith("#### ")) {
+            return (
+              <h4
+                key={`${keyPrefix}-b-${bIdx}`}
+                className="text-base sm:text-lg font-semibold text-[var(--text)] mt-6 mb-2"
+              >
+                {renderFormattedText(trimmed.replace(/^####\s+/, ""))}
+              </h4>
             );
           }
 
           if (trimmed.startsWith("$$") && trimmed.endsWith("$$")) {
             const math = trimmed.slice(2, -2).trim();
-            return (
+            let renderedMathHtml = "";
+            try {
+              renderedMathHtml = katex.renderToString(math, {
+                displayMode: true,
+                throwOnError: false,
+              });
+            } catch (err) {
+              console.error("KaTeX render error:", err);
+            }
+
+            return renderedMathHtml ? (
               <div
                 key={`${keyPrefix}-b-${bIdx}`}
                 className="math-block"
+                dangerouslySetInnerHTML={{ __html: renderedMathHtml }}
+              />
+            ) : (
+              <div
+                key={`${keyPrefix}-b-${bIdx}`}
+                className="math-block font-mono text-amber-400"
               >
                 {math}
               </div>
@@ -473,7 +602,7 @@ export default function DraftViewer({
                     title={s.title}
                     parameters={s.parameters}
                   >
-                    {s.content}
+                    {renderFormattedText(s.content)}
                   </ProcessStep>
                 ))}
               </ProcessFlow>
@@ -503,12 +632,24 @@ export default function DraftViewer({
             );
           }
 
+          // Bullet list handler
+          if (trimmed.split("\n").every((l) => /^\s*[-*]\s+/.test(l))) {
+            const items = trimmed.split("\n").map((l) => l.replace(/^\s*[-*]\s+/, "").trim());
+            return (
+              <ul key={`${keyPrefix}-b-${bIdx}`} className="list-disc pl-6 space-y-1.5 text-base text-[var(--text)] my-3">
+                {items.map((item, idx) => (
+                  <li key={idx}>{renderFormattedText(item)}</li>
+                ))}
+              </ul>
+            );
+          }
+
           return (
             <p
               key={`${keyPrefix}-b-${bIdx}`}
               className="text-base text-[var(--text)] leading-relaxed font-sans mb-4"
             >
-              {trimmed}
+              {renderFormattedText(trimmed)}
             </p>
           );
         })}
