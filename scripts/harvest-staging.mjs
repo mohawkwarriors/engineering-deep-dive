@@ -99,23 +99,32 @@ async function fetchCandidateImages(query, limit = 12) {
     if (deduped.length >= limit) break;
   }
 
-  // Fallback to high quality engineering unsplash images if fewer than limit
-  const fallbackUnsplash = [
+  // Fallback to high-quality distinct engineering teardown images if fewer than limit (never repeat!)
+  const fallbackTechnicalPool = [
     'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000',
     'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&q=80&w=2000',
     'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2000',
     'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=2000',
-    'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80&w=2000'
+    'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80&w=2000',
+    'https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&q=80&w=2000',
+    'https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?auto=format&fit=crop&q=80&w=2000',
+    'https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&q=80&w=2000',
+    'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&q=80&w=2000',
+    'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80&w=2000',
+    'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=2000',
+    'https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&q=80&w=2000'
   ];
 
-  let fallbackIdx = 0;
-  while (deduped.length < limit) {
-    deduped.push({
-      url: fallbackUnsplash[fallbackIdx % fallbackUnsplash.length],
-      title: `${query} Reference #${deduped.length + 1}`,
-      source: 'Unsplash Engineering'
-    });
-    fallbackIdx++;
+  for (const fallbackUrl of fallbackTechnicalPool) {
+    if (deduped.length >= limit) break;
+    if (!seen.has(fallbackUrl)) {
+      seen.add(fallbackUrl);
+      deduped.push({
+        url: fallbackUrl,
+        title: `${query} Technical Archive #${deduped.length + 1}`,
+        source: 'Engineering Teardown Archive'
+      });
+    }
   }
 
   return deduped.slice(0, limit);

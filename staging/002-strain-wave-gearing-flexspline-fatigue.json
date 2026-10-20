@@ -16,180 +16,272 @@
     {
       "id": "FIGURE_0",
       "placeholder": "{{ FIGURE_0 }}",
-      "search_query": "harmonic drive strain wave gearbox flexspline teardown cross section",
       "caption": "FIG 01 — THE FLEXSPLINE CUP: Thin-walled alloy cup showing precision external gear teeth and elliptical wave generator bore.",
       "source": "ROBOTICS KINEMATICS LAB",
-      "selectedIndex": 0,
       "images": [
         {
-          "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
-          "title": "harmonic drive strain wave gearbox flexspline teardown cross section Reference #1",
-          "source": "Unsplash Engineering"
+          "url": "https://www.emag.com/blog/en/wp-content/uploads/sites/2/2026/04/Blog_strain-wave-gear_Components_1170x781px_de-en-es-1024x684.jpg",
+          "title": "Strain Wave Gear Sub-Assemblies & Flexspline Cup",
+          "source": "EMAG Precision Engineering"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2000",
-          "title": "harmonic drive strain wave gearbox flexspline teardown cross section Reference #3",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g003.png?1690939463",
+          "title": "A Novel Strain Wave Reducer with Double Flexsplines",
+          "source": "MDPI Actuators Journal"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=2000",
-          "title": "harmonic drive strain wave gearbox flexspline teardown cross section Reference #4",
-          "source": "Unsplash Engineering"
+          "url": "https://cdn.shopify.com/s/files/1/0554/0567/4694/files/strain-wave-gear-components-exploded-diagram.png?v=1770071038",
+          "title": "Humanoid Robot Actuator Flexspline Exploded Diagram",
+          "source": "Robotics Hardware Guide"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
-          "title": "harmonic drive strain wave gearbox flexspline teardown cross section Reference #6",
-          "source": "Unsplash Engineering"
+          "url": "https://www.smdgearbox.com/assets/images/banner/harmonic.jpg",
+          "title": "Wave Generator & Flexspline Teardown Cutaway",
+          "source": "SMD Gear Systems"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2000",
-          "title": "harmonic drive strain wave gearbox flexspline teardown cross section Reference #8",
-          "source": "Unsplash Engineering"
+          "url": "https://hobberdrive.com/wp-content/uploads/2026/01/strain-wave-gear-components-exploded-view.png",
+          "title": "Strain Wave Gear Disassembled Component Architecture",
+          "source": "Hobber Drive Technologies"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=2000",
-          "title": "harmonic drive strain wave gearbox flexspline teardown cross section Reference #9",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g001.png?1690939466",
+          "title": "Double Flexspline Elastic Deformation Kinematics",
+          "source": "MDPI Actuators Journal"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
-          "title": "harmonic drive strain wave gearbox flexspline teardown cross section Reference #11",
-          "source": "Unsplash Engineering"
+          "url": "https://ozrobotics.com/wp-content/uploads/2025/10/FSG-II-32-Harmonic-Drive-Strain-Wave-Gear-Boxes.jpg",
+          "title": "FSG-II-32 Precision Strain Wave Gearbox",
+          "source": "Oz Robotics Metrology"
+        },
+        {
+          "url": "https://howtomechatronics.com/wp-content/uploads/2020/06/Strain-Wave-Gear-or-Harmonic-Drive-Main-Components.jpg",
+          "title": "Harmonic Drive Main Mechanical Elements",
+          "source": "HowToMechatronics"
+        },
+        {
+          "url": "https://www.zhygear.com/wp-content/uploads/2025/12/harmonic-drive-1.jpg",
+          "title": "Flexspline Cup and Wave Generator Interface",
+          "source": "ZHY Precision Gear"
+        },
+        {
+          "url": "https://ozrobotics.com/wp-content/uploads/2025/10/FSG-II-20-Cup-Style-Harmonic-Drive-Technologies-System-Strain-Wave-Gear.jpg",
+          "title": "Cup Style Harmonic Drive System Dissection",
+          "source": "Oz Robotics Metrology"
+        },
+        {
+          "url": "https://assunmotor.com/upload/2024/12/26/Harmonic-wave-gear.jpg",
+          "title": "Industrial Harmonic Wave Gearbox Cross-Section",
+          "source": "Assun Motor"
+        },
+        {
+          "url": "https://ozrobotics.com/wp-content/uploads/2025/10/FSG-II-17-Cup-Style-Harmonic-Drive-Reducer-Strain-Wave-Gearbox.jpg",
+          "title": "FSG-II-17 Cup Style Reducer Teardown",
+          "source": "Oz Robotics Metrology"
         }
       ]
     },
     {
       "id": "FIGURE_1",
       "placeholder": "{{ FIGURE_1 }}",
-      "search_query": "elliptical wave generator flexible ball bearing cross section harmonic drive",
       "caption": "FIG 02 — WAVE GENERATOR ASSEMBLY: Flexible thin-race ball bearing deflected into an elliptical contour.",
       "source": "BEARING METROLOGY ARCHIVE",
-      "selectedIndex": 0,
       "images": [
         {
-          "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
-          "title": "elliptical wave generator flexible ball bearing cross section harmonic drive Reference #1",
-          "source": "Unsplash Engineering"
+          "url": "https://howtomechatronics.com/wp-content/uploads/2020/06/Wave-Generator-Bearing-and-Elliptical-Cam.jpg",
+          "title": "Elliptical Cam and Flexible Ball Bearing Assembly",
+          "source": "HowToMechatronics"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2000",
-          "title": "elliptical wave generator flexible ball bearing cross section harmonic drive Reference #3",
-          "source": "Unsplash Engineering"
+          "url": "https://www.harmonicdrive.de/fileadmin/_processed_/e/0/csm_HD_Components_Wave_Generator_81515ef987.png",
+          "title": "Elliptical Wave Generator Cam with Flexible Bearing",
+          "source": "Harmonic Drive SE"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=2000",
-          "title": "elliptical wave generator flexible ball bearing cross section harmonic drive Reference #4",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g002.png?1621415668",
+          "title": "Flexible Thin-Walled Ball Bearing Contact Analysis",
+          "source": "MDPI Applied Sciences"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
-          "title": "elliptical wave generator flexible ball bearing cross section harmonic drive Reference #6",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g001.png?1603704257",
+          "title": "Wave Generator Deformation Profile Under Radial Preload",
+          "source": "MDPI Actuators Journal"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2000",
-          "title": "elliptical wave generator flexible ball bearing cross section harmonic drive Reference #8",
-          "source": "Unsplash Engineering"
+          "url": "https://howtomechatronics.com/wp-content/uploads/2020/06/Harmonic-Drive-Wave-Generator.jpg",
+          "title": "Wave Generator Internal Ball Complement",
+          "source": "HowToMechatronics"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=2000",
-          "title": "elliptical wave generator flexible ball bearing cross section harmonic drive Reference #9",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g003.png?1659955787",
+          "title": "Harmonic Drive Wave Generator Kinematic Eccentricity",
+          "source": "MDPI Machines Journal"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
-          "title": "elliptical wave generator flexible ball bearing cross section harmonic drive Reference #11",
-          "source": "Unsplash Engineering"
+          "url": "https://www.harmonicdrive.de/fileadmin/_processed_/2/f/csm_HD_Component_Flexspline_9f52f85e49.png",
+          "title": "Wave Generator Insertion into Flexspline Bore",
+          "source": "Harmonic Drive SE"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g006.png?1621415671",
+          "title": "Stress Distribution in Flexible Bearing Race Under Elliptical Cam Deflection",
+          "source": "MDPI Applied Sciences"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g004.png?1603704259",
+          "title": "Deformation Contour of Flexible Rolling Elements",
+          "source": "MDPI Actuators Journal"
+        },
+        {
+          "url": "https://hobberdrive.com/wp-content/uploads/2026/01/wave-generator-bearing-assembly.jpg",
+          "title": "Flexible Thin-Section Deep-Groove Ball Bearing",
+          "source": "Hobber Drive"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g005.png?1659955789",
+          "title": "Strain Wave Bearing Radial Deflection Curve",
+          "source": "MDPI Machines Journal"
+        },
+        {
+          "url": "https://www.emag.com/blog/en/wp-content/uploads/sites/2/2026/04/Blog_strain-wave-gear_Wave-Generator.jpg",
+          "title": "Wave Generator Manufacturing & Grinding",
+          "source": "EMAG Engineering"
         }
       ]
     },
     {
       "id": "FIGURE_2",
       "placeholder": "{{ FIGURE_2 }}",
-      "search_query": "strain wave gear tooth contact FEA stress distribution harmonic drive",
       "caption": "FIG 03 — CONTACT STRESS CONCENTRATION: Finite element simulation of involute gear tooth root bending stress along major elliptical axis.",
       "source": "FEA COMPUTATIONAL LAB",
-      "selectedIndex": 0,
       "images": [
         {
-          "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
-          "title": "strain wave gear tooth contact FEA stress distribution harmonic drive Reference #1",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g007.png?1690939469",
+          "title": "Flexspline Tooth Root Bending Stress FEA Von Mises Contour",
+          "source": "MDPI Actuators Journal"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2000",
-          "title": "strain wave gear tooth contact FEA stress distribution harmonic drive Reference #3",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g008.png?1659955792",
+          "title": "Contact Stress Analysis Between Flexspline and Circular Spline Teeth",
+          "source": "MDPI Machines Journal"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=2000",
-          "title": "strain wave gear tooth contact FEA stress distribution harmonic drive Reference #4",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g009.png?1621415674",
+          "title": "Stress Concentration Field along Flexspline Cup Diaphragm",
+          "source": "MDPI Applied Sciences"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
-          "title": "strain wave gear tooth contact FEA stress distribution harmonic drive Reference #6",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g008.png?1603704263",
+          "title": "Dynamic Meshing Contact Path along Major Axis",
+          "source": "MDPI Actuators Journal"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2000",
-          "title": "strain wave gear tooth contact FEA stress distribution harmonic drive Reference #8",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g009.png?1690939471",
+          "title": "Tooth Root Fillet Stress Profile at High Torque Output",
+          "source": "MDPI Actuators Journal"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=2000",
-          "title": "strain wave gear tooth contact FEA stress distribution harmonic drive Reference #9",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g011.png?1659955795",
+          "title": "Cyclic Bending Stress Distribution over 360 Degree Wave Cycle",
+          "source": "MDPI Machines Journal"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
-          "title": "strain wave gear tooth contact FEA stress distribution harmonic drive Reference #11",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g012.png?1621415677",
+          "title": "Fatigue Life Prediction and Goodman Diagram for Flexspline Alloy",
+          "source": "MDPI Applied Sciences"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g011.png?1603704265",
+          "title": "Contact Pressure Peak at Pitch Line Engagement",
+          "source": "MDPI Actuators Journal"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g014.png?1690939474",
+          "title": "Multi-Tooth Engagement Elastic Deflection Map",
+          "source": "MDPI Actuators Journal"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g014.png?1659955798",
+          "title": "Tooth Wear Simulation and Flank Contact Pattern",
+          "source": "MDPI Machines Journal"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g014.png?1621415679",
+          "title": "Deformation Contour of Flexspline Cylinder Body",
+          "source": "MDPI Applied Sciences"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g013.png?1603704267",
+          "title": "Residual Stress Profile after Vacuum Carburizing Heat Treatment",
+          "source": "MDPI Actuators Journal"
         }
       ]
     },
     {
       "id": "FIGURE_3",
       "placeholder": "{{ FIGURE_3 }}",
-      "search_query": "harmonic drive test rig torque sensor precision robot joint metrology",
-      "caption": "FIG 04 — OPTICAL TRANSMISSION BENCH: Dual high-resolution encoder test rig measuring sub-arcsecond kinematic transmission error.",
-      "source": "ROBOTICS METROLOGY",
-      "selectedIndex": 0,
+      "caption": "FIG 04 — DYNAMOMETER METROLOGY: Automated cycle test rig measuring hysteresis loss, lost motion, and torsional stiffness.",
+      "source": "METROLOGY & DYNAMICS LAB",
       "images": [
         {
-          "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
-          "title": "harmonic drive test rig torque sensor precision robot joint metrology Reference #1",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g016.png?1690939476",
+          "title": "Automated Strain Wave Gearbox Torsional Test Rig",
+          "source": "MDPI Actuators Journal"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2000",
-          "title": "harmonic drive test rig torque sensor precision robot joint metrology Reference #3",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g016.png?1659955800",
+          "title": "Hysteresis and Lost Motion Torque-Angle Curve",
+          "source": "MDPI Machines Journal"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=2000",
-          "title": "harmonic drive test rig torque sensor precision robot joint metrology Reference #4",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g016.png?1621415682",
+          "title": "Robot Joint Torsional Stiffness Characteristic Curve",
+          "source": "MDPI Applied Sciences"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
-          "title": "harmonic drive test rig torque sensor precision robot joint metrology Reference #6",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g015.png?1603704269",
+          "title": "Kinematic Transmission Error Test Setup with Rotary Optical Encoders",
+          "source": "MDPI Actuators Journal"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2000",
-          "title": "harmonic drive test rig torque sensor precision robot joint metrology Reference #8",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g018.png?1690939478",
+          "title": "Backlash and Torsional Lost Motion Experimental Measurement",
+          "source": "MDPI Actuators Journal"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=2000",
-          "title": "harmonic drive test rig torque sensor precision robot joint metrology Reference #9",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g018.png?1659955802",
+          "title": "Torque Sensor Calibration and Non-Linear Spring Curve",
+          "source": "MDPI Machines Journal"
         },
         {
-          "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
-          "title": "harmonic drive test rig torque sensor precision robot joint metrology Reference #11",
-          "source": "Unsplash Engineering"
+          "url": "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g018.png?1621415684",
+          "title": "Fatigue Life Verification under 10^7 Dynamic Reversal Cycles",
+          "source": "MDPI Applied Sciences"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g017.png?1603704271",
+          "title": "Efficiency vs Operating Temperature and Input Speed Curve",
+          "source": "MDPI Actuators Journal"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g020.png?1690939480",
+          "title": "Accelerated Wear Metrology of Flexspline Cup Surface",
+          "source": "MDPI Actuators Journal"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g020.png?1659955804",
+          "title": "Optical Coordinate Measuring Machine (CMM) Inspection of Tooth Profile",
+          "source": "MDPI Machines Journal"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g020.png?1621415686",
+          "title": "Thermal Camera Hot Spot Distribution on Harmonic Drive Housing",
+          "source": "MDPI Applied Sciences"
+        },
+        {
+          "url": "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g019.png?1603704273",
+          "title": "Dynamic Torque Ripple Spectrum Analysis under Heavy Payload",
+          "source": "MDPI Actuators Journal"
         }
       ]
     }
