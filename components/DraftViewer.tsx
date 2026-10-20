@@ -66,7 +66,7 @@ export default function DraftViewer({
   const [loading, setLoading] = useState(false);
   const [actionMessage, setActionMessage] = useState<string | null>(null);
 
-  // Check client-side authentication on mount
+  // Check client-side authentication and filter locally dismissed drafts
   useEffect(() => {
     if (typeof window !== "undefined") {
       const urlParams = new URLSearchParams(window.location.search);
@@ -77,6 +77,17 @@ export default function DraftViewer({
         setIsUnlocked(true);
         localStorage.setItem("hw_editor_pin", "deepdive2026");
       }
+
+      // Filter out drafts that were locally vetoed or approved on this device
+      try {
+        const locallyVetoed = JSON.parse(localStorage.getItem("hw_vetoed_filenames") || "[]");
+        const locallyApproved = JSON.parse(localStorage.getItem("hw_approved_filenames") || "[]");
+        const dismissed = new Set([...locallyVetoed, ...locallyApproved]);
+
+        if (dismissed.size > 0) {
+          setDrafts((prev) => prev.filter((d) => !dismissed.has(d.filename) && !dismissed.has(d.title)));
+        }
+      } catch {}
     }
   }, [initiallyUnlocked]);
 
@@ -197,6 +208,14 @@ export default function DraftViewer({
       const data = await res.json();
       setActionMessage(`✓ Published as Issue #${data.issueId}!`);
 
+      // Store in localStorage immediately so it never reappears on this device
+      try {
+        const locallyApproved = JSON.parse(localStorage.getItem("hw_approved_filenames") || "[]");
+        locallyApproved.push(activeDraft.filename);
+        if (activeDraft.title) locallyApproved.push(activeDraft.title);
+        localStorage.setItem("hw_approved_filenames", JSON.stringify(Array.from(new Set(locallyApproved))));
+      } catch {}
+
       // Remove from local list and auto-advance
       setTimeout(() => {
         setDrafts((prev) => prev.filter((_, i) => i !== currentIndex));
@@ -236,6 +255,14 @@ export default function DraftViewer({
 
       setActionMessage("✓ Veto recorded. Auto-advancing...");
       setCustomCritique("");
+
+      // Store in localStorage immediately so it never reappears on this device
+      try {
+        const locallyVetoed = JSON.parse(localStorage.getItem("hw_vetoed_filenames") || "[]");
+        locallyVetoed.push(activeDraft.filename);
+        if (activeDraft.title) locallyVetoed.push(activeDraft.title);
+        localStorage.setItem("hw_vetoed_filenames", JSON.stringify(Array.from(new Set(locallyVetoed))));
+      } catch {}
 
       // Remove from local list and auto-advance
       setTimeout(() => {
