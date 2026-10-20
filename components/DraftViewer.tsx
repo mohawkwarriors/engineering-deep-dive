@@ -15,6 +15,8 @@ import {
   ExternalLink,
   Lock,
 } from "lucide-react";
+import { ProcessFlow, ProcessStep } from "./ProcessFlow";
+import { TechnicalCard } from "./TechnicalCard";
 
 interface ImageCandidate {
   url: string;
@@ -96,6 +98,29 @@ export default function DraftViewer({
   // Selected image indices per figure for active draft
   // e.g. { 0: 0, 1: 3 }
   const [selectedImages, setSelectedImages] = useState<Record<number, number>>({});
+
+  // Track failed / 403 image URLs
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+
+  const handleImageError = (figIdx: number, currentCandidateIdx: number) => {
+    const fig = activeDraft?.figures?.[figIdx];
+    if (!fig || !fig.images) return;
+    const failedUrl = fig.images[currentCandidateIdx]?.url;
+    if (failedUrl) {
+      setFailedImages((prev) => ({ ...prev, [failedUrl]: true }));
+    }
+
+    // Automatically advance to the next working candidate in the carousel
+    const nextIdx = fig.images.findIndex(
+      (img, idx) => idx !== currentCandidateIdx && !failedImages[img.url]
+    );
+    if (nextIdx !== -1) {
+      setSelectedImages((prev) => ({
+        ...prev,
+        [figIdx]: nextIdx,
+      }));
+    }
+  };
 
   // Veto modal state
   const [showVetoModal, setShowVetoModal] = useState(false);
@@ -223,6 +248,279 @@ export default function DraftViewer({
     } finally {
       setLoading(false);
     }
+  };
+
+  // Inline Figure Carousel Component
+  const renderInlineFigure = (figIdx: number) => {
+    if (!activeDraft?.figures || !activeDraft.figures[figIdx]) return null;
+    const fig = activeDraft.figures[figIdx];
+    const currentSelectedIdx = selectedImages[figIdx] ?? 0;
+    const selectedImg = fig.images[currentSelectedIdx] || fig.images[0];
+    const isImageBroken = selectedImg?.url && failedImages[selectedImg.url];
+
+    return (
+      <figure
+        key={`inline-fig-${fig.id || figIdx}`}
+        className="my-8 rounded-xl border border-neutral-800 bg-neutral-900/60 overflow-hidden shadow-2xl not-prose"
+      >
+        {/* Figure Card Header */}
+        <div className="flex items-center justify-between px-4 py-2.5 bg-neutral-900/90 border-b border-neutral-800 font-mono text-xs">
+          <span className="text-amber-500 font-bold uppercase tracking-wider flex items-center gap-1.5">
+            <Layers className="w-3.5 h-3.5 text-amber-500" />
+            {fig.caption ? fig.caption.split(":")[0] : `FIG ${String(figIdx + 1).padStart(2, "0")}`}
+          </span>
+          <span className="text-neutral-400 text-[11px]">
+            Candidate <span className="text-amber-400 font-bold">{currentSelectedIdx + 1}</span> of {fig.images.length}
+          </span>
+        </div>
+
+        {/* Active Selected Image Preview */}
+        <div className="relative w-full h-72 sm:h-96 bg-neutral-950 flex items-center justify-center overflow-hidden">
+          {selectedImg?.url ? (
+            <img
+              src={selectedImg.url}
+              alt={selectedImg.title || activeDraft.title}
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-contain"
+              onError={() => handleImageError(figIdx, currentSelectedIdx)}
+            />
+          ) : (
+            <div className="text-xs font-mono text-neutral-500">No image URL specified</div>
+          )}
+
+          {isImageBroken && (
+            <div className="absolute inset-0 bg-neutral-950/90 flex flex-col items-center justify-center p-4 text-center">
+              <AlertTriangle className="w-8 h-8 text-amber-500 mb-2" />
+              <p className="text-xs font-mono text-neutral-300">Image host restricted direct loading (403)</p>
+              <p className="text-[11px] font-mono text-amber-500 mt-1">Select an alternative candidate from the carousel below</p>
+            </div>
+          )}
+
+          <div className="absolute top-2 right-2 px-2 py-1 rounded bg-neutral-900/90 backdrop-blur-md border border-neutral-700/60 font-mono text-[10px] text-amber-400 uppercase tracking-wider flex items-center gap-1 shadow">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+            Active Selection
+          </div>
+        </div>
+
+        {/* 12-Image Horizontal Scroll Carousel */}
+        <div className="p-3 sm:p-4 bg-neutral-900/40 border-t border-neutral-800/80">
+          <div className="text-[11px] font-mono text-neutral-400 mb-2 flex items-center justify-between">
+            <span className="font-semibold text-neutral-300">Choose visual candidate:</span>
+            <span className="text-neutral-500 text-[10px]">Swipe horizontally ➔</span>
+          </div>
+
+          <div className="flex gap-2.5 overflow-x-auto pb-2 pt-1 scrollbar-thin scrollbar-thumb-neutral-800 snap-x">
+            {fig.images.map((img, imgIdx) => {
+              const isSelected = imgIdx === currentSelectedIdx;
+              const isFailed = failedImages[img.url];
+
+              return (
+                <button
+                  key={imgIdx}
+                  type="button"
+                  onClick={() => handleSelectImage(figIdx, imgIdx)}
+                  className={`relative flex-shrink-0 w-28 sm:w-36 h-20 sm:h-24 rounded-lg overflow-hidden border-2 transition-all snap-start ${
+                    isSelected
+                      ? "border-amber-500 ring-2 ring-amber-500/40 shadow-lg scale-105 z-10"
+                      : "border-neutral-800 opacity-70 hover:opacity-100 hover:border-neutral-600"
+                  } ${isFailed ? "opacity-30 border-red-900" : ""}`}
+                >
+                  <img
+                    src={img.url}
+                    alt={img.title || `Candidate ${imgIdx + 1}`}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover"
+                    onError={() => {
+                      setFailedImages((prev) => ({ ...prev, [img.url]: true }));
+                    }}
+                  />
+                  {isSelected && (
+                    <div className="absolute inset-0 bg-amber-500/20 flex items-center justify-center">
+                      <span className="p-1 rounded-full bg-amber-500 text-neutral-950 shadow">
+                        <Check className="w-3.5 h-3.5 stroke-[3]" />
+                      </span>
+                    </div>
+                  )}
+                  <div className="absolute bottom-0 inset-x-0 bg-neutral-950/85 backdrop-blur-xs px-1.5 py-0.5 text-[9px] font-mono text-neutral-300 truncate flex justify-between items-center">
+                    <span>#{imgIdx + 1}</span>
+                    {isFailed && <span className="text-red-400 text-[8px]">403</span>}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Figcaption & Source Footer */}
+        <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800 flex flex-wrap justify-between items-center gap-2 bg-neutral-950/60">
+          <span className="text-neutral-300">{fig.caption || selectedImg?.title || ""}</span>
+          <span className="text-[10px] text-amber-500 uppercase tracking-wider font-semibold">
+            {fig.source || selectedImg?.source || "TEARDOWN ARCHIVE"}
+          </span>
+        </figcaption>
+      </figure>
+    );
+  };
+
+  // Text Chunk Renderer (Headings, Paragraphs, Math, ProcessFlow, TechnicalCard)
+  const renderTextChunk = (chunk: string, keyPrefix: string) => {
+    const blocks = chunk.split(/\n\s*\n/);
+
+    return (
+      <div key={keyPrefix} className="space-y-4">
+        {blocks.map((block, bIdx) => {
+          const trimmed = block.trim();
+          if (!trimmed) return null;
+
+          if (trimmed.startsWith("## ")) {
+            return (
+              <h2
+                key={`${keyPrefix}-b-${bIdx}`}
+                className="text-xl sm:text-2xl font-bold tracking-tight text-neutral-100 font-sans mt-8 mb-4 border-b border-neutral-800 pb-2"
+              >
+                {trimmed.replace(/^##\s+/, "")}
+              </h2>
+            );
+          }
+
+          if (trimmed.startsWith("### ")) {
+            return (
+              <h3
+                key={`${keyPrefix}-b-${bIdx}`}
+                className="text-base sm:text-lg font-semibold text-amber-500 font-mono uppercase tracking-wide mt-6 mb-2"
+              >
+                {trimmed.replace(/^###\s+/, "")}
+              </h3>
+            );
+          }
+
+          if (trimmed.startsWith("$$") && trimmed.endsWith("$$")) {
+            const math = trimmed.slice(2, -2).trim();
+            return (
+              <div
+                key={`${keyPrefix}-b-${bIdx}`}
+                className="my-5 p-4 rounded-xl bg-neutral-900 border border-neutral-800 text-center font-mono text-amber-400 text-sm sm:text-base tracking-wide overflow-x-auto shadow-inner"
+              >
+                {math}
+              </div>
+            );
+          }
+
+          if (trimmed.includes("<ProcessFlow>")) {
+            const stepRegex = /<ProcessStep\s+step="([^"]+)"\s+title="([^"]+)"(?:\s+parameters="([^"]+)")?>([\s\S]*?)<\/ProcessStep>/g;
+            const steps: Array<{ step: string; title: string; parameters?: string; content: string }> = [];
+            let m;
+            while ((m = stepRegex.exec(trimmed)) !== null) {
+              steps.push({
+                step: m[1],
+                title: m[2],
+                parameters: m[3],
+                content: m[4].trim(),
+              });
+            }
+
+            return (
+              <ProcessFlow key={`${keyPrefix}-b-${bIdx}`}>
+                {steps.map((s, sIdx) => (
+                  <ProcessStep
+                    key={sIdx}
+                    step={s.step}
+                    title={s.title}
+                    parameters={s.parameters}
+                  >
+                    {s.content}
+                  </ProcessStep>
+                ))}
+              </ProcessFlow>
+            );
+          }
+
+          if (trimmed.includes("<TechnicalCard")) {
+            const titleM = trimmed.match(/title="([^"]+)"/);
+            const subtitleM = trimmed.match(/subtitle="([^"]+)"/);
+            const bottleneckM = trimmed.match(/bottleneck="([^"]+)"/);
+            const innerM = trimmed.match(/<TechnicalCard[^>]*>([\s\S]*?)<\/TechnicalCard>/);
+
+            return (
+              <TechnicalCard
+                key={`${keyPrefix}-b-${bIdx}`}
+                title={titleM ? titleM[1] : "TECHNICAL SPECIFICATIONS"}
+                subtitle={subtitleM ? subtitleM[1] : undefined}
+                bottleneck={bottleneckM ? bottleneckM[1] : undefined}
+              >
+                {innerM ? (
+                  <div
+                    className="technical-card-body"
+                    dangerouslySetInnerHTML={{ __html: innerM[1] }}
+                  />
+                ) : null}
+              </TechnicalCard>
+            );
+          }
+
+          return (
+            <p
+              key={`${keyPrefix}-b-${bIdx}`}
+              className="text-sm sm:text-base text-neutral-300 leading-relaxed font-sans"
+            >
+              {trimmed}
+            </p>
+          );
+        })}
+      </div>
+    );
+  };
+
+  // Full Article In-Line Flow
+  const renderArticleFlow = () => {
+    if (!activeDraft) return null;
+    if (!activeDraft.body_mdx) {
+      if (activeDraft.article_html) {
+        return (
+          <div
+            className="article-body font-sans"
+            dangerouslySetInnerHTML={{ __html: activeDraft.article_html }}
+          />
+        );
+      }
+      return <p className="text-neutral-400 italic">No article body loaded.</p>;
+    }
+
+    const text = activeDraft.body_mdx;
+    const regex = /\{\{\s*FIGURE_(\d+)\s*\}\}/g;
+    const elements: React.ReactNode[] = [];
+    const renderedFigIndices = new Set<number>();
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+
+    while ((match = regex.exec(text)) !== null) {
+      const chunkText = text.substring(lastIndex, match.index);
+      if (chunkText.trim()) {
+        elements.push(renderTextChunk(chunkText, `chunk-${lastIndex}`));
+      }
+
+      const figIdx = parseInt(match[1], 10);
+      renderedFigIndices.add(figIdx);
+      elements.push(renderInlineFigure(figIdx));
+
+      lastIndex = regex.lastIndex;
+    }
+
+    const tailText = text.substring(lastIndex);
+    if (tailText.trim()) {
+      elements.push(renderTextChunk(tailText, `chunk-tail`));
+    }
+
+    // Render any figures not referenced in body_mdx at the end
+    if (activeDraft.figures) {
+      activeDraft.figures.forEach((fig, idx) => {
+        if (!renderedFigIndices.has(idx)) {
+          elements.push(renderInlineFigure(idx));
+        }
+      });
+    }
+
+    return <div className="space-y-6 text-neutral-300 font-sans leading-relaxed">{elements}</div>;
   };
 
   // Editorial Access PIN Gate
@@ -425,126 +723,9 @@ export default function DraftViewer({
           </p>
         )}
 
-        {/* Figures / Image Candidate Carousels */}
-        {activeDraft.figures && activeDraft.figures.length > 0 && (
-          <div className="my-8 space-y-8">
-            {activeDraft.figures.map((fig, figIdx) => {
-              const currentSelectedIdx = selectedImages[figIdx] ?? 0;
-              const selectedImg = fig.images[currentSelectedIdx] || fig.images[0];
-
-              return (
-                <div
-                  key={fig.id || figIdx}
-                  className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-4 sm:p-5"
-                >
-                  <div className="flex items-center justify-between mb-3 font-mono text-xs">
-                    <span className="text-amber-500 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                      <Layers className="w-3.5 h-3.5" />
-                      {fig.caption ? fig.caption.split(":")[0] : `FIGURE ${figIdx + 1}`}
-                    </span>
-                    <span className="text-neutral-400 text-[11px]">
-                      Candidate <span className="text-neutral-200 font-bold">{currentSelectedIdx + 1}</span> of {fig.images.length}
-                    </span>
-                  </div>
-
-                  {/* Active Selected Image Preview */}
-                  {selectedImg && (
-                    <div className="relative w-full h-64 sm:h-96 rounded-lg overflow-hidden bg-neutral-950 border border-neutral-800 mb-3 group">
-                      <img
-                        src={selectedImg.url}
-                        alt={selectedImg.title || activeDraft.title}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.01]"
-                        onError={(e) => {
-                          // Fallback to high quality placeholder if broken
-                          (e.target as HTMLElement).setAttribute(
-                            "src",
-                            "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000"
-                          );
-                        }}
-                      />
-                      <div className="absolute top-2 right-2 px-2 py-1 rounded bg-neutral-900/80 backdrop-blur-md border border-neutral-700/60 font-mono text-[10px] text-amber-400 uppercase tracking-wider">
-                        Active Selection
-                      </div>
-                    </div>
-                  )}
-
-                  {/* 12-Image Horizontal Scroll Carousel */}
-                  <div className="mt-3">
-                    <div className="text-[11px] font-mono text-neutral-400 mb-2 flex items-center justify-between">
-                      <span>Select replacement teardown image:</span>
-                      <span className="text-neutral-500">Swipe horizontally ➔</span>
-                    </div>
-
-                    <div className="flex gap-2.5 overflow-x-auto pb-3 pt-1 scrollbar-thin scrollbar-thumb-neutral-800 snap-x">
-                      {fig.images.map((img, imgIdx) => {
-                        const isSelected = imgIdx === currentSelectedIdx;
-                        return (
-                          <button
-                            key={imgIdx}
-                            type="button"
-                            onClick={() => handleSelectImage(figIdx, imgIdx)}
-                            className={`relative flex-shrink-0 w-28 sm:w-36 h-20 sm:h-24 rounded-lg overflow-hidden border-2 transition-all snap-start ${
-                              isSelected
-                                ? "border-amber-500 ring-2 ring-amber-500/40 shadow-lg scale-105 z-10"
-                                : "border-neutral-800 opacity-60 hover:opacity-100 hover:border-neutral-600"
-                            }`}
-                          >
-                            <img
-                              src={img.url}
-                              alt={img.title || `Candidate ${imgIdx + 1}`}
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                (e.target as HTMLElement).setAttribute(
-                                  "src",
-                                  "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=300"
-                                );
-                              }}
-                            />
-                            {isSelected && (
-                              <div className="absolute inset-0 bg-amber-500/20 flex items-center justify-center">
-                                <span className="p-1 rounded-full bg-amber-500 text-neutral-950 shadow">
-                                  <Check className="w-3.5 h-3.5 stroke-[3]" />
-                                </span>
-                              </div>
-                            )}
-                            <div className="absolute bottom-0 inset-x-0 bg-neutral-950/80 backdrop-blur-xs px-1.5 py-0.5 text-[9px] font-mono text-neutral-300 truncate">
-                              #{imgIdx + 1}
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Caption & Source Footer */}
-                  <div className="mt-3 pt-3 border-t border-neutral-800/80 flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-neutral-400">
-                    <p className="m-0 text-xs text-neutral-300">
-                      {fig.caption || selectedImg?.title || ""}
-                    </p>
-                    <span className="text-[10px] uppercase text-neutral-500">
-                      {fig.source || selectedImg?.source || "Live Search"}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        {/* MDX / Article Body Render */}
-        <div className="text-neutral-300 leading-relaxed font-sans space-y-6 mt-8">
-          {activeDraft.body_mdx ? (
-            <div className="whitespace-pre-line text-sm sm:text-base leading-relaxed">
-              {activeDraft.body_mdx}
-            </div>
-          ) : activeDraft.article_html ? (
-            <div
-              className="article-body font-sans"
-              dangerouslySetInnerHTML={{ __html: activeDraft.article_html }}
-            />
-          ) : (
-            <p className="text-neutral-400 italic">No article body loaded.</p>
-          )}
+        {/* Inline Production-Fidelity Article Flow */}
+        <div className="mt-8">
+          {renderArticleFlow()}
         </div>
       </article>
 

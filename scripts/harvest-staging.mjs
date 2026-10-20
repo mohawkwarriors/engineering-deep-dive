@@ -69,11 +69,30 @@ async function fetchCandidateImages(query, limit = 12) {
     console.warn(`[Harvester] Image search error for "${query}":`, e.message);
   }
 
-  // Deduplicate and slice to limit
+  // Deduplicate and filter out hosts known to block external image loading with 403
+  const blockedHosts = [
+    'researchgate.net',
+    'onlinelibrary.wiley.com',
+    'sciencedirect.com',
+    'tandfonline.com',
+    'springer.com',
+    'nature.com',
+    'ieeexplore.ieee.org',
+    'wikimedia.org'
+  ];
+
   const seen = new Set();
   const deduped = [];
   for (const img of images) {
-    if (!seen.has(img.url) && !img.url.includes('wikimedia.org')) {
+    const isBlocked = blockedHosts.some(host => {
+      try {
+        return new URL(img.url).hostname.includes(host);
+      } catch {
+        return true;
+      }
+    });
+
+    if (!isBlocked && !seen.has(img.url)) {
       seen.add(img.url);
       deduped.push(img);
     }
