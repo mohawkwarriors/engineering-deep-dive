@@ -3,8 +3,14 @@ import DraftViewer from "@/components/DraftViewer";
 
 export const dynamic = "force-dynamic";
 
-export default async function DraftsPage() {
+export default async function DraftsPage({
+  searchParams,
+}: {
+  searchParams?: { key?: string; token?: string };
+}) {
   const drafts: any[] = [];
+  const initiallyUnlocked =
+    searchParams?.key === "deepdive2026" || searchParams?.token === "deepdive2026";
 
   try {
     const draftFiles = await listStagingDrafts();
@@ -29,7 +35,7 @@ export default async function DraftsPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6">
-      <DraftViewer initialDrafts={drafts} />
+      <DraftViewer initialDrafts={drafts} initiallyUnlocked={initiallyUnlocked} />
     </div>
   );
 }

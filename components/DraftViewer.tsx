@@ -13,6 +13,7 @@ import {
   Layers,
   Sparkles,
   ExternalLink,
+  Lock,
 } from "lucide-react";
 
 interface ImageCandidate {
@@ -47,11 +48,46 @@ interface DraftItem {
   tangents?: Record<string, any>;
 }
 
-export default function DraftViewer({ initialDrafts }: { initialDrafts: DraftItem[] }) {
+export default function DraftViewer({
+  initialDrafts,
+  initiallyUnlocked = false,
+}: {
+  initialDrafts: DraftItem[];
+  initiallyUnlocked?: boolean;
+}) {
+  const [isUnlocked, setIsUnlocked] = useState<boolean>(initiallyUnlocked);
+  const [pinInput, setPinInput] = useState("");
+  const [pinError, setPinError] = useState(false);
+
   const [drafts, setDrafts] = useState<DraftItem[]>(initialDrafts);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [actionMessage, setActionMessage] = useState<string | null>(null);
+
+  // Check client-side authentication on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const keyParam = urlParams.get("key") || urlParams.get("token");
+      const storedPin = localStorage.getItem("hw_editor_pin");
+
+      if (keyParam === "deepdive2026" || storedPin === "deepdive2026" || initiallyUnlocked) {
+        setIsUnlocked(true);
+        localStorage.setItem("hw_editor_pin", "deepdive2026");
+      }
+    }
+  }, [initiallyUnlocked]);
+
+  const handleUnlock = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (pinInput.trim() === "deepdive2026") {
+      setIsUnlocked(true);
+      setPinError(false);
+      localStorage.setItem("hw_editor_pin", "deepdive2026");
+    } else {
+      setPinError(true);
+    }
+  };
 
   // Editable title state
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -188,6 +224,57 @@ export default function DraftViewer({ initialDrafts }: { initialDrafts: DraftIte
       setLoading(false);
     }
   };
+
+  // Editorial Access PIN Gate
+  if (!isUnlocked) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 max-w-sm mx-auto">
+        <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-6 text-amber-500 shadow-xl shadow-amber-500/5">
+          <Lock className="w-8 h-8" />
+        </div>
+        <h2 className="text-xl font-bold font-sans text-neutral-100 mb-2">
+          The HW Insider
+        </h2>
+        <div className="flex items-center gap-2 mb-6">
+          <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+          <span className="font-mono text-xs uppercase tracking-widest text-amber-500 font-semibold">
+            Editorial Access Required
+          </span>
+        </div>
+        <form onSubmit={handleUnlock} className="w-full space-y-4">
+          <div>
+            <input
+              type="password"
+              placeholder="Enter Access PIN..."
+              value={pinInput}
+              onChange={(e) => {
+                setPinInput(e.target.value);
+                setPinError(false);
+              }}
+              className={`w-full px-4 py-3 rounded-xl bg-neutral-900 border text-neutral-100 text-center font-mono tracking-widest text-base focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
+                pinError ? "border-red-500 text-red-400" : "border-neutral-800 focus:border-amber-500"
+              }`}
+              autoFocus
+            />
+            {pinError && (
+              <p className="text-xs text-red-400 font-mono mt-2">
+                Invalid access PIN. Please try again.
+              </p>
+            )}
+          </div>
+          <button
+            type="submit"
+            className="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-mono text-xs font-bold uppercase tracking-wider transition-colors shadow-lg shadow-amber-500/10"
+          >
+            Unlock Editor Mode
+          </button>
+        </form>
+        <p className="text-[11px] text-neutral-500 font-mono mt-6">
+          Tip: You can also append <code className="text-amber-500/80">?key=deepdive2026</code> to your URL.
+        </p>
+      </div>
+    );
+  }
 
   if (!activeDraft || drafts.length === 0) {
     return (
