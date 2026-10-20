@@ -13,26 +13,26 @@ export function ProcessStep({ step, title, parameters, children }: ProcessStepPr
   return (
     <div className="relative pl-8 sm:pl-10 group my-3">
       {/* Connector Line */}
-      <div className="absolute left-[15px] sm:left-[19px] top-7 bottom-0 w-px bg-neutral-800 group-last:hidden" />
+      <div className="absolute left-[15px] sm:left-[19px] top-7 bottom-0 w-px bg-[var(--border)] group-last:hidden" />
       
       {/* Step Badge */}
-      <div className="absolute left-0 top-1 flex h-8 w-8 items-center justify-center rounded-md border border-neutral-700 bg-neutral-900 font-mono text-xs font-semibold text-amber-500 shadow-sm">
+      <div className="absolute left-0 top-1 flex h-8 w-8 items-center justify-center rounded-md border border-[var(--border)] bg-[var(--surface)] font-mono text-xs font-semibold text-[var(--accent)] shadow-sm">
         {formattedStep}
       </div>
 
       {/* Dynamic Content Card */}
-      <div className="rounded-lg border border-neutral-800/80 bg-neutral-900/60 p-4 font-mono transition-colors hover:border-neutral-700">
-        <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-neutral-800 pb-2 mb-2">
-          <span className="text-sm font-semibold uppercase tracking-wide text-neutral-200">
+      <div className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-4 font-mono transition-colors hover:border-[var(--accent)]/50">
+        <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[var(--border)] pb-2 mb-2">
+          <span className="text-sm font-semibold uppercase tracking-wide text-[var(--text)]">
             {title}
           </span>
           {parameters && (
-            <span className="text-xs text-neutral-400 bg-neutral-800/50 px-2 py-0.5 rounded border border-neutral-700/50">
+            <span className="text-xs text-[var(--muted)] bg-[var(--card-inner)] px-2 py-0.5 rounded border border-[var(--border)]">
               {parameters}
             </span>
           )}
         </div>
-        <div className="text-xs leading-relaxed text-neutral-400 font-sans">
+        <div className="text-xs leading-relaxed text-[var(--muted)] font-sans">
           {children}
         </div>
       </div>

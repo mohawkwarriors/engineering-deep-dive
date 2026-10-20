@@ -12,7 +12,6 @@ import {
   AlertTriangle,
   Layers,
   Sparkles,
-  ExternalLink,
   Lock,
 } from "lucide-react";
 import { ProcessFlow, ProcessStep } from "./ProcessFlow";
@@ -48,6 +47,18 @@ interface DraftItem {
   body_mdx?: string;
   article_html?: string;
   tangents?: Record<string, any>;
+}
+
+function getSubjectClass(subject?: string) {
+  const s = (subject || "").toLowerCase();
+  if (s.includes("fluid")) return "sub-fluids";
+  if (s.includes("thermal")) return "sub-thermal";
+  if (s.includes("mechanism")) return "sub-mechanisms";
+  if (s.includes("manufactur")) return "sub-manufacturing";
+  if (s.includes("material")) return "sub-materials";
+  if (s.includes("design")) return "sub-design";
+  if (s.includes("electromechanical")) return "sub-electromechanical";
+  return "sub-product-dives";
 }
 
 export default function DraftViewer({
@@ -107,7 +118,6 @@ export default function DraftViewer({
   const [editedTitle, setEditedTitle] = useState("");
 
   // Selected image indices per figure for active draft
-  // e.g. { 0: 0, 1: 3 }
   const [selectedImages, setSelectedImages] = useState<Record<number, number>>({});
 
   // Track failed / 403 image URLs
@@ -161,30 +171,39 @@ export default function DraftViewer({
       const res = await fetch("/api/drafts");
       if (res.ok) {
         const data = await res.json();
-        setDrafts(data.drafts || []);
-        setCurrentIndex(0);
+        if (data.drafts) {
+          try {
+            const locallyVetoed = JSON.parse(localStorage.getItem("hw_vetoed_filenames") || "[]");
+            const locallyApproved = JSON.parse(localStorage.getItem("hw_approved_filenames") || "[]");
+            const dismissed = new Set([...locallyVetoed, ...locallyApproved]);
+            setDrafts(data.drafts.filter((d: any) => !dismissed.has(d.filename) && !dismissed.has(d.title)));
+          } catch {
+            setDrafts(data.drafts);
+          }
+          setCurrentIndex(0);
+        }
       }
     } catch (e) {
-      console.error("Failed to refresh drafts:", e);
+      console.error("Failed to refresh drafts", e);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSelectImage = (figureIdx: number, imgIdx: number) => {
+  const handleSelectImage = (figIdx: number, imgIdx: number) => {
     setSelectedImages((prev) => ({
       ...prev,
-      [figureIdx]: imgIdx,
+      [figIdx]: imgIdx,
     }));
   };
 
   const handleApprove = async () => {
     if (!activeDraft) return;
     setLoading(true);
-    setActionMessage("Approving and publishing to queue...");
+    setActionMessage("Publishing issue...");
 
     try {
-      // Build updated figures array with chosen selections
+      // Prepare finalized figures with selected indices
       const updatedFigures = (activeDraft.figures || []).map((fig, idx) => ({
         ...fig,
         selectedIndex: selectedImages[idx] ?? 0,
@@ -195,7 +214,7 @@ export default function DraftViewer({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           filename: activeDraft.filename,
-          title: editedTitle.trim() || activeDraft.title,
+          title: editedTitle || activeDraft.title,
           figures: updatedFigures,
         }),
       });
@@ -219,6 +238,7 @@ export default function DraftViewer({
       // Remove from local list and auto-advance
       setTimeout(() => {
         setDrafts((prev) => prev.filter((_, i) => i !== currentIndex));
+        setCurrentIndex((prev) => (prev >= drafts.length - 1 ? Math.max(0, drafts.length - 2) : prev));
         setActionMessage(null);
       }, 700);
     } catch (err: any) {
@@ -233,7 +253,7 @@ export default function DraftViewer({
     if (!activeDraft) return;
     setLoading(true);
     setShowVetoModal(false);
-    setActionMessage("Vetoing and training curation model...");
+    setActionMessage("Recording veto & pruning queue...");
 
     try {
       const res = await fetch("/api/drafts/veto", {
@@ -241,10 +261,10 @@ export default function DraftViewer({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           filename: activeDraft.filename,
-          title: activeDraft.title,
-          subject: activeDraft.subject || activeDraft.category,
+          topic: activeDraft.title,
+          subject: activeDraft.subject || activeDraft.category || "Mechanisms",
           reason: selectedVetoReason,
-          critique: customCritique.trim(),
+          critique: customCritique,
         }),
       });
 
@@ -267,6 +287,7 @@ export default function DraftViewer({
       // Remove from local list and auto-advance
       setTimeout(() => {
         setDrafts((prev) => prev.filter((_, i) => i !== currentIndex));
+        setCurrentIndex((prev) => (prev >= drafts.length - 1 ? Math.max(0, drafts.length - 2) : prev));
         setActionMessage(null);
       }, 700);
     } catch (err: any) {
@@ -277,7 +298,7 @@ export default function DraftViewer({
     }
   };
 
-  // Inline Figure Carousel Component
+  // Inline Figure Carousel Component matching published design system
   const renderInlineFigure = (figIdx: number) => {
     if (!activeDraft?.figures || !activeDraft.figures[figIdx]) return null;
     const fig = activeDraft.figures[figIdx];
@@ -288,55 +309,54 @@ export default function DraftViewer({
     return (
       <figure
         key={`inline-fig-${fig.id || figIdx}`}
-        className="my-8 rounded-xl border border-neutral-800 bg-neutral-900/60 overflow-hidden shadow-2xl not-prose"
+        className="product-figure not-prose"
       >
         {/* Figure Card Header */}
-        <div className="flex items-center justify-between px-4 py-2.5 bg-neutral-900/90 border-b border-neutral-800 font-mono text-xs">
-          <span className="text-amber-500 font-bold uppercase tracking-wider flex items-center gap-1.5">
-            <Layers className="w-3.5 h-3.5 text-amber-500" />
+        <div className="flex items-center justify-between px-4 py-2.5 bg-[var(--surface-hover)] border-b border-[var(--border)] font-mono text-xs">
+          <span className="text-[var(--accent)] font-bold uppercase tracking-wider flex items-center gap-1.5">
+            <Layers className="w-3.5 h-3.5 text-[var(--accent)]" />
             {fig.caption ? fig.caption.split(":")[0] : `FIG ${String(figIdx + 1).padStart(2, "0")}`}
           </span>
-          <span className="text-neutral-400 text-[11px]">
-            Candidate <span className="text-amber-400 font-bold">{currentSelectedIdx + 1}</span> of {fig.images.length}
+          <span className="text-[var(--muted)] text-[11px]">
+            Candidate <span className="text-[var(--text)] font-bold">{currentSelectedIdx + 1}</span> of {fig.images.length}
           </span>
         </div>
 
         {/* Active Selected Image Preview */}
-        <div className="relative w-full h-72 sm:h-96 bg-neutral-950 flex items-center justify-center overflow-hidden">
+        <div className="img-wrapper">
           {selectedImg?.url ? (
             <img
               src={selectedImg.url}
               alt={selectedImg.title || activeDraft.title}
               referrerPolicy="no-referrer"
-              className="w-full h-full object-contain"
               onError={() => handleImageError(figIdx, currentSelectedIdx)}
             />
           ) : (
-            <div className="text-xs font-mono text-neutral-500">No image URL specified</div>
+            <div className="text-xs font-mono text-[var(--muted)]">No image URL specified</div>
           )}
 
           {isImageBroken && (
-            <div className="absolute inset-0 bg-neutral-950/90 flex flex-col items-center justify-center p-4 text-center">
-              <AlertTriangle className="w-8 h-8 text-amber-500 mb-2" />
-              <p className="text-xs font-mono text-neutral-300">Image host restricted direct loading (403)</p>
-              <p className="text-[11px] font-mono text-amber-500 mt-1">Select an alternative candidate from the carousel below</p>
+            <div className="absolute inset-0 bg-[var(--card-inner)]/95 flex flex-col items-center justify-center p-4 text-center">
+              <AlertTriangle className="w-8 h-8 text-[var(--accent)] mb-2" />
+              <p className="text-xs font-mono text-[var(--text)]">Image host restricted direct loading (403)</p>
+              <p className="text-[11px] font-mono text-[var(--accent)] mt-1">Select an alternative candidate from the carousel below</p>
             </div>
           )}
 
-          <div className="absolute top-2 right-2 px-2 py-1 rounded bg-neutral-900/90 backdrop-blur-md border border-neutral-700/60 font-mono text-[10px] text-amber-400 uppercase tracking-wider flex items-center gap-1 shadow">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+          <div className="absolute top-3 right-3 px-2 py-1 rounded bg-[var(--surface)]/90 backdrop-blur-md border border-[var(--border)] font-mono text-[10px] text-[var(--accent)] uppercase tracking-wider flex items-center gap-1 shadow">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
             Active Selection
           </div>
         </div>
 
         {/* 12-Image Horizontal Scroll Carousel */}
-        <div className="p-3 sm:p-4 bg-neutral-900/40 border-t border-neutral-800/80">
-          <div className="text-[11px] font-mono text-neutral-400 mb-2 flex items-center justify-between">
-            <span className="font-semibold text-neutral-300">Choose visual candidate:</span>
-            <span className="text-neutral-500 text-[10px]">Swipe horizontally ➔</span>
+        <div className="p-3 sm:p-4 bg-[var(--surface)] border-t border-[var(--border)]">
+          <div className="text-[11px] font-mono text-[var(--muted)] mb-2.5 flex items-center justify-between">
+            <span className="font-semibold text-[var(--text)]">Select figure candidate:</span>
+            <span className="text-[var(--muted)] text-[10px]">Swipe horizontally ➔</span>
           </div>
 
-          <div className="flex gap-2.5 overflow-x-auto pb-2 pt-1 scrollbar-thin scrollbar-thumb-neutral-800 snap-x">
+          <div className="flex gap-2.5 overflow-x-auto pb-2 pt-1 scrollbar-thin scrollbar-thumb-[var(--border)] snap-x">
             {fig.images.map((img, imgIdx) => {
               const isSelected = imgIdx === currentSelectedIdx;
               const isFailed = failedImages[img.url];
@@ -346,10 +366,10 @@ export default function DraftViewer({
                   key={imgIdx}
                   type="button"
                   onClick={() => handleSelectImage(figIdx, imgIdx)}
-                  className={`relative flex-shrink-0 w-28 sm:w-36 h-20 sm:h-24 rounded-lg overflow-hidden border-2 transition-all snap-start ${
+                  className={`relative flex-shrink-0 w-28 sm:w-36 h-20 sm:h-24 rounded overflow-hidden border-2 transition-all snap-start ${
                     isSelected
-                      ? "border-amber-500 ring-2 ring-amber-500/40 shadow-lg scale-105 z-10"
-                      : "border-neutral-800 opacity-70 hover:opacity-100 hover:border-neutral-600"
+                      ? "border-[var(--accent)] ring-2 ring-[var(--accent)]/40 shadow-lg scale-105 z-10"
+                      : "border-[var(--border)] opacity-70 hover:opacity-100 hover:border-[var(--muted)]"
                   } ${isFailed ? "opacity-30 border-red-900" : ""}`}
                 >
                   <img
@@ -362,13 +382,13 @@ export default function DraftViewer({
                     }}
                   />
                   {isSelected && (
-                    <div className="absolute inset-0 bg-amber-500/20 flex items-center justify-center">
-                      <span className="p-1 rounded-full bg-amber-500 text-neutral-950 shadow">
+                    <div className="absolute inset-0 bg-[var(--accent)]/20 flex items-center justify-center">
+                      <span className="p-1 rounded-full bg-[var(--accent)] text-white shadow">
                         <Check className="w-3.5 h-3.5 stroke-[3]" />
                       </span>
                     </div>
                   )}
-                  <div className="absolute bottom-0 inset-x-0 bg-neutral-950/85 backdrop-blur-xs px-1.5 py-0.5 text-[9px] font-mono text-neutral-300 truncate flex justify-between items-center">
+                  <div className="absolute bottom-0 inset-x-0 bg-[var(--card-inner)]/90 backdrop-blur-xs px-1.5 py-0.5 text-[9px] font-mono text-[var(--text)] truncate flex justify-between items-center">
                     <span>#{imgIdx + 1}</span>
                     {isFailed && <span className="text-red-400 text-[8px]">403</span>}
                   </div>
@@ -379,9 +399,9 @@ export default function DraftViewer({
         </div>
 
         {/* Figcaption & Source Footer */}
-        <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800 flex flex-wrap justify-between items-center gap-2 bg-neutral-950/60">
-          <span className="text-neutral-300">{fig.caption || selectedImg?.title || ""}</span>
-          <span className="text-[10px] text-amber-500 uppercase tracking-wider font-semibold">
+        <figcaption>
+          <span>{fig.caption || selectedImg?.title || ""}</span>
+          <span className="source-tag">
             {fig.source || selectedImg?.source || "TEARDOWN ARCHIVE"}
           </span>
         </figcaption>
@@ -403,7 +423,6 @@ export default function DraftViewer({
             return (
               <h2
                 key={`${keyPrefix}-b-${bIdx}`}
-                className="text-xl sm:text-2xl font-bold tracking-tight text-neutral-100 font-sans mt-8 mb-4 border-b border-neutral-800 pb-2"
               >
                 {trimmed.replace(/^##\s+/, "")}
               </h2>
@@ -414,7 +433,6 @@ export default function DraftViewer({
             return (
               <h3
                 key={`${keyPrefix}-b-${bIdx}`}
-                className="text-base sm:text-lg font-semibold text-amber-500 font-mono uppercase tracking-wide mt-6 mb-2"
               >
                 {trimmed.replace(/^###\s+/, "")}
               </h3>
@@ -426,7 +444,7 @@ export default function DraftViewer({
             return (
               <div
                 key={`${keyPrefix}-b-${bIdx}`}
-                className="my-5 p-4 rounded-xl bg-neutral-900 border border-neutral-800 text-center font-mono text-amber-400 text-sm sm:text-base tracking-wide overflow-x-auto shadow-inner"
+                className="math-block"
               >
                 {math}
               </div>
@@ -488,7 +506,7 @@ export default function DraftViewer({
           return (
             <p
               key={`${keyPrefix}-b-${bIdx}`}
-              className="text-sm sm:text-base text-neutral-300 leading-relaxed font-sans"
+              className="text-base text-[var(--text)] leading-relaxed font-sans mb-4"
             >
               {trimmed}
             </p>
@@ -510,7 +528,7 @@ export default function DraftViewer({
           />
         );
       }
-      return <p className="text-neutral-400 italic">No article body loaded.</p>;
+      return <p className="text-[var(--muted)] italic">No article body loaded.</p>;
     }
 
     const text = activeDraft.body_mdx;
@@ -518,85 +536,81 @@ export default function DraftViewer({
     const elements: React.ReactNode[] = [];
     const renderedFigIndices = new Set<number>();
     let lastIndex = 0;
-    let match: RegExpExecArray | null;
+    let match;
 
     while ((match = regex.exec(text)) !== null) {
-      const chunkText = text.substring(lastIndex, match.index);
-      if (chunkText.trim()) {
-        elements.push(renderTextChunk(chunkText, `chunk-${lastIndex}`));
+      const matchIndex = match.index;
+      const figIdx = parseInt(match[1], 10);
+
+      // Render text chunk leading up to figure
+      if (matchIndex > lastIndex) {
+        const chunk = text.substring(lastIndex, matchIndex);
+        elements.push(renderTextChunk(chunk, `text-before-${figIdx}`));
       }
 
-      const figIdx = parseInt(match[1], 10);
-      renderedFigIndices.add(figIdx);
+      // Render Inline Figure Carousel
       elements.push(renderInlineFigure(figIdx));
+      renderedFigIndices.add(figIdx);
 
-      lastIndex = regex.lastIndex;
+      lastIndex = matchIndex + match[0].length;
     }
 
-    const tailText = text.substring(lastIndex);
-    if (tailText.trim()) {
-      elements.push(renderTextChunk(tailText, `chunk-tail`));
+    // Trailing text chunk
+    if (lastIndex < text.length) {
+      const chunk = text.substring(lastIndex);
+      elements.push(renderTextChunk(chunk, "text-trailing"));
     }
 
-    // Render any figures not referenced in body_mdx at the end
+    // Append any figures that weren't tagged in the text
     if (activeDraft.figures) {
-      activeDraft.figures.forEach((fig, idx) => {
-        if (!renderedFigIndices.has(idx)) {
-          elements.push(renderInlineFigure(idx));
+      activeDraft.figures.forEach((_, figIdx) => {
+        if (!renderedFigIndices.has(figIdx)) {
+          elements.push(renderInlineFigure(figIdx));
         }
       });
     }
 
-    return <div className="space-y-6 text-neutral-300 font-sans leading-relaxed">{elements}</div>;
+    return <div className="space-y-6">{elements}</div>;
   };
 
-  // Editorial Access PIN Gate
   if (!isUnlocked) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 max-w-sm mx-auto">
-        <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-6 text-amber-500 shadow-xl shadow-amber-500/5">
-          <Lock className="w-8 h-8" />
-        </div>
-        <h2 className="text-xl font-bold font-sans text-neutral-100 mb-2">
-          The HW Insider
-        </h2>
-        <div className="flex items-center gap-2 mb-6">
-          <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-          <span className="font-mono text-xs uppercase tracking-widest text-amber-500 font-semibold">
-            Editorial Access Required
-          </span>
-        </div>
-        <form onSubmit={handleUnlock} className="w-full space-y-4">
-          <div>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
+        <div className="w-full max-w-sm rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-2xl text-center">
+          <div className="w-12 h-12 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/30 flex items-center justify-center mx-auto mb-4 text-[var(--accent)]">
+            <Lock className="w-6 h-6" />
+          </div>
+          <h2 className="text-2xl font-serif font-normal text-[var(--text)] mb-1">
+            Editor Clearance Required
+          </h2>
+          <p className="text-xs text-[var(--muted)] font-mono mb-6">
+            Enter PIN to review, edit, and publish staged drafts.
+          </p>
+          <form onSubmit={handleUnlock} className="space-y-4">
             <input
               type="password"
-              placeholder="Enter Access PIN..."
               value={pinInput}
               onChange={(e) => {
                 setPinInput(e.target.value);
                 setPinError(false);
               }}
-              className={`w-full px-4 py-3 rounded-xl bg-neutral-900 border text-neutral-100 text-center font-mono tracking-widest text-base focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
-                pinError ? "border-red-500 text-red-400" : "border-neutral-800 focus:border-amber-500"
-              }`}
+              placeholder="••••••••"
+              className={`w-full px-4 py-2.5 rounded-lg bg-[var(--card-inner)] border ${
+                pinError ? "border-red-500" : "border-[var(--border)]"
+              } text-center font-mono text-sm text-[var(--text)] focus:outline-none focus:border-[var(--accent)]`}
               autoFocus
             />
             {pinError && (
-              <p className="text-xs text-red-400 font-mono mt-2">
-                Invalid access PIN. Please try again.
-              </p>
+              <p className="text-xs font-mono text-red-400">Incorrect PIN. Please re-enter.</p>
             )}
-          </div>
-          <button
-            type="submit"
-            className="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-mono text-xs font-bold uppercase tracking-wider transition-colors shadow-lg shadow-amber-500/10"
-          >
-            Unlock Editor Mode
-          </button>
-        </form>
-        <p className="text-[11px] text-neutral-500 font-mono mt-6">
-          Tip: You can also append <code className="text-amber-500/80">?key=deepdive2026</code> to your URL.
-        </p>
+            <button
+              type="submit"
+              className="w-full py-2.5 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-mono text-xs font-bold transition-all shadow-md shadow-[var(--accent)]/20"
+            >
+              UNLOCK EDITOR
+            </button>
+          </form>
+        </div>
       </div>
     );
   }
@@ -604,29 +618,29 @@ export default function DraftViewer({
   if (!activeDraft || drafts.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
-        <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-6 text-amber-500">
-          <Sparkles className="w-8 h-8 animate-pulse" />
+        <div className="w-14 h-14 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/30 flex items-center justify-center mb-5 text-[var(--accent)]">
+          <Sparkles className="w-7 h-7" />
         </div>
-        <h2 className="text-xl font-bold font-mono text-neutral-100 mb-2">
+        <h2 className="text-2xl font-serif font-normal text-[var(--text)] mb-2">
           Queue Triaged & Pristine
         </h2>
-        <p className="text-sm text-neutral-400 font-sans max-w-md mb-8">
+        <p className="text-sm text-[var(--muted)] font-sans max-w-md mb-8">
           All staged drafts have been reviewed. Run the harvester script to top up the queue with new categorized drafts and fresh candidate images.
         </p>
         <div className="flex gap-4">
           <button
             onClick={refreshDrafts}
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-neutral-700 bg-neutral-900 font-mono text-xs text-neutral-200 hover:border-amber-500 transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] font-mono text-xs text-[var(--text)] hover:border-[var(--accent)] transition-colors"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             Check for New Drafts
           </button>
           <Link
             href="/"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-amber-500 text-neutral-950 font-mono text-xs font-semibold hover:bg-amber-400 transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[var(--accent)] text-white font-mono text-xs font-semibold hover:bg-[var(--accent-hover)] transition-colors shadow-md shadow-[var(--accent)]/20"
           >
-            View Live Newsletter
+            View Live Publication
           </Link>
         </div>
       </div>
@@ -634,32 +648,32 @@ export default function DraftViewer({
   }
 
   return (
-    <div className="relative pb-32">
+    <div className="relative pb-36">
       {/* Toast Notification */}
       {actionMessage && (
-        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-neutral-900/95 border border-amber-500/50 text-amber-400 font-mono text-xs px-4 py-2 rounded-full shadow-2xl backdrop-blur-md animate-fade-in flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-[var(--surface)] border border-[var(--accent)] text-[var(--accent)] font-mono text-xs px-4 py-2 rounded-full shadow-2xl backdrop-blur-md flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-ping" />
           {actionMessage}
         </div>
       )}
 
       {/* Triage Header Bar */}
-      <div className="flex items-center justify-between border-b border-neutral-800 pb-4 mb-6">
+      <div className="flex items-center justify-between border-b border-[var(--border)] pb-4 mb-6">
         <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 font-mono text-[11px] font-semibold tracking-wide">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-            EDITOR MODE
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/15 text-[var(--accent)] font-mono text-[11px] font-semibold tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
+            EDITORIAL TRIAGE
           </span>
-          <span className="font-mono text-xs text-neutral-400">
-            Draft <span className="text-neutral-100 font-bold">{currentIndex + 1}</span> of {drafts.length}
+          <span className="font-mono text-xs text-[var(--muted)]">
+            Draft <span className="text-[var(--text)] font-bold">{currentIndex + 1}</span> of {drafts.length}
           </span>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <button
             onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
             disabled={currentIndex === 0 || loading}
-            className="p-1.5 rounded border border-neutral-800 text-neutral-400 hover:text-neutral-200 hover:border-neutral-700 disabled:opacity-30"
+            className="p-1.5 rounded border border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--accent)] disabled:opacity-30 transition-colors"
             title="Previous Draft"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -667,7 +681,7 @@ export default function DraftViewer({
           <button
             onClick={() => setCurrentIndex((prev) => Math.min(drafts.length - 1, prev + 1))}
             disabled={currentIndex === drafts.length - 1 || loading}
-            className="p-1.5 rounded border border-neutral-800 text-neutral-400 hover:text-neutral-200 hover:border-neutral-700 disabled:opacity-30"
+            className="p-1.5 rounded border border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--accent)] disabled:opacity-30 transition-colors"
             title="Next Draft"
           >
             <ChevronRight className="w-4 h-4" />
@@ -675,7 +689,7 @@ export default function DraftViewer({
           <button
             onClick={refreshDrafts}
             disabled={loading}
-            className="p-1.5 ml-2 rounded border border-neutral-800 text-neutral-400 hover:text-neutral-200 hover:border-neutral-700"
+            className="p-1.5 ml-2 rounded border border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--accent)] transition-colors"
             title="Reload Queue"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
@@ -683,15 +697,17 @@ export default function DraftViewer({
         </div>
       </div>
 
-      {/* Article Content */}
+      {/* Article Content with 100% Published Editorial Theme */}
       <article className="prose prose-invert max-w-none">
         {/* Meta Line */}
-        <div className="flex items-center gap-2 font-mono text-xs text-amber-500 uppercase tracking-widest mb-3">
-          <span>STAGED DRAFT</span>
+        <div className="meta-line">
+          <span>STAGED DRAFT #{currentIndex + 1}</span>
           <span>•</span>
-          <span>{activeDraft.subject || activeDraft.category || "MECHANICAL"}</span>
+          <span className={`archive-subject-tag ${getSubjectClass(activeDraft.subject || activeDraft.category)}`}>
+            {activeDraft.subject || activeDraft.category || "ENGINEERING"}
+          </span>
           <span>•</span>
-          <span>{activeDraft.readTime || "10 MIN READ"}</span>
+          <span id="read-time-badge">{activeDraft.readTime || "12 MIN READ"}</span>
         </div>
 
         {/* Title & Live Title Editor */}
@@ -702,24 +718,24 @@ export default function DraftViewer({
                 type="text"
                 value={editedTitle}
                 onChange={(e) => setEditedTitle(e.target.value)}
-                className="w-full text-2xl sm:text-3xl font-bold bg-neutral-900 border border-amber-500 rounded p-2 text-neutral-100 font-sans focus:outline-none focus:ring-1 focus:ring-amber-500"
+                className="w-full bg-[var(--surface)] border border-[var(--accent)] rounded p-2 text-2xl sm:text-3xl font-serif text-[var(--text)] focus:outline-none"
                 autoFocus
               />
-              <div className="flex items-center gap-2">
+              <div className="flex gap-2">
                 <button
                   type="button"
                   onClick={() => setIsEditingTitle(false)}
-                  className="px-3 py-1 rounded bg-amber-500 text-neutral-950 font-mono text-xs font-semibold hover:bg-amber-400"
+                  className="px-3 py-1 rounded bg-[var(--accent)] text-white font-mono text-xs font-semibold"
                 >
                   Save Title
                 </button>
                 <button
                   type="button"
                   onClick={() => {
-                    setEditedTitle(activeDraft.title);
+                    setEditedTitle(activeDraft.title || "");
                     setIsEditingTitle(false);
                   }}
-                  className="px-3 py-1 rounded border border-neutral-700 text-neutral-400 font-mono text-xs hover:text-neutral-200"
+                  className="px-3 py-1 rounded border border-[var(--border)] text-[var(--muted)] font-mono text-xs hover:text-[var(--text)]"
                 >
                   Cancel
                 </button>
@@ -727,13 +743,13 @@ export default function DraftViewer({
             </div>
           ) : (
             <div className="flex items-start justify-between gap-4">
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-100 font-sans m-0">
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-[var(--text)] m-0 leading-tight">
                 {editedTitle || activeDraft.title}
               </h1>
               <button
                 type="button"
                 onClick={() => setIsEditingTitle(true)}
-                className="flex items-center gap-1 mt-1 px-2.5 py-1 rounded border border-neutral-800 bg-neutral-900/80 font-mono text-[11px] text-neutral-400 hover:text-amber-400 hover:border-amber-500/50 transition-colors flex-shrink-0"
+                className="flex items-center gap-1 mt-1 px-2.5 py-1 rounded border border-[var(--border)] bg-[var(--surface)] font-mono text-[11px] text-[var(--muted)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-colors flex-shrink-0"
                 title="Tweak headline"
               >
                 <Edit2 className="w-3 h-3" />
@@ -745,7 +761,7 @@ export default function DraftViewer({
 
         {/* Subtitle */}
         {activeDraft.subtitle && (
-          <p className="text-sm sm:text-base text-neutral-400 font-mono leading-relaxed mt-2 mb-8">
+          <p className="text-base sm:text-lg text-[var(--muted)] leading-relaxed mt-2 mb-8 font-sans">
             {activeDraft.subtitle}
           </p>
         )}
@@ -757,28 +773,28 @@ export default function DraftViewer({
       </article>
 
       {/* Floating Bottom Triage Action Dock */}
-      <div className="fixed bottom-0 inset-x-0 z-40 bg-[#0a0a0b]/90 border-t border-neutral-800/90 backdrop-blur-xl px-4 py-3 sm:py-4">
+      <div className="fixed bottom-0 inset-x-0 z-40 bg-[var(--surface)]/95 border-t border-[var(--border)] backdrop-blur-xl px-4 py-3 sm:py-4 shadow-2xl">
         <div className="max-w-4xl mx-auto flex items-center justify-between gap-3 sm:gap-4">
           {/* Veto Button */}
           <button
             type="button"
             onClick={() => setShowVetoModal(true)}
             disabled={loading}
-            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-rose-500/40 bg-rose-500/10 text-rose-400 font-mono text-xs sm:text-sm font-semibold hover:bg-rose-500/20 active:scale-[0.98] transition-all disabled:opacity-50"
+            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-red-500/40 bg-red-500/10 text-red-400 font-mono text-xs sm:text-sm font-semibold hover:bg-red-500/20 active:scale-[0.98] transition-all disabled:opacity-50"
           >
             <X className="w-4 h-4 stroke-[2.5]" />
             <span>VETO TOPIC</span>
           </button>
 
-          {/* Approve Button */}
+          {/* Approve Button in Terracotta */}
           <button
             type="button"
             onClick={handleApprove}
             disabled={loading}
-            className="flex-2 flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-mono text-xs sm:text-sm font-bold shadow-lg shadow-emerald-500/20 active:scale-[0.98] transition-all disabled:opacity-50"
+            className="flex-2 flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-mono text-xs sm:text-sm font-bold shadow-lg shadow-[var(--accent)]/20 active:scale-[0.98] transition-all disabled:opacity-50"
           >
             <Check className="w-4 h-4 stroke-[3]" />
-            <span>APPROVE & PUBLISH</span>
+            <span>APPROVE & PUBLISH ISSUE</span>
           </button>
         </div>
       </div>
@@ -786,17 +802,17 @@ export default function DraftViewer({
       {/* Veto Reason Modal */}
       {showVetoModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md rounded-2xl border border-neutral-800 bg-neutral-950 p-6 shadow-2xl">
-            <div className="flex items-center gap-2 text-rose-400 font-mono text-xs uppercase font-bold mb-3">
+          <div className="w-full max-w-md rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-2xl">
+            <div className="flex items-center gap-2 text-red-400 font-mono text-xs uppercase font-bold mb-3">
               <AlertTriangle className="w-4 h-4" />
               <span>Veto Editorial Constraint</span>
             </div>
 
-            <h3 className="text-lg font-bold text-neutral-100 mb-1">
+            <h3 className="text-xl font-serif text-[var(--text)] mb-1">
               Why is this topic being vetoed?
             </h3>
-            <p className="text-xs text-neutral-400 mb-4">
-              Your feedback is appended to <code className="text-amber-400">vetoes.json</code> to prevent similar topics from being generated.
+            <p className="text-xs text-[var(--muted)] font-mono mb-4">
+              Your feedback is appended to <code className="text-[var(--accent)]">vetoes.json</code> to prevent similar topics from being generated.
             </p>
 
             {/* Quick Reason Pills */}
@@ -814,8 +830,8 @@ export default function DraftViewer({
                   onClick={() => setSelectedVetoReason(reason)}
                   className={`px-3 py-1.5 rounded-lg font-mono text-xs transition-colors ${
                     selectedVetoReason === reason
-                      ? "bg-rose-500 text-neutral-950 font-bold"
-                      : "bg-neutral-900 border border-neutral-800 text-neutral-300 hover:border-neutral-700"
+                      ? "bg-red-500 text-white font-bold"
+                      : "bg-[var(--card-inner)] border border-[var(--border)] text-[var(--text)] hover:border-[var(--muted)]"
                   }`}
                 >
                   {reason}
@@ -829,14 +845,14 @@ export default function DraftViewer({
               onChange={(e) => setCustomCritique(e.target.value)}
               placeholder="Optional: Provide specific critique to guide future topic generation..."
               rows={3}
-              className="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-3 text-xs text-neutral-200 placeholder-neutral-500 font-sans focus:outline-none focus:border-rose-500 mb-4"
+              className="w-full bg-[var(--card-inner)] border border-[var(--border)] rounded-lg p-3 text-xs text-[var(--text)] placeholder-[var(--muted)] font-sans focus:outline-none focus:border-red-500 mb-4"
             />
 
             <div className="flex justify-end gap-2 font-mono text-xs">
               <button
                 type="button"
                 onClick={() => setShowVetoModal(false)}
-                className="px-4 py-2 rounded-lg border border-neutral-800 text-neutral-400 hover:text-neutral-200"
+                className="px-4 py-2 rounded-lg border border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)]"
               >
                 Cancel
               </button>
@@ -844,7 +860,7 @@ export default function DraftViewer({
                 type="button"
                 onClick={handleVeto}
                 disabled={loading}
-                className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-semibold transition-colors"
+                className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white font-semibold transition-colors"
               >
                 Confirm Veto
               </button>

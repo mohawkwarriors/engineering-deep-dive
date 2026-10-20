@@ -3,8 +3,8 @@ import React from "react";
 import Link from "next/link";
 
 export const metadata = {
-  title: "The HW Insider",
-  description: "Daily mechanical hardware engineering intelligence and teardown archive",
+  title: "The HW Insider — Hardware Engineering Intelligence",
+  description: "Daily mechanical hardware engineering intelligence, teardowns, and interactive physics.",
 };
 
 export default function RootLayout({
@@ -14,18 +14,31 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col bg-[#0a0a0b] text-neutral-200 antialiased selection:bg-amber-500/20 selection:text-amber-400">
-        <header className="sticky top-0 z-40 border-b border-neutral-800 bg-[#0a0a0b]/80 backdrop-blur-md">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="min-h-screen flex flex-col bg-[var(--bg)] text-[var(--text)] antialiased selection:bg-[var(--accent)]/20 selection:text-[var(--accent)] font-sans">
+        <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]/85 backdrop-blur-md">
           <div className="mx-auto flex h-14 max-w-4xl items-center justify-between px-4 sm:px-6">
-            <Link href="/" className="flex items-center gap-2 font-mono text-sm font-bold tracking-tight text-neutral-100 hover:text-amber-400 transition-colors">
-              <span className="text-amber-500 font-serif text-lg">⌀</span>
-              THE HW INSIDER
+            <Link href="/" className="flex items-center gap-2 group">
+              <span className="text-[var(--accent)] font-serif text-2xl leading-none">⌀</span>
+              <span className="font-serif text-xl tracking-tight text-[var(--text)] group-hover:text-[var(--accent)] transition-colors">
+                THE HW INSIDER
+              </span>
             </Link>
-            <nav className="flex items-center gap-4 text-xs font-mono text-neutral-400">
-              <Link href="/" className="hover:text-neutral-200 transition-colors">Current</Link>
-              <Link href="/archive" className="hover:text-neutral-200 transition-colors">Archive</Link>
-              <Link href="/drafts" className="text-amber-500/90 hover:text-amber-400 font-semibold transition-colors flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+            <nav className="flex items-center gap-4 text-xs font-mono text-[var(--muted)]">
+              <Link href="/" className="hover:text-[var(--text)] transition-colors">Current</Link>
+              <Link href="/archive" className="hover:text-[var(--text)] transition-colors">Archive</Link>
+              <Link
+                href="/drafts"
+                className="text-[var(--accent)] hover:text-[var(--accent-hover)] font-semibold transition-colors flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-[var(--border)] bg-[var(--surface)]"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
                 Editor
               </Link>
             </nav>
@@ -34,7 +47,7 @@ export default function RootLayout({
         <main className="flex-1 mx-auto w-full max-w-4xl px-4 py-8 sm:px-6">
           {children}
         </main>
-        <footer className="border-t border-neutral-800/80 py-6 text-center font-mono text-xs text-neutral-500">
+        <footer className="border-t border-[var(--border)] py-6 text-center font-mono text-xs text-[var(--muted)]">
           The HW Insider • Autonomous Daily Mechanical Hardware Intelligence Pipeline
         </footer>
       </body>

@@ -4,10 +4,289 @@
 
 :root {
   color-scheme: dark;
+
+  /* Theme tokens from published site */
+  --bg: #191918;
+  --surface: #232220;
+  --surface-hover: #2E2D2A;
+  --text: #EDEDEB;
+  --muted: #9E9C94;
+  --border: #383734;
+  --accent: #D97757;
+  --accent-hover: #E88868;
+  --card-inner: #1C1B19;
+
+  /* Subject category color badges */
+  --sub-product-dives: #D97757;
+  --sub-manufacturing: #3B82F6;
+  --sub-design: #8B5CF6;
+  --sub-materials: #10B981;
+  --sub-mechanisms: #F59E0B;
+  --sub-thermal: #F43F5E;
+  --sub-fluids: #06B6D4;
+  --sub-electromechanical: #6366F1;
 }
 
 body {
-  background-color: #0c0d0e;
-  color: #e5e5e5;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16.5px;
+  line-height: 1.68;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Typography Headings */
+h1, h2, .editorial-heading {
+  font-family: 'Instrument Serif', Georgia, serif;
+}
+
+h1 {
+  font-size: 38px;
+  line-height: 1.15;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+@media (min-width: 640px) {
+  h1 {
+    font-size: 44px;
+    line-height: 1.12;
+  }
+}
+
+h2 {
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-top: 48px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+
+@media (min-width: 640px) {
+  h2 {
+    font-size: 32px;
+  }
+}
+
+h3 {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 32px;
+  margin-bottom: 12px;
+  border-left: 3px solid var(--accent);
+  padding-left: 12px;
+}
+
+p {
+  margin-bottom: 18px;
+}
+
+/* Meta line and badges */
+.meta-line {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.archive-subject-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+}
+
+.sub-fluids {
+  background: rgba(6, 182, 212, 0.16) !important;
+  border-color: rgba(6, 182, 212, 0.45) !important;
+  color: var(--sub-fluids) !important;
+}
+
+.sub-thermal {
+  background: rgba(244, 63, 94, 0.16) !important;
+  border-color: rgba(244, 63, 94, 0.45) !important;
+  color: var(--sub-thermal) !important;
+}
+
+.sub-mechanisms {
+  background: rgba(245, 158, 11, 0.16) !important;
+  border-color: rgba(245, 158, 11, 0.45) !important;
+  color: var(--sub-mechanisms) !important;
+}
+
+.sub-manufacturing {
+  background: rgba(59, 130, 246, 0.16) !important;
+  border-color: rgba(59, 130, 246, 0.45) !important;
+  color: var(--sub-manufacturing) !important;
+}
+
+.sub-materials {
+  background: rgba(16, 185, 129, 0.16) !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
+  color: var(--sub-materials) !important;
+}
+
+.sub-design {
+  background: rgba(139, 92, 246, 0.16) !important;
+  border-color: rgba(139, 92, 246, 0.45) !important;
+  color: var(--sub-design) !important;
+}
+
+.sub-product-dives {
+  background: rgba(217, 119, 87, 0.18) !important;
+  border-color: rgba(217, 119, 87, 0.5) !important;
+  color: var(--sub-product-dives) !important;
+}
+
+.sub-electromechanical {
+  background: rgba(99, 102, 241, 0.16) !important;
+  border-color: rgba(99, 102, 241, 0.45) !important;
+  color: var(--sub-electromechanical) !important;
+}
+
+/* Figures and Metrology Containers */
+figure.product-figure {
+  margin: 36px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.img-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 220px;
+  background: var(--card-inner);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 12px;
+}
+
+.img-wrapper img {
+  max-width: 100%;
+  max-height: 520px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  border-radius: 4px;
+}
+
+figcaption,
+.schematic-caption {
+  padding: 12px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+figcaption strong {
+  color: var(--text);
+}
+
+.source-tag {
+  display: block;
+  margin-top: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Equations and Math Blocks */
+.math-block {
+  margin: 24px 0;
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  color: #FBBF24;
+  overflow-x: auto;
+}
+
+/* Spec Tables */
+.spec-table-wrap {
+  margin: 28px 0;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+
+.spec-table th {
+  background: var(--surface-hover);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 14px;
+  text-align: left;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.spec-table td {
+  border-bottom: 1px solid var(--border);
+  padding: 10px 14px;
+  color: var(--text);
+}
+
+.spec-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Callout Box */
+.callout-box {
+  margin: 28px 0;
+  padding: 18px 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+}
+
+.callout-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
 }

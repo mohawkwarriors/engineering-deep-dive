@@ -8,7 +8,26 @@ const config: Config = {
     "./content/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        accent: {
+          DEFAULT: "var(--accent)",
+          hover: "var(--accent-hover)",
+        },
+        surface: {
+          DEFAULT: "var(--surface)",
+          hover: "var(--surface-hover)",
+        },
+        canvas: "var(--bg)",
+        border: "var(--border)",
+        muted: "var(--muted)",
+      },
+      fontFamily: {
+        serif: ["'Instrument Serif'", "Georgia", "serif"],
+        mono: ["'JetBrains Mono'", "monospace"],
+        sans: ["'Inter'", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+      },
+    },
   },
   plugins: [typography],
 };
