@@ -366,6 +366,13 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     errors.push(`Unrendered placeholder string(s) in ${fileLabel}: ${placeholders.join(', ')}`);
   }
 
+  // 1B. Rhythmic Visual Cadence Standard (Mandate: Visual anchor every 2-3 paragraphs)
+  const paragraphCount = (html.match(/<p\b/gi) || []).length;
+  const visualCount = (html.match(/<figure\b|<div class=["']schematic-card|<div class=["']process-grid|<TechnicalCard\b|<ProcessFlow\b/gi) || []).length;
+  if (paragraphCount >= 8 && visualCount < 3) {
+    console.warn(`[VISUAL CADENCE WARNING] ${fileLabel}: Contains ${paragraphCount} paragraphs but only ${visualCount} visual anchor(s). High-depth standard requires a visual anchor every 2-3 paragraphs.`);
+  }
+
   // 2. Check all image src paths and premium quality standards
   const imgMatches = [...html.matchAll(/src=["']([^"']+)["']/g)].map(m => m[1]);
   for (const src of imgMatches) {

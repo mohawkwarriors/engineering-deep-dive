@@ -245,7 +245,7 @@ export function calculateReadTime(html) {
 
   const nonP = Math.max(0, totalWords - pWords);
   const minutes = Math.round((pWords / 220) + (nonP / 450));
-  return Math.max(8, Math.min(13, minutes));
+  return Math.max(10, Math.min(14, minutes));
 }
 
 async function run() {
@@ -445,6 +445,10 @@ STRICT EDITORIAL REQUIREMENTS:
             <span><strong>FIG 02 — TITLE:</strong> Caption description...</span>
             <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
           </div>
+      * RHYTHMIC VISUAL DENSITY MANDATE (MAX 2-3 PARAGRAPHS PER VISUAL):
+        - A visual element MUST appear at least once every 2 to 3 paragraphs across the ENTIRE dispatch.
+        - ZERO visual deserts: Sections 4, 5, and 6 MUST each contain an intervening visual anchor (e.g. FIG 03 / FIG 04 teardown/microstructure schematic, or a process-grid sequence).
+        - No block of prose may exceed 3 consecutive paragraphs without an intervening visual component.
       * NATIVE HTML VISUAL FLOWCHART / TIMELINE (MANDATORY FOR ALL SEQUENCES & PIPELINES):
         - For 3 to 5 stage kinematic sequences, signal pipelines, or manufacturing workflows, use the connected visual flowchart component:
           <div class="process-grid">

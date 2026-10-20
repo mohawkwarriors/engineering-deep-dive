@@ -149,6 +149,8 @@ EDITORIAL GUIDELINES:
 - Focus on real physical mechanisms, micro-architectures, DFM trade-offs, kinematics, fluid/thermal physics, or metallurgy.
 - Include concrete engineering numbers (tolerances in microns, pressures in Bar, torque in N·m, thermal conductivity in W/mK).
 - Write structured technical content with equations and clear physical principles.
+- Minimum read time: 10 to 12 minutes (comprehensive, rigorous engineering depth, approx 1,800 to 2,500 words).
+- RHYTHMIC VISUAL DENSITY MANDATE: Every 2 to 3 paragraphs MUST be followed by an intervening visual anchor (a {{ FIGURE_X }}, a <ProcessFlow>, or a <TechnicalCard>). Never allow more than 3 consecutive paragraphs of text without a visual anchor. Sections 4, 5, and 6 MUST each contain visual anchors.
 
 Return ONLY a valid JSON object matching this schema:
 {
@@ -157,26 +159,40 @@ Return ONLY a valid JSON object matching this schema:
   "subtitle": "Single-sentence narrative hook detailing the core physical trade-off.",
   "subject": "${subject}",
   "category": "${subject}",
-  "readTime": "9 min",
+  "readTime": "11 min",
   "summary": "2-sentence executive summary.",
   "tags": ["Tag1", "Tag2", "Tag3"],
   "figures": [
     {
       "id": "FIGURE_0",
       "placeholder": "{{ FIGURE_0 }}",
-      "search_query": "specific search terms for real hardware teardown photograph",
+      "search_query": "specific search terms for real hardware hero teardown photograph",
       "caption": "FIG 01 — TITLE: Explanatory caption highlighting specific hardware components.",
       "source": "TEARDOWN ARCHIVE"
     },
     {
       "id": "FIGURE_1",
       "placeholder": "{{ FIGURE_1 }}",
-      "search_query": "specific search terms for internal cross-section or SEM micrograph",
+      "search_query": "specific search terms for internal mechanism or fluid manifold cutaway",
       "caption": "FIG 02 — ARCHITECTURE: Cross-sectional teardown analysis.",
-      "source": "METROLOGY LAB"
+      "source": "CAD / KINEMATICS LAB"
+    },
+    {
+      "id": "FIGURE_2",
+      "placeholder": "{{ FIGURE_2 }}",
+      "search_query": "specific search terms for metallurgy SEM micrograph or DFM tooling",
+      "caption": "FIG 03 — MICROSTRUCTURE: SEM micrograph showing grain structure or micro-machined features.",
+      "source": "METALLURGY LAB"
+    },
+    {
+      "id": "FIGURE_3",
+      "placeholder": "{{ FIGURE_3 }}",
+      "search_query": "specific search terms for metrology optical inspection or failure analysis",
+      "caption": "FIG 04 — FAILURE / METROLOGY: Wear pattern or sensor validation array.",
+      "source": "METROLOGY ARCHIVE"
     }
   ],
-  "body_mdx": "## 1. Governing Mechanics\\n\\nDetailed analysis...\\n\\n{{ FIGURE_0 }}\\n\\n## 2. Component Architecture & Micro-Structures\\n\\nTechnical breakdown...\\n\\n{{ FIGURE_1 }}\\n\\n## 3. Manufacturing Tolerances & DFM\\n\\nTolerances and failure modes..."
+  "body_mdx": "## 1. Governing Mechanics\\n\\nDetailed analysis...\\n\\n{{ FIGURE_0 }}\\n\\n## 2. Component Architecture & Micro-Structures\\n\\nTechnical breakdown...\\n\\n{{ FIGURE_1 }}\\n\\n## 3. Manufacturing Tolerances & DFM\\n\\nTolerances and failure modes...\\n\\n<ProcessFlow>...</ProcessFlow>\\n\\n## 4. Metallurgy & Microstructure\\n\\nMaterial analysis...\\n\\n{{ FIGURE_2 }}\\n\\n## 5. Failure Modes & Stress Concentration\\n\\nAnalysis...\\n\\n<TechnicalCard>...</TechnicalCard>\\n\\n## 6. Empirical Validation & Metrology\\n\\nSensors and inspection...\\n\\n{{ FIGURE_3 }}"
 }`;
 
     const draftData = await callGemini(prompt, apiKey);
@@ -218,8 +234,8 @@ async function seedLocalDrafts() {
       subtitle: 'How deep reactive-ion etching overcomes fluid cavitation and acoustic crosstalk at 50 kHz droplet firing rates.',
       subject: 'Fluids',
       category: 'Fluids',
-      readTime: '9 min',
-      summary: 'Deep dive into piezoelectric MEMS inkjet printheads, silicon micromachining via Bosch DRIE, and meniscus pinning.',
+      readTime: '11 min',
+      summary: 'Deep dive into piezoelectric MEMS inkjet printheads, silicon micromachining via Bosch DRIE, acoustic impedance matching, and meniscus pinning.',
       tags: ['MEMS', 'Fluids', 'Silicon Micromachining', 'Piezo'],
       figures: [
         {
@@ -235,6 +251,20 @@ async function seedLocalDrafts() {
           search_query: 'piezoelectric actuator lead zirconate titanate PZT membrane printhead',
           caption: 'FIG 02 — PZT ACTUATOR STACK: Thin-film PZT transducer bonded to silicon acoustic cavity.',
           source: 'ACOUSTICS METROLOGY'
+        },
+        {
+          id: 'FIGURE_2',
+          placeholder: '{{ FIGURE_2 }}',
+          search_query: 'deep reactive ion etching bosch process silicon sidewall scallop SEM',
+          caption: 'FIG 03 — BOSCH DRIE MICROSTRUCTURE: Scanning electron micrograph detailing 40 nm sidewall scallops along the 89.8° vertical fluid conduit.',
+          source: 'SEM NANOFABRICATION ARCHIVE'
+        },
+        {
+          id: 'FIGURE_3',
+          placeholder: '{{ FIGURE_3 }}',
+          search_query: 'stroboscopic droplet visualization inkjet drop-on-demand high speed',
+          caption: 'FIG 04 — STROBOSCOPIC JETTING VALIDATION: High-speed optical capture of primary 6 pL droplet pinch-off and satellite tail retraction at 50 kHz.',
+          source: 'DROP DYNAMICS LAB'
         }
       ],
       body_mdx: `## 1. The Acoustic Waveguide Bottleneck
@@ -252,7 +282,7 @@ If the nozzle geometry deviates by even $\\pm 0.3 \\mu\\text{m}$, acoustic refle
 
 ## 2. Micro-Machining via Bosch Deep Reactive-Ion Etching (DRIE)
 
-To achieve perpendicular sidewall angles ($89.8^\\circ \\pm 0.1^\\circ$) through $100 \\mu\\text{m}$ thick silicon wafers, manufacturers rely on the cyclic Bosch DRIE process.
+To achieve perpendicular sidewall angles ($89.8^\\circ \\pm 0.1^\\circ$) through $100 \\mu\\text{m}$ thick silicon wafers, manufacturers rely on the cyclic Bosch DRIE process. Alternating between etching and Teflon-like polymer passivation enables deep vertical cuts without lateral erosion.
 
 {{ FIGURE_1 }}
 
@@ -270,7 +300,53 @@ To achieve perpendicular sidewall angles ($89.8^\\circ \\pm 0.1^\\circ$) through
 
 ## 3. Meniscus Dynamics & Refill Hydrodynamics
 
-After droplet pinch-off, capillary forces draw liquid from the reservoir to replenish the nozzle cavity before the next pulse. The maximum operating frequency is fundamentally bounded by the Helmholtz resonance of the fluid chamber.`
+After droplet pinch-off, capillary forces draw liquid from the reservoir to replenish the nozzle cavity before the next pulse. The maximum operating frequency is fundamentally bounded by the Helmholtz resonance of the fluid chamber.
+
+{{ FIGURE_2 }}
+
+<TechnicalCard
+  title="Micro-Fluidic Cavity Boundaries"
+  subtitle="Acoustic Helmholtz Resonance & Droplet Volume"
+  bottleneck="Residual acoustic pressure waves cause meniscus oscillation, limiting drive frequency without active dampening pulses."
+>
+  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+    <div className="rounded bg-neutral-950 p-2.5 border border-neutral-800">
+      <div className="text-amber-500 font-semibold uppercase text-[10px]">Droplet Volume</div>
+      <div className="text-neutral-200 mt-1">2.5 pL – 6.0 pL</div>
+      <div className="text-neutral-400 text-[11px] mt-0.5">Velocity: 8.5 m/s • Accuracy: ±1.2 μm</div>
+    </div>
+    <div className="rounded bg-neutral-950 p-2.5 border border-neutral-800">
+      <div className="text-amber-500 font-semibold uppercase text-[10px]">Firing Frequency</div>
+      <div className="text-neutral-200 mt-1">50 kHz Continuous</div>
+      <div className="text-neutral-400 text-[11px] mt-0.5">Period: 20 μs • Meniscus settle: 14 μs</div>
+    </div>
+    <div className="rounded bg-neutral-950 p-2.5 border border-neutral-800">
+      <div className="text-amber-500 font-semibold uppercase text-[10px]">Orifice Tolerance</div>
+      <div className="text-neutral-200 mt-1">18.5 μm ± 0.15 μm</div>
+      <div className="text-neutral-400 text-[11px] mt-0.5">Surface roughness: Ra < 15 nm</div>
+    </div>
+  </div>
+</TechnicalCard>
+
+## 4. Metallurgy & PZT Transducer Thin-Film Mechanics
+
+The actuator layer consists of a sol-gel deposited Lead Zirconate Titanate ($\text{Pb}[\text{Zr}_x\text{Ti}_{1-x}]\text{O}_3$, or PZT) ferroelectric film ($2.0 \\mu\\text{m}$ thick) sputtered onto a platinum/titanium lower electrode. 
+
+When an electrical field of $30 \\text{ V/}\\mu\\text{m}$ is applied across the dielectric, the longitudinal piezoelectric coefficient ($d_{33} \\approx 250 \\text{ pm/V}$) generates an intense mechanical strain. This strain deflects a $3.0 \\mu\\text{m}$ silicon membrane into the ink chamber by up to $0.4 \\mu\\text{m}$, creating the transient pressure spike required to eject high-viscosity functional inks.
+
+## 5. Failure Modes: Acoustic Crosstalk & Cavitation
+
+As nozzle packing density scales beyond 1,200 nozzles per inch (NPI), mechanical and acoustic cross-talk become the dominant failure modes. Pressure waves generated in one channel propagate through the silicon inter-nozzle ribs (only $15 \\mu\\text{m}$ wide), causing adjacent nozzles to fire satellite droplets or ingest air bubbles.
+
+Ingested micro-bubbles act as acoustic shock absorbers. Because gas has an acoustic impedance four orders of magnitude lower than liquid ($Z_{\\text{air}} \\approx 400 \\text{ Pa}\\cdot\\text{s/m}$ vs. $Z_{\\text{ink}} \\approx 1.5 \\times 10^6 \\text{ Pa}\\cdot\\text{s/m}$), the bubble absorbs the entire acoustic stroke, causing immediate channel starvation.
+
+## 6. Empirical Validation: Stroboscopic Droplet Metrology
+
+To validate droplet trajectory and eliminate satellite formation, printheads are tested using synchronized stroboscopic shadowgraphy.
+
+{{ FIGURE_3 }}
+
+A pulsed LED with sub-50 nanosecond flash duration illuminates the droplet stream at incremental delays ($\Delta t = 200 \\text{ ns}$) after trigger firing. Computer vision algorithms track the primary droplet volume, velocity vector, and ligament pinch-off point, ensuring the jetting stability required for 24/7 industrial additive manufacturing.`
     },
     {
       slug: 'strain-wave-gearing-flexspline-fatigue',
@@ -295,6 +371,20 @@ After droplet pinch-off, capillary forces draw liquid from the reservoir to repl
           search_query: 'elliptical wave generator flexible ball bearing cross section harmonic drive',
           caption: 'FIG 02 — WAVE GENERATOR ASSEMBLY: Flexible thin-race ball bearing deflected into an elliptical contour.',
           source: 'BEARING METROLOGY ARCHIVE'
+        },
+        {
+          id: 'FIGURE_2',
+          placeholder: '{{ FIGURE_2 }}',
+          search_query: 'strain wave gear tooth contact FEA stress distribution harmonic drive',
+          caption: 'FIG 03 — CONTACT STRESS CONCENTRATION: Finite element simulation of involute gear tooth root bending stress along major elliptical axis.',
+          source: 'FEA COMPUTATIONAL LAB'
+        },
+        {
+          id: 'FIGURE_3',
+          placeholder: '{{ FIGURE_3 }}',
+          search_query: 'harmonic drive test rig torque sensor precision robot joint metrology',
+          caption: 'FIG 04 — OPTICAL TRANSMISSION BENCH: Dual high-resolution encoder test rig measuring sub-arcsecond kinematic transmission error.',
+          source: 'ROBOTICS METROLOGY'
         }
       ],
       body_mdx: `## 1. Kinematic Mechanics of Elastic Deflection
@@ -334,7 +424,51 @@ The peak cyclic bending stress is given by:
 
 $$\\sigma_b = \\frac{E \\cdot t}{2 \\cdot R^2} \\cdot w_0$$
 
-Where $t$ is wall thickness ($0.35 \\text{ mm}$), $R$ is nominal radius, and $w_0$ is radial deflection. Controlling surface roughness to $R_a < 0.2 \\mu\\text{m}$ along the cup root radius is essential to eliminate micro-crack nucleation sites.`
+Where $t$ is wall thickness ($0.35 \\text{ mm}$), $R$ is nominal radius, and $w_0$ is radial deflection. Controlling surface roughness to $R_a < 0.2 \\mu\\text{m}$ along the cup root radius is essential to eliminate micro-crack nucleation sites.
+
+## 3. Manufacturing Tolerances & Gear Cutting
+
+Producing the external teeth on a flexible steel shell requires specialized gear shaping on precision hobbing machines prior to final heat treatment.
+
+{{ FIGURE_2 }}
+
+<ProcessFlow>
+  <ProcessStep step="01" title="Deep Draw & Flow Forming" parameters="Cold spinning • 0.35 mm wall ±0.01 mm">
+    Seamless vacuum-melted steel billet is flow-formed over a precision mandrel to establish the thin cylindrical wall.
+  </ProcessStep>
+  <ProcessStep step="02" title="Multi-Axis Precision Hobbing" parameters="DIN 4 gear quality • Sub-micron pitch">
+    High-speed CNC carbide cutters slice 200 involute micro-teeth while internal support plugs maintain roundness.
+  </ProcessStep>
+  <ProcessStep step="03" title="Vacuum Carburizing & Quench" parameters="58 HRC surface • Ductile core">
+    Surface case hardening increases tooth wear resistance while preserving an ultra-tough, crack-resistant core.
+  </ProcessStep>
+</ProcessFlow>
+
+## 4. Metallurgy: Vacuum Arc Remelting
+
+Standard commercial alloy steels contain microscopic non-metallic inclusions (oxides and sulfides) that act as stress concentration notches under cyclic bending. Strain wave flexsplines mandate **Vacuum Arc Remelted (VAR) SNCM439** or **30CrMnSiA**. 
+
+VAR processing eliminates gas voids and segregates inclusion sizes below $5 \\mu\\text{m}$, extending the high-cycle fatigue limit ($\sigma_D$) from $420 \\text{ MPa}$ to over $620 \\text{ MPa}$.
+
+## 5. Failure Modes: Ratcheting & Fretting Wear
+
+When an industrial robot experiences an emergency stop (E-stop) or high inertia impact, the flexspline teeth can skip out of engagement with the circular spline—a failure mode termed **Tooth Ratcheting**.
+
+$$\\tau_{\\text{ratchet}} = \\frac{h_{\\text{mesh}} \\cdot K_{\\text{cup}}}{2 \\cdot \\sin(\\alpha_{\\text{pressure}})}$$
+
+If peak shock load exceeds $350\\%$ of rated torque, radial deflection overcomes the wave generator clearance, permanently shearing the flexspline teeth.
+
+## 6. Empirical Validation: Sub-Arcsecond Transmission Error
+
+Kinematic accuracy is validated on an automated dual-dynamometer test cell.
+
+{{ FIGURE_3 }}
+
+Synchronous optical encoders measure the angular phase difference between high-speed input and output shafts under dynamic loading:
+
+$$\\Delta \\theta_{\\text{error}} = \\theta_{\\text{out}} - \\frac{\\theta_{\\text{in}}}{i} \\le 30 \\text{ arcseconds}$$
+
+Tracking transmission error harmonics confirms that tooth meshing remains conjugate and validates backlash-free positional repeatability under continuous robotic payloads.`
     },
     {
       slug: 'ultra-thin-vapor-chamber-wick-architecture',
@@ -342,7 +476,7 @@ Where $t$ is wall thickness ($0.35 \\text{ mm}$), $R$ is nominal radius, and $w_
       subtitle: 'How sintered copper micro-meshes and laser-welded pillar arrays prevent cavitation collapse under 80W die loads.',
       subject: 'Thermal',
       category: 'Thermal',
-      readTime: '10 min',
+      readTime: '11 min',
       summary: 'Comprehensive analysis of two-phase flat vapor chambers, capillary pumping limits, sintered micro-wick pore permeability, and vacuum sealing.',
       tags: ['Thermal', 'Vapor Chamber', 'Two-Phase Cooling', 'Smartphones'],
       figures: [
@@ -359,6 +493,20 @@ Where $t$ is wall thickness ($0.35 \\text{ mm}$), $R$ is nominal radius, and $w_
           search_query: 'sintered copper powder wick SEM micrograph thermal vapor chamber',
           caption: 'FIG 02 — SINTERED MICRO-POWDER WICK: Scanning electron micrograph showing interconnected capillary pore channels.',
           source: 'METROLOGY LAB'
+        },
+        {
+          id: 'FIGURE_2',
+          placeholder: '{{ FIGURE_2 }}',
+          search_query: 'laser diffusion bonding copper vapor chamber pillar array cross section',
+          caption: 'FIG 03 — INTERNAL COLUMN ARCHITECTURE: Micro-machined internal copper support pillars bonded under high vacuum.',
+          source: 'ADVANCED PACKAGING LAB'
+        },
+        {
+          id: 'FIGURE_3',
+          placeholder: '{{ FIGURE_3 }}',
+          search_query: 'infrared thermography heat sink thermal camera hot spot vapor chamber',
+          caption: 'FIG 04 — INFRARED THERMOGRAPHY MAPPING: FLIR thermal camera recording die heat spreading delta across planar surface.',
+          source: 'THERMAL METROLOGY'
         }
       ],
       body_mdx: `## 1. Two-Phase Latent Heat Spreading
@@ -381,7 +529,75 @@ Where maximum capillary pressure is governed by the Young-Laplace equation:
 
 $$\\Delta P_{c} = \\frac{2 \\cdot \\sigma \\cdot \\cos(\\theta)}{r_{\\text{pore}}}$$
 
-As chamber thickness scales down from 0.8 mm to 0.35 mm, vapor cavity hydraulic diameter drops cubically, causing vapor flow resistance to dominate and requiring micro-machined support column spacing under 1.2 mm.`
+As chamber thickness scales down from 0.8 mm to 0.35 mm, vapor cavity hydraulic diameter drops cubically, causing vapor flow resistance to dominate and requiring micro-machined support column spacing under 1.2 mm.
+
+## 3. Manufacturing & Precision Vacuum Sealing
+
+Fabricating a flat 0.35 mm envelope capable of withstanding 1 atmosphere of ambient crushing pressure while maintaining an internal vacuum of $10^{-3} \\text{ Torr}$ is an extreme DFM challenge.
+
+{{ FIGURE_2 }}
+
+<ProcessFlow>
+  <ProcessStep step="01" title="Chemical Etching & Pillar Array" parameters="Photolithography • 0.3 mm pitch">
+    Half-etching copper foil creates an array of structural support pillars to maintain the internal vapor space.
+  </ProcessStep>
+  <ProcessStep step="02" title="Sintered Powder Deposition" parameters="850°C vacuum furnace • 45% porosity">
+    Spherical copper micro-powder (30–50 μm diameter) is sintered into the etched floor to form the high-permeability wick.
+  </ProcessStep>
+  <ProcessStep step="03" title="Laser Hermetic Sealing & Degassing" parameters="Fiber laser • Sub-0.01 mg water charge">
+    Chamber perimeter is seam-welded, evacuated to high vacuum, charged with purified de-aerated water, and cold-weld pinched.
+  </ProcessStep>
+</ProcessFlow>
+
+## 4. Metallurgy & Micro-Wick Permeability
+
+The wick microstructure represents an optimization between capillary head (which favors small pore radius $r_{\\text{pore}}$) and liquid permeability $K$ (which favors large pores):
+
+$$K = \\frac{\\epsilon^3 \\cdot d_{\\text{powder}}^2}{150 \\cdot (1 - \\epsilon)^2}$$
+
+By combining coarse copper powder ($60 \\mu\\text{m}$) for high permeability with an ultra-fine mesh upper layer ($25 \\mu\\text{m}$), composite wicks achieve both $150 \\text{ mm}$ capillary lift and minimal liquid flow drag.
+
+<TechnicalCard
+  title="Two-Phase Thermal Limits Matrix"
+  subtitle="0.35 mm Planar Copper Envelopes under Concentrated Die Loads"
+  bottleneck="Vapor space choking occurs when vapor velocity approaches acoustic sonic limit: v_vapor >= 0.2 · c_sonic."
+>
+  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+    <div className="rounded bg-neutral-950 p-2.5 border border-neutral-800">
+      <div className="text-amber-500 font-semibold uppercase text-[10px]">Thermal Conductivity</div>
+      <div className="text-neutral-200 mt-1">k_eff > 6,500 W/(m·K)</div>
+      <div className="text-neutral-400 text-[11px] mt-0.5">16x higher than pure copper slab</div>
+    </div>
+    <div className="rounded bg-neutral-950 p-2.5 border border-neutral-800">
+      <div className="text-amber-500 font-semibold uppercase text-[10px]">Max Heat Flux</div>
+      <div className="text-neutral-200 mt-1">85 W/cm² Continuous</div>
+      <div className="text-neutral-400 text-[11px] mt-0.5">Dryout limit: 110 W/cm² at 95°C die</div>
+    </div>
+    <div className="rounded bg-neutral-950 p-2.5 border border-neutral-800">
+      <div className="text-amber-500 font-semibold uppercase text-[10px]">Wall Thickness</div>
+      <div className="text-neutral-200 mt-1">0.08 mm OFHC Copper</div>
+      <div className="text-neutral-400 text-[11px] mt-0.5">Burst pressure: > 4.5 Bar @ 120°C</div>
+    </div>
+  </div>
+</TechnicalCard>
+
+## 5. Failure Modes: Non-Condensable Gas (NCG) & Dryout
+
+The primary long-term reliability failure mode of copper-water vapor chambers is the generation of **Non-Condensable Gas (NCG)**.
+
+Trace chemical impurities or hydrogen generated through redox reactions between water and copper oxides gather at the condenser ends:
+
+$$\\text{Cu} + \\text{H}_2\\text{O} \\rightleftharpoons \\text{CuO} + \\text{H}_2 \\uparrow$$
+
+Even 0.01 standard cubic centimeters of hydrogen gas blankets the condensation zone, collapsing the active surface area and causing die temperatures to spike by over $25^\\circ\\text{C}$ after 1,000 thermal shock cycles.
+
+## 6. Empirical Validation: Infrared Thermography & Calorimetry
+
+Thermal performance is verified on a NIST-traceable thermal resistance test bench.
+
+{{ FIGURE_3 }}
+
+A calibrated copper heater block delivers concentrated heat flux ($10 \\times 10 \\text{ mm}$ die footprint) while high-speed FLIR radiometric cameras record surface temperature isotherms across the envelope. By measuring the temperature delta between evaporator and condenser ($\Delta T_{\\text{evap-cond}}$), engineers confirm effective thermal conductivities exceeding $6{,}500 \\text{ W/(m}\\cdot\\text{K)}$ across the full operating envelope.`
     }
   ];
 
