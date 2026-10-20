@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { ProcessFlow, ProcessStep } from "./ProcessFlow";
 import { TechnicalCard } from "./TechnicalCard";
+import { TechnicalTangent } from "./TechnicalTangent";
 
 interface ImageCandidate {
   url: string;
@@ -410,12 +411,12 @@ export default function DraftViewer({
     );
   };
 
-  // Inline Formatter for Markdown (Bold, Italic, Code) and KaTeX Inline Math ($...$)
+  // Inline Formatter for Markdown (Bold, Italic, Code), KaTeX Inline Math ($...$), and Technical Tangents
   const renderFormattedText = (text: string): React.ReactNode => {
     if (!text) return null;
 
-    // Matches: $inline math$, **bold**, *italic*, `code`
-    const regex = /(\$[^$\n]+\$|\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g;
+    // Matches: <TechnicalTangent ... />, <span class="tangent-term" ...>, $inline math$, **bold**, *italic*, `code`
+    const regex = /(<TechnicalTangent\s+[^/>]+\/>|<span\s+class(?:Name)?="tangent-term"[^>]*>[\s\S]*?<\/span>|\$[^$\n]+\$|\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g;
     const elements: React.ReactNode[] = [];
     let lastIndex = 0;
     let match: RegExpExecArray | null;
@@ -428,7 +429,45 @@ export default function DraftViewer({
       const token = match[0];
       const key = `fmt-${match.index}-${elements.length}`;
 
-      if (token.startsWith("$") && token.endsWith("$") && token.length > 2) {
+      if (token.startsWith("<TechnicalTangent")) {
+        const term = token.match(/term="([^"]+)"/)?.[1] || "Technical Term";
+        const category = token.match(/category="([^"]+)"/)?.[1] || "ENGINEERING";
+        const definition = token.match(/definition="([^"]+)"/)?.[1] || "";
+        const equation = token.match(/equation="([^"]+)"/)?.[1];
+
+        elements.push(
+          <TechnicalTangent
+            key={key}
+            term={term}
+            category={category}
+            definition={definition}
+            equation={equation}
+          />
+        );
+      } else if (token.startsWith("<span")) {
+        const tKey = token.match(/data-tangent="([^"]+)"/)?.[1] || "";
+        const innerText = token.replace(/<[^>]+>/g, "").trim();
+        const dictEntry = activeDraft?.tangents?.[tKey];
+
+        if (dictEntry) {
+          const bodyText = dictEntry.body ? dictEntry.body.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() : "";
+          elements.push(
+            <TechnicalTangent
+              key={key}
+              term={dictEntry.title || innerText}
+              category={dictEntry.tag || "ENGINEERING"}
+              definition={bodyText}
+              equation={dictEntry.equation}
+            />
+          );
+        } else {
+          elements.push(
+            <span key={key} className="tangent-term">
+              {innerText}
+            </span>
+          );
+        }
+      } else if (token.startsWith("$") && token.endsWith("$") && token.length > 2) {
         const tex = token.slice(1, -1);
         try {
           const html = katex.renderToString(tex, {
@@ -478,17 +517,21 @@ export default function DraftViewer({
     return elements.length === 1 ? elements[0] : elements;
   };
 
-  // Text Chunk Renderer (Headings, Paragraphs, Math, ProcessFlow, TechnicalCard)
+  // Text Chunk Renderer (Headings, Paragraphs, Math, ProcessFlow, TechnicalCard, SpecTables, Callouts)
   const renderTextChunk = (chunk: string, keyPrefix: string) => {
     if (!chunk || !chunk.trim()) return null;
 
     // 1. Normalize line endings
     let normalized = chunk.replace(/\r\n/g, "\n");
 
-    // 2. Ensure ProcessFlow and TechnicalCard blocks have blank lines around them
+    // 2. Ensure ProcessFlow, TechnicalCard, SpecTable, Callout, SchematicCard, and MetricsBar have blank lines around them
     normalized = normalized
       .replace(/\n*(<ProcessFlow[\s\S]*?<\/ProcessFlow>)\n*/g, "\n\n$1\n\n")
-      .replace(/\n*(<TechnicalCard[\s\S]*?<\/TechnicalCard>)\n*/g, "\n\n$1\n\n");
+      .replace(/\n*(<TechnicalCard[\s\S]*?<\/TechnicalCard>)\n*/g, "\n\n$1\n\n")
+      .replace(/\n*(<div\s+class(?:Name)?="spec-table-wrap"[\s\S]*?<\/div>)\n*/g, "\n\n$1\n\n")
+      .replace(/\n*(<div\s+class(?:Name)?="callout-box"[\s\S]*?<\/div>)\n*/g, "\n\n$1\n\n")
+      .replace(/\n*(<div\s+class(?:Name)?="schematic-card"[\s\S]*?<\/div>\s*<\/div>)\n*/g, "\n\n$1\n\n")
+      .replace(/\n*(<div\s+class(?:Name)?="(?:executive-metrics-bar|telemetry-bar)"[\s\S]*?<\/div>)\n*/g, "\n\n$1\n\n");
 
     // 3. Ensure $$...$$ block math has blank lines around it
     normalized = normalized.replace(/\n*(\$\$[^\$]+?\$\$)\n*/g, "\n\n$1\n\n");
@@ -629,6 +672,45 @@ export default function DraftViewer({
                   />
                 ) : null}
               </TechnicalCard>
+            );
+          }
+
+          if (trimmed.includes("spec-table-wrap") || trimmed.includes("<table")) {
+            return (
+              <div
+                key={`${keyPrefix}-b-${bIdx}`}
+                className="spec-table-wrap"
+                dangerouslySetInnerHTML={{ __html: trimmed }}
+              />
+            );
+          }
+
+          if (trimmed.includes("callout-box")) {
+            return (
+              <div
+                key={`${keyPrefix}-b-${bIdx}`}
+                className="callout-box"
+                dangerouslySetInnerHTML={{ __html: trimmed }}
+              />
+            );
+          }
+
+          if (trimmed.includes("schematic-card")) {
+            return (
+              <div
+                key={`${keyPrefix}-b-${bIdx}`}
+                className="schematic-card"
+                dangerouslySetInnerHTML={{ __html: trimmed }}
+              />
+            );
+          }
+
+          if (trimmed.includes("executive-metrics-bar") || trimmed.includes("telemetry-bar")) {
+            return (
+              <div
+                key={`${keyPrefix}-b-${bIdx}`}
+                dangerouslySetInnerHTML={{ __html: trimmed }}
+              />
             );
           }
 
