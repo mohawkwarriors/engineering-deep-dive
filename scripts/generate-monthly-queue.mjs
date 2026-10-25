@@ -4,6 +4,7 @@ import { safeJsonParse } from './generate-dispatch.mjs';
 import { getLearnedEditorialDirectives } from './feedback-learner.mjs';
 
 const INDEX_PATH = path.join(process.cwd(), 'index.html');
+const LEGACY_INDEX_PATH = path.join(process.cwd(), 'legacy', 'index.html');
 const CONTENT_DIR = path.join(process.cwd(), 'content');
 const QUEUE_PATH = path.join(CONTENT_DIR, 'upcoming-queue.json');
 const VETOES_PATH = path.join(CONTENT_DIR, 'vetoes.json');
@@ -27,16 +28,53 @@ async function generateQueue() {
     process.exit(1);
   }
 
-  console.log("Reading index.html...");
-  const html = await fs.readFile(INDEX_PATH, 'utf-8');
+  // 0. Discover latest issue number and past published titles from content/issues
+  let latestNum = 0;
+  const pastTitles = [];
+  const issuesDir = path.join(CONTENT_DIR, 'issues');
+  try {
+    const existingFiles = await fs.readdir(issuesDir);
+    for (const f of existingFiles) {
+      const match = f.match(/^(\d{3})\.(?:json|mdx)$/);
+      if (match) {
+        const n = parseInt(match[1], 10);
+        if (n > latestNum) latestNum = n;
+      }
+      if (f.endsWith('.json')) {
+        try {
+          const raw = await fs.readFile(path.join(issuesDir, f), 'utf-8');
+          const parsed = JSON.parse(raw);
+          if (parsed.title) pastTitles.push(parsed.title);
+        } catch {}
+      }
+    }
+  } catch (err) {
+    console.warn("Could not inspect content/issues:", err.message);
+  }
 
-  // Discover latest issue number from TOPICS catalog (e.g. id: "#003")
-  const issueMatch = html.match(/id:\s*"#(\d+)"/) || html.match(/"#(\d+)":/);
-  const latestNum = issueMatch ? parseInt(issueMatch[1], 10) : 3;
+  // Load index.html or legacy/index.html if available
+  let html = null;
+  for (const cand of [INDEX_PATH, LEGACY_INDEX_PATH]) {
+    try {
+      html = await fs.readFile(cand, 'utf-8');
+      console.log(`Read topic catalog from ${path.basename(cand)}`);
+      break;
+    } catch {}
+  }
+
+  if (html) {
+    if (latestNum === 0) {
+      const issueMatch = html.match(/id:\s*"#(\d+)"/) || html.match(/"#(\d+)":/);
+      latestNum = issueMatch ? parseInt(issueMatch[1], 10) : 3;
+    }
+    const legacyTitles = [...html.matchAll(/title:\s*"([^"]+)"/g)].map(m => m[1]);
+    for (const lt of legacyTitles) {
+      if (!pastTitles.includes(lt)) pastTitles.push(lt);
+    }
+  }
+
+  if (latestNum === 0) latestNum = 7;
   const startNum = latestNum + 1;
-
-  // Extract past published titles
-  const pastTitles = [...html.matchAll(/title:\s*"([^"]+)"/g)].map(m => m[1]);
   const recentTitlesList = pastTitles.slice(0, 40).map(t => `• ${t}`).join('\n');
 
   // Load learned vetoes

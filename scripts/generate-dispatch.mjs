@@ -5,6 +5,7 @@ import { selectHeroImage } from './select-hero-image.mjs';
 import { getLearnedEditorialDirectives } from './feedback-learner.mjs';
 
 const INDEX_PATH = path.join(process.cwd(), 'index.html');
+const LEGACY_INDEX_PATH = path.join(process.cwd(), 'legacy', 'index.html');
 const CONTENT_DIR = path.join(process.cwd(), 'content');
 const BACKLOG_PATH = path.join(CONTENT_DIR, 'backlog.json');
 const VETOES_PATH = path.join(CONTENT_DIR, 'vetoes.json');
@@ -255,12 +256,54 @@ async function run() {
     process.exit(1);
   }
 
-  console.log("Reading index.html...");
-  const html = await fs.readFile(INDEX_PATH, 'utf-8');
+  // 0. Discover latest issue number and past published titles from content/issues
+  let latestNum = 0;
+  const pastTitles = [];
+  const issuesDir = path.join(CONTENT_DIR, 'issues');
+  try {
+    const existingFiles = await fs.readdir(issuesDir);
+    for (const f of existingFiles) {
+      const match = f.match(/^(\d{3})\.(?:json|mdx)$/);
+      if (match) {
+        const n = parseInt(match[1], 10);
+        if (n > latestNum) latestNum = n;
+      }
+      if (f.endsWith('.json')) {
+        try {
+          const raw = await fs.readFile(path.join(issuesDir, f), 'utf-8');
+          const parsed = JSON.parse(raw);
+          if (parsed.title) pastTitles.push(parsed.title);
+        } catch {}
+      }
+    }
+  } catch (err) {
+    console.warn("Could not inspect content/issues:", err.message);
+  }
 
-  // Match the latest issue number from TOPICS catalog (e.g. id: "#003")
-  const issueMatch = html.match(/id:\s*"#(\d+)"/) || html.match(/"#(\d+)":/);
-  const latestNum = issueMatch ? parseInt(issueMatch[1], 10) : 3;
+  // Load index.html or legacy/index.html if available
+  let html = null;
+  let targetHtmlPath = null;
+  for (const cand of [INDEX_PATH, LEGACY_INDEX_PATH]) {
+    try {
+      html = await fs.readFile(cand, 'utf-8');
+      targetHtmlPath = cand;
+      console.log(`Read topic catalog from ${path.basename(cand)}`);
+      break;
+    } catch {}
+  }
+
+  if (html) {
+    if (latestNum === 0) {
+      const issueMatch = html.match(/id:\s*"#(\d+)"/) || html.match(/"#(\d+)":/);
+      latestNum = issueMatch ? parseInt(issueMatch[1], 10) : 3;
+    }
+    const legacyTitles = [...html.matchAll(/title:\s*"([^"]+)"/g)].map(m => m[1]);
+    for (const lt of legacyTitles) {
+      if (!pastTitles.includes(lt)) pastTitles.push(lt);
+    }
+  }
+
+  if (latestNum === 0) latestNum = 7;
   const nextNum = latestNum + 1;
   const nextId = `#${String(nextNum).padStart(3, '0')}`;
   const nextFileId = String(nextNum).padStart(3, '0');
@@ -294,7 +337,6 @@ async function run() {
     ? vetoedTopics.map(v => `• VETOED: ${v.topic || v.title} (${v.discipline || v.subject || 'Hardware'}) — ${v.summary || v.reason || 'Off-target'}`).join('\n')
     : "None yet.";
 
-  const pastTitles = [...html.matchAll(/title:\s*"([^"]+)"/g)].map(m => m[1]);
   const recentTitlesList = pastTitles.slice(0, 35).map(t => `• ${t}`).join('\n');
 
   console.log(`Authoring Issue ${nextId} for ${dateStr}...`);
@@ -741,6 +783,23 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
   await fs.writeFile(issueJsonPath, JSON.stringify(issuePayload, null, 2), 'utf-8');
   console.log(`Saved issue payload to ${issueJsonPath}`);
 
+  // 3B. Write Next.js MDX file: content/issues/{num}.mdx
+  const issueMdxPath = path.join(CONTENT_DIR, 'issues', `${nextFileId}.mdx`);
+  const readTime = calculateReadTime(articleData.article_html || '');
+  const mdxContent = `---
+issue: "${nextFileId}"
+title: "${articleData.title.replace(/"/g, '\\"')}"
+subtitle: "${(articleData.subtitle || '').replace(/"/g, '\\"')}"
+date: "${isoDate}"
+subject: "${articleData.subject || 'Hardware'}"
+readTime: "${readTime} min"
+---
+
+${(articleData.article_html || '').trim()}
+`;
+  await fs.writeFile(issueMdxPath, mdxContent, 'utf-8');
+  console.log(`Saved Next.js MDX to ${issueMdxPath}`);
+
   // 4. Write Markdown archive mirror
   const slug = articleData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   const mdPath = path.join(CONTENT_DIR, `${isoDate}-${slug}.md`);
@@ -748,12 +807,18 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
   await fs.writeFile(mdPath, mdContent, 'utf-8');
   console.log(`Saved Markdown archive to ${mdPath}`);
 
-  // 5. Update index.html TOPICS catalog
-  const shortTitle = articleData.shortTitle || (articleData.title.includes(':') ? articleData.title.split(':')[0].trim() : articleData.title);
-  const topicEntry = `      { id: "${nextId}", subject: "${articleData.subject}", title: "${articleData.title}", shortTitle: "${shortTitle}", status: "Published", date: "${dateStr}" },\n`;
-  const updatedHtml = html.replace(/(const TOPICS = \[\r?\n)/, `$1${topicEntry}`);
-  await fs.writeFile(INDEX_PATH, updatedHtml, 'utf-8');
-  console.log(`Registered ${nextId} in index.html TOPICS catalog`);
+  // 5. Update index.html / legacy/index.html TOPICS catalog if available
+  if (targetHtmlPath && html) {
+    try {
+      const shortTitle = articleData.shortTitle || (articleData.title.includes(':') ? articleData.title.split(':')[0].trim() : articleData.title);
+      const topicEntry = `      { id: "${nextId}", subject: "${articleData.subject}", title: "${articleData.title}", shortTitle: "${shortTitle}", status: "Published", date: "${dateStr}" },\n`;
+      const updatedHtml = html.replace(/(const TOPICS = \[\r?\n)/, `$1${topicEntry}`);
+      await fs.writeFile(targetHtmlPath, updatedHtml, 'utf-8');
+      console.log(`Registered ${nextId} in ${path.basename(targetHtmlPath)} TOPICS catalog`);
+    } catch (err) {
+      console.warn(`Could not update ${targetHtmlPath}:`, err.message);
+    }
+  }
 
   // 6. Update backlog.json (mark topic as published)
   if (selectedTopic && backlog.length > 0) {

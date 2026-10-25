@@ -1006,8 +1006,14 @@ export function validateArticleHtml(html, fileLabel = 'article') {
   }
 
   // 6. Global CSS Class Coverage Audit against index.html
-  if (fs.existsSync('index.html')) {
-    const indexHtml = fs.readFileSync('index.html', 'utf8');
+  const indexHtml = fs.existsSync('index.html')
+    ? fs.readFileSync('index.html', 'utf8')
+    : fs.existsSync('legacy/index.html')
+    ? fs.readFileSync('legacy/index.html', 'utf8')
+    : '';
+  if (indexHtml) {
+
+
     const classMatches = [...html.matchAll(/class=["']([^"']+)["']/g)];
     const verifiedClasses = new Set();
     for (const cm of classMatches) {
