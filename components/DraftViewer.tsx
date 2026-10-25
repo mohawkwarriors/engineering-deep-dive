@@ -141,8 +141,17 @@ function renderInlineKaTeXAndMarkdown(text: string): string {
     }
   );
 
+  // 1.5. Display math formulas ($$...$$)
+  html = html.replace(/\$\$([\s\S]+?)\$\$/g, (_, math) => {
+    try {
+      return katex.renderToString(math.trim(), { displayMode: true, throwOnError: false });
+    } catch {
+      return `<pre><code>${math}</code></pre>`;
+    }
+  });
+
   // 2. Math formulas ($...$)
-  html = html.replace(/\$([^\$\n]+?)\$/g, (_, math) => {
+  html = html.replace(/(?<!\\)\$([^\$\n]+?)(?<!\\)\$/g, (_, math) => {
     try {
       return katex.renderToString(math.trim(), { displayMode: false, throwOnError: false });
     } catch {
@@ -291,6 +300,7 @@ export default function DraftViewer({
   // Modular sections for active draft
   const [activeSections, setActiveSections] = useState<DraftSection[]>([]);
   const [refocusingSecId, setRefocusingSecId] = useState<string | null>(null);
+  const [editingSecId, setEditingSecId] = useState<string | null>(null);
 
   // Veto modal state
   const [showVetoModal, setShowVetoModal] = useState(false);
@@ -667,6 +677,47 @@ export default function DraftViewer({
     setTimeout(() => setActionMessage(null), 2000);
   };
 
+  // Save draft changes without publishing or buffering
+  const handleSaveDraft = async () => {
+    if (!activeDraft) return;
+    setLoading(true);
+    setActionMessage("Saving draft changes...");
+
+    try {
+      const updatedFigures = (activeDraft.figures || []).map((fig, idx) => ({
+        ...fig,
+        selectedIndex: selectedImages[idx] ?? 0,
+        activeTab: activeFigTabs[idx] || "carousel",
+        cadSvg: cadSvgs[idx] || fig.cadSvg,
+      }));
+
+      const res = await fetch("/api/drafts/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          filename: activeDraft.filename,
+          title: editedTitle || activeDraft.title,
+          figures: updatedFigures,
+          sections: activeSections,
+          subtitle: activeDraft.subtitle,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Save failed");
+      }
+
+      setActionMessage("✓ Draft changes saved to staging!");
+      setTimeout(() => setActionMessage(null), 2000);
+    } catch (err: any) {
+      alert(`Save error: ${err.message}`);
+      setActionMessage(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Approval handlers: "buffer" vs "publish"
   const handleApprove = async (targetMode: "buffer" | "publish" = "publish") => {
     if (!activeDraft) return;
@@ -680,6 +731,7 @@ export default function DraftViewer({
         ...fig,
         selectedIndex: selectedImages[idx] ?? 0,
         activeTab: activeFigTabs[idx] || "carousel",
+        cadSvg: cadSvgs[idx] || fig.cadSvg,
       }));
 
       const res = await fetch("/api/drafts/approve", {
@@ -1118,8 +1170,68 @@ export default function DraftViewer({
               {sec.hidden ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
               {sec.hidden ? "Restore" : "1-Click Hide"}
             </button>
+            <button
+              type="button"
+              onClick={() => setEditingSecId(editingSecId === sec.id ? null : sec.id)}
+              className={`flex items-center gap-1 px-2 py-1 rounded border font-mono text-[11px] font-semibold transition-all ${
+                editingSecId === sec.id
+                  ? "border-[var(--accent)] text-[var(--accent)] bg-[var(--accent)]/15"
+                  : "border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)]"
+              }`}
+              title="Edit section heading or text"
+            >
+              <Edit2 className="w-3 h-3" />
+              {editingSecId === sec.id ? "Done" : "Edit Text"}
+            </button>
           </div>
         </div>
+
+        {/* Inline Section Editor */}
+        {editingSecId === sec.id && (
+          <div className="space-y-3 mb-4 p-3.5 rounded-lg border border-[var(--accent)]/40 bg-[var(--card-inner)]">
+            <div>
+              <label className="text-[10px] font-mono uppercase text-[var(--muted)] mb-1 block">
+                Section Heading:
+              </label>
+              <input
+                type="text"
+                value={sec.heading}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setActiveSections((prev) =>
+                    prev.map((s) => (s.id === sec.id ? { ...s, heading: val } : s))
+                  );
+                }}
+                className="w-full bg-[var(--surface)] border border-[var(--border)] rounded px-3 py-1.5 text-xs text-[var(--text)] font-mono focus:border-[var(--accent)] focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="text-[10px] font-mono uppercase text-[var(--muted)] mb-1 block">
+                Section Content (Markdown + KaTeX + Interactive Components):
+              </label>
+              <textarea
+                rows={8}
+                value={sec.content}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setActiveSections((prev) =>
+                    prev.map((s) => (s.id === sec.id ? { ...s, content: val } : s))
+                  );
+                }}
+                className="w-full bg-[var(--surface)] border border-[var(--border)] rounded p-3 text-xs text-[var(--text)] font-mono focus:border-[var(--accent)] focus:outline-none leading-relaxed"
+              />
+            </div>
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => setEditingSecId(null)}
+                className="px-3 py-1.5 rounded bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-xs font-mono font-semibold"
+              >
+                Close Editor
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Preset Refocus Buttons */}
         <div className="flex flex-wrap items-center gap-1.5 mb-4 pb-2 border-b border-[var(--border)] text-[10px]">
@@ -1664,10 +1776,22 @@ export default function DraftViewer({
             type="button"
             onClick={() => setShowVetoModal(true)}
             disabled={loading}
-            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-red-500/40 bg-red-500/10 text-red-400 font-mono text-xs sm:text-sm font-semibold hover:bg-red-500/20 active:scale-[0.98] transition-all disabled:opacity-50"
+            className="flex-1 flex items-center justify-center gap-2 py-3 px-3 rounded-xl border border-red-500/40 bg-red-500/10 text-red-400 font-mono text-xs sm:text-sm font-semibold hover:bg-red-500/20 active:scale-[0.98] transition-all disabled:opacity-50"
           >
             <X className="w-4 h-4 stroke-[2.5]" />
             <span>VETO TOPIC</span>
+          </button>
+
+          {/* Save Draft in-place */}
+          <button
+            type="button"
+            onClick={handleSaveDraft}
+            disabled={loading}
+            className="flex-1 flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl border border-[var(--border)] bg-[var(--card-inner)] text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--accent)] font-mono text-xs sm:text-sm font-semibold transition-all disabled:opacity-50"
+            title="Save changes to staging draft without publishing"
+          >
+            <UploadCloud className="w-4 h-4 stroke-[2]" />
+            <span>SAVE DRAFT</span>
           </button>
 
           {/* Approve to Buffer Button (Dual-Track 10-15 buffer) */}

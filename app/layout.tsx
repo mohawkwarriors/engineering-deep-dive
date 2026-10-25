@@ -2,10 +2,24 @@ import "./globals.css";
 import "katex/dist/katex.min.css";
 import React from "react";
 import Link from "next/link";
+import type { Metadata, Viewport } from "next";
 
-export const metadata = {
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#191918",
+};
+
+export const metadata: Metadata = {
   title: "The HW Insider — Hardware Engineering Intelligence",
   description: "Daily mechanical hardware engineering intelligence, teardowns, and interactive physics.",
+  metadataBase: new URL("https://thehwinsider.com"),
+  openGraph: {
+    title: "The HW Insider — Hardware Engineering Intelligence",
+    description: "Daily mechanical hardware engineering intelligence, teardowns, and interactive physics.",
+    siteName: "The HW Insider",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

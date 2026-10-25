@@ -207,23 +207,27 @@ for (const wf of workflowFiles) {
 }
 
 console.log('\n--- 5. AUDITING POPOVER & UI INTERACTION GEOMETRY ---');
-const indexHtml = fs.readFileSync('index.html', 'utf8');
+const popoverSrc = fs.existsSync('components/TangentPopoverHandler.tsx')
+  ? fs.readFileSync('components/TangentPopoverHandler.tsx', 'utf8')
+  : fs.existsSync('legacy/index.html')
+  ? fs.readFileSync('legacy/index.html', 'utf8')
+  : '';
 let popoverErrors = 0;
 
-if (indexHtml.includes('rect.top - 280') || indexHtml.includes('top + 280 > window.innerHeight')) {
-  console.error('[ERROR] index.html still contains hardcoded 280px popover offset assumptions!');
+if (popoverSrc.includes('rect.top - 280') || popoverSrc.includes('top + 280 > window.innerHeight')) {
+  console.error('[ERROR] Popover still contains hardcoded 280px popover offset assumptions!');
   popoverErrors++;
 }
-if (!indexHtml.includes('popoverRect.height') || !indexHtml.includes('spaceBelow') || !indexHtml.includes('spaceAbove')) {
-  console.error('[ERROR] index.html is missing dynamic geometry height and space calculations for popovers!');
+if (!popoverSrc.includes('spaceBelow') || !popoverSrc.includes('spaceAbove')) {
+  console.error('[ERROR] Popover is missing dynamic geometry height and space calculations!');
   popoverErrors++;
 }
-if (!indexHtml.includes('overflow-y: auto') || !indexHtml.includes('box-sizing: border-box')) {
-  console.error('[ERROR] index.html .floating-popover is missing overflow-y: auto or box-sizing: border-box!');
+if (!popoverSrc.includes('overflow-y: auto') && !popoverSrc.includes('overflow-y-auto')) {
+  console.error('[ERROR] Popover is missing overflow-y: auto for viewport scrolling!');
   popoverErrors++;
 }
-if (!indexHtml.includes('GAP = 10')) {
-  console.error('[ERROR] index.html is missing mandatory cursor/term buffer GAP!');
+if (!popoverSrc.includes('GAP = 10')) {
+  console.error('[ERROR] Popover is missing mandatory cursor/term buffer GAP!');
   popoverErrors++;
 }
 

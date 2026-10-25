@@ -2,11 +2,24 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Archive — The HW Insider",
+  description: "All published daily mechanical engineering intelligence dispatches and teardowns.",
+};
 
 export default function ArchivePage() {
   const issuesDir = path.join(process.cwd(), "content/issues");
   const files = fs.existsSync(issuesDir)
-    ? fs.readdirSync(issuesDir).filter((f) => f.endsWith(".mdx")).sort().reverse()
+    ? fs
+        .readdirSync(issuesDir)
+        .filter((f) => /^\d{3}\.mdx$/.test(f))
+        .sort((a, b) => {
+          const numA = parseInt(a.replace(".mdx", ""), 10) || 0;
+          const numB = parseInt(b.replace(".mdx", ""), 10) || 0;
+          return numB - numA;
+        })
     : [];
 
   const issues = files.map((filename) => {
@@ -35,7 +48,10 @@ export default function ArchivePage() {
               <span>•</span>
               <span className="text-neutral-500">{item.date}</span>
             </div>
-            <Link href={`/issue/${item.slug}`} className="text-base font-semibold text-neutral-200 group-hover:text-amber-400 transition-colors">
+            <Link
+              href={`/issue/${item.slug}`}
+              className="text-base font-semibold text-neutral-200 group-hover:text-amber-400 transition-colors"
+            >
               {item.title}
             </Link>
             <p className="text-xs text-neutral-400 font-sans mt-1 line-clamp-2">

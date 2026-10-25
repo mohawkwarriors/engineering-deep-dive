@@ -53,14 +53,28 @@ export async function POST(req: NextRequest) {
       finalizedMdx = draft.body_mdx || "";
     }
 
-    // Replace figure placeholders in finalized MDX with selected figures
+    // Replace figure placeholders in finalized MDX with selected figures (handling CAD vector schematics)
     for (let i = 0; i < finalFigures.length; i++) {
       const fig = finalFigures[i];
       const selectedIndex = typeof fig.selectedIndex === "number" ? fig.selectedIndex : 0;
       const selectedImg = fig.images?.[selectedIndex] || fig.images?.[0] || { url: "", title: "", source: "" };
       const placeholder = fig.placeholder || `{{ FIGURE_${i} }}`;
 
-      const figureSnippet = `
+      let figureSnippet = "";
+      if (fig.activeTab === "cad" && fig.cadSvg) {
+        figureSnippet = `
+<figure className="product-figure my-8 rounded-lg border border-neutral-800 bg-neutral-900/60 overflow-hidden">
+  <div className="img-wrapper relative w-full bg-[#191918] p-2 sm:p-4 flex items-center justify-center">
+    ${fig.cadSvg}
+  </div>
+  <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800 flex justify-between items-center gap-2">
+    <span>${fig.caption || selectedImg.title || finalTitle}</span>
+    <span className="text-[10px] text-emerald-400 uppercase tracking-wider font-semibold">100% CLEAN HOUSE-STYLE CAD SCHEMATIC</span>
+  </figcaption>
+</figure>
+`;
+      } else {
+        figureSnippet = `
 <figure className="product-figure my-8 rounded-lg border border-neutral-800 bg-neutral-900/60 overflow-hidden">
   <div className="img-wrapper relative w-full h-72 sm:h-96 bg-neutral-950">
     <img src="${selectedImg.url}" alt="${fig.caption || selectedImg.title || finalTitle}" className="w-full h-full object-cover" />
@@ -71,6 +85,7 @@ export async function POST(req: NextRequest) {
   </figcaption>
 </figure>
 `;
+      }
 
       finalizedMdx = finalizedMdx.split(placeholder).join(figureSnippet);
     }

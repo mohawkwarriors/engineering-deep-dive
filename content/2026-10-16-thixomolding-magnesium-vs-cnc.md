@@ -4,7 +4,7 @@
 
 <h1>How Laptops Get Featherweight Metal Shells</h1>
 <p class="subtitle">
-  Why injection molding semi-solid magnesium slurry beats 5-axis CNC machining for sub-millimeter ultrabooks—and how laminar metal flow unlocks featherweight unibody stiffness.
+  Injection molding semi-solid magnesium slurry beats 5-axis CNC machining for sub-millimeter ultrabooks, using laminar metal flow to unlock featherweight unibody stiffness.
 </p>
 
 <!-- FIG 01: REAL TEARDOWN PHOTOGRAPHY OF PRODUCTION MAGNESIUM CHASSIS -->

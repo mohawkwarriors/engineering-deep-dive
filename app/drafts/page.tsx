@@ -15,24 +15,34 @@ export default async function DraftsPage({
   let approvedCount = 0;
 
   try {
-    const approvedFiles = await listApprovedDrafts();
+    const [approvedFiles, draftFiles] = await Promise.all([
+      listApprovedDrafts(),
+      listStagingDrafts(),
+    ]);
     approvedCount = approvedFiles.length;
 
-    const draftFiles = await listStagingDrafts();
-    for (const file of draftFiles) {
-      const res = await readFileContent(file.path);
-      if (res && res.content) {
-        try {
-          const parsed = JSON.parse(res.content);
-          drafts.push({
-            filename: file.name,
-            filePath: file.path,
-            ...parsed,
-          });
-        } catch (e) {
-          console.error(`Error parsing draft ${file.name}:`, e);
+    const draftItems = await Promise.all(
+      draftFiles.map(async (file) => {
+        const res = await readFileContent(file.path);
+        if (res && res.content) {
+          try {
+            const parsed = JSON.parse(res.content);
+            return {
+              filename: file.name,
+              filePath: file.path,
+              ...parsed,
+            };
+          } catch (e) {
+            console.error(`Error parsing draft ${file.name}:`, e);
+            return null;
+          }
         }
-      }
+        return null;
+      })
+    );
+
+    for (const item of draftItems) {
+      if (item) drafts.push(item);
     }
   } catch (err) {
     console.error("Error loading drafts:", err);

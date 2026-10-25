@@ -3,17 +3,47 @@ import path from "path";
 import matter from "gray-matter";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { mdxComponents } from "@/components/mdx-components";
-import { preprocessMathForMdx } from "@/lib/mdx-utils";
+import { preprocessMathForMdx, cleanAndRenderArticleHtml } from "@/lib/mdx-utils";
+import { TangentPopoverHandler } from "@/components/TangentPopoverHandler";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
 export const dynamicParams = true;
 
 export function generateStaticParams() {
   const issuesDir = path.join(process.cwd(), "content/issues");
   if (!fs.existsSync(issuesDir)) return [];
-  const files = fs.readdirSync(issuesDir).filter((f) => f.endsWith(".mdx"));
+  const files = fs.readdirSync(issuesDir).filter((f) => /^\d{3}\.mdx$/.test(f));
   return files.map((f) => ({ id: f.replace(".mdx", "") }));
+}
+
+export function generateMetadata({ params }: { params: { id: string } }): Metadata {
+  const filePath = path.join(process.cwd(), "content/issues", `${params.id}.mdx`);
+  if (!fs.existsSync(filePath)) {
+    return { title: "Issue Not Found — The HW Insider" };
+  }
+
+  const fileContent = fs.readFileSync(filePath, "utf8");
+  const { data } = matter(fileContent);
+
+  const title = `Issue #${data.issue || params.id}: ${data.title} — The HW Insider`;
+  const description = data.subtitle || "The HW Insider hardware engineering intelligence dispatch.";
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
 }
 
 export default function IssuePage({ params }: { params: { id: string } }) {
@@ -25,11 +55,23 @@ export default function IssuePage({ params }: { params: { id: string } }) {
   const fileContent = fs.readFileSync(filePath, "utf8");
   const { data, content } = matter(fileContent);
 
+  // Load tangents from companion JSON file
+  let tangents: Record<string, any> = {};
+  const jsonPath = path.join(process.cwd(), "content/issues", `${params.id}.json`);
+  if (fs.existsSync(jsonPath)) {
+    try {
+      const parsed = JSON.parse(fs.readFileSync(jsonPath, "utf8"));
+      tangents = parsed.tangents || {};
+    } catch {}
+  }
+
   const isHtml =
     content.trim().startsWith("<div") ||
     (content.includes("class=") && !content.includes("<TechnicalCard") && !content.includes("<ProcessFlow"));
 
-  const safeContent = isHtml ? content : preprocessMathForMdx(content);
+  const safeContent = isHtml
+    ? cleanAndRenderArticleHtml(content)
+    : preprocessMathForMdx(content);
 
   return (
     <article className="prose prose-invert max-w-none">
@@ -49,16 +91,18 @@ export default function IssuePage({ params }: { params: { id: string } }) {
         </p>
       </div>
 
-      <div className="text-neutral-300 leading-relaxed font-sans space-y-6">
-        {isHtml ? (
-          <div
-            className="article-body font-sans"
-            dangerouslySetInnerHTML={{ __html: safeContent }}
-          />
-        ) : (
-          <MDXRemote source={safeContent} components={mdxComponents} />
-        )}
-      </div>
+      <TangentPopoverHandler tangents={tangents}>
+        <div className="text-neutral-300 leading-relaxed font-sans space-y-6">
+          {isHtml ? (
+            <div
+              className="article-body font-sans"
+              dangerouslySetInnerHTML={{ __html: safeContent }}
+            />
+          ) : (
+            <MDXRemote source={safeContent} components={mdxComponents} />
+          )}
+        </div>
+      </TangentPopoverHandler>
 
       <div className="mt-12 pt-6 border-t border-neutral-800 flex justify-between font-mono text-xs">
         <Link href="/archive" className="text-amber-400 hover:text-amber-300">
