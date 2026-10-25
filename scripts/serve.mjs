@@ -1,7 +1,7 @@
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
-import feedbackHandler from '../api/feedback.js';
+import feedbackHandler from '../legacy/api/feedback.js';
 
 const PORT = process.env.PORT || 3000;
 const MIME_TYPES = {
