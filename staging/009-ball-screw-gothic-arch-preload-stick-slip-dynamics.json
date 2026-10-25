@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Ball Screw Gothic-Arch Preload & Stick-Slip Dynamics",
     "failureMode": "Why Ball Screw Gothic-Arch Preload & Stick-Slip Dynamics fails: Contact stress, fretting wear, and cyclic fatigue"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Ball Screw Gothic-Arch Preload & Stick-Slip Dynamics under cyclic thermal and mechanical stresses.",
+  "subtitle": "Gothic-arch conformity factor must exceed 0.52 to suppress high contact stress at 45° contact angles.",
   "subject": "Mechanisms",
   "category": "Mechanisms",
   "readTime": "12 min",

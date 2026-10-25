@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Microchannel Heat Sinks",
     "failureMode": "Why Microchannel Heat Sinks fails: Hotspot dryout and interfacial thermal degradation"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Microchannel Heat Sinks: Laminar Slip Flow in Silicon under cyclic thermal and mechanical stresses.",
+  "subtitle": "Aspect ratio 10:1 DRIE channels achieve thermal resistance below 0.08 K·cm²/W.",
   "subject": "Thermal",
   "category": "Thermal",
   "readTime": "12 min",

@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Planetary Roller Screws",
     "failureMode": "Why Planetary Roller Screws fails: Contact stress, fretting wear, and cyclic fatigue"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Planetary Roller Screws: Extreme Load Density Mechanics under cyclic thermal and mechanical stresses.",
+  "subtitle": "Thread pitch synchronization across 10 planet rollers eliminates axial backlash without preloading springs.",
   "subject": "Mechanisms",
   "category": "Mechanisms",
   "readTime": "12 min",

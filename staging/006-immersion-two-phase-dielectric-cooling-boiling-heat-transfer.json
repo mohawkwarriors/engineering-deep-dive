@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Immersion Two-Phase Dielectric Cooling",
     "failureMode": "Why Immersion Two-Phase Dielectric Cooling fails: Hotspot dryout and interfacial thermal degradation"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Immersion Two-Phase Dielectric Cooling: Boiling Heat Transfer under cyclic thermal and mechanical stresses.",
+  "subtitle": "Micro-porous copper boiling surfaces delay Critical Heat Flux (CHF) past 120 W/cm².",
   "subject": "Thermal",
   "category": "Thermal",
   "readTime": "13 min",

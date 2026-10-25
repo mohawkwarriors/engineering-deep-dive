@@ -140,3 +140,35 @@ export function generateCleanTitleAngles(
     failureMode,
   };
 }
+
+/**
+ * Ensures the article's short summary overview (subtitle) gives the direct answer
+ * rather than repeating "How..." or "Why..." when the title already poses the question.
+ */
+export function formatAnswerOverview(
+  rawSubtitle: string,
+  title: string = "",
+  fallbackTopic: string = ""
+): string {
+  let sub = (rawSubtitle || "").trim();
+
+  // If the subtitle uses generic harvester boilerplate, replace with a direct answer overview
+  if (!sub || /^an exhaustive teardown and kinematic analysis of/i.test(sub)) {
+    const { core, detail } = cleanTopicSubject(fallbackTopic || title);
+    if (detail) {
+      return `${detail} governs the operating envelope of ${core}, preventing structural fatigue and thermal runaway under peak cyclic loads.`;
+    }
+    return `Precision contact geometry and material microstructure allow ${core} to sustain peak operating loads without mechanical degradation.`;
+  }
+
+  // Strip leading "How " or "Why " so the overview directly states the answer
+  if (/^(how|why)\s+/i.test(sub)) {
+    sub = sub
+      .replace(/^(?:how|why)\s+/i, "")
+      .replace(/\s*[—–-]\s*and\s+(?:how|why)\s+/gi, ", while ");
+    sub = sub.charAt(0).toUpperCase() + sub.slice(1);
+  }
+
+  return sub;
+}
+

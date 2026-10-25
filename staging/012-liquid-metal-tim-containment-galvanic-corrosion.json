@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Liquid Metal TIM Containment & Galvanic Corrosion",
     "failureMode": "Why Liquid Metal TIM Containment & Galvanic Corrosion fails: Hotspot dryout and interfacial thermal degradation"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Liquid Metal TIM Containment & Galvanic Corrosion under cyclic thermal and mechanical stresses.",
+  "subtitle": "Galinstan rapidly embrittles bare aluminum via intergranular penetration; nickel plating is mandatory.",
   "subject": "Thermal",
   "category": "Thermal",
   "readTime": "12 min",

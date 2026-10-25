@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Helical Gear Micro-Geometry",
     "failureMode": "Why Helical Gear Micro-Geometry fails: Contact stress, fretting wear, and cyclic fatigue"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Helical Gear Micro-Geometry: Lead Crown & Involute Tip Relief under cyclic thermal and mechanical stresses.",
+  "subtitle": "5-micron lead crowning compensates for shaft torsional windup and bearing deflection under 500 Nm load.",
   "subject": "Mechanisms",
   "category": "Mechanisms",
   "readTime": "11 min",

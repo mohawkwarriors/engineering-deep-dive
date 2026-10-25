@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Cycloidal Speed Reducers",
     "failureMode": "Why precision gearboxes bind: Multi-pin runout, fretting wear, and thermal lockup"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Cycloidal Speed Reducers: Zero-Backlash Contact Kinematics under cyclic thermal and mechanical stresses.",
+  "subtitle": "Epitrochoidal cam lobes distribute torque across 30% of perimeter roller pins simultaneously while holding accumulated pin-circle runout under 12 microns to prevent binding.",
   "subject": "Mechanisms",
   "category": "Mechanisms",
   "readTime": "11 min",

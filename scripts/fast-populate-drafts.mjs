@@ -773,7 +773,7 @@ export async function populateQueueToFloor() {
       slug,
       title: titleAngles.mechanism,
       titleAngles,
-      subtitle: `An exhaustive teardown and kinematic analysis of ${t.topic} under cyclic thermal and mechanical stresses.`,
+      subtitle: t.cardConfig?.takeaway || `Precision contact geometry and material microstructure allow ${t.topic} to sustain peak operating loads without mechanical degradation.`,
       subject: t.subject,
       category: t.category,
       readTime: t.readTime,

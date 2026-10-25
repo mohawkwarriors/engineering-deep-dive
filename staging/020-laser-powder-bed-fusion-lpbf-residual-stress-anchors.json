@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Laser Powder Bed Fusion (LPBF)",
     "failureMode": "Why Laser Powder Bed Fusion (LPBF) cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Laser Powder Bed Fusion (LPBF): Residual Stress & Anchors under cyclic thermal and mechanical stresses.",
+  "subtitle": "Heated build plates (>200°C) reduce thermal gradient d2T/dz2 and prevent build part blade delamination.",
   "subject": "Manufacturing",
   "category": "Manufacturing",
   "readTime": "13 min",

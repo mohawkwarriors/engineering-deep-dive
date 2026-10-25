@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { commitFile } from "@/lib/github";
-import { generateCleanTitleAngles } from "@/lib/title-utils";
+import { generateCleanTitleAngles, formatAnswerOverview } from "@/lib/title-utils";
 
 export const dynamic = "force-dynamic";
 
@@ -105,7 +105,7 @@ export async function POST(req: NextRequest) {
     const draftPayload = {
       title: titleAngles.mechanism,
       titleAngles,
-      subtitle: `An exhaustive teardown and kinematic analysis of ${cleanTopic} under cyclic thermal and mechanical stresses.`,
+      subtitle: formatAnswerOverview("", titleAngles.mechanism, cleanTopic),
       subject: "Mechanisms",
       category: "Mechanisms",
       readTime: "11 min read",

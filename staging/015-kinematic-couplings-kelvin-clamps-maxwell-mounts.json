@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Kinematic Couplings",
     "failureMode": "Why Kinematic Couplings fails: Contact stress, fretting wear, and cyclic fatigue"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Kinematic Couplings: Kelvin Clamps & Maxwell Mounts under cyclic thermal and mechanical stresses.",
+  "subtitle": "Exact-constraint 6-point contact provides sub-micron repeatability without over-constraining thermal growth.",
   "subject": "Design",
   "category": "Design",
   "readTime": "10 min",

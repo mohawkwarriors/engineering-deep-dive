@@ -42,7 +42,7 @@ import {
   TradeoffMatrix,
   LayeredCrossSection,
 } from "./interactive";
-import { generateCleanTitleAngles } from "@/lib/title-utils";
+import { generateCleanTitleAngles, formatAnswerOverview } from "@/lib/title-utils";
 
 interface ImageCandidate {
   url: string;
@@ -1647,7 +1647,7 @@ export default function DraftViewer({
       {/* Subtitle */}
       {activeDraft.subtitle && (
         <p className="text-base sm:text-lg text-[var(--muted)] leading-relaxed mt-2 mb-6 font-sans">
-          {activeDraft.subtitle}
+          {formatAnswerOverview(activeDraft.subtitle, editedTitle || activeDraft.title, activeDraft.title)}
         </p>
       )}
 

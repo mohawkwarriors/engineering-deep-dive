@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Squeeze Film Dampers in High-Speed Turbomachinery",
     "failureMode": "Why Squeeze Film Dampers in High-Speed Turbomachinery fails: Contact stress, fretting wear, and cyclic fatigue"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Squeeze Film Dampers in High-Speed Turbomachinery under cyclic thermal and mechanical stresses.",
+  "subtitle": "Oil film cavitation must be suppressed with 0.3 MPa supply pressure to prevent non-linear jump resonances.",
   "subject": "Mechanisms",
   "category": "Mechanisms",
   "readTime": "11 min",

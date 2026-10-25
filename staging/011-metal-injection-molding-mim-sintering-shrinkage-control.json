@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Metal Injection Molding (MIM)",
     "failureMode": "Why Metal Injection Molding (MIM) cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Metal Injection Molding (MIM): Sintering Shrinkage Control under cyclic thermal and mechanical stresses.",
+  "subtitle": "Isotropic 16.5% volumetric shrinkage requires uniform thermal distribution within ±2°C inside vacuum retorts.",
   "subject": "Materials",
   "category": "Materials",
   "readTime": "11 min",

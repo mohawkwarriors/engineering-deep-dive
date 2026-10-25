@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Piezoelectric Ultrasonic Transducers",
     "failureMode": "Why Piezoelectric Ultrasonic Transducers fails: Contact stress, fretting wear, and cyclic fatigue"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Piezoelectric Ultrasonic Transducers: PZT Matching Layers under cyclic thermal and mechanical stresses.",
+  "subtitle": "Quarter-wave acoustic impedance matching eliminates reflection loss between 30 MRayl PZT and water.",
   "subject": "Electromechanical",
   "category": "Electromechanical",
   "readTime": "11 min",

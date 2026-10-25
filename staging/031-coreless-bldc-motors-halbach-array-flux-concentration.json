@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Coreless BLDC Motors",
     "failureMode": "Why Coreless BLDC Motors fails: Contact stress, fretting wear, and cyclic fatigue"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Coreless BLDC Motors: Halbach Array Flux Concentration under cyclic thermal and mechanical stresses.",
+  "subtitle": "Halbach magnetic orientation increases airgap flux by 1.4x while eliminating the need for a heavy back-iron.",
   "subject": "Electromechanical",
   "category": "Electromechanical",
   "readTime": "11 min",

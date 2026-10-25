@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Camera OIS Voice Coil Actuators",
     "failureMode": "Why Camera OIS Voice Coil Actuators fails: Contact stress, fretting wear, and cyclic fatigue"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Camera OIS Voice Coil Actuators: Sub-Micron Suspensions under cyclic thermal and mechanical stresses.",
+  "subtitle": "Cross-talk between magnetic autofocus (AF) coils and optical stabilization (OIS) magnets must remain under 3%.",
   "subject": "Electromechanical",
   "category": "Electromechanical",
   "readTime": "10 min",

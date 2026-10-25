@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readFileContent, commitFile, deleteFile, listApprovedDrafts } from "@/lib/github";
+import { formatAnswerOverview } from "@/lib/title-utils";
 import fs from "fs";
 import path from "path";
 
@@ -32,6 +33,7 @@ export async function POST(req: NextRequest) {
 
     const draft = JSON.parse(draftRes.content);
     const finalTitle = title || draft.title;
+    const finalSubtitle = formatAnswerOverview(draft.subtitle || "", finalTitle, draft.title);
     const finalFigures = figures || draft.figures || [];
 
     // Assemble finalized MDX from modular sections if provided
@@ -123,7 +125,7 @@ export async function POST(req: NextRequest) {
     const mdxContent = `---
 issue: "${nextId}"
 title: "${finalTitle.replace(/"/g, '\\"')}"
-subtitle: "${(draft.subtitle || "").replace(/"/g, '\\"')}"
+subtitle: "${finalSubtitle.replace(/"/g, '\\"')}"
 date: "${today}"
 subject: "${draft.subject || draft.category || "Mechanisms"}"
 readTime: "${draft.readTime || "10 min"}"
@@ -137,7 +139,7 @@ ${finalizedMdx}
       {
         id: `#${nextId}`,
         title: finalTitle,
-        subtitle: draft.subtitle,
+        subtitle: finalSubtitle,
         subject: draft.subject || draft.category,
         date: today,
         tangents: draft.tangents || {},

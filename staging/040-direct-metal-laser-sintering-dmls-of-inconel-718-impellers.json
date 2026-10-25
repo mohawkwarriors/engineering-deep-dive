@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Direct Metal Laser Sintering (DMLS) of Inconel 718 Impellers",
     "failureMode": "Why Direct Metal Laser Sintering (DMLS) of Inconel 718 Impellers cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Direct Metal Laser Sintering (DMLS) of Inconel 718 Impellers under cyclic thermal and mechanical stresses.",
+  "subtitle": "HIP (Hot Isostatic Pressing) at 1160°C and 100 MPa closes all internal micro-voids, restoring wrought fatigue life.",
   "subject": "Manufacturing",
   "category": "Manufacturing",
   "readTime": "12 min",

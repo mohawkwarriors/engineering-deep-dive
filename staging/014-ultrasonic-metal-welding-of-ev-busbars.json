@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Ultrasonic Metal Welding of EV Busbars",
     "failureMode": "Why Ultrasonic Metal Welding of EV Busbars cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Ultrasonic Metal Welding of EV Busbars under cyclic thermal and mechanical stresses.",
+  "subtitle": "Sonotrode knurl geometry must balance oxide dispersion against copper foil tearing.",
   "subject": "Manufacturing",
   "category": "Manufacturing",
   "readTime": "11 min",

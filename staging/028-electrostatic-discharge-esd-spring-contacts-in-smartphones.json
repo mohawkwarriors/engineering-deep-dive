@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Electrostatic Discharge (ESD) Spring Contacts in Smartphones",
     "failureMode": "Why Electrostatic Discharge (ESD) Spring Contacts in Smartphones fails: Contact stress, fretting wear, and cyclic fatigue"
   },
-  "subtitle": "An exhaustive teardown and kinematic analysis of Electrostatic Discharge (ESD) Spring Contacts in Smartphones under cyclic thermal and mechanical stresses.",
+  "subtitle": "Hard gold plating over nickel barrier prevents copper interdiffusion and contact resistance spiking above 15 mΩ.",
   "subject": "Electromechanical",
   "category": "Electromechanical",
   "readTime": "9 min",
