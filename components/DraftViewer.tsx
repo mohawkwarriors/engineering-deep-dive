@@ -372,8 +372,16 @@ export default function DraftViewer({
 
       // Initialize sections: if draft already has sections, use them; else parse body_mdx
       if (activeDraft.sections && activeDraft.sections.length > 0) {
-        setActiveSections(activeDraft.sections);
-            } else if (activeDraft.body_mdx) {
+        const normalized = activeDraft.sections.map((s, idx) => {
+          const clean = (s.heading || `Section ${idx + 1}`).replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim();
+          return {
+            ...s,
+            id: s.id || `sec-${idx + 1}`,
+            heading: `${idx + 1}. ${clean}`,
+          };
+        });
+        setActiveSections(normalized);
+      } else if (activeDraft.body_mdx) {
         // Parse sections from ## headings safely without capturing delimiter
         const rawChunks = activeDraft.body_mdx.split(/(?:^|\n)##\s+/).filter((c) => c && c.trim().length > 0);
         const preamble = rawChunks[0] && !/^\d+\./.test(rawChunks[0].trim()) && !rawChunks[0].includes("###") ? rawChunks[0] : "";
@@ -386,12 +394,13 @@ export default function DraftViewer({
           if (!chunk) continue;
           const lines = chunk.split("\n");
           const rawHeading = lines[0]?.replace(/^#+\s*/, "").trim() || `Section ${secIdx}`;
-          const heading = rawHeading.replace(/^\d+\.\s*/, "").trim();
+          const cleanHeading = rawHeading.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim();
+          const heading = `${secIdx}. ${cleanHeading}`;
           let content = lines.slice(1).join("\n").trim();
           if (secIdx === 1 && preamble) {
             content = preamble.trim() + "\n\n" + content;
           }
-          if (!content && (!heading || heading.startsWith("Section "))) continue;
+          if (!content && (!cleanHeading || cleanHeading.startsWith("Section "))) continue;
           parsed.push({
             id: `sec-${secIdx}`,
             heading,
@@ -406,7 +415,7 @@ export default function DraftViewer({
         if (parsed.length === 0) {
           parsed.push({
             id: "sec-1",
-            heading: activeDraft.title,
+            heading: `1. ${activeDraft.title}`,
             type: "ai_fill",
             badge: "[AI Fill]",
             content: activeDraft.body_mdx,
@@ -464,7 +473,14 @@ export default function DraftViewer({
       const temp = copy[index];
       copy[index] = copy[targetIdx];
       copy[targetIdx] = temp;
-      return copy;
+      return copy.map((s, idx) => {
+        const clean = (s.heading || `Section ${idx + 1}`).replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim();
+        return {
+          ...s,
+          id: `sec-${idx + 1}`,
+          heading: `${idx + 1}. ${clean}`,
+        };
+      });
     });
   };
 
@@ -1057,8 +1073,13 @@ export default function DraftViewer({
             >
               {isEditor ? "[Your Section]" : "[AI Fill]"}
             </span>
-            <span className="font-serif text-base font-semibold text-[var(--text)]">
-              {sec.heading}
+            <span className="font-serif text-base font-semibold text-[var(--text)] flex items-center gap-1.5">
+              <span className="text-[var(--accent)] font-mono font-bold text-sm">
+                {secIdx + 1}.
+              </span>
+              <span>
+                {sec.heading.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim()}
+              </span>
             </span>
             {sec.hidden && (
               <span className="text-xs text-red-400 font-mono">(Hidden from output)</span>
@@ -1159,7 +1180,9 @@ export default function DraftViewer({
                 const subLines = trimmed.split("\n");
                 const headingText = subLines[0].replace(/^###\s+/, "").trim();
                 const restText = subLines.slice(1).join("\n").trim();
-                const isDuplicate = headingText.toLowerCase() === sec.heading.toLowerCase();
+                const cleanSub = headingText.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim().toLowerCase();
+                const cleanSec = sec.heading.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim().toLowerCase();
+                const isDuplicate = cleanSub === cleanSec;
 
                 return (
                   <div key={pIdx} className="space-y-2">
@@ -1500,7 +1523,7 @@ export default function DraftViewer({
                       className="p-2 rounded bg-[var(--surface)] border border-[var(--border)] flex items-center justify-between text-xs font-mono"
                     >
                       <span className="text-[var(--text)]">
-                        {idx + 1}. {sec.heading}
+                        {idx + 1}. {sec.heading.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim()}
                       </span>
                       <span
                         className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${

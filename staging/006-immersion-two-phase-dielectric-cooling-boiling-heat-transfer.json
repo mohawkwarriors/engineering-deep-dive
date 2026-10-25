@@ -16,7 +16,7 @@
   "sections": [
     {
       "id": "sec-1",
-      "heading": "The Mechanical Bottleneck & Failure Mechanism",
+      "heading": "1. The Mechanical Bottleneck & Failure Mechanism",
       "type": "ai_fill",
       "badge": "[AI Fill]",
       "hidden": false,
@@ -24,7 +24,7 @@
     },
     {
       "id": "sec-2",
-      "heading": "Kinematic Decomposition & First-Principles Physics",
+      "heading": "2. Kinematic Decomposition & First-Principles Physics",
       "type": "ai_fill",
       "badge": "[AI Fill]",
       "hidden": false,
@@ -32,7 +32,7 @@
     },
     {
       "id": "sec-3",
-      "heading": "Tolerance Stackup & Sub-Millimeter Fits",
+      "heading": "3. Tolerance Stackup & Sub-Millimeter Fits",
       "type": "ai_fill",
       "badge": "[AI Fill]",
       "hidden": false,
@@ -40,7 +40,7 @@
     },
     {
       "id": "sec-4",
-      "heading": "Material Selection & Microstructural Tradeoffs",
+      "heading": "4. Material Selection & Microstructural Tradeoffs",
       "type": "ai_fill",
       "badge": "[AI Fill]",
       "hidden": false,
@@ -48,7 +48,7 @@
     },
     {
       "id": "sec-5",
-      "heading": "Dynamometer Metrology & Teardown Verification",
+      "heading": "5. Dynamometer Metrology & Teardown Verification",
       "type": "ai_fill",
       "badge": "[AI Fill]",
       "hidden": false,
@@ -56,7 +56,7 @@
     },
     {
       "id": "sec-6",
-      "heading": "Production Design Rules & DFM Constraints",
+      "heading": "6. Production Design Rules & DFM Constraints",
       "type": "ai_fill",
       "badge": "[AI Fill]",
       "hidden": false,

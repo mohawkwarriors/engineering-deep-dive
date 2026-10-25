@@ -34,20 +34,22 @@ export async function POST(req: NextRequest) {
     const outlineSections = defaultHeadings.map((heading, idx) => {
       // If editor provided a bullet for this slot, badge as [Your Section]
       if (bulletList[idx]) {
+        const clean = bulletList[idx].replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim();
         return {
           id: `sec-${idx + 1}`,
-          heading: bulletList[idx],
+          heading: `${idx + 1}. ${clean}`,
           type: "editor" as const,
           badge: "[Your Section]",
-          summary: `Editor-seeded focus on ${bulletList[idx]}`,
+          summary: `Editor-seeded focus on ${clean}`,
         };
       }
+      const clean = heading.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim();
       return {
         id: `sec-${idx + 1}`,
-        heading,
+        heading: `${idx + 1}. ${clean}`,
         type: "ai_fill" as const,
         badge: "[AI Fill]",
-        summary: `AI structural bridge examining ${heading.toLowerCase()}`,
+        summary: `AI structural bridge examining ${clean.toLowerCase()}`,
       };
     });
 

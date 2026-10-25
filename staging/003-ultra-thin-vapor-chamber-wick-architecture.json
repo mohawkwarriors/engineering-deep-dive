@@ -339,7 +339,7 @@
   "sections": [
     {
       "id": "sec-1",
-      "heading": "Two-Phase Latent Heat Spreading: Defeating Fourier's Conduction Wall",
+      "heading": "1. Two-Phase Latent Heat Spreading: Defeating Fourier's Conduction Wall",
       "type": "ai_fill",
       "badge": "[AI Fill]",
       "hidden": false,
@@ -347,7 +347,7 @@
     },
     {
       "id": "sec-2",
-      "heading": "Capillary Pumping, Young-Laplace Pressure, and the Viscous Flow Drag Wall",
+      "heading": "2. Capillary Pumping, Young-Laplace Pressure, and the Viscous Flow Drag Wall",
       "type": "ai_fill",
       "badge": "[AI Fill]",
       "hidden": false,
@@ -355,7 +355,7 @@
     },
     {
       "id": "sec-3",
-      "heading": "DFM & Precision Micro-Machining: Laser Sealing and Internal Pillar Arrays",
+      "heading": "3. DFM & Precision Micro-Machining: Laser Sealing and Internal Pillar Arrays",
       "type": "ai_fill",
       "badge": "[AI Fill]",
       "hidden": false,
@@ -363,7 +363,7 @@
     },
     {
       "id": "sec-4",
-      "heading": "Micro-Wick Permeability & Composite Sintered Metallurgy",
+      "heading": "4. Micro-Wick Permeability & Composite Sintered Metallurgy",
       "type": "ai_fill",
       "badge": "[AI Fill]",
       "hidden": false,
@@ -371,7 +371,7 @@
     },
     {
       "id": "sec-5",
-      "heading": "Failure Modes: Evaporator Dry-Out, Sonic Choking, and Non-Condensable Gas (NCG)",
+      "heading": "5. Failure Modes: Evaporator Dry-Out, Sonic Choking, and Non-Condensable Gas (NCG)",
       "type": "ai_fill",
       "badge": "[AI Fill]",
       "hidden": false,
@@ -379,7 +379,7 @@
     },
     {
       "id": "sec-6",
-      "heading": "Empirical Validation: High-Speed FLIR Thermography & NIST Calorimetry",
+      "heading": "6. Empirical Validation: High-Speed FLIR Thermography & NIST Calorimetry",
       "type": "ai_fill",
       "badge": "[AI Fill]",
       "hidden": false,

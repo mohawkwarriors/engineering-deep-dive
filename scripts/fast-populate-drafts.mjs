@@ -740,7 +740,9 @@ export async function populateQueueToFloor() {
     ];
 
     const sections = sectionHeadings.map((heading, sIdx) => {
-      let content = `### ${heading}\n\n`;
+      const clean = heading.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim();
+      const numberedHeading = `${sIdx + 1}. ${clean}`;
+      let content = `### ${numberedHeading}\n\n`;
       if (sIdx === 0) {
         content += `In precision electro-mechanical assemblies, **${t.topic}** operates at the exact boundary of elastic deformation and structural fatigue. Contact stress concentrations induce localized thermal gradients and micro-fretting wear.\n\n$$${t.equation}$$\n\nWhere governing continuum variables define interfacial deflection under rated operating torque.`;
       } else if (sIdx === 1) {
@@ -757,7 +759,7 @@ export async function populateQueueToFloor() {
 
       return {
         id: `sec-${sIdx + 1}`,
-        heading,
+        heading: numberedHeading,
         type: "ai_fill",
         badge: "[AI Fill]",
         hidden: false,

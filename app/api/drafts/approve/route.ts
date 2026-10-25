@@ -38,7 +38,15 @@ export async function POST(req: NextRequest) {
     let finalizedMdx = "";
     if (sections && Array.isArray(sections)) {
       const activeSections = sections.filter((s: any) => !s.hidden);
-      finalizedMdx = activeSections.map((s: any) => s.content || "").join("\n\n---\n\n");
+      finalizedMdx = activeSections.map((s: any, idx: number) => {
+        const cleanHeading = (s.heading || `Section ${idx + 1}`).replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim();
+        const headingLine = `## ${idx + 1}. ${cleanHeading}`;
+        const contentStr = (s.content || "").trim();
+        if (contentStr.startsWith("## ")) {
+          return contentStr;
+        }
+        return `${headingLine}\n\n${contentStr}`;
+      }).join("\n\n---\n\n");
     } else {
       finalizedMdx = draft.body_mdx || "";
     }
