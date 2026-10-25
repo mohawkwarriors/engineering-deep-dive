@@ -19,8 +19,8 @@ export interface ParameterExplorerProps {
   title: string;
   subtitle?: string;
   equationTex: string;
-  parameters: ParameterConfig[];
-  calculate: (values: Record<string, number>) => {
+  parameters?: ParameterConfig[];
+  calculate?: (values: Record<string, number>) => {
     outputLabel: string;
     outputValue: number;
     outputUnit: string;
@@ -31,12 +31,32 @@ export interface ParameterExplorerProps {
   takeaway?: string;
 }
 
+const DEFAULT_PARAMETERS: ParameterConfig[] = [
+  { name: "Applied Load", symbol: "F_n", min: 50, max: 1200, step: 25, defaultValue: 450, unit: "N", description: "Normal interfacial contact load" },
+  { name: "Contact Radius", symbol: "R^*", min: 2, max: 40, step: 1, defaultValue: 12, unit: "mm", description: "Effective radius of curvature" },
+  { name: "Notch Factor", symbol: "K_t", min: 1.0, max: 2.5, step: 0.05, defaultValue: 1.25, unit: "", description: "Geometric stress concentration factor" },
+];
+
+const DEFAULT_CALCULATE = (vals: Record<string, number>) => {
+  const fn = vals["Applied Load"] ?? 450;
+  const r = vals["Contact Radius"] ?? 12;
+  const kt = vals["Notch Factor"] ?? 1.25;
+  const stress = Math.round(Math.sqrt((fn * 210000) / (Math.PI * r * 10)) * kt);
+  return {
+    outputLabel: "Peak Hertzian Contact Stress",
+    outputValue: stress,
+    outputUnit: "MPa",
+    status: (stress > 1500 ? "critical" : stress > 1100 ? "warning" : "nominal") as "nominal" | "warning" | "critical",
+    verdict: stress > 1500 ? "Exceeds fatigue endurance limit — increase radius R*" : "Within safe elastic envelope",
+  };
+};
+
 export function ParameterExplorer({
   title,
   subtitle,
   equationTex,
-  parameters,
-  calculate,
+  parameters = DEFAULT_PARAMETERS,
+  calculate = DEFAULT_CALCULATE,
   takeaway,
 }: ParameterExplorerProps) {
   const componentId = useId();

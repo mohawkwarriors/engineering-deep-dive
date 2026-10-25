@@ -15,16 +15,23 @@ export interface StackupLayer {
 export interface LayeredCrossSectionProps {
   title: string;
   subtitle?: string;
-  totalThickness: string; // e.g. "0.35 mm"
-  layers: StackupLayer[];
+  totalThickness?: string; // e.g. "0.35 mm"
+  layers?: StackupLayer[];
   takeaway?: string;
 }
+
+const DEFAULT_LAYERS: StackupLayer[] = [
+  { name: "Top Hermetic Stamped Shell", thickness: "0.08 mm", material: "C10200 OFHC Copper", functionRole: "Evaporator hot-spot conduction & vacuum seal", failureMode: "Atmospheric buckling if pillar pitch exceeds 1.5 mm" },
+  { name: "Biporous Sintered Wick", thickness: "0.06 mm", material: "Sintered Cu Micro-Powder (35 μm)", functionRole: "Young-Laplace capillary suction return", failureMode: "Local evaporator dry-out above 95 W/cm²" },
+  { name: "Vapor Core & Pillar Array", thickness: "0.13 mm", material: "Saturated H2O Vapor @ 10^-3 Torr", functionRole: "Near-sonic two-phase latent heat spreading", failureMode: "Sonic choking at low cold-start temperatures" },
+  { name: "Bottom Condenser Foil", thickness: "0.08 mm", material: "C10200 OFHC Copper + Ni Plate", functionRole: "Heat rejection to chassis mid-frame", failureMode: "Perimeter laser weld micro-pinhole gas ingress" },
+];
 
 export function LayeredCrossSection({
   title,
   subtitle,
-  totalThickness,
-  layers,
+  totalThickness = "0.35 mm",
+  layers = DEFAULT_LAYERS,
   takeaway,
 }: LayeredCrossSectionProps) {
   const [activeLayerIdx, setActiveLayerIdx] = useState(0);

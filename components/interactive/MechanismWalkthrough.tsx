@@ -16,14 +16,20 @@ export interface WalkthroughStage {
 export interface MechanismWalkthroughProps {
   title: string;
   subtitle?: string;
-  stages: WalkthroughStage[];
+  stages?: WalkthroughStage[];
   takeaway?: string;
 }
+
+const DEFAULT_STAGES: WalkthroughStage[] = [
+  { step: 1, title: "Preload Engagement", kinematicAction: "Input cam eccentric displaces rolling element into initial gothic-arch contact.", stressDistribution: "Symmetric 45° contact angle distributes preload across dual raceways.", criticalMetric: "0.005 mm axial play", equationTex: "F_{preload} = k_{axial} \cdot \delta_0" },
+  { step: 2, title: "Peak Torque Transfer", kinematicAction: "Tangential load shifts contact ellipse toward tooth flank load-bearing zone.", stressDistribution: "Sub-surface octahedral shear stress peaks at 0.78a depth below surface.", criticalMetric: "1,420 MPa Hertzian peak", equationTex: "\tau_{max} \approx 0.30 \cdot p_0" },
+  { step: 3, title: "Kinematic Zero-Cross & Return", kinematicAction: "Conjugate profile maintains conjugate rolling without backlash reversal.", stressDistribution: "Elastic strain energy recovers smoothly into output flange.", criticalMetric: "< 1.0 arcmin hysteresis", equationTex: "\eta_{mech} = 1 - \frac{W_{friction}}{W_{input}}" },
+];
 
 export function MechanismWalkthrough({
   title,
   subtitle,
-  stages,
+  stages = DEFAULT_STAGES,
   takeaway,
 }: MechanismWalkthroughProps) {
   const [currentStep, setCurrentStep] = useState(0);

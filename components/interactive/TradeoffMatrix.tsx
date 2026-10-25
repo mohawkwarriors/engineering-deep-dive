@@ -21,17 +21,48 @@ export interface MetricDefinition {
 export interface TradeoffMatrixProps {
   title: string;
   subtitle?: string;
-  candidates: TradeoffCandidate[];
-  metricDefinitions: MetricDefinition[];
+  candidates?: TradeoffCandidate[];
+  metricDefinitions?: MetricDefinition[];
   defaultSelectedCandidate?: number;
   takeaway?: string;
 }
 
+const DEFAULT_CANDIDATES: TradeoffCandidate[] = [
+  {
+    name: "Carburized 8620 Steel",
+    category: "Case-Hardened Alloy",
+    metrics: { hardness: "60 HRC", yield: "1,150 MPa", thermal: "46 W/m·K", cost: "1.4x" },
+    bestFor: "High-cycle gear teeth and rolling contact cam tracks",
+    bottleneck: "Post-heat-treat distortion requires CBN hard-finishing grind",
+  },
+  {
+    name: "Pre-Hardened 4140",
+    category: "Through-Hardened Alloy",
+    metrics: { hardness: "42 HRC", yield: "950 MPa", thermal: "42 W/m·K", cost: "1.0x" },
+    bestFor: "Structural shafts and medium-duty actuator housings",
+    bottleneck: "Lower surface pitting resistance under boundary lubrication",
+  },
+  {
+    name: "Ti-6Al-4V Grade 5",
+    category: "Aerospace Titanium",
+    metrics: { hardness: "36 HRC", yield: "880 MPa", thermal: "6.7 W/m·K", cost: "4.2x" },
+    bestFor: "Low-inertia compliant flexures and mass-critical gimbals",
+    bottleneck: "Severe galling tendency without DLC or nitride surface coating",
+  },
+];
+
+const DEFAULT_METRICS: MetricDefinition[] = [
+  { key: "hardness", label: "Surface Hardness" },
+  { key: "yield", label: "Yield Strength" },
+  { key: "thermal", label: "Thermal Cond." },
+  { key: "cost", label: "Rel. Cost Index" },
+];
+
 export function TradeoffMatrix({
   title,
   subtitle,
-  candidates,
-  metricDefinitions,
+  candidates = DEFAULT_CANDIDATES,
+  metricDefinitions = DEFAULT_METRICS,
   defaultSelectedCandidate = 0,
   takeaway,
 }: TradeoffMatrixProps) {

@@ -1123,34 +1123,192 @@ export default function DraftViewer({
 
         {/* Section Prose / Component Content */}
         <div className="space-y-4 text-xs sm:text-sm font-sans leading-relaxed text-[var(--text)]">
-          {sec.content.split("\n\n").map((para, pIdx) => {
-            const trimmed = para.trim();
-            if (trimmed.startsWith("### ")) {
-              return null; // Heading is rendered in header bar
-            }
-            if (trimmed.startsWith("$$") && trimmed.endsWith("$$")) {
-              const math = trimmed.slice(2, -2).trim();
-              let html = "";
-              try {
-                html = katex.renderToString(math, { displayMode: true, throwOnError: false });
-              } catch {
-                html = math;
+          {sec.content
+            .replace(/(^|\n)(#{2,4}\s+[^\n]+)\n(?!\n)/g, "$1$2\n\n")
+            .split(/\n\n+/)
+            .map((para, pIdx) => {
+              const trimmed = para.trim();
+              if (!trimmed) return null;
+
+              // 1. Figures
+              if (trimmed.includes("{{ FIGURE_0 }}")) return renderVisualSwitcherFigure(0);
+              if (trimmed.includes("{{ FIGURE_1 }}")) return renderVisualSwitcherFigure(1);
+              if (trimmed.includes("{{ FIGURE_2 }}")) return renderVisualSwitcherFigure(2);
+              if (trimmed.includes("{{ FIGURE_3 }}")) return renderVisualSwitcherFigure(3);
+
+              // 2. Display Math
+              if (trimmed.startsWith("$$") && trimmed.endsWith("$$")) {
+                const math = trimmed.slice(2, -2).trim();
+                let html = "";
+                try {
+                  html = katex.renderToString(math, { displayMode: true, throwOnError: false });
+                } catch {
+                  html = math;
+                }
+                return (
+                  <div
+                    key={pIdx}
+                    className="rounded-lg bg-[var(--card-inner)] border border-[var(--border)] p-3 text-center my-3 overflow-x-auto"
+                    dangerouslySetInnerHTML={{ __html: html }}
+                  />
+                );
               }
+
+              // 3. Subheadings (skip only if it duplicates the section header bar)
+              if (trimmed.startsWith("### ")) {
+                const subLines = trimmed.split("\n");
+                const headingText = subLines[0].replace(/^###\s+/, "").trim();
+                const restText = subLines.slice(1).join("\n").trim();
+                const isDuplicate = headingText.toLowerCase() === sec.heading.toLowerCase();
+
+                return (
+                  <div key={pIdx} className="space-y-2">
+                    {!isDuplicate && (
+                      <h3 className="text-sm sm:text-base font-bold font-sans text-[var(--text)] mt-5 mb-2 pt-2 border-t border-[var(--border)]/40 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+                        {headingText}
+                      </h3>
+                    )}
+                    {restText && (
+                      <p
+                        className="my-2 leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: renderInlineKaTeXAndMarkdown(restText) }}
+                      />
+                    )}
+                  </div>
+                );
+              }
+              if (trimmed.startsWith("#### ")) {
+                const headingText = trimmed.replace(/^####\s+/, "").trim();
+                return (
+                  <h4
+                    key={pIdx}
+                    className="text-xs sm:text-sm font-semibold font-sans text-[var(--text)] mt-3 mb-1 text-[var(--accent)]"
+                  >
+                    {headingText}
+                  </h4>
+                );
+              }
+
+              // 4. Interactive Hardware Components
+              if (trimmed.startsWith("<ParameterExplorer")) {
+                const props = parseJsxProps(trimmed);
+                return (
+                  <div key={pIdx} className="my-4">
+                    <ParameterExplorer
+                      title={props.title || "Operating Dynamics"}
+                      equationTex={props.equationTex || ""}
+                      takeaway={props.takeaway}
+                    />
+                  </div>
+                );
+              }
+              if (trimmed.startsWith("<ToleranceStackupBar")) {
+                const props = parseJsxProps(trimmed);
+                return (
+                  <div key={pIdx} className="my-4">
+                    <ToleranceStackupBar
+                      title={props.title || "Tolerance Stackup"}
+                      minAllowableGap={props.minAllowableGap ?? 0.02}
+                      maxAllowableGap={props.maxAllowableGap ?? 0.08}
+                      unit={props.unit || "mm"}
+                      takeaway={props.takeaway}
+                    />
+                  </div>
+                );
+              }
+              if (trimmed.startsWith("<TradeoffMatrix")) {
+                const props = parseJsxProps(trimmed);
+                return (
+                  <div key={pIdx} className="my-4">
+                    <TradeoffMatrix
+                      title={props.title || "Tradeoff Matrix"}
+                      takeaway={props.takeaway}
+                    />
+                  </div>
+                );
+              }
+              if (trimmed.startsWith("<LayeredCrossSection")) {
+                const props = parseJsxProps(trimmed);
+                return (
+                  <div key={pIdx} className="my-4">
+                    <LayeredCrossSection
+                      title={props.title || "Layered Cross-Section"}
+                      totalThickness={props.totalThickness || "1.0 mm"}
+                      takeaway={props.takeaway}
+                    />
+                  </div>
+                );
+              }
+              if (trimmed.startsWith("<MechanismWalkthrough")) {
+                const props = parseJsxProps(trimmed);
+                return (
+                  <div key={pIdx} className="my-4">
+                    <MechanismWalkthrough
+                      title={props.title || "Mechanism Walkthrough"}
+                      takeaway={props.takeaway}
+                    />
+                  </div>
+                );
+              }
+
+              // 5. Raw HTML Blocks & Custom Containers (spec-table-wrap, callout-box, executive-metrics-bar, ProcessFlow, TechnicalCard)
+              if (
+                trimmed.startsWith("<div") ||
+                trimmed.startsWith("<table") ||
+                trimmed.startsWith("<ProcessFlow") ||
+                trimmed.startsWith("<TechnicalCard")
+              ) {
+                const html = renderRichHtml(trimmed);
+                return (
+                  <div
+                    key={pIdx}
+                    className="my-3 overflow-x-auto"
+                    dangerouslySetInnerHTML={{ __html: html }}
+                  />
+                );
+              }
+
+              // 6. Lists
+              const pLines = trimmed.split("\n");
+              if (pLines.length > 0 && pLines.every((l) => l.trim().startsWith("- ") || l.trim().startsWith("* "))) {
+                return (
+                  <ul key={pIdx} className="list-disc pl-5 space-y-1.5 my-3 text-xs sm:text-sm">
+                    {pLines.map((l, lIdx) => (
+                      <li
+                        key={lIdx}
+                        dangerouslySetInnerHTML={{
+                          __html: renderInlineKaTeXAndMarkdown(l.trim().replace(/^[-*]\s+/, "")),
+                        }}
+                      />
+                    ))}
+                  </ul>
+                );
+              }
+              if (pLines.length > 0 && pLines.every((l) => /^\d+\.\s+/.test(l.trim()))) {
+                return (
+                  <ol key={pIdx} className="list-decimal pl-5 space-y-1.5 my-3 text-xs sm:text-sm">
+                    {pLines.map((l, lIdx) => (
+                      <li
+                        key={lIdx}
+                        dangerouslySetInnerHTML={{
+                          __html: renderInlineKaTeXAndMarkdown(l.trim().replace(/^\d+\.\s+/, "")),
+                        }}
+                      />
+                    ))}
+                  </ol>
+                );
+              }
+
+              // 7. Regular Prose Paragraph with inline KaTeX, bold, italic, code
               return (
-                <div
+                <p
                   key={pIdx}
-                  className="rounded-lg bg-[var(--card-inner)] border border-[var(--border)] p-3 text-center my-3 overflow-x-auto"
-                  dangerouslySetInnerHTML={{ __html: html }}
+                  className="my-2 leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: renderInlineKaTeXAndMarkdown(trimmed) }}
                 />
               );
-            }
-            if (trimmed.includes("{{ FIGURE_0 }}")) return renderVisualSwitcherFigure(0);
-            if (trimmed.includes("{{ FIGURE_1 }}")) return renderVisualSwitcherFigure(1);
-            if (trimmed.includes("{{ FIGURE_2 }}")) return renderVisualSwitcherFigure(2);
-            if (trimmed.includes("{{ FIGURE_3 }}")) return renderVisualSwitcherFigure(3);
-
-            return <p key={pIdx}>{para}</p>;
-          })}
+            })}
         </div>
       </div>
     );

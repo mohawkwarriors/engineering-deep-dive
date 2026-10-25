@@ -14,19 +14,26 @@ export interface StackupComponent {
 export interface ToleranceStackupBarProps {
   title: string;
   subtitle?: string;
-  components: StackupComponent[];
+  components?: StackupComponent[];
   minAllowableGap: number; // e.g. 0.05 mm
   maxAllowableGap: number; // e.g. 0.35 mm
   unit?: string;
   takeaway?: string;
 }
 
+const DEFAULT_STACKUP_COMPONENTS: StackupComponent[] = [
+  { name: "Housing Bore Datum", nominal: 24.05, tolerance: 0.015, direction: "+", description: "CNC precision ground inner bore" },
+  { name: "Bearing Outer Ring", nominal: 12.0, tolerance: 0.008, direction: "-", description: "ISO P4 tolerance class" },
+  { name: "Preload Wave Washer", nominal: 1.5, tolerance: 0.012, direction: "-", description: "17-7 PH stainless spring element" },
+  { name: "Retaining Shoulder", nominal: 10.5, tolerance: 0.01, direction: "-", description: "Turned shaft journal datum" },
+];
+
 export function ToleranceStackupBar({
   title,
   subtitle,
-  components,
-  minAllowableGap,
-  maxAllowableGap,
+  components = DEFAULT_STACKUP_COMPONENTS,
+  minAllowableGap = 0.015,
+  maxAllowableGap = 0.085,
   unit = "mm",
   takeaway,
 }: ToleranceStackupBarProps) {
