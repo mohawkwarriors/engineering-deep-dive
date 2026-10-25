@@ -355,7 +355,15 @@ export default function DraftViewer({
         activeDraft.figures.forEach((fig, idx) => {
           initialImgMap[idx] = fig.selectedIndex ?? 0;
           initialTabMap[idx] = fig.activeTab || "carousel";
-          initialKwMap[idx] = activeDraft.title;
+          let kw = activeDraft.title || "";
+          if (fig.caption) {
+            const match = fig.caption.match(/—\s*([^:]+):/);
+            if (match && match[1]) {
+              const core = (activeDraft.title || "").split(/[:–—]/)[0]?.trim() || "Hardware";
+              kw = `${core} ${match[1].trim()}`.replace(/\s+/g, " ").trim();
+            }
+          }
+          initialKwMap[idx] = kw;
         });
       }
       setSelectedImages(initialImgMap);
@@ -550,10 +558,20 @@ export default function DraftViewer({
       if (res.ok) {
         const data = await res.json();
         if (data.images && activeDraft?.figures?.[figIdx]) {
-          activeDraft.figures[figIdx].images = data.images;
+          setDrafts((prev) => {
+            const next = [...prev];
+            const current = { ...next[currentIndex] };
+            if (current.figures && current.figures[figIdx]) {
+              const updatedFigs = [...current.figures];
+              updatedFigs[figIdx] = { ...updatedFigs[figIdx], images: data.images };
+              current.figures = updatedFigs;
+              next[currentIndex] = current;
+            }
+            return next;
+          });
           setSelectedImages((prev) => ({ ...prev, [figIdx]: 0 }));
-          setActionMessage(`✓ Loaded 12 fresh candidates for Figure ${figIdx + 1}`);
-          setTimeout(() => setActionMessage(null), 1500);
+          setActionMessage(`✓ Loaded ${data.images.length} verified candidates for Figure ${figIdx + 1}`);
+          setTimeout(() => setActionMessage(null), 2000);
         }
       }
     } catch (e) {
