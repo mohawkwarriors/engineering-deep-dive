@@ -110,6 +110,125 @@ function getSubjectClass(subject?: string) {
   return "sub-product-dives";
 }
 
+
+function parseJsxProps(str: string): Record<string, any> {
+  const props: Record<string, any> = {};
+  const strRegex = /([a-zA-Z0-9_-]+)=(?:["']([^"']*)["'])/g;
+  let m;
+  while ((m = strRegex.exec(str)) !== null) {
+    props[m[1]] = m[2];
+  }
+  const exprRegex = /([a-zA-Z0-9_-]+)=\{([^}]+)\}/g;
+  while ((m = exprRegex.exec(str)) !== null) {
+    const val = m[2].trim();
+    if (!isNaN(Number(val))) props[m[1]] = Number(val);
+    else if (val === "true") props[m[1]] = true;
+    else if (val === "false") props[m[1]] = false;
+    else props[m[1]] = val;
+  }
+  return props;
+}
+
+function renderInlineKaTeXAndMarkdown(text: string): string {
+  if (!text) return "";
+
+  // 1. TechnicalTangent inline tooltip pill
+  let html = text.replace(
+    /<TechnicalTangent\s+term="([^"]+)"\s+category="([^"]+)"\s+definition="([^"]+)"(?:\s+equation="([^"]*)")?\s*\/>/g,
+    (_, term, cat, def, eq) => {
+      const eqAttr = eq ? ` data-eq="${eq.replace(/"/g, "&quot;")}"` : "";
+      return `<span class="border-b border-dotted border-amber-500 text-amber-400 font-mono text-inherit cursor-help transition-colors hover:text-amber-300" title="${cat} • ${def}"${eqAttr}>${term}</span>`;
+    }
+  );
+
+  // 2. Math formulas ($...$)
+  html = html.replace(/\$([^\$\n]+?)\$/g, (_, math) => {
+    try {
+      return katex.renderToString(math.trim(), { displayMode: false, throwOnError: false });
+    } catch {
+      return `<code>${math}</code>`;
+    }
+  });
+
+  // 3. Bold (**text**)
+  html = html.replace(/\*\*([^*]+?)\*\*/g, '<strong class="text-[var(--text)] font-semibold">$1</strong>');
+
+  // 4. Italic (*text*)
+  html = html.replace(/\*([^*]+?)\*/g, "<em>$1</em>");
+
+  // 5. Inline code (`code`)
+  html = html.replace(
+    /`([^`]+?)`/g,
+    '<code class="bg-[var(--card-inner)] px-1 py-0.5 rounded border border-[var(--border)] font-mono text-xs text-[var(--accent)]">$1</code>'
+  );
+
+  return html;
+}
+
+function renderRichHtml(html: string): string {
+  let out = html.replace(/className=/g, "class=");
+
+  // ProcessStep
+  out = out.replace(
+    /<ProcessStep\s+step="([^"]+)"\s+title="([^"]+)"(?:\s+parameters="([^"]*)")?\s*>([\s\S]*?)<\/ProcessStep>/g,
+    (_, step, title, params, content) => {
+      return `
+        <div class="relative pl-8 sm:pl-10 group my-3">
+          <div class="absolute left-0 top-1 flex h-8 w-8 items-center justify-center rounded-md border border-[var(--border)] bg-[var(--surface)] font-mono text-xs font-semibold text-[var(--accent)] shadow-sm">
+            ${step}
+          </div>
+          <div class="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-4 font-mono">
+            <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-[var(--border)] pb-2 mb-2">
+              <span class="text-sm font-semibold uppercase tracking-wide text-[var(--text)]">${title}</span>
+              ${params ? `<span class="text-xs text-[var(--muted)] bg-[var(--card-inner)] px-2 py-0.5 rounded border border-[var(--border)]">${params}</span>` : ""}
+            </div>
+            <div class="text-xs leading-relaxed text-[var(--muted)] font-sans">
+              ${content}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+  );
+  out = out.replace(/<ProcessFlow>([\s\S]*?)<\/ProcessFlow>/g, '<div class="my-6 space-y-2">$1</div>');
+
+  // TechnicalCard
+  out = out.replace(
+    /<TechnicalCard\s+title="([^"]+)"(?:\s+subtitle="([^"]*)")?(?:\s+bottleneck="([^"]*)")?\s*>([\s\S]*?)<\/TechnicalCard>/g,
+    (_, title, subtitle, bottleneck, content) => {
+      return `
+        <div class="my-6 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-5 font-mono text-sm text-[var(--text)]">
+          <div class="mb-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)]">${title}</h4>
+            ${subtitle ? `<p class="text-xs text-[var(--muted)] mt-0.5">${subtitle}</p>` : ""}
+          </div>
+          <div class="space-y-3">${content}</div>
+          ${bottleneck ? `<div class="mt-4 rounded border border-[var(--accent)]/30 bg-[var(--accent)]/10 p-3 text-xs text-[var(--text)]"><span class="font-semibold uppercase tracking-wide text-[var(--accent)]">Bottleneck: </span>${bottleneck}</div>` : ""}
+        </div>
+      `;
+    }
+  );
+
+  // TechnicalTangent
+  out = out.replace(
+    /<TechnicalTangent\s+term="([^"]+)"\s+category="([^"]+)"\s+definition="([^"]+)"(?:\s+equation="([^"]*)")?\s*\/>/g,
+    (_, term, cat, def, eq) => {
+      return `<span class="border-b border-dotted border-amber-500 text-amber-400 font-mono text-inherit cursor-help" title="${cat} • ${def}">${term}</span>`;
+    }
+  );
+
+  // Math inside HTML
+  out = out.replace(/\$([^\$\n]+?)\$/g, (_, math) => {
+    try {
+      return katex.renderToString(math.trim(), { displayMode: false, throwOnError: false });
+    } catch {
+      return `<code>${math}</code>`;
+    }
+  });
+
+  return out;
+}
+
 export default function DraftViewer({
   initialDrafts,
   initiallyUnlocked = false,
