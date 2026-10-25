@@ -2,7 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import { validateDrawingSvg } from '../lib/cad-validator.ts';
+
 const ISSUES_DIR = path.resolve('content/issues');
+const STAGING_DIR = path.resolve('staging');
 
 /**
  * Automatically sanitizes schematic HTML & SVGs before saving:
@@ -1120,6 +1123,32 @@ function runCli() {
       for (const err of errs) {
         console.error(`[LINT ERROR] ${err}`);
         hasViolation = true;
+      }
+    }
+  }
+
+  // Audit Staging Draft CAD SVGs against Automated Visual Quality Gate
+  if (fs.existsSync(STAGING_DIR)) {
+    const stagingFiles = fs.readdirSync(STAGING_DIR).filter(f => f.endsWith('.json'));
+    for (const sFile of stagingFiles) {
+      const sPath = path.join(STAGING_DIR, sFile);
+      try {
+        const sData = JSON.parse(fs.readFileSync(sPath, 'utf8'));
+        if (Array.isArray(sData.figures)) {
+          sData.figures.forEach((fig, fIdx) => {
+            if (fig.cadSvg) {
+              const cadVal = validateDrawingSvg(fig.cadSvg, `${sFile} [FIG ${fig.figureNumber || fIdx + 1}]`);
+              if (!cadVal.valid) {
+                for (const cErr of cadVal.errors) {
+                  console.error(`[CAD QUALITY GATE ERROR] ${cErr.message}`);
+                  hasViolation = true;
+                }
+              }
+            }
+          });
+        }
+      } catch (e) {
+        // Ignored
       }
     }
   }

@@ -360,11 +360,15 @@ export default function DraftViewer({
       const initialImgMap: Record<number, number> = {};
       const initialTabMap: Record<number, "carousel" | "cad" | "scanner"> = {};
       const initialKwMap: Record<number, string> = {};
+      const initialCadMap: Record<number, string> = {};
 
       if (activeDraft.figures) {
         activeDraft.figures.forEach((fig, idx) => {
           initialImgMap[idx] = fig.selectedIndex ?? 0;
           initialTabMap[idx] = fig.activeTab || "carousel";
+          if (fig.cadSvg) {
+            initialCadMap[idx] = fig.cadSvg;
+          }
           let kw = activeDraft.title || "";
           if (fig.caption) {
             const match = fig.caption.match(/—\s*([^:]+):/);
@@ -379,6 +383,7 @@ export default function DraftViewer({
       setSelectedImages(initialImgMap);
       setActiveFigTabs(initialTabMap);
       setFigKeywords(initialKwMap);
+      setCadSvgs(initialCadMap);
 
       // Initialize sections: if draft already has sections, use them; else parse body_mdx
       if (activeDraft.sections && activeDraft.sections.length > 0) {
@@ -612,6 +617,10 @@ export default function DraftViewer({
     if (!activeDraft) return;
     setLoading(true);
 
+    const fig = activeDraft.figures?.[figIdx];
+    const placeholderToken = fig?.placeholder || `{{ FIGURE_${figIdx} }}`;
+    const parentSec = activeSections.find((s) => s.content?.includes(placeholderToken));
+
     try {
       const res = await fetch("/api/drafts/cad-vector", {
         method: "POST",
@@ -620,6 +629,9 @@ export default function DraftViewer({
           title: activeDraft.title,
           topic: activeDraft.subject || "Mechanisms",
           figNumber: String(figIdx + 1).padStart(2, "0"),
+          caption: fig?.caption || "",
+          sectionHeading: parentSec?.heading || "",
+          sectionContent: parentSec?.content || "",
         }),
       });
 
@@ -627,7 +639,7 @@ export default function DraftViewer({
         const data = await res.json();
         setCadSvgs((prev) => ({ ...prev, [figIdx]: data.svg }));
         setActiveFigTabs((prev) => ({ ...prev, [figIdx]: "cad" }));
-        setActionMessage(`✓ Generated CAD Vector Schematic for Figure ${figIdx + 1}`);
+        setActionMessage(`✓ Generated CAD Cross-Section for Figure ${figIdx + 1}`);
         setTimeout(() => setActionMessage(null), 1500);
       }
     } catch (e) {
@@ -642,6 +654,10 @@ export default function DraftViewer({
     const targetUrl = urlToScan || scanUrls[figIdx];
     if (!targetUrl) return;
 
+    const fig = activeDraft?.figures?.[figIdx];
+    const placeholderToken = fig?.placeholder || `{{ FIGURE_${figIdx} }}`;
+    const parentSec = activeSections.find((s) => s.content?.includes(placeholderToken));
+
     setScanningIdx(figIdx);
     try {
       const res = await fetch("/api/drafts/scan-image", {
@@ -650,6 +666,10 @@ export default function DraftViewer({
         body: JSON.stringify({
           imageUrl: targetUrl,
           query: activeDraft?.title || "Teardown",
+          figNumber: String(figIdx + 1).padStart(2, "0"),
+          caption: fig?.caption || "",
+          sectionHeading: parentSec?.heading || "",
+          sectionContent: parentSec?.content || "",
         }),
       });
 
@@ -871,7 +891,12 @@ export default function DraftViewer({
             </button>
             <button
               type="button"
-              onClick={() => setActiveFigTabs((prev) => ({ ...prev, [figIdx]: "cad" }))}
+              onClick={() => {
+                setActiveFigTabs((prev) => ({ ...prev, [figIdx]: "cad" }));
+                if (!cadSvgs[figIdx]) {
+                  handleGenerateCad(figIdx);
+                }
+              }}
               className={`px-2 py-0.5 rounded text-[11px] font-mono transition-all flex items-center gap-1 ${
                 activeTab === "cad"
                   ? "bg-[var(--accent)] text-white font-bold shadow"
@@ -995,9 +1020,9 @@ export default function DraftViewer({
             ) : (
               <div className="text-center py-10 px-4">
                 <FileCode className="w-10 h-10 text-[var(--accent)] mx-auto mb-3" />
-                <h5 className="text-base font-serif text-[var(--text)] mb-1">On-Demand CAD Vector Generator</h5>
+                <h5 className="text-base font-serif text-[var(--text)] mb-1">On-Demand CAD Cross-Section Generator</h5>
                 <p className="text-xs text-[var(--muted)] font-mono max-w-sm mx-auto mb-4">
-                  Generates an original, precision technical CAD schematic with dark-mode grid, dimensions, and ISO 2768 titleblock.
+                  Generates a section-specific engineering cross-section CAD schematic with dimensioned plates, air gap, and structural support geometry.
                 </p>
                 <button
                   type="button"

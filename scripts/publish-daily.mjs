@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { generateCadVectorSvg } from '../lib/cad-generator.ts';
 
 const ISSUES_DIR = path.resolve('content/issues');
 const APPROVED_DIR = path.resolve('approved');
@@ -8,29 +9,24 @@ const STAGING_DIR = path.resolve('staging');
 /**
  * Green-Only Safe Autopilot Vector Schematic Generator for unverified body images
  */
-function generateAutopilotVectorSchematic(figNum, title, caption) {
+function generateAutopilotVectorSchematic(figNum, title, caption, sectionHeading = '', sectionContent = '') {
+  const svg = generateCadVectorSvg({
+    title,
+    topic: 'Mechanisms',
+    figNumber: String(figNum).padStart(2, '0'),
+    caption,
+    sectionHeading,
+    sectionContent
+  });
+
   return `
 <figure className="product-figure my-8 rounded-lg border border-neutral-800 bg-neutral-900/60 overflow-hidden">
-  <div className="w-full bg-[#191918] p-4 border-b border-neutral-800">
-    <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-      <defs>
-        <pattern id="gridAutopilot-${figNum}" width="20" height="20" patternUnits="userSpaceOnUse">
-          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#2E2D2A" strokeWidth="0.7"/>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#gridAutopilot-${figNum})" />
-      <g stroke="#EDEDEB" strokeWidth="1.5" fill="none" transform="translate(40, 20)">
-        <rect x="20" y="20" width="480" height="180" rx="6" stroke="#D97757" strokeWidth="2" fill="#232220"/>
-        <ellipse cx="260" cy="110" rx="140" ry="55" stroke="#EDEDEB" strokeDasharray="4 2" fill="#1C1B19"/>
-        <line x1="20" y1="110" x2="500" y2="110" stroke="#9E9C94" strokeWidth="0.8" strokeDasharray="6 3"/>
-        <text x="35" y="45" fontFamily="monospace" fontSize="10" fill="#D97757" fontWeight="bold">FIG 0${figNum} AUTOPILOT SCHEMATIC</text>
-        <text x="35" y="60" fontFamily="monospace" fontSize="9" fill="#9E9C94">TOLERANCE ±0.015 mm • SCALE 1:1</text>
-      </g>
-    </svg>
+  <div className="img-wrapper relative w-full bg-[#161615] p-2 sm:p-4 flex items-center justify-center">
+    ${svg}
   </div>
-  <figcaption className="p-3 text-xs font-mono text-neutral-400 flex justify-between items-center gap-2">
-    <span>${caption || `FIG 0${figNum} — Original vector schematic generated via Green-Only Safe Autopilot.`}</span>
-    <span className="text-[10px] text-emerald-400 uppercase tracking-wider font-semibold">SAFE AUTOPILOT VECTOR (0% LIABILITY)</span>
+  <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800 flex justify-between items-center gap-2">
+    <span>${caption || `FIG 0${figNum} — Section-specific CAD cross-section schematic.`}</span>
+    <span className="text-[10px] text-emerald-400 uppercase tracking-wider font-semibold">100% CLEAN HOUSE-STYLE CAD SCHEMATIC</span>
   </figcaption>
 </figure>
 `;
@@ -181,7 +177,7 @@ ${finalizedMdx}
         finalizedMdx = finalizedMdx.split(placeholder).join(heroSnippet);
       } else {
         // Body Images: Any unverified image slot converted to clean vector schematic
-        const vectorSnippet = generateAutopilotVectorSchematic(i + 1, draft.title, fig.caption);
+        const vectorSnippet = generateAutopilotVectorSchematic(i + 1, draft.title, fig.caption, draft.sections?.[i]?.heading || '', draft.sections?.[i]?.content || '');
         finalizedMdx = finalizedMdx.split(placeholder).join(vectorSnippet);
       }
     }
