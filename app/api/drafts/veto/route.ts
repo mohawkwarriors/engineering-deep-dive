@@ -12,22 +12,29 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing filename" }, { status: 400 });
     }
 
-    const stagingPath = filename.startsWith("staging/") ? filename : `staging/${filename}`;
+    const cleanFilename = filename.replace(/^(staging|approved)\//, "");
+    const stagingPath = `staging/${cleanFilename}`;
+    const approvedPath = `approved/${cleanFilename}`;
 
     // Read draft if title/subject wasn't passed directly
     let draftTitle = title;
     let draftSubject = subject || "Hardware";
-    if (!draftTitle) {
-      const draftRes = await readFileContent(stagingPath);
-      if (draftRes?.content) {
-        try {
-          const parsed = JSON.parse(draftRes.content);
-          draftTitle = parsed.title;
-          draftSubject = parsed.subject || parsed.category || draftSubject;
-        } catch {}
-      }
+    let isStaging = true;
+
+    let draftRes = await readFileContent(stagingPath);
+    if (!draftRes?.content) {
+      draftRes = await readFileContent(approvedPath);
+      isStaging = false;
     }
-    draftTitle = draftTitle || filename;
+
+    if (draftRes?.content) {
+      try {
+        const parsed = JSON.parse(draftRes.content);
+        draftTitle = parsed.title || draftTitle;
+        draftSubject = parsed.subject || parsed.category || draftSubject;
+      } catch {}
+    }
+    draftTitle = draftTitle || cleanFilename;
 
     // Load existing vetoes.json
     const vetoesPath = "content/vetoes.json";
@@ -40,11 +47,11 @@ export async function POST(req: NextRequest) {
       } catch {}
     }
 
-    // Add new veto entry
+    // Add new veto entry with standardized tag
     vetoes.push({
       topic: draftTitle,
       subject: draftSubject,
-      reason: reason || "Flagged during editorial review",
+      reason: reason || "[Too Broad]",
       critique: critique || "",
       date: new Date().toISOString(),
     });
@@ -56,12 +63,16 @@ export async function POST(req: NextRequest) {
       `chore(curation): veto draft topic "${draftTitle}" (${reason})`
     );
 
-    // Delete rejected draft from staging
-    await deleteFile(stagingPath, `chore(staging): remove vetoed draft ${filename}`);
+    // Delete rejected draft from staging or approved
+    if (isStaging) {
+      await deleteFile(stagingPath, `chore(staging): remove vetoed draft ${cleanFilename}`);
+    } else {
+      await deleteFile(approvedPath, `chore(approved): remove vetoed draft ${cleanFilename}`);
+    }
 
     return NextResponse.json({
       success: true,
-      message: `Draft "${draftTitle}" vetoed and added to negative constraints.`,
+      message: `Draft "${draftTitle}" vetoed with tag ${reason} and added to negative constraints.`,
     });
   } catch (err: any) {
     console.error("Veto draft failed:", err);

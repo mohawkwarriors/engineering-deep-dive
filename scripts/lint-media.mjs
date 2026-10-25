@@ -1055,17 +1055,19 @@ function runCli() {
         hasViolation = true;
       }
 
-      const htmlKeys = [...(data.article_html || '').matchAll(/data-tangent="([^"]+)"/g)].map(m => m[1]);
-      const dictKeys = Object.keys(data.tangents || {});
-      const missingInDict = htmlKeys.filter(k => !dictKeys.includes(k));
-      if (missingInDict.length > 0) {
-        console.error(`[LINT ERROR] ${file} has data-tangent terms missing from 'tangents' dictionary: ${missingInDict.join(', ')}`);
-        hasViolation = true;
-      }
-      const unlinkedInDict = dictKeys.filter(k => !htmlKeys.includes(k));
-      if (unlinkedInDict.length > 0) {
-        console.error(`[LINT ERROR] ${file} has definitions in 'tangents' dictionary that are never linked in article_html: ${unlinkedInDict.join(', ')}`);
-        hasViolation = true;
+      if (data.article_html) {
+        const htmlKeys = [...(data.article_html || '').matchAll(/data-tangent="([^"]+)"/g)].map(m => m[1]);
+        const dictKeys = Object.keys(data.tangents || {});
+        const missingInDict = htmlKeys.filter(k => !dictKeys.includes(k));
+        if (missingInDict.length > 0) {
+          console.error(`[LINT ERROR] ${file} has data-tangent terms missing from 'tangents' dictionary: ${missingInDict.join(', ')}`);
+          hasViolation = true;
+        }
+        const unlinkedInDict = dictKeys.filter(k => !htmlKeys.includes(k));
+        if (unlinkedInDict.length > 0) {
+          console.error(`[LINT ERROR] ${file} has definitions in 'tangents' dictionary that are never linked in article_html: ${unlinkedInDict.join(', ')}`);
+          hasViolation = true;
+        }
       }
 
       let jsonModified = false;

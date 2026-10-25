@@ -3,12 +3,13 @@ import path from "path";
 import matter from "gray-matter";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { mdxComponents } from "@/components/mdx-components";
+import { preprocessMathForMdx } from "@/lib/mdx-utils";
 import Link from "next/link";
 
 export default function HomePage() {
   const issuesDir = path.join(process.cwd(), "content/issues");
   let fileContent = "";
-  let issueNumber = "006";
+  let issueNumber = "007";
 
   if (fs.existsSync(issuesDir)) {
     const files = fs
@@ -32,6 +33,8 @@ export default function HomePage() {
     content.trim().startsWith("<div") ||
     (content.includes("class=") && !content.includes("<TechnicalCard") && !content.includes("<ProcessFlow"));
 
+  const safeContent = isHtml ? content : preprocessMathForMdx(content);
+
   return (
     <article className="prose prose-invert max-w-none">
       <div className="border-b border-neutral-800 pb-6 mb-8">
@@ -54,10 +57,10 @@ export default function HomePage() {
         {isHtml ? (
           <div
             className="article-body font-sans"
-            dangerouslySetInnerHTML={{ __html: content }}
+            dangerouslySetInnerHTML={{ __html: safeContent }}
           />
         ) : (
-          <MDXRemote source={content} components={mdxComponents} />
+          <MDXRemote source={safeContent} components={mdxComponents} />
         )}
       </div>
 

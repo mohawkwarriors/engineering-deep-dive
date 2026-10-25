@@ -2,12 +2,24 @@ import React from 'react';
 import { ProcessFlow, ProcessStep } from './ProcessFlow';
 import { TechnicalCard } from './TechnicalCard';
 import { TechnicalTangent } from './TechnicalTangent';
+import {
+  ParameterExplorer,
+  MechanismWalkthrough,
+  ToleranceStackupBar,
+  TradeoffMatrix,
+  LayeredCrossSection,
+} from './interactive';
 
 export const mdxComponents = {
   ProcessFlow,
   ProcessStep,
   TechnicalCard,
   TechnicalTangent,
+  ParameterExplorer,
+  MechanismWalkthrough,
+  ToleranceStackupBar,
+  TradeoffMatrix,
+  LayeredCrossSection,
   table: (props: any) => (
     <div className="my-6 overflow-x-auto rounded-lg border border-neutral-800 bg-neutral-900/50">
       <table className="w-full text-left font-mono text-xs border-collapse" {...props} />

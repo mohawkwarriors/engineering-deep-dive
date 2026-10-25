@@ -1,4 +1,4 @@
-import { listStagingDrafts, readFileContent } from "@/lib/github";
+import { listStagingDrafts, listApprovedDrafts, readFileContent } from "@/lib/github";
 import DraftViewer from "@/components/DraftViewer";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +12,12 @@ export default async function DraftsPage({
   const initiallyUnlocked =
     searchParams?.key === "deepdive2026" || searchParams?.token === "deepdive2026";
 
+  let approvedCount = 0;
+
   try {
+    const approvedFiles = await listApprovedDrafts();
+    approvedCount = approvedFiles.length;
+
     const draftFiles = await listStagingDrafts();
     for (const file of draftFiles) {
       const res = await readFileContent(file.path);
@@ -35,7 +40,11 @@ export default async function DraftsPage({
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6">
-      <DraftViewer initialDrafts={drafts} initiallyUnlocked={initiallyUnlocked} />
+      <DraftViewer
+        initialDrafts={drafts}
+        initiallyUnlocked={initiallyUnlocked}
+        initialApprovedCount={approvedCount}
+      />
     </div>
   );
 }

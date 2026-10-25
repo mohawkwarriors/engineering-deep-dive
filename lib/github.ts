@@ -239,3 +239,50 @@ export async function listStagingDrafts(): Promise<{ name: string; path: string 
     return [];
   }
 }
+
+/**
+ * Lists all draft files in the approved/ buffer from filesystem or GitHub API
+ */
+export async function listApprovedDrafts(): Promise<{ name: string; path: string }[]> {
+  const localApproved = path.join(process.cwd(), "approved");
+  try {
+    if (fs.existsSync(localApproved)) {
+      const files = fs.readdirSync(localApproved).filter((f) => f.endsWith(".json"));
+      if (files.length > 0) {
+        return files.map((name) => ({
+          name,
+          path: `approved/${name}`,
+        }));
+      }
+    }
+  } catch (err) {
+    console.warn("Could not read local approved directory:", err);
+  }
+
+  if (!GITHUB_TOKEN) return [];
+
+  try {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/approved?ref=main`, {
+      headers: {
+        Authorization: `Bearer ${GITHUB_TOKEN}`,
+        Accept: "application/vnd.github+json",
+        "User-Agent": "The-HW-Insider-Editor",
+      },
+      cache: "no-store",
+    });
+
+    if (!res.ok) return [];
+
+    const items = (await res.json()) as any[];
+    if (!Array.isArray(items)) return [];
+    return items
+      .filter((item) => item.type === "file" && item.name.endsWith(".json"))
+      .map((item) => ({
+        name: item.name,
+        path: item.path,
+      }));
+  } catch (err) {
+    console.error("Error listing approved drafts from GitHub API:", err);
+    return [];
+  }
+}

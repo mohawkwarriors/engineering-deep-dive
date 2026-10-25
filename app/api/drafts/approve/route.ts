@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { readFileContent, commitFile, deleteFile } from "@/lib/github";
+import { readFileContent, commitFile, deleteFile, listApprovedDrafts } from "@/lib/github";
 import fs from "fs";
 import path from "path";
 
@@ -8,41 +8,42 @@ export const dynamic = "force-dynamic";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { filename, title, figures } = body;
+    const { filename, title, figures, sections, target = "publish" } = body;
 
     if (!filename) {
       return NextResponse.json({ error: "Missing filename" }, { status: 400 });
     }
 
-    const stagingPath = filename.startsWith("staging/") ? filename : `staging/${filename}`;
-    const draftRes = await readFileContent(stagingPath);
+    const cleanFilename = filename.replace(/^(staging|approved)\//, "");
+    const stagingPath = `staging/${cleanFilename}`;
+    const approvedPath = `approved/${cleanFilename}`;
+
+    // Try reading from staging, or approved
+    let draftRes = await readFileContent(stagingPath);
+    let sourceFolder = "staging";
+    if (!draftRes || !draftRes.content) {
+      draftRes = await readFileContent(approvedPath);
+      sourceFolder = "approved";
+    }
 
     if (!draftRes || !draftRes.content) {
-      return NextResponse.json({ error: "Draft not found" }, { status: 404 });
+      return NextResponse.json({ error: "Draft not found in staging or approved" }, { status: 404 });
     }
 
     const draft = JSON.parse(draftRes.content);
     const finalTitle = title || draft.title;
-
-    // Determine next issue number
-    let maxId = 6;
-    const issuesDir = path.join(process.cwd(), "content/issues");
-    if (fs.existsSync(issuesDir)) {
-      const existing = fs.readdirSync(issuesDir);
-      for (const f of existing) {
-        const num = parseInt(f.replace(/\.(json|mdx)$/, ""), 10);
-        if (!isNaN(num) && num > maxId) {
-          maxId = num;
-        }
-      }
-    }
-    const nextId = String(maxId + 1).padStart(3, "0");
-    const today = new Date().toISOString().split("T")[0];
-
-    // Replace figure placeholders in body_mdx with selected images
-    let finalizedMdx = draft.body_mdx || "";
-
     const finalFigures = figures || draft.figures || [];
+
+    // Assemble finalized MDX from modular sections if provided
+    let finalizedMdx = "";
+    if (sections && Array.isArray(sections)) {
+      const activeSections = sections.filter((s: any) => !s.hidden);
+      finalizedMdx = activeSections.map((s: any) => s.content || "").join("\n\n---\n\n");
+    } else {
+      finalizedMdx = draft.body_mdx || "";
+    }
+
+    // Replace figure placeholders in finalized MDX with selected figures
     for (let i = 0; i < finalFigures.length; i++) {
       const fig = finalFigures[i];
       const selectedIndex = typeof fig.selectedIndex === "number" ? fig.selectedIndex : 0;
@@ -63,6 +64,52 @@ export async function POST(req: NextRequest) {
 
       finalizedMdx = finalizedMdx.split(placeholder).join(figureSnippet);
     }
+
+    // TARGET 1: Buffer ("Ready to Go" - 10-15 buffer queue)
+    if (target === "buffer") {
+      const updatedDraft = {
+        ...draft,
+        title: finalTitle,
+        figures: finalFigures,
+        sections: sections || draft.sections,
+        body_mdx: finalizedMdx,
+        approvedAt: new Date().toISOString(),
+      };
+
+      await commitFile(
+        approvedPath,
+        JSON.stringify(updatedDraft, null, 2),
+        `feat(buffer): approve draft "${finalTitle}" to approved buffer`
+      );
+
+      // If it was in staging, remove from staging
+      if (sourceFolder === "staging") {
+        await deleteFile(stagingPath, `chore(staging): move approved draft to buffer ${cleanFilename}`);
+      }
+
+      const allApproved = await listApprovedDrafts();
+      return NextResponse.json({
+        success: true,
+        target: "buffer",
+        approvedCount: allApproved.length,
+        message: `✓ Draft moved to Approved Buffer (${allApproved.length} articles ready).`,
+      });
+    }
+
+    // TARGET 2: Publish Immediately to content/issues/
+    let maxId = 6;
+    const issuesDir = path.join(process.cwd(), "content/issues");
+    if (fs.existsSync(issuesDir)) {
+      const existing = fs.readdirSync(issuesDir);
+      for (const f of existing) {
+        const num = parseInt(f.replace(/\.(json|mdx)$/, ""), 10);
+        if (!isNaN(num) && num > maxId) {
+          maxId = num;
+        }
+      }
+    }
+    const nextId = String(maxId + 1).padStart(3, "0");
+    const today = new Date().toISOString().split("T")[0];
 
     // Compose frontmatter MDX
     const mdxContent = `---
@@ -100,11 +147,16 @@ ${finalizedMdx}
     await commitFile(mdxPath, mdxContent, `feat(issue): approve and publish issue #${nextId}`);
     await commitFile(jsonPath, jsonContent, `feat(issue): add metadata for issue #${nextId}`);
 
-    // Remove approved draft from staging
-    await deleteFile(stagingPath, `chore(staging): remove approved draft ${filename}`);
+    // Remove approved draft from staging or approved
+    if (sourceFolder === "staging") {
+      await deleteFile(stagingPath, `chore(staging): remove published draft ${cleanFilename}`);
+    } else {
+      await deleteFile(approvedPath, `chore(approved): remove published draft ${cleanFilename}`);
+    }
 
     return NextResponse.json({
       success: true,
+      target: "publish",
       issueId: nextId,
       message: `Approved Issue #${nextId} published successfully.`,
     });

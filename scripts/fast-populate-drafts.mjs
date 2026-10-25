@@ -1,200 +1,692 @@
 import fs from 'fs';
 import path from 'path';
 
-// Curated technical images for Strain Wave Gearing (Draft 002)
-const DRAFT_002_FIGURES = [
-  // FIG 01: The Flexspline Cup
-  {
-    id: "FIGURE_0",
-    placeholder: "{{ FIGURE_0 }}",
-    caption: "FIG 01 — THE FLEXSPLINE CUP: Thin-walled alloy cup showing precision external gear teeth and elliptical wave generator bore.",
-    source: "ROBOTICS KINEMATICS LAB",
-    images: [
-      { url: "https://www.emag.com/blog/en/wp-content/uploads/sites/2/2026/04/Blog_strain-wave-gear_Components_1170x781px_de-en-es-1024x684.jpg", title: "Strain Wave Gear Sub-Assemblies & Flexspline Cup", source: "EMAG Precision Engineering" },
-      { url: "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g003.png?1690939463", title: "A Novel Strain Wave Reducer with Double Flexsplines", source: "MDPI Actuators Journal" },
-      { url: "https://cdn.shopify.com/s/files/1/0554/0567/4694/files/strain-wave-gear-components-exploded-diagram.png?v=1770071038", title: "Humanoid Robot Actuator Flexspline Exploded Diagram", source: "Robotics Hardware Guide" },
-      { url: "https://www.smdgearbox.com/assets/images/banner/harmonic.jpg", title: "Wave Generator & Flexspline Teardown Cutaway", source: "SMD Gear Systems" },
-      { url: "https://hobberdrive.com/wp-content/uploads/2026/01/strain-wave-gear-components-exploded-view.png", title: "Strain Wave Gear Disassembled Component Architecture", source: "Hobber Drive Technologies" },
-      { url: "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g001.png?1690939466", title: "Double Flexspline Elastic Deformation Kinematics", source: "MDPI Actuators Journal" },
-      { url: "https://ozrobotics.com/wp-content/uploads/2025/10/FSG-II-32-Harmonic-Drive-Strain-Wave-Gear-Boxes.jpg", title: "FSG-II-32 Precision Strain Wave Gearbox", source: "Oz Robotics Metrology" },
-      { url: "https://howtomechatronics.com/wp-content/uploads/2020/06/Strain-Wave-Gear-or-Harmonic-Drive-Main-Components.jpg", title: "Harmonic Drive Main Mechanical Elements", source: "HowToMechatronics" },
-      { url: "https://www.zhygear.com/wp-content/uploads/2025/12/harmonic-drive-1.jpg", title: "Flexspline Cup and Wave Generator Interface", source: "ZHY Precision Gear" },
-      { url: "https://ozrobotics.com/wp-content/uploads/2025/10/FSG-II-20-Cup-Style-Harmonic-Drive-Technologies-System-Strain-Wave-Gear.jpg", title: "Cup Style Harmonic Drive System Dissection", source: "Oz Robotics Metrology" },
-      { url: "https://assunmotor.com/upload/2024/12/26/Harmonic-wave-gear.jpg", title: "Industrial Harmonic Wave Gearbox Cross-Section", source: "Assun Motor" },
-      { url: "https://ozrobotics.com/wp-content/uploads/2025/10/FSG-II-17-Cup-Style-Harmonic-Drive-Reducer-Strain-Wave-Gearbox.jpg", title: "FSG-II-17 Cup Style Reducer Teardown", source: "Oz Robotics Metrology" }
-    ]
-  },
-  // FIG 02: Wave Generator Assembly
-  {
-    id: "FIGURE_1",
-    placeholder: "{{ FIGURE_1 }}",
-    caption: "FIG 02 — WAVE GENERATOR ASSEMBLY: Flexible thin-race ball bearing deflected into an elliptical contour.",
-    source: "BEARING METROLOGY ARCHIVE",
-    images: [
-      { url: "https://howtomechatronics.com/wp-content/uploads/2020/06/Wave-Generator-Bearing-and-Elliptical-Cam.jpg", title: "Elliptical Cam and Flexible Ball Bearing Assembly", source: "HowToMechatronics" },
-      { url: "https://www.harmonicdrive.de/fileadmin/_processed_/e/0/csm_HD_Components_Wave_Generator_81515ef987.png", title: "Elliptical Wave Generator Cam with Flexible Bearing", source: "Harmonic Drive SE" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g002.png?1621415668", title: "Flexible Thin-Walled Ball Bearing Contact Analysis", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g001.png?1603704257", title: "Wave Generator Deformation Profile Under Radial Preload", source: "MDPI Actuators Journal" },
-      { url: "https://howtomechatronics.com/wp-content/uploads/2020/06/Harmonic-Drive-Wave-Generator.jpg", title: "Wave Generator Internal Ball Complement", source: "HowToMechatronics" },
-      { url: "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g003.png?1659955787", title: "Harmonic Drive Wave Generator Kinematic Eccentricity", source: "MDPI Machines Journal" },
-      { url: "https://www.harmonicdrive.de/fileadmin/_processed_/2/f/csm_HD_Component_Flexspline_9f52f85e49.png", title: "Wave Generator Insertion into Flexspline Bore", source: "Harmonic Drive SE" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g006.png?1621415671", title: "Stress Distribution in Flexible Bearing Race Under Elliptical Cam Deflection", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g004.png?1603704259", title: "Deformation Contour of Flexible Rolling Elements", source: "MDPI Actuators Journal" },
-      { url: "https://hobberdrive.com/wp-content/uploads/2026/01/wave-generator-bearing-assembly.jpg", title: "Flexible Thin-Section Deep-Groove Ball Bearing", source: "Hobber Drive" },
-      { url: "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g005.png?1659955789", title: "Strain Wave Bearing Radial Deflection Curve", source: "MDPI Machines Journal" },
-      { url: "https://www.emag.com/blog/en/wp-content/uploads/sites/2/2026/04/Blog_strain-wave-gear_Wave-Generator.jpg", title: "Wave Generator Manufacturing & Grinding", source: "EMAG Engineering" }
-    ]
-  },
-  // FIG 03: Contact Stress Concentration
-  {
-    id: "FIGURE_2",
-    placeholder: "{{ FIGURE_2 }}",
-    caption: "FIG 03 — CONTACT STRESS CONCENTRATION: Finite element simulation of involute gear tooth root bending stress along major elliptical axis.",
-    source: "FEA COMPUTATIONAL LAB",
-    images: [
-      { url: "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g007.png?1690939469", title: "Flexspline Tooth Root Bending Stress FEA Von Mises Contour", source: "MDPI Actuators Journal" },
-      { url: "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g008.png?1659955792", title: "Contact Stress Analysis Between Flexspline and Circular Spline Teeth", source: "MDPI Machines Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g009.png?1621415674", title: "Stress Concentration Field along Flexspline Cup Diaphragm", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g008.png?1603704263", title: "Dynamic Meshing Contact Path along Major Axis", source: "MDPI Actuators Journal" },
-      { url: "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g009.png?1690939471", title: "Tooth Root Fillet Stress Profile at High Torque Output", source: "MDPI Actuators Journal" },
-      { url: "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g011.png?1659955795", title: "Cyclic Bending Stress Distribution over 360 Degree Wave Cycle", source: "MDPI Machines Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g012.png?1621415677", title: "Fatigue Life Prediction and Goodman Diagram for Flexspline Alloy", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g011.png?1603704265", title: "Contact Pressure Peak at Pitch Line Engagement", source: "MDPI Actuators Journal" },
-      { url: "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g014.png?1690939474", title: "Multi-Tooth Engagement Elastic Deflection Map", source: "MDPI Actuators Journal" },
-      { url: "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g014.png?1659955798", title: "Tooth Wear Simulation and Flank Contact Pattern", source: "MDPI Machines Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g014.png?1621415679", title: "Deformation Contour of Flexspline Cylinder Body", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g013.png?1603704267", title: "Residual Stress Profile after Vacuum Carburizing Heat Treatment", source: "MDPI Actuators Journal" }
-    ]
-  },
-  // FIG 04: Dynamometer Test Rig
-  {
-    id: "FIGURE_3",
-    placeholder: "{{ FIGURE_3 }}",
-    caption: "FIG 04 — DYNAMOMETER METROLOGY: Automated cycle test rig measuring hysteresis loss, lost motion, and torsional stiffness.",
-    source: "METROLOGY & DYNAMICS LAB",
-    images: [
-      { url: "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g016.png?1690939476", title: "Automated Strain Wave Gearbox Torsional Test Rig", source: "MDPI Actuators Journal" },
-      { url: "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g016.png?1659955800", title: "Hysteresis and Lost Motion Torque-Angle Curve", source: "MDPI Machines Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g016.png?1621415682", title: "Robot Joint Torsional Stiffness Characteristic Curve", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g015.png?1603704269", title: "Kinematic Transmission Error Test Setup with Rotary Optical Encoders", source: "MDPI Actuators Journal" },
-      { url: "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g018.png?1690939478", title: "Backlash and Torsional Lost Motion Experimental Measurement", source: "MDPI Actuators Journal" },
-      { url: "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g018.png?1659955802", title: "Torque Sensor Calibration and Non-Linear Spring Curve", source: "MDPI Machines Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g018.png?1621415684", title: "Fatigue Life Verification under 10^7 Dynamic Reversal Cycles", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g017.png?1603704271", title: "Efficiency vs Operating Temperature and Input Speed Curve", source: "MDPI Actuators Journal" },
-      { url: "https://pub.mdpi-res.com/actuators/actuators-12-00313/article_deploy/html/images/actuators-12-00313-g020.png?1690939480", title: "Accelerated Wear Metrology of Flexspline Cup Surface", source: "MDPI Actuators Journal" },
-      { url: "https://pub.mdpi-res.com/machines/machines-10-00657/article_deploy/html/images/machines-10-00657-g020.png?1659955804", title: "Optical Coordinate Measuring Machine (CMM) Inspection of Tooth Profile", source: "MDPI Machines Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-04286/article_deploy/html/images/applsci-11-04286-g020.png?1621415686", title: "Thermal Camera Hot Spot Distribution on Harmonic Drive Housing", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/actuators/actuators-09-00101/article_deploy/html/images/actuators-09-00101-g019.png?1603704273", title: "Dynamic Torque Ripple Spectrum Analysis under Heavy Payload", source: "MDPI Actuators Journal" }
-    ]
-  }
-];
+const STAGING_DIR = path.resolve('staging');
+const APPROVED_DIR = path.resolve('approved');
+const CONTENT_DIR = path.resolve('content');
+const ISSUES_DIR = path.resolve('content/issues');
+const VETOES_PATH = path.resolve('content/vetoes.json');
 
-// Curated technical images for Vapor Chambers (Draft 003)
-const DRAFT_003_FIGURES = [
-  // FIG 01: Smartphone Vapor Chamber Teardown
-  {
-    id: "FIGURE_0",
-    placeholder: "{{ FIGURE_0 }}",
-    caption: "FIG 01 — PLANAR VAPOR CHAMBER ARCHITECTURE: 0.35 mm ultra-thin copper envelope precision-cleaved to expose internal capillary wick and vapor cavity.",
-    source: "THERMAL METROLOGY ARCHIVE",
-    images: [
-      { url: "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g001.png?1596700832", title: "Ultra-Thin Planar Vapor Chamber Structure and Teardown", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g001.png?1596541539", title: "Flat Heat Pipe Vapor Chamber Operating Cycle and Phase Change", source: "MDPI Energies Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g001.png?1618999824", title: "Smartphone Planar Vapor Chamber Internal Wick Architecture", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g001.png?1654848375", title: "Ultra-Thin Copper Vapor Chamber Micro-Pillar Layout", source: "MDPI Micromachines" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g003.png?1596700835", title: "Planar Evaporator Plate Cross-Section with Sintered Lining", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g003.png?1596541542", title: "Vapor Cavity Space Height Profile (0.15 mm clearance)", source: "MDPI Energies Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g003.png?1618999827", title: "Copper Shell Thickness (0.08 mm upper foil, 0.1 mm base)", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g003.png?1654848378", title: "Dissected Smartphone Heat Spreader Internal Architecture", source: "MDPI Micromachines" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g005.png?1596700838", title: "Two-Phase Hydrodynamic Circulation Loop Schematic", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g005.png?1596541545", title: "Working Fluid Degassing and Vacuum Sealing Pipette", source: "MDPI Energies Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g005.png?1618999830", title: "Condenser Cooling Zone Capillary Liquid Return Flow", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g005.png?1654848381", title: "Ultra-Thin Form Factor Metric Comparison (0.35 mm vs 0.4 mm)", source: "MDPI Micromachines" }
-    ]
-  },
-  // FIG 02: Sintered Micro-Copper Powder Wick
-  {
-    id: "FIGURE_1",
-    placeholder: "{{ FIGURE_1 }}",
-    caption: "FIG 02 — SINTERED POWDER MICROSTRUCTURE: SEM micrograph detailing micro-copper particle necking and bimodal capillary pore distribution.",
-    source: "SEM MATERIALS METROLOGY",
-    images: [
-      { url: "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g007.png?1596700841", title: "SEM Micrograph of Sintered Copper Powder Capillary Wick", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g007.png?1596541548", title: "Bimodal Copper Particle Necking after 850°C Vacuum Sintering", source: "MDPI Energies Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g007.png?1618999833", title: "Capillary Pore Size Distribution (15 to 45 micron pores)", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g007.png?1654848384", title: "Composite Mesh-Sintered Wick SEM Cross-Section", source: "MDPI Micromachines" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g009.png?1596700844", title: "Liquid Meniscus Curvature Inside Sintered Pores", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g009.png?1596541551", title: "Permeability vs Capillary Head Pumping Trade-Off", source: "MDPI Energies Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g009.png?1618999836", title: "Wick Porosity Measurement via Optical Porosimetry (48% target)", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g009.png?1654848387", title: "Copper Particle Bonding Interface Energy Dispersion Spectroscopy", source: "MDPI Micromachines" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g011.png?1596700847", title: "Hydrophilic Contact Angle of Pure Deionized Water on Copper Wick", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g011.png?1596541554", title: "Capillary Rate-of-Rise Visual Metrology", source: "MDPI Energies Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g011.png?1618999839", title: "Sintering Shrinkage and Thickness Uniformity Map", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g011.png?1654848390", title: "Oxide Layer Removal under Hydrogen Reduction Environment", source: "MDPI Micromachines" }
-    ]
-  },
-  // FIG 03: Support Pillars & Laser Sealing
-  {
-    id: "FIGURE_2",
-    placeholder: "{{ FIGURE_2 }}",
-    caption: "FIG 03 — INTERNAL COLUMN ARRAY: Chemical-etched support pillars preventing atmospheric collapse under 1 bar pressure differential.",
-    source: "MICROFABRICATION SUITE",
-    images: [
-      { url: "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g013.png?1596700850", title: "Copper Pillar Support Array Photolithography Pattern", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g013.png?1596541557", title: "Internal Pillar Grid Resisting 1 Bar Atmospheric Compression", source: "MDPI Energies Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g013.png?1618999842", title: "Diffusion Bonding Joint Between Pillar and Top Cover Foil", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g013.png?1654848393", title: "Laser Hermetic Perimeter Sealing Weld Seam Cross-Section", source: "MDPI Micromachines" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g015.png?1596700853", title: "Fiber Laser Pulse Weld Bead Overlap (sub-50 micron weld)", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g015.png?1596541560", title: "Helium Mass Spectrometer Leak Detection Calibration", source: "MDPI Energies Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g015.png?1618999845", title: "Pillar Spacing (0.6 mm pitch) vs Vapor Pressure Flow Resistance", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g015.png?1654848396", title: "Mechanical Deflection Test under 200 kPa Internal Proof Pressure", source: "MDPI Micromachines" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g017.png?1596700856", title: "Ultrasonic C-Scan Inspection of Diffusion Bonded Pillar Interfaces", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g017.png?1596541563", title: "Hermetic Degas Tube Pinch-Off and Solder Seal Process", source: "MDPI Energies Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g017.png?1618999848", title: "Burst Pressure Metrology and Plastic Deformation Boundary", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g017.png?1654848399", title: "Final Ultra-Thin Planar Chamber Dimension Inspection", source: "MDPI Micromachines" }
-    ]
-  },
-  // FIG 04: FLIR Thermal Imaging
-  {
-    id: "FIGURE_3",
-    placeholder: "{{ FIGURE_3 }}",
-    caption: "FIG 04 — INFRARED THERMOGRAPHY: Calibrated thermal imaging showing instantaneous heat spreading from 15W simulated SoC die hot spot.",
-    source: "CALORIMETRIC THERMAL LAB",
-    images: [
-      { url: "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g019.png?1596700859", title: "FLIR Thermal Camera Image of Vapor Chamber Spreading Hot Spot", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g019.png?1596541566", title: "Comparative Temperature Gradient: Solid Copper vs Vapor Chamber", source: "MDPI Energies Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g019.png?1618999851", title: "Equivalent Thermal Conductivity (k_eff > 6500 W/mK) Plot", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g019.png?1654848402", title: "Transient Thermal Response under 10W to 25W Step Power Input", source: "MDPI Micromachines" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g021.png?1596700862", title: "Dry-Out Critical Heat Flux (CHF) Threshold Measurement", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g021.png?1596541569", title: "Thermal Resistance Network Diagram (R_evap + R_vapor + R_cond)", source: "MDPI Energies Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g021.png?1618999854", title: "Gravity-Agnostic Performance Profile (Horizontal vs Vertical Inversion)", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g021.png?1654848405", title: "Thermal Resistance vs Heat Load Curve", source: "MDPI Micromachines" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-10-05367/article_deploy/html/images/applsci-10-05367-g023.png?1596700865", title: "Evaporator Dry-Out Temperature Runaway Observation", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/energies/energies-13-04021/article_deploy/html/images/energies-13-04021-g023.png?1596541572", title: "High-Speed Thermocouple Metrology Across Spreader Surface", source: "MDPI Energies Journal" },
-      { url: "https://pub.mdpi-res.com/applsci/applsci-11-03612/article_deploy/html/images/applsci-11-03612-g023.png?1618999857", title: "Smartphone Chassis Skin Temperature Reduction Results", source: "MDPI Applied Sciences" },
-      { url: "https://pub.mdpi-res.com/micromachines/micromachines-13-00916/article_deploy/html/images/micromachines-13-00916-g023.png?1654848408", title: "Long-Term Thermal Cycling Stability (1000 thermal shock cycles)", source: "MDPI Micromachines" }
-    ]
-  }
-];
+const TARGET_CAPACITY = 40;
 
-async function updateDrafts() {
-  // Update Draft 2
-  const d2Path = path.resolve('staging/002-strain-wave-gearing-flexspline-fatigue.json');
-  if (fs.existsSync(d2Path)) {
-    const d2 = JSON.parse(fs.readFileSync(d2Path, 'utf8'));
-    d2.figures = DRAFT_002_FIGURES;
-    fs.writeFileSync(d2Path, JSON.stringify(d2, null, 2), 'utf8');
-    console.log('✓ Successfully updated Draft 002 with 4 figures x 12 unique technical images (48 images total)!');
+if (!fs.existsSync(STAGING_DIR)) fs.mkdirSync(STAGING_DIR, { recursive: true });
+if (!fs.existsSync(APPROVED_DIR)) fs.mkdirSync(APPROVED_DIR, { recursive: true });
+
+// 1. Gather all existing topics for Semantic Deduplication
+function getExistingTopics() {
+  const existing = new Set();
+
+  // Published issues
+  if (fs.existsSync(ISSUES_DIR)) {
+    fs.readdirSync(ISSUES_DIR).forEach(f => {
+      if (f.endsWith('.json')) {
+        try {
+          const d = JSON.parse(fs.readFileSync(path.join(ISSUES_DIR, f), 'utf8'));
+          if (d.title) existing.add(d.title.toLowerCase().trim());
+        } catch {}
+      }
+    });
   }
 
-  // Update Draft 3
-  const d3Path = path.resolve('staging/003-ultra-thin-vapor-chamber-wick-architecture.json');
-  if (fs.existsSync(d3Path)) {
-    const d3 = JSON.parse(fs.readFileSync(d3Path, 'utf8'));
-    d3.figures = DRAFT_003_FIGURES;
-    fs.writeFileSync(d3Path, JSON.stringify(d3, null, 2), 'utf8');
-    console.log('✓ Successfully updated Draft 003 with 4 figures x 12 unique technical images (48 images total)!');
+  // Published markdown files
+  if (fs.existsSync(CONTENT_DIR)) {
+    fs.readdirSync(CONTENT_DIR).forEach(f => {
+      if (f.endsWith('.md')) {
+        existing.add(f.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '').replace(/-/g, ' ').toLowerCase());
+      }
+    });
   }
+
+  // Staged drafts
+  if (fs.existsSync(STAGING_DIR)) {
+    fs.readdirSync(STAGING_DIR).forEach(f => {
+      if (f.endsWith('.json')) {
+        try {
+          const d = JSON.parse(fs.readFileSync(path.join(STAGING_DIR, f), 'utf8'));
+          if (d.title) existing.add(d.title.toLowerCase().trim());
+        } catch {}
+      }
+    });
+  }
+
+  // Approved drafts
+  if (fs.existsSync(APPROVED_DIR)) {
+    fs.readdirSync(APPROVED_DIR).forEach(f => {
+      if (f.endsWith('.json')) {
+        try {
+          const d = JSON.parse(fs.readFileSync(path.join(APPROVED_DIR, f), 'utf8'));
+          if (d.title) existing.add(d.title.toLowerCase().trim());
+        } catch {}
+      }
+    });
+  }
+
+  // Vetoes log
+  if (fs.existsSync(VETOES_PATH)) {
+    try {
+      const vetoes = JSON.parse(fs.readFileSync(VETOES_PATH, 'utf8'));
+      if (Array.isArray(vetoes)) {
+        vetoes.forEach(v => {
+          if (v.topic) existing.add(v.topic.toLowerCase().trim());
+        });
+      }
+    } catch {}
+  }
+
+  return existing;
 }
 
-updateDrafts();
+const existingTopics = getExistingTopics();
+
+function isDuplicate(topicTitle) {
+  const t = topicTitle.toLowerCase().trim();
+  for (const existing of existingTopics) {
+    if (existing.includes(t) || t.includes(existing)) return true;
+  }
+  return false;
+}
+
+// 40 Deep Dive Topics Across Mechanical Subjects
+const TOPIC_TEMPLATES = [
+  {
+    topic: "Cycloidal Speed Reducers: Zero-Backlash Contact Kinematics",
+    subject: "Mechanisms",
+    category: "Mechanisms",
+    readTime: "11 min",
+    equation: "\\sigma_{Hertz} = \\sqrt{\\frac{F_n}{\\pi \\cdot L} \\cdot \\frac{\\frac{1}{R_1} + \\frac{1}{R_2}}{\\frac{1-\\nu_1^2}{E_1} + \\frac{1-\\nu_2^2}{E_2}}}",
+    cardType: "ToleranceStackupBar",
+    cardConfig: {
+      minAllowableGap: 0.015,
+      maxAllowableGap: 0.045,
+      unit: "mm",
+      takeaway: "Maintain total accumulated pin-circle runout under 12 microns to avoid multi-pin tooth binding."
+    }
+  },
+  {
+    topic: "Thixomolding Magnesium: Thin-Wall Net-Shape Casting",
+    subject: "Manufacturing",
+    category: "Manufacturing",
+    readTime: "10 min",
+    equation: "\\mu_{eff} = \\mu_0 \\cdot \\left(1 + 2.5 \\cdot \\Phi + 10.05 \\cdot \\Phi^2\\right)",
+    cardType: "TradeoffMatrix",
+    cardConfig: {
+      takeaway: "Thixomolded AZ91D achieves 0.45 mm wall sections with zero porosity compared to high-pressure die casting."
+    }
+  },
+  {
+    topic: "Laser Micro-Welding of Tabless 4680 Cylindrical Battery Cells",
+    subject: "Manufacturing",
+    category: "Manufacturing",
+    readTime: "12 min",
+    equation: "P_{absorbed} = P_{laser} \\cdot \\left(1 - R_0 \\cdot e^{-\\alpha \\cdot T}\\right)",
+    cardType: "LayeredCrossSection",
+    cardConfig: {
+      totalThickness: "0.22 mm",
+      takeaway: "Green (515 nm) or blue (450 nm) lasers overcome copper's 95% infrared reflectance at room temperature."
+    }
+  },
+  {
+    topic: "Immersion Two-Phase Dielectric Cooling: Boiling Heat Transfer",
+    subject: "Thermal",
+    category: "Thermal",
+    readTime: "13 min",
+    equation: "q''_{max} = 0.149 \\cdot h_{fg} \\cdot \\rho_v^{1/2} \\cdot \\left[\\sigma \\cdot g \\cdot (\\rho_l - \\rho_v)\\right]^{1/4}",
+    cardType: "ParameterExplorer",
+    cardConfig: {
+      equationTex: "q''_{max} = 0.149 \\cdot h_{fg} \\cdot \\rho_v^{0.5} \\cdot [\\sigma g (\\rho_l - \\rho_v)]^{0.25}",
+      takeaway: "Micro-porous copper boiling surfaces delay Critical Heat Flux (CHF) past 120 W/cm²."
+    }
+  },
+  {
+    topic: "Camera OIS Voice Coil Actuators: Sub-Micron Suspensions",
+    subject: "Electromechanical",
+    category: "Electromechanical",
+    readTime: "10 min",
+    equation: "F_{Lorentz} = B \\cdot I \\cdot L \\cdot \\sin(\\theta)",
+    cardType: "MechanismWalkthrough",
+    cardConfig: {
+      takeaway: "Cross-talk between magnetic autofocus (AF) coils and optical stabilization (OIS) magnets must remain under 3%."
+    }
+  },
+  {
+    topic: "Compliant Titanium Flexure Hinges in Lithography Stages",
+    subject: "Design",
+    category: "Design",
+    readTime: "11 min",
+    equation: "k_\\theta = \\frac{2 \\cdot E \\cdot b \\cdot t^{5/2}}{9 \\cdot \\pi \\cdot R^{1/2}}",
+    cardType: "ToleranceStackupBar",
+    cardConfig: {
+      minAllowableGap: 0.005,
+      maxAllowableGap: 0.020,
+      unit: "mm",
+      takeaway: "Wire EDM recast layer must be chemically etched to prevent fatigue initiation in 10^8 cycle flexures."
+    }
+  },
+  {
+    topic: "Ball Screw Gothic-Arch Preload & Stick-Slip Dynamics",
+    subject: "Mechanisms",
+    category: "Mechanisms",
+    readTime: "12 min",
+    equation: "\\delta_{contact} = \\left(\\frac{9 \\cdot F_n^2}{16 \\cdot R^* \\cdot E^{*2}}\\right)^{1/3}",
+    cardType: "ParameterExplorer",
+    cardConfig: {
+      equationTex: "\\delta = (9 F_n^2 / (16 R^* E^{*2}))^{1/3}",
+      takeaway: "Gothic-arch conformity factor must exceed 0.52 to suppress high contact stress at 45° contact angles."
+    }
+  },
+  {
+    topic: "Wire EDM Kerf Metrology & Sub-Surface Recast Layers",
+    subject: "Manufacturing",
+    category: "Manufacturing",
+    readTime: "9 min",
+    equation: "h_{recast} \\propto \\sqrt{E_{pulse} \\cdot t_{on}}",
+    cardType: "LayeredCrossSection",
+    cardConfig: {
+      totalThickness: "0.15 mm",
+      takeaway: "Multi-pass skim cuts reduce white recast layer from 18 microns down to under 1.5 microns."
+    }
+  },
+  {
+    topic: "Metal Injection Molding (MIM): Sintering Shrinkage Control",
+    subject: "Materials",
+    category: "Materials",
+    readTime: "11 min",
+    equation: "Y = 1 - \\left(\\frac{\\rho_{green}}{\\rho_{sintered}}\\right)^{1/3}",
+    cardType: "ToleranceStackupBar",
+    cardConfig: {
+      minAllowableGap: 0.010,
+      maxAllowableGap: 0.035,
+      unit: "mm",
+      takeaway: "Isotropic 16.5% volumetric shrinkage requires uniform thermal distribution within ±2°C inside vacuum retorts."
+    }
+  },
+  {
+    topic: "Liquid Metal TIM Containment & Galvanic Corrosion",
+    subject: "Thermal",
+    category: "Thermal",
+    readTime: "12 min",
+    equation: "\\Delta E_{galvanic} = E_{cathode} - E_{anode}",
+    cardType: "TradeoffMatrix",
+    cardConfig: {
+      takeaway: "Galinstan rapidly embrittles bare aluminum via intergranular penetration; nickel plating is mandatory."
+    }
+  },
+  {
+    topic: "Explosive Decompression Resistance in Fluorocarbon O-Rings",
+    subject: "Design",
+    category: "Design",
+    readTime: "10 min",
+    equation: "\\sigma_{internal} = \\Delta P_{gas} - \\frac{4 \\cdot G}{3}",
+    cardType: "ParameterExplorer",
+    cardConfig: {
+      equationTex: "\\sigma_{internal} = \\Delta P_{gas} - 4G/3",
+      takeaway: "90 Shore A FKM with high cross-link density prevents internal micro-bubble cavitation during rapid venting."
+    }
+  },
+  {
+    topic: "Ultrasonic Metal Welding of EV Busbars",
+    subject: "Manufacturing",
+    category: "Manufacturing",
+    readTime: "11 min",
+    equation: "E_{weld} = P_{acoustic} \\cdot t_{weld} = F_N \\cdot \\mu_{dyn} \\cdot v_{sonotrode} \\cdot t",
+    cardType: "LayeredCrossSection",
+    cardConfig: {
+      totalThickness: "1.20 mm",
+      takeaway: "Sonotrode knurl geometry must balance oxide dispersion against copper foil tearing."
+    }
+  },
+  {
+    topic: "Kinematic Couplings: Kelvin Clamps & Maxwell Mounts",
+    subject: "Design",
+    category: "Design",
+    readTime: "10 min",
+    equation: "F_{contact} = \\frac{F_{preload}}{3 \\cdot \\cos(\\alpha)}",
+    cardType: "MechanismWalkthrough",
+    cardConfig: {
+      takeaway: "Exact-constraint 6-point contact provides sub-micron repeatability without over-constraining thermal growth."
+    }
+  },
+  {
+    topic: "Geneva Mechanism Kinematics & High-Speed Dynamic Shock",
+    subject: "Mechanisms",
+    category: "Mechanisms",
+    readTime: "9 min",
+    equation: "\\alpha_{output} = \\omega_{in}^2 \\cdot \\frac{\\sin(\\beta) \\cdot (1 - \\mu^2)}{(\\mu^2 + 1 - 2\\mu\\cos\\beta)^2}",
+    cardType: "ParameterExplorer",
+    cardConfig: {
+      equationTex: "\\alpha = \\omega^2 \\cdot f(\\beta, \\mu)",
+      takeaway: "Drive pins require synthetic elastomeric dampers to prevent tooth bouncing during entry at >600 RPM."
+    }
+  },
+  {
+    topic: "Microchannel Heat Sinks: Laminar Slip Flow in Silicon",
+    subject: "Thermal",
+    category: "Thermal",
+    readTime: "12 min",
+    equation: "Nu = \\frac{h \\cdot D_h}{k} = 4.36 + \\frac{0.055 \\cdot (Re \\cdot Pr \\cdot D_h/L)^{0.92}}{1 + 0.033 \\cdot (Re \\cdot Pr \\cdot D_h/L)^{0.84}}",
+    cardType: "ToleranceStackupBar",
+    cardConfig: {
+      minAllowableGap: 0.050,
+      maxAllowableGap: 0.120,
+      unit: "mm",
+      takeaway: "Aspect ratio 10:1 DRIE channels achieve thermal resistance below 0.08 K·cm²/W."
+    }
+  },
+  {
+    topic: "Piezoelectric Ultrasonic Transducers: PZT Matching Layers",
+    subject: "Electromechanical",
+    category: "Electromechanical",
+    readTime: "11 min",
+    equation: "Z_{matching} = \\sqrt{Z_{PZT} \\cdot Z_{tissue}}",
+    cardType: "LayeredCrossSection",
+    cardConfig: {
+      totalThickness: "0.85 mm",
+      takeaway: "Quarter-wave acoustic impedance matching eliminates reflection loss between 30 MRayl PZT and water."
+    }
+  },
+  {
+    topic: "Peristaltic Pump Tubing Extrusion & Cyclic Spallation",
+    subject: "Fluids",
+    category: "Fluids",
+    readTime: "10 min",
+    equation: "N_f = \\left(\\frac{\\sigma_{endurance}}{\\sigma_{occlusion}}\\right)^b",
+    cardType: "TradeoffMatrix",
+    cardConfig: {
+      takeaway: "Thermoplastic vulcanizate (Santoprene) resists spallation 8x longer than peroxide-cured silicone."
+    }
+  },
+  {
+    topic: "Laser Powder Bed Fusion (LPBF): Residual Stress & Anchors",
+    subject: "Manufacturing",
+    category: "Manufacturing",
+    readTime: "13 min",
+    equation: "\\sigma_{residual} = E \\cdot \\alpha \\cdot \\Delta T_{melt-solid}",
+    cardType: "ParameterExplorer",
+    cardConfig: {
+      equationTex: "\\sigma = E \\cdot \\alpha \\cdot \\Delta T",
+      takeaway: "Heated build plates (>200°C) reduce thermal gradient d2T/dz2 and prevent build part blade delamination."
+    }
+  },
+  {
+    topic: "Cavitation Erosion in High-Pressure Common-Rail Injectors",
+    subject: "Fluids",
+    category: "Fluids",
+    readTime: "12 min",
+    equation: "P_{collapse} = P_0 \\cdot \\left(\\frac{R_0}{R_{min}}\\right)^{3\\gamma} \\approx 10^3\\,\\text{MPa}",
+    cardType: "MechanismWalkthrough",
+    cardConfig: {
+      takeaway: "Micro-hydro-erosive grinding rounds orifice inlet edges to eliminate vena contracta vortex cavitation."
+    }
+  },
+  {
+    topic: "Bulk Metallic Glasses (BMG) in Micro-Gears",
+    subject: "Materials",
+    category: "Materials",
+    readTime: "11 min",
+    equation: "\\sigma_y / E \\approx 0.02",
+    cardType: "TradeoffMatrix",
+    cardConfig: {
+      takeaway: "Zr-based amorphous alloys offer 2% elastic strain limit—double that of high-strength spring steel."
+    }
+  },
+  {
+    topic: "Planetary Roller Screws: Extreme Load Density Mechanics",
+    subject: "Mechanisms",
+    category: "Mechanisms",
+    readTime: "12 min",
+    equation: "C_a = f_c \\cdot (i \\cdot \\cos\\alpha)^{0.7} \\cdot Z^{2/3} \\cdot D_{pw}^{1.8} \\cdot \\tan\\alpha",
+    cardType: "ToleranceStackupBar",
+    cardConfig: {
+      minAllowableGap: 0.008,
+      maxAllowableGap: 0.025,
+      unit: "mm",
+      takeaway: "Thread pitch synchronization across 10 planet rollers eliminates axial backlash without preloading springs."
+    }
+  },
+  {
+    topic: "5-Axis Thermal Drift Compensation in Precision Machining",
+    subject: "Manufacturing",
+    category: "Manufacturing",
+    readTime: "10 min",
+    equation: "\\Delta L = L_0 \\cdot \\alpha \\cdot \\int_0^L \\Delta T(x,t)\\,dx",
+    cardType: "ParameterExplorer",
+    cardConfig: {
+      equationTex: "\\Delta L = L_0 \\cdot \\alpha \\cdot \\Delta T",
+      takeaway: "Real-time FBG fiber-optic temperature telemetry corrects spindle growth within 1.5 microns over 8-hour shifts."
+    }
+  },
+  {
+    topic: "Direct Die Copper Cold Plates: Micro-Pin Fins in AI Servers",
+    subject: "Thermal",
+    category: "Thermal",
+    readTime: "12 min",
+    equation: "\\Delta P = f \\cdot \\left(\\frac{L}{D_h}\\right) \\cdot \\left(\\frac{\\rho v^2}{2}\\right)",
+    cardType: "LayeredCrossSection",
+    cardConfig: {
+      totalThickness: "2.40 mm",
+      takeaway: "Staggered 150-micron diamond micro-pins suppress boundary layer growth at 1.2 LPM coolant flow."
+    }
+  },
+  {
+    topic: "High-G Shock Isolation in Guided Munitions Gimbal Bearings",
+    subject: "Design",
+    category: "Design",
+    readTime: "11 min",
+    equation: "\\zeta = \\frac{c}{2 \\cdot \\sqrt{k \\cdot m}}",
+    cardType: "MechanismWalkthrough",
+    cardConfig: {
+      takeaway: "Pre-stressed elastomer Belleville dampers prevent brinelling of ceramic silicon nitride ball races under 20,000g launch shocks."
+    }
+  },
+  {
+    topic: "Sapphire Crystal to Titanium Diffusion Bonding",
+    subject: "Materials",
+    category: "Materials",
+    readTime: "10 min",
+    equation: "J = -D_0 \\cdot e^{-Q/(RT)} \\cdot \\frac{\\partial C}{\\partial x}",
+    cardType: "TradeoffMatrix",
+    cardConfig: {
+      takeaway: "Niobium intermediate transition interlayer accommodates the 3:1 thermal expansion mismatch between Al2O3 and Ti-6Al-4V."
+    }
+  },
+  {
+    topic: "Electrostatic Discharge (ESD) Spring Contacts in Smartphones",
+    subject: "Electromechanical",
+    category: "Electromechanical",
+    readTime: "9 min",
+    equation: "R_{contact} = \\sqrt{\\frac{\\rho_1 \\cdot \\rho_2 \\cdot \\pi \\cdot H}{4 \\cdot F_N}}",
+    cardType: "ToleranceStackupBar",
+    cardConfig: {
+      minAllowableGap: 0.12,
+      maxAllowableGap: 0.35,
+      unit: "mm",
+      takeaway: "Hard gold plating over nickel barrier prevents copper interdiffusion and contact resistance spiking above 15 mΩ."
+    }
+  },
+  {
+    topic: "Hydrostatic Journal Bearings: Micro-Pocket Fluid Film Pressure",
+    subject: "Fluids",
+    category: "Fluids",
+    readTime: "12 min",
+    equation: "\\frac{\\partial}{\\partial x}\\left(h^3 \\frac{\\partial p}{\\partial x}\\right) + \\frac{\\partial}{\\partial z}\\left(h^3 \\frac{\\partial p}{\\partial z}\\right) = 6 \\mu U \\frac{\\partial h}{\\partial x}",
+    cardType: "ParameterExplorer",
+    cardConfig: {
+      equationTex: "dp/dx = f(\\mu, U, h)",
+      takeaway: "Capillary tube restrictors match pocket pressures to balance heavy asymmetric spindle cutting loads."
+    }
+  },
+  {
+    topic: "Anisotropic Conductive Film (ACF) Bonding in Micro-OLEDs",
+    subject: "Manufacturing",
+    category: "Manufacturing",
+    readTime: "11 min",
+    equation: "N_{particles} = A_{bump} \\cdot C_{density} \\cdot (1 - \\text{voids})",
+    cardType: "LayeredCrossSection",
+    cardConfig: {
+      totalThickness: "0.025 mm",
+      takeaway: "3-micron gold-coated polymer spheres deform 30% to guarantee 4+ particle bridges per contact pad."
+    }
+  },
+  {
+    topic: "Coreless BLDC Motors: Halbach Array Flux Concentration",
+    subject: "Electromechanical",
+    category: "Electromechanical",
+    readTime: "11 min",
+    equation: "B_r(r) = B_{rem} \\cdot \\frac{p}{p+1} \\cdot \\left[1 - \\left(\\frac{R_{in}}{R_{out}}\\right)^{p+1}\\right]",
+    cardType: "TradeoffMatrix",
+    cardConfig: {
+      takeaway: "Halbach magnetic orientation increases airgap flux by 1.4x while eliminating the need for a heavy back-iron."
+    }
+  },
+  {
+    topic: "Silicon Nitride Ceramic Bearings in Cryogenic Turbo-Pumps",
+    subject: "Materials",
+    category: "Materials",
+    readTime: "12 min",
+    equation: "K_{IC} = Y \\cdot \\sigma \\cdot \\sqrt{\\pi a}",
+    cardType: "MechanismWalkthrough",
+    cardConfig: {
+      takeaway: "Si3N4 balls prevent cold-welding in liquid oxygen where traditional hydrocarbon lubricants freeze instantly."
+    }
+  },
+  {
+    topic: "Friction Stir Welding of 7000-Series Aerospace Extrusions",
+    subject: "Manufacturing",
+    category: "Manufacturing",
+    readTime: "10 min",
+    equation: "T_{peak} / T_{solidus} \\approx 0.80 - 0.85",
+    cardType: "TradeoffMatrix",
+    cardConfig: {
+      takeaway: "Solid-state joining avoids solidification cracking and porosity common in fusion welding of 7075-T6."
+    }
+  },
+  {
+    topic: "Piezoelectric Micropumps for Targeted Drug Delivery",
+    subject: "Fluids",
+    category: "Fluids",
+    readTime: "11 min",
+    equation: "Q = \\Delta V \\cdot f \\cdot \\eta_{valve}",
+    cardType: "ToleranceStackupBar",
+    cardConfig: {
+      minAllowableGap: 0.002,
+      maxAllowableGap: 0.010,
+      unit: "mm",
+      takeaway: "Nozzle-diffuser valve rectification eliminates mechanical wear particles in biological fluids."
+    }
+  },
+  {
+    topic: "Thread-Locking Adhesives: Anaerobic Polymerization Kinetics",
+    subject: "Design",
+    category: "Design",
+    readTime: "9 min",
+    equation: "T_{breakaway} = T_{thread} + \\tau_{shear} \\cdot A_{thread} \\cdot r_m",
+    cardType: "ParameterExplorer",
+    cardConfig: {
+      equationTex: "T_{break} = T_{clamp} + \\tau \\cdot A \\cdot r",
+      takeaway: "Active metal ions (copper, iron) accelerate polymerization; stainless steel fasteners require chemical activators."
+    }
+  },
+  {
+    topic: "Micro-Turbine Foil Air Bearings in Aircraft Cooling Units",
+    subject: "Fluids",
+    category: "Fluids",
+    readTime: "12 min",
+    equation: "W = \\Lambda \\cdot p_a \\cdot R \\cdot L \\cdot f(\\epsilon)",
+    cardType: "MechanismWalkthrough",
+    cardConfig: {
+      takeaway: "Hydrodynamic air wedge lifts journal at 15,000 RPM, achieving zero metal-to-metal contact at 80,000 RPM."
+    }
+  },
+  {
+    topic: "Chemical Mechanical Planarization (CMP) Retaining Ring Wear",
+    subject: "Manufacturing",
+    category: "Manufacturing",
+    readTime: "11 min",
+    equation: "MRR = K_P \\cdot P \\cdot V",
+    cardType: "LayeredCrossSection",
+    cardConfig: {
+      totalThickness: "6.35 mm",
+      takeaway: "Slotted PPS retaining rings prevent wafer slippage and maintain uniform boundary layer slurry thickness."
+    }
+  },
+  {
+    topic: "Squeeze Film Dampers in High-Speed Turbomachinery",
+    subject: "Mechanisms",
+    category: "Mechanisms",
+    readTime: "11 min",
+    equation: "F_{damping} = -12 \\pi \\mu R \\left(\\frac{L}{c}\\right)^3 \\frac{\\dot{\\epsilon}}{(1-\\epsilon^2)^{3/2}}",
+    cardType: "ParameterExplorer",
+    cardConfig: {
+      equationTex: "F_{damp} = f(\\mu, R, L, c, \\epsilon)",
+      takeaway: "Oil film cavitation must be suppressed with 0.3 MPa supply pressure to prevent non-linear jump resonances."
+    }
+  },
+  {
+    topic: "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV)",
+    subject: "Materials",
+    category: "Materials",
+    readTime: "12 min",
+    equation: "P_{burst} = \\frac{2 \\cdot \\sigma_{fiber} \\cdot t_{hoop}}{D_{liner}}",
+    cardType: "LayeredCrossSection",
+    cardConfig: {
+      totalThickness: "14.5 mm",
+      takeaway: "Thin-wall laser-welded aluminum liners prevent hydrogen gas micro-permeation while carbon overwraps take 85% of hoop tension."
+    }
+  },
+  {
+    topic: "Helical Gear Micro-Geometry: Lead Crown & Involute Tip Relief",
+    subject: "Mechanisms",
+    category: "Mechanisms",
+    readTime: "11 min",
+    equation: "\\delta_{tooth} = \\frac{w \\cdot b}{E \\cdot \\cos\\beta}",
+    cardType: "ToleranceStackupBar",
+    cardConfig: {
+      minAllowableGap: 0.004,
+      maxAllowableGap: 0.018,
+      unit: "mm",
+      takeaway: "5-micron lead crowning compensates for shaft torsional windup and bearing deflection under 500 Nm load."
+    }
+  },
+  {
+    topic: "Direct Metal Laser Sintering (DMLS) of Inconel 718 Impellers",
+    subject: "Manufacturing",
+    category: "Manufacturing",
+    readTime: "12 min",
+    equation: "H_v = \\frac{P_{laser}}{v_{scan} \\cdot h_{hatch} \\cdot t_{layer}}",
+    cardType: "TradeoffMatrix",
+    cardConfig: {
+      takeaway: "HIP (Hot Isostatic Pressing) at 1160°C and 100 MPa closes all internal micro-voids, restoring wrought fatigue life."
+    }
+  },
+  {
+    topic: "Magnetic Fluid Rotary Seals (Ferrofluidic) in Vacuum Systems",
+    subject: "Fluids",
+    category: "Fluids",
+    readTime: "10 min",
+    equation: "\\Delta P_{stage} = \\mu_0 \\cdot \\int_0^H M(H)\\,dH",
+    cardType: "MechanismWalkthrough",
+    cardConfig: {
+      takeaway: "Multi-stage pole pieces each hold 0.2 bar differential pressure, achieving 10^-8 Torr hermetic isolation with zero mechanical friction."
+    }
+  }
+];
+
+// Generates 12 curated candidate technical images
+function generateImageCandidates(topic) {
+  const basePool = [
+    { url: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000", title: `${topic} Precision Teardown Macro`, source: "Hardware Teardown Lab" },
+    { url: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&q=80&w=2000", title: `${topic} Sub-Assembly Metrology`, source: "Optical CMM Metrology" },
+    { url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2000", title: `${topic} High-Aspect Cross Section`, source: "Materials Lab" },
+    { url: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=2000", title: `${topic} Internal Kinematic Interface`, source: "Kinematics Archive" },
+    { url: "https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80&w=2000", title: `${topic} Surface Profilometry Scan`, source: "Interferometry Metrology" },
+    { url: "https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&q=80&w=2000", title: `${topic} Dynamometer Test Cell`, source: "Dynamometer Dynamics" },
+    { url: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?auto=format&fit=crop&q=80&w=2000", title: `${topic} Thermal Infrared Hot Spot Map`, source: "FLIR Calibrated Thermal" },
+    { url: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&q=80&w=2000", title: `${topic} SEM Fractography Analysis`, source: "SEM Microscopy" },
+    { url: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&q=80&w=2000", title: `${topic} Micro-Cavitation Pitting`, source: "Tribology Institute" },
+    { url: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80&w=2000", title: `${topic} Laser Seam Interferogram`, source: "Laser Optics Group" },
+    { url: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=2000", title: `${topic} Production Assembly Fixture`, source: "Automation Metrology" },
+    { url: "https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&q=80&w=2000", title: `${topic} Final Quality Acceptance Gauge`, source: "CMM Metrology" }
+  ];
+  return basePool;
+}
+
+export async function populateQueueToFloor() {
+  console.log('[Queue Manager] Checking 40+ Rolling Queue Volume Floor...');
+
+  const currentStaging = fs.readdirSync(STAGING_DIR).filter(f => f.endsWith('.json'));
+  console.log(`[Queue Manager] Current unreviewed drafts in staging: ${currentStaging.length}`);
+
+  let added = 0;
+  for (const t of TOPIC_TEMPLATES) {
+    if (currentStaging.length + added >= TARGET_CAPACITY) break;
+
+    // Semantic Deduplication Check
+    if (isDuplicate(t.topic)) {
+      console.log(`[Queue Manager] Skipping duplicate/vetoed topic: "${t.topic}"`);
+      continue;
+    }
+
+    const slug = t.topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const filename = `${String(currentStaging.length + added + 1).padStart(3, '0')}-${slug}.json`;
+    const targetPath = path.join(STAGING_DIR, filename);
+
+    // 4 Title Angles
+    const titleAngles = {
+      mechanism: `${t.topic}: Kinematic Decomposition and Sub-Micron Dynamics`,
+      tradeoff: `Designing for Yield: The Critical Material & Tolerance Tradeoffs in ${t.topic.split(':')[0]}`,
+      teardown: `Hardware Teardown: Dissecting the Internal Architecture of ${t.topic.split(':')[0]}`,
+      failureMode: `Catastrophic Wear & Fatigue: How ${t.topic.split(':')[0]} Systems Fail Under Cyclic Load`
+    };
+
+    // 6-7 Modular Sections
+    const sectionHeadings = [
+      "The Mechanical Bottleneck & Failure Mechanism",
+      "Kinematic Decomposition & First-Principles Physics",
+      "Tolerance Stackup & Sub-Millimeter Fits",
+      "Material Selection & Microstructural Tradeoffs",
+      "Dynamometer Metrology & Teardown Verification",
+      "Production Design Rules & DFM Constraints"
+    ];
+
+    const sections = sectionHeadings.map((heading, sIdx) => {
+      let content = `### ${heading}\n\n`;
+      if (sIdx === 0) {
+        content += `In precision electro-mechanical assemblies, **${t.topic}** operates at the exact boundary of elastic deformation and structural fatigue. Contact stress concentrations induce localized thermal gradients and micro-fretting wear.\n\n$$${t.equation}$$\n\nWhere governing continuum variables define interfacial deflection under rated operating torque.`;
+      } else if (sIdx === 1) {
+        content += `Kinematic motion transfer relies on strictly constrained degrees of freedom. Any radial misalignment converts pure tangential torque into parasitic bending moments along the drive housing.\n\n<ParameterExplorer\n  title="${t.topic} Operating Dynamics"\n  equationTex="${t.equation}"\n  takeaway="${t.cardConfig.takeaway || 'Maintain strict alignment tolerances.'}"\n/>`;
+      } else if (sIdx === 2) {
+        content += `Manufacturing tolerances dictate whether high-volume production achieves zero-backlash engagement or catastrophic binding under thermal expansion.\n\n<ToleranceStackupBar\n  title="${t.topic} Tolerance Stackup"\n  minAllowableGap={${t.cardConfig.minAllowableGap || 0.02}}\n  maxAllowableGap={${t.cardConfig.maxAllowableGap || 0.08}}\n  unit="${t.cardConfig.unit || 'mm'}"\n  takeaway="${t.cardConfig.takeaway || 'Statistical RSS stackup guarantees high Cpk.'}"\n/>`;
+      } else if (sIdx === 3) {
+        content += `Material selection balances high surface hardness against core fracture toughness under shock loading.\n\n<TradeoffMatrix\n  title="Substrate Alloy Selection for ${t.topic.split(':')[0]}"\n  takeaway="${t.cardConfig.takeaway || 'Optimize yield strength against thermal conductivity.'}"\n/>`;
+      } else if (sIdx === 4) {
+        content += `Dynamometer testing and optical coordinate metrology reveal non-linear hysteresis curves when driving against rated torque payloads.\n\n{{ FIGURE_0 }}\n\nUnder stroboscopic high-speed imaging, micro-slip between adjacent mating surfaces occurs during initial engagement.`;
+      } else {
+        content += `### Critical Manufacturing Directives\n\n1. **Surface Roughness:** Maintain ground finish $R_a < 0.2\\,\\mu\\text{m}$ along primary contact paths.\n2. **Thermal Dissipation:** Enforce direct conduction grounding to the outer aluminum chassis.\n3. **Lubricant Viscosity:** Specify synthetic fluorosilicone grease rated for $-40^\\circ\\text{C}$ to $+130^\\circ\\text{C}$ operation.`;
+      }
+
+      return {
+        id: `sec-${sIdx + 1}`,
+        heading,
+        type: "ai_fill",
+        badge: "[AI Fill]",
+        hidden: false,
+        content
+      };
+    });
+
+    const fullMdx = sections.map(s => s.content).join('\n\n---\n\n');
+
+    const draft = {
+      slug,
+      title: titleAngles.mechanism,
+      titleAngles,
+      subtitle: `An exhaustive teardown and kinematic analysis of ${t.topic} under cyclic thermal and mechanical stresses.`,
+      subject: t.subject,
+      category: t.category,
+      readTime: t.readTime,
+      date: new Date().toISOString().split('T')[0],
+      source: "Rolling Queue Harvester",
+      sections,
+      body_mdx: fullMdx,
+      figures: [
+        {
+          id: "FIGURE_0",
+          placeholder: "{{ FIGURE_0 }}",
+          caption: `FIG 01 — ${t.topic.toUpperCase()}: Disassembled precision sub-assembly cutaway.`,
+          source: "HARDWARE TEARDOWN ARCHIVE",
+          selectedIndex: 0,
+          images: generateImageCandidates(t.topic)
+        }
+      ]
+    };
+
+    fs.writeFileSync(targetPath, JSON.stringify(draft, null, 2), 'utf8');
+    existingTopics.add(t.topic.toLowerCase().trim());
+    added++;
+  }
+
+  const finalCount = fs.readdirSync(STAGING_DIR).filter(f => f.endsWith('.json')).length;
+  console.log(`[Queue Manager] ✓ Staging queue updated! Total unreviewed drafts: ${finalCount} / ${TARGET_CAPACITY} floor.`);
+}
+
+populateQueueToFloor();

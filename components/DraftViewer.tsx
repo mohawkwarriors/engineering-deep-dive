@@ -14,10 +14,34 @@ import {
   Layers,
   Sparkles,
   Lock,
+  ArrowUp,
+  ArrowDown,
+  Eye,
+  EyeOff,
+  Sliders,
+  Search,
+  UploadCloud,
+  FileCode,
+  ShieldCheck,
+  ShieldAlert,
+  ShieldX,
+  Compass,
+  PlusCircle,
+  Clock,
+  Archive,
+  Send,
+  Zap,
 } from "lucide-react";
 import { ProcessFlow, ProcessStep } from "./ProcessFlow";
 import { TechnicalCard } from "./TechnicalCard";
 import { TechnicalTangent } from "./TechnicalTangent";
+import {
+  ParameterExplorer,
+  MechanismWalkthrough,
+  ToleranceStackupBar,
+  TradeoffMatrix,
+  LayeredCrossSection,
+} from "./interactive";
 
 interface ImageCandidate {
   url: string;
@@ -32,6 +56,21 @@ interface DraftFigure {
   source?: string;
   selectedIndex?: number;
   images: ImageCandidate[];
+  activeTab?: "carousel" | "cad" | "scanner";
+  cadSvg?: string;
+  scannedBadge?: "green" | "yellow" | "red";
+  scannedClassification?: string;
+  customPastedUrl?: string;
+  hidden?: boolean;
+}
+
+interface DraftSection {
+  id: string;
+  heading: string;
+  type: "editor" | "ai_fill";
+  badge?: string;
+  content: string;
+  hidden?: boolean;
 }
 
 interface DraftItem {
@@ -39,6 +78,12 @@ interface DraftItem {
   filePath?: string;
   id?: string;
   title: string;
+  titleAngles?: {
+    mechanism?: string;
+    tradeoff?: string;
+    teardown?: string;
+    failureMode?: string;
+  };
   subtitle?: string;
   subject?: string;
   category?: string;
@@ -46,9 +91,10 @@ interface DraftItem {
   date?: string;
   summary?: string;
   figures?: DraftFigure[];
+  sections?: DraftSection[];
   body_mdx?: string;
-  article_html?: string;
   tangents?: Record<string, any>;
+  source?: string;
 }
 
 function getSubjectClass(subject?: string) {
@@ -66,9 +112,11 @@ function getSubjectClass(subject?: string) {
 export default function DraftViewer({
   initialDrafts,
   initiallyUnlocked = false,
+  initialApprovedCount = 0,
 }: {
   initialDrafts: DraftItem[];
   initiallyUnlocked?: boolean;
+  initialApprovedCount?: number;
 }) {
   const [isUnlocked, setIsUnlocked] = useState<boolean>(initiallyUnlocked);
   const [pinInput, setPinInput] = useState("");
@@ -79,7 +127,59 @@ export default function DraftViewer({
   const [loading, setLoading] = useState(false);
   const [actionMessage, setActionMessage] = useState<string | null>(null);
 
-  // Check client-side authentication and filter locally dismissed drafts
+  // Runway & Buffer state
+  const [approvedCount, setApprovedCount] = useState<number>(initialApprovedCount);
+  const runwayAlert = approvedCount <= 3;
+
+  // Quick Seed Box state ("Anchor & Fill")
+  const [showSeedBox, setShowSeedBox] = useState(false);
+  const [seedTopic, setSeedTopic] = useState("");
+  const [seedBullets, setSeedBullets] = useState("");
+  const [seedLoading, setSeedLoading] = useState(false);
+  const [outlinePreview, setOutlinePreview] = useState<any | null>(null);
+
+  // Editable title state
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [editedTitle, setEditedTitle] = useState("");
+  const [activeTitleAngle, setActiveTitleAngle] = useState<string | null>("mechanism");
+
+  // Selected image indices per figure for active draft
+  const [selectedImages, setSelectedImages] = useState<Record<number, number>>({});
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+
+  // Active figure tab: "carousel" | "cad" | "scanner"
+  const [activeFigTabs, setActiveFigTabs] = useState<Record<number, "carousel" | "cad" | "scanner">>({});
+  const [cadSvgs, setCadSvgs] = useState<Record<number, string>>({});
+  const [figKeywords, setFigKeywords] = useState<Record<number, string>>({});
+  const [isSearchingFig, setIsSearchingFig] = useState<Record<number, boolean>>({});
+
+  // Scanner state per figure
+  const [scanUrls, setScanUrls] = useState<Record<number, string>>({});
+  const [scanResults, setScanResults] = useState<
+    Record<
+      number,
+      {
+        badge: "green" | "yellow" | "red";
+        legalClassification: string;
+        recommendedCaption: string;
+        redrawSvg: string;
+      }
+    >
+  >({});
+  const [scanningIdx, setScanningIdx] = useState<number | null>(null);
+
+  // Modular sections for active draft
+  const [activeSections, setActiveSections] = useState<DraftSection[]>([]);
+  const [refocusingSecId, setRefocusingSecId] = useState<string | null>(null);
+
+  // Veto modal state
+  const [showVetoModal, setShowVetoModal] = useState(false);
+  const [selectedVetoReason, setSelectedVetoReason] = useState("[Too Broad]");
+  const [customCritique, setCustomCritique] = useState("");
+
+  const activeDraft: DraftItem | undefined = drafts[currentIndex];
+
+  // Client-side authentication & persistent state
   useEffect(() => {
     if (typeof window !== "undefined") {
       const urlParams = new URLSearchParams(window.location.search);
@@ -91,7 +191,6 @@ export default function DraftViewer({
         localStorage.setItem("hw_editor_pin", "deepdive2026");
       }
 
-      // Filter out drafts that were locally vetoed or approved on this device
       try {
         const locallyVetoed = JSON.parse(localStorage.getItem("hw_vetoed_filenames") || "[]");
         const locallyApproved = JSON.parse(localStorage.getItem("hw_approved_filenames") || "[]");
@@ -115,55 +214,67 @@ export default function DraftViewer({
     }
   };
 
-  // Editable title state
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [editedTitle, setEditedTitle] = useState("");
-
-  // Selected image indices per figure for active draft
-  const [selectedImages, setSelectedImages] = useState<Record<number, number>>({});
-
-  // Track failed / 403 image URLs
-  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
-
-  const handleImageError = (figIdx: number, currentCandidateIdx: number) => {
-    const fig = activeDraft?.figures?.[figIdx];
-    if (!fig || !fig.images) return;
-    const failedUrl = fig.images[currentCandidateIdx]?.url;
-    if (failedUrl) {
-      setFailedImages((prev) => ({ ...prev, [failedUrl]: true }));
-    }
-
-    // Automatically advance to the next working candidate in the carousel
-    const nextIdx = fig.images.findIndex(
-      (img, idx) => idx !== currentCandidateIdx && !failedImages[img.url]
-    );
-    if (nextIdx !== -1) {
-      setSelectedImages((prev) => ({
-        ...prev,
-        [figIdx]: nextIdx,
-      }));
-    }
-  };
-
-  // Veto modal state
-  const [showVetoModal, setShowVetoModal] = useState(false);
-  const [selectedVetoReason, setSelectedVetoReason] = useState("Off-Topic / Generic");
-  const [customCritique, setCustomCritique] = useState("");
-
-  const activeDraft: DraftItem | undefined = drafts[currentIndex];
-
+  // Synchronize state when active draft changes
   useEffect(() => {
     if (activeDraft) {
       setEditedTitle(activeDraft.title || "");
       setIsEditingTitle(false);
+      setActiveTitleAngle("mechanism");
+
       // Initialize selected image indices
-      const initialMap: Record<number, number> = {};
+      const initialImgMap: Record<number, number> = {};
+      const initialTabMap: Record<number, "carousel" | "cad" | "scanner"> = {};
+      const initialKwMap: Record<number, string> = {};
+
       if (activeDraft.figures) {
         activeDraft.figures.forEach((fig, idx) => {
-          initialMap[idx] = fig.selectedIndex ?? 0;
+          initialImgMap[idx] = fig.selectedIndex ?? 0;
+          initialTabMap[idx] = fig.activeTab || "carousel";
+          initialKwMap[idx] = activeDraft.title;
         });
       }
-      setSelectedImages(initialMap);
+      setSelectedImages(initialImgMap);
+      setActiveFigTabs(initialTabMap);
+      setFigKeywords(initialKwMap);
+
+      // Initialize sections: if draft already has sections, use them; else parse body_mdx
+      if (activeDraft.sections && activeDraft.sections.length > 0) {
+        setActiveSections(activeDraft.sections);
+      } else if (activeDraft.body_mdx) {
+        // Parse sections from ## / ### headings
+        const rawChunks = activeDraft.body_mdx.split(/(^|\n)##\s+/).filter(Boolean);
+        const parsed: DraftSection[] = [];
+        let secIdx = 1;
+
+        for (const chunk of rawChunks) {
+          const lines = chunk.trim().split("\n");
+          const heading = lines[0]?.replace(/^#+\s*/, "") || `Section ${secIdx}`;
+          const content = chunk.trim();
+          parsed.push({
+            id: `sec-${secIdx}`,
+            heading,
+            type: "ai_fill",
+            badge: "[AI Fill]",
+            content,
+            hidden: false,
+          });
+          secIdx++;
+        }
+
+        if (parsed.length === 0) {
+          parsed.push({
+            id: "sec-1",
+            heading: activeDraft.title,
+            type: "ai_fill",
+            badge: "[AI Fill]",
+            content: activeDraft.body_mdx,
+            hidden: false,
+          });
+        }
+        setActiveSections(parsed);
+      } else {
+        setActiveSections([]);
+      }
     }
   }, [currentIndex, activeDraft]);
 
@@ -182,6 +293,9 @@ export default function DraftViewer({
           } catch {
             setDrafts(data.drafts);
           }
+          if (typeof data.approvedCount === "number") {
+            setApprovedCount(data.approvedCount);
+          }
           setCurrentIndex(0);
         }
       }
@@ -192,23 +306,212 @@ export default function DraftViewer({
     }
   };
 
-  const handleSelectImage = (figIdx: number, imgIdx: number) => {
-    setSelectedImages((prev) => ({
-      ...prev,
-      [figIdx]: imgIdx,
-    }));
+  // Section Controls: Hide, Reorder, Refocus
+  const toggleSectionHide = (secId: string) => {
+    setActiveSections((prev) =>
+      prev.map((s) => (s.id === secId ? { ...s, hidden: !s.hidden } : s))
+    );
   };
 
-  const handleApprove = async () => {
-    if (!activeDraft) return;
-    setLoading(true);
-    setActionMessage("Publishing issue...");
+  const moveSection = (index: number, direction: "up" | "down") => {
+    const targetIdx = direction === "up" ? index - 1 : index + 1;
+    if (targetIdx < 0 || targetIdx >= activeSections.length) return;
+
+    setActiveSections((prev) => {
+      const copy = [...prev];
+      const temp = copy[index];
+      copy[index] = copy[targetIdx];
+      copy[targetIdx] = temp;
+      return copy;
+    });
+  };
+
+  const refocusSection = async (secId: string, mode: "math" | "tradeoffs" | "rules" | "simplify") => {
+    const targetSec = activeSections.find((s) => s.id === secId);
+    if (!targetSec) return;
+
+    setRefocusingSecId(secId);
+    try {
+      const res = await fetch("/api/drafts/refocus", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sectionHeading: targetSec.heading,
+          currentContent: targetSec.content,
+          mode,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setActiveSections((prev) =>
+          prev.map((s) => (s.id === secId ? { ...s, content: data.updatedContent } : s))
+        );
+        setActionMessage(`✓ Refocused section: ${mode.toUpperCase()}`);
+        setTimeout(() => setActionMessage(null), 1500);
+      }
+    } catch (e) {
+      console.error("Refocus failed:", e);
+    } finally {
+      setRefocusingSecId(null);
+    }
+  };
+
+  // Quick Topic Seeding ("Anchor & Fill")
+  const handleSeedSubmit = async (mode: "full" | "outline") => {
+    if (!seedTopic.trim()) return;
+    setSeedLoading(true);
 
     try {
-      // Prepare finalized figures with selected indices
+      const res = await fetch("/api/drafts/seed", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          topic: seedTopic,
+          bullets: seedBullets,
+          mode,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Seed failed");
+      }
+
+      const data = await res.json();
+
+      if (mode === "outline") {
+        setOutlinePreview(data);
+      } else {
+        // Prepend new draft to queue at index 0 (absolute priority)
+        setDrafts((prev) => [data.draft, ...prev]);
+        setCurrentIndex(0);
+        setShowSeedBox(false);
+        setOutlinePreview(null);
+        setSeedTopic("");
+        setSeedBullets("");
+        setActionMessage("✓ Manual topic generated and prioritized at top of queue!");
+        setTimeout(() => setActionMessage(null), 2500);
+      }
+    } catch (err: any) {
+      alert(`Seeding error: ${err.message}`);
+    } finally {
+      setSeedLoading(false);
+    }
+  };
+
+  // Image Tab 1: Keyword search refresh
+  const handleSearchImages = async (figIdx: number) => {
+    const query = figKeywords[figIdx] || activeDraft?.title;
+    if (!query) return;
+
+    setIsSearchingFig((prev) => ({ ...prev, [figIdx]: true }));
+    try {
+      const res = await fetch("/api/drafts/search-images", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, limit: 12 }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.images && activeDraft?.figures?.[figIdx]) {
+          activeDraft.figures[figIdx].images = data.images;
+          setSelectedImages((prev) => ({ ...prev, [figIdx]: 0 }));
+          setActionMessage(`✓ Loaded 12 fresh candidates for Figure ${figIdx + 1}`);
+          setTimeout(() => setActionMessage(null), 1500);
+        }
+      }
+    } catch (e) {
+      console.error("Image search failed:", e);
+    } finally {
+      setIsSearchingFig((prev) => ({ ...prev, [figIdx]: false }));
+    }
+  };
+
+  // Image Tab 2: On-Demand CAD Vector Generator
+  const handleGenerateCad = async (figIdx: number) => {
+    if (!activeDraft) return;
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/drafts/cad-vector", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: activeDraft.title,
+          topic: activeDraft.subject || "Mechanisms",
+          figNumber: String(figIdx + 1).padStart(2, "0"),
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setCadSvgs((prev) => ({ ...prev, [figIdx]: data.svg }));
+        setActiveFigTabs((prev) => ({ ...prev, [figIdx]: "cad" }));
+        setActionMessage(`✓ Generated CAD Vector Schematic for Figure ${figIdx + 1}`);
+        setTimeout(() => setActionMessage(null), 1500);
+      }
+    } catch (e) {
+      console.error("CAD generation error:", e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Image Tab 3: Copyright Scanner & 1-Click Redraw
+  const handleScanImage = async (figIdx: number, urlToScan?: string) => {
+    const targetUrl = urlToScan || scanUrls[figIdx];
+    if (!targetUrl) return;
+
+    setScanningIdx(figIdx);
+    try {
+      const res = await fetch("/api/drafts/scan-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          imageUrl: targetUrl,
+          query: activeDraft?.title || "Teardown",
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setScanResults((prev) => ({
+          ...prev,
+          [figIdx]: data,
+        }));
+      }
+    } catch (e) {
+      console.error("Scan error:", e);
+    } finally {
+      setScanningIdx(null);
+    }
+  };
+
+  const handleApplyRedraw = (figIdx: number) => {
+    const result = scanResults[figIdx];
+    if (!result?.redrawSvg) return;
+
+    setCadSvgs((prev) => ({ ...prev, [figIdx]: result.redrawSvg }));
+    setActiveFigTabs((prev) => ({ ...prev, [figIdx]: "cad" }));
+    setActionMessage("✓ 1-Click Redraw applied: original clean vector schematic active!");
+    setTimeout(() => setActionMessage(null), 2000);
+  };
+
+  // Approval handlers: "buffer" vs "publish"
+  const handleApprove = async (targetMode: "buffer" | "publish" = "publish") => {
+    if (!activeDraft) return;
+    setLoading(true);
+    setActionMessage(
+      targetMode === "buffer" ? "Moving to 10–15 Approved Buffer..." : "Publishing daily issue..."
+    );
+
+    try {
       const updatedFigures = (activeDraft.figures || []).map((fig, idx) => ({
         ...fig,
         selectedIndex: selectedImages[idx] ?? 0,
+        activeTab: activeFigTabs[idx] || "carousel",
       }));
 
       const res = await fetch("/api/drafts/approve", {
@@ -218,6 +521,8 @@ export default function DraftViewer({
           filename: activeDraft.filename,
           title: editedTitle || activeDraft.title,
           figures: updatedFigures,
+          sections: activeSections,
+          target: targetMode,
         }),
       });
 
@@ -227,9 +532,13 @@ export default function DraftViewer({
       }
 
       const data = await res.json();
-      setActionMessage(`✓ Published as Issue #${data.issueId}!`);
+      if (targetMode === "buffer") {
+        setApprovedCount(data.approvedCount || approvedCount + 1);
+        setActionMessage(`✓ Added to Approved Buffer (${data.approvedCount} in runway)!`);
+      } else {
+        setActionMessage(`✓ Published as Issue #${data.issueId}!`);
+      }
 
-      // Store in localStorage immediately so it never reappears on this device
       try {
         const locallyApproved = JSON.parse(localStorage.getItem("hw_approved_filenames") || "[]");
         locallyApproved.push(activeDraft.filename);
@@ -237,7 +546,6 @@ export default function DraftViewer({
         localStorage.setItem("hw_approved_filenames", JSON.stringify(Array.from(new Set(locallyApproved))));
       } catch {}
 
-      // Remove from local list and auto-advance
       setTimeout(() => {
         setDrafts((prev) => prev.filter((_, i) => i !== currentIndex));
         setCurrentIndex((prev) => (prev >= drafts.length - 1 ? Math.max(0, drafts.length - 2) : prev));
@@ -251,6 +559,7 @@ export default function DraftViewer({
     }
   };
 
+  // Veto handler with the 4 standard blueprint tags
   const handleVeto = async () => {
     if (!activeDraft) return;
     setLoading(true);
@@ -278,7 +587,6 @@ export default function DraftViewer({
       setActionMessage("✓ Veto recorded. Auto-advancing...");
       setCustomCritique("");
 
-      // Store in localStorage immediately so it never reappears on this device
       try {
         const locallyVetoed = JSON.parse(localStorage.getItem("hw_vetoed_filenames") || "[]");
         locallyVetoed.push(activeDraft.filename);
@@ -286,7 +594,6 @@ export default function DraftViewer({
         localStorage.setItem("hw_vetoed_filenames", JSON.stringify(Array.from(new Set(locallyVetoed))));
       } catch {}
 
-      // Remove from local list and auto-advance
       setTimeout(() => {
         setDrafts((prev) => prev.filter((_, i) => i !== currentIndex));
         setCurrentIndex((prev) => (prev >= drafts.length - 1 ? Math.max(0, drafts.length - 2) : prev));
@@ -300,110 +607,271 @@ export default function DraftViewer({
     }
   };
 
-  // Inline Figure Carousel Component matching published design system
-  const renderInlineFigure = (figIdx: number) => {
+  // 1-Click Title Angle selection
+  const selectTitleAngle = (key: "mechanism" | "tradeoff" | "teardown" | "failureMode") => {
+    setActiveTitleAngle(key);
+    if (activeDraft?.titleAngles?.[key]) {
+      setEditedTitle(activeDraft.titleAngles[key]!);
+    } else {
+      // Fallback angle derivation
+      const base = activeDraft?.title || "Mechanical Hardware Analysis";
+      if (key === "mechanism") setEditedTitle(`${base}: Kinematic Decomposition & Sub-Micron Dynamics`);
+      if (key === "tradeoff") setEditedTitle(`Designing for Yield: The Critical Material Tradeoffs in ${base}`);
+      if (key === "teardown") setEditedTitle(`Hardware Teardown: Dissecting the Architecture of ${base}`);
+      if (key === "failureMode") setEditedTitle(`Catastrophic Wear & Fatigue: How ${base} Fails Under Load`);
+    }
+  };
+
+  // The 3-Tab Visual Switcher component for each figure slot
+  const renderVisualSwitcherFigure = (figIdx: number) => {
     if (!activeDraft?.figures || !activeDraft.figures[figIdx]) return null;
     const fig = activeDraft.figures[figIdx];
     const currentSelectedIdx = selectedImages[figIdx] ?? 0;
     const selectedImg = fig.images[currentSelectedIdx] || fig.images[0];
-    const isImageBroken = selectedImg?.url && failedImages[selectedImg.url];
+    const activeTab = activeFigTabs[figIdx] || "carousel";
+    const scanResult = scanResults[figIdx];
 
     return (
-      <figure
-        key={`inline-fig-${fig.id || figIdx}`}
-        className="product-figure not-prose"
-      >
-        {/* Figure Card Header */}
-        <div className="flex items-center justify-between px-4 py-2.5 bg-[var(--surface-hover)] border-b border-[var(--border)] font-mono text-xs">
+      <figure key={`fig-${figIdx}`} className="product-figure my-8 rounded-xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden shadow-xl not-prose">
+        {/* Figure Top Control Header */}
+        <div className="flex flex-wrap items-center justify-between px-4 py-2.5 bg-[var(--surface-hover)] border-b border-[var(--border)] font-mono text-xs gap-2">
           <span className="text-[var(--accent)] font-bold uppercase tracking-wider flex items-center gap-1.5">
-            <Layers className="w-3.5 h-3.5 text-[var(--accent)]" />
+            <Layers className="w-3.5 h-3.5" />
             {fig.caption ? fig.caption.split(":")[0] : `FIG ${String(figIdx + 1).padStart(2, "0")}`}
           </span>
-          <span className="text-[var(--muted)] text-[11px]">
-            Candidate <span className="text-[var(--text)] font-bold">{currentSelectedIdx + 1}</span> of {fig.images.length}
-          </span>
+
+          {/* 3-Tab Selector Switcher */}
+          <div className="flex items-center gap-1 bg-[var(--card-inner)] border border-[var(--border)] p-1 rounded-lg">
+            <button
+              type="button"
+              onClick={() => setActiveFigTabs((prev) => ({ ...prev, [figIdx]: "carousel" }))}
+              className={`px-2 py-0.5 rounded text-[11px] font-mono transition-all flex items-center gap-1 ${
+                activeTab === "carousel"
+                  ? "bg-[var(--accent)] text-white font-bold shadow"
+                  : "text-[var(--muted)] hover:text-[var(--text)]"
+              }`}
+            >
+              <Search className="w-3 h-3" />
+              Tab 1: Verified Carousel
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveFigTabs((prev) => ({ ...prev, [figIdx]: "cad" }))}
+              className={`px-2 py-0.5 rounded text-[11px] font-mono transition-all flex items-center gap-1 ${
+                activeTab === "cad"
+                  ? "bg-[var(--accent)] text-white font-bold shadow"
+                  : "text-[var(--muted)] hover:text-[var(--text)]"
+              }`}
+            >
+              <FileCode className="w-3 h-3" />
+              Tab 2: On-Demand CAD
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveFigTabs((prev) => ({ ...prev, [figIdx]: "scanner" }))}
+              className={`px-2 py-0.5 rounded text-[11px] font-mono transition-all flex items-center gap-1 ${
+                activeTab === "scanner"
+                  ? "bg-[var(--accent)] text-white font-bold shadow"
+                  : "text-[var(--muted)] hover:text-[var(--text)]"
+              }`}
+            >
+              <UploadCloud className="w-3 h-3" />
+              Tab 3: Paste & Scanner
+            </button>
+          </div>
         </div>
 
-        {/* Active Selected Image Preview */}
-        <div className="img-wrapper">
-          {selectedImg?.url ? (
-            <img
-              src={selectedImg.url}
-              alt={selectedImg.title || activeDraft.title}
-              referrerPolicy="no-referrer"
-              onError={() => handleImageError(figIdx, currentSelectedIdx)}
-            />
-          ) : (
-            <div className="text-xs font-mono text-[var(--muted)]">No image URL specified</div>
-          )}
+        {/* TAB 1: Verified Technical Carousel */}
+        {activeTab === "carousel" && (
+          <div>
+            {/* Active Selected Image Preview */}
+            <div className="img-wrapper relative w-full h-72 sm:h-96 bg-[var(--card-inner)] flex items-center justify-center overflow-hidden">
+              {selectedImg?.url ? (
+                <img
+                  src={selectedImg.url}
+                  alt={selectedImg.title || activeDraft.title}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="text-xs font-mono text-[var(--muted)]">No image specified</div>
+              )}
 
-          {isImageBroken && (
-            <div className="absolute inset-0 bg-[var(--card-inner)]/95 flex flex-col items-center justify-center p-4 text-center">
-              <AlertTriangle className="w-8 h-8 text-[var(--accent)] mb-2" />
-              <p className="text-xs font-mono text-[var(--text)]">Image host restricted direct loading (403)</p>
-              <p className="text-[11px] font-mono text-[var(--accent)] mt-1">Select an alternative candidate from the carousel below</p>
+              <div className="absolute top-3 right-3 px-2 py-1 rounded bg-[var(--surface)]/90 backdrop-blur-md border border-[var(--border)] font-mono text-[10px] text-[var(--accent)] uppercase tracking-wider flex items-center gap-1 shadow">
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+                Verified Candidate #{currentSelectedIdx + 1}
+              </div>
             </div>
-          )}
 
-          <div className="absolute top-3 right-3 px-2 py-1 rounded bg-[var(--surface)]/90 backdrop-blur-md border border-[var(--border)] font-mono text-[10px] text-[var(--accent)] uppercase tracking-wider flex items-center gap-1 shadow">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
-            Active Selection
+            {/* Keyword Refresh Bar */}
+            <div className="px-4 py-2 bg-[var(--surface)] border-t border-[var(--border)] flex items-center gap-2">
+              <input
+                type="text"
+                value={figKeywords[figIdx] ?? activeDraft.title}
+                onChange={(e) => setFigKeywords((prev) => ({ ...prev, [figIdx]: e.target.value }))}
+                placeholder="Search Wikimedia & patent teardown archives..."
+                className="flex-1 bg-[var(--card-inner)] border border-[var(--border)] rounded px-3 py-1.5 text-xs text-[var(--text)] font-mono focus:outline-none focus:border-[var(--accent)]"
+              />
+              <button
+                type="button"
+                onClick={() => handleSearchImages(figIdx)}
+                disabled={isSearchingFig[figIdx]}
+                className="px-3 py-1.5 rounded bg-[var(--card-inner)] border border-[var(--border)] hover:border-[var(--accent)] text-xs text-[var(--accent)] font-mono font-semibold flex items-center gap-1"
+              >
+                <RefreshCw className={`w-3 h-3 ${isSearchingFig[figIdx] ? "animate-spin" : ""}`} />
+                Refresh Keywords
+              </button>
+            </div>
+
+            {/* 12-Image Carousel */}
+            <div className="p-3 bg-[var(--card-inner)] border-t border-[var(--border)]">
+              <div className="flex gap-2.5 overflow-x-auto pb-1 scrollbar-thin">
+                {fig.images.map((img, imgIdx) => {
+                  const isSelected = imgIdx === currentSelectedIdx;
+                  return (
+                    <button
+                      key={imgIdx}
+                      type="button"
+                      onClick={() => setSelectedImages((prev) => ({ ...prev, [figIdx]: imgIdx }))}
+                      className={`relative flex-shrink-0 w-28 h-20 rounded overflow-hidden border-2 transition-all ${
+                        isSelected
+                          ? "border-[var(--accent)] ring-2 ring-[var(--accent)]/40 scale-105 z-10"
+                          : "border-[var(--border)] opacity-70 hover:opacity-100"
+                      }`}
+                    >
+                      <img src={img.url} alt={`Candidate ${imgIdx + 1}`} referrerPolicy="no-referrer" className="w-full h-full object-cover" />
+                      {isSelected && (
+                        <div className="absolute inset-0 bg-[var(--accent)]/20 flex items-center justify-center">
+                          <Check className="w-4 h-4 text-white stroke-[3]" />
+                        </div>
+                      )}
+                      <div className="absolute bottom-0 inset-x-0 bg-black/80 px-1 py-0.5 text-[9px] font-mono text-white truncate">
+                        #{imgIdx + 1}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* 12-Image Horizontal Scroll Carousel */}
-        <div className="p-3 sm:p-4 bg-[var(--surface)] border-t border-[var(--border)]">
-          <div className="text-[11px] font-mono text-[var(--muted)] mb-2.5 flex items-center justify-between">
-            <span className="font-semibold text-[var(--text)]">Select figure candidate:</span>
-            <span className="text-[var(--muted)] text-[10px]">Swipe horizontally ➔</span>
-          </div>
-
-          <div className="flex gap-2.5 overflow-x-auto pb-2 pt-1 scrollbar-thin scrollbar-thumb-[var(--border)] snap-x">
-            {fig.images.map((img, imgIdx) => {
-              const isSelected = imgIdx === currentSelectedIdx;
-              const isFailed = failedImages[img.url];
-
-              return (
+        {/* TAB 2: On-Demand CAD Vector Generator */}
+        {activeTab === "cad" && (
+          <div className="p-4 bg-[var(--card-inner)]">
+            {cadSvgs[figIdx] ? (
+              <div>
+                <div dangerouslySetInnerHTML={{ __html: cadSvgs[figIdx] }} />
+                <div className="mt-3 flex justify-between items-center text-xs font-mono text-[var(--muted)]">
+                  <span className="text-emerald-400 flex items-center gap-1 font-semibold">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    Clean House-Style CAD Vector Schematic (0% Copyright Liability)
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => handleGenerateCad(figIdx)}
+                    className="text-[var(--accent)] hover:underline flex items-center gap-1"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    Regenerate CAD
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-10 px-4">
+                <FileCode className="w-10 h-10 text-[var(--accent)] mx-auto mb-3" />
+                <h5 className="text-base font-serif text-[var(--text)] mb-1">On-Demand CAD Vector Generator</h5>
+                <p className="text-xs text-[var(--muted)] font-mono max-w-sm mx-auto mb-4">
+                  Generates an original, precision technical CAD schematic with dark-mode grid, dimensions, and ISO 2768 titleblock.
+                </p>
                 <button
-                  key={imgIdx}
                   type="button"
-                  onClick={() => handleSelectImage(figIdx, imgIdx)}
-                  className={`relative flex-shrink-0 w-28 sm:w-36 h-20 sm:h-24 rounded overflow-hidden border-2 transition-all snap-start ${
-                    isSelected
-                      ? "border-[var(--accent)] ring-2 ring-[var(--accent)]/40 shadow-lg scale-105 z-10"
-                      : "border-[var(--border)] opacity-70 hover:opacity-100 hover:border-[var(--muted)]"
-                  } ${isFailed ? "opacity-30 border-red-900" : ""}`}
+                  onClick={() => handleGenerateCad(figIdx)}
+                  disabled={loading}
+                  className="px-4 py-2 rounded-lg bg-[var(--accent)] text-white font-mono text-xs font-bold shadow hover:bg-[var(--accent-hover)]"
                 >
-                  <img
-                    src={img.url}
-                    alt={img.title || `Candidate ${imgIdx + 1}`}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover"
-                    onError={() => {
-                      setFailedImages((prev) => ({ ...prev, [img.url]: true }));
-                    }}
-                  />
-                  {isSelected && (
-                    <div className="absolute inset-0 bg-[var(--accent)]/20 flex items-center justify-center">
-                      <span className="p-1 rounded-full bg-[var(--accent)] text-white shadow">
-                        <Check className="w-3.5 h-3.5 stroke-[3]" />
-                      </span>
-                    </div>
-                  )}
-                  <div className="absolute bottom-0 inset-x-0 bg-[var(--card-inner)]/90 backdrop-blur-xs px-1.5 py-0.5 text-[9px] font-mono text-[var(--text)] truncate flex justify-between items-center">
-                    <span>#{imgIdx + 1}</span>
-                    {isFailed && <span className="text-red-400 text-[8px]">403</span>}
-                  </div>
+                  {loading ? "Generating CAD..." : "Generate Custom CAD Vector Diagram"}
                 </button>
-              );
-            })}
+              </div>
+            )}
           </div>
-        </div>
+        )}
+
+        {/* TAB 3: Clipboard Paste & Copyright Scanner */}
+        {activeTab === "scanner" && (
+          <div className="p-4 bg-[var(--card-inner)]">
+            <div className="space-y-4">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Paste image URL or Cmd+V image source..."
+                  value={scanUrls[figIdx] || ""}
+                  onChange={(e) => setScanUrls((prev) => ({ ...prev, [figIdx]: e.target.value }))}
+                  className="flex-1 bg-[var(--surface)] border border-[var(--border)] rounded px-3 py-2 text-xs text-[var(--text)] font-mono focus:outline-none focus:border-[var(--accent)]"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleScanImage(figIdx)}
+                  disabled={scanningIdx === figIdx}
+                  className="px-4 py-2 rounded bg-[var(--accent)] text-white font-mono text-xs font-bold hover:bg-[var(--accent-hover)] shadow flex items-center gap-1.5"
+                >
+                  <Search className={`w-3.5 h-3.5 ${scanningIdx === figIdx ? "animate-spin" : ""}`} />
+                  {scanningIdx === figIdx ? "Scanning..." : "Scan Legal Status"}
+                </button>
+              </div>
+
+              {/* Scanner Traffic Light Badging */}
+              {scanResult && (
+                <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      {scanResult.badge === "green" && (
+                        <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 font-mono text-xs font-bold">
+                          <ShieldCheck className="w-4 h-4" />
+                          🟢 GREEN: Public Domain / Patent / CC0
+                        </span>
+                      )}
+                      {scanResult.badge === "yellow" && (
+                        <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-mono text-xs font-bold">
+                          <ShieldAlert className="w-4 h-4" />
+                          🟡 YELLOW: Teardown Press Kit (Attribution Required)
+                        </span>
+                      )}
+                      {scanResult.badge === "red" && (
+                        <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-500/15 border border-red-500/40 text-red-400 font-mono text-xs font-bold">
+                          <ShieldX className="w-4 h-4" />
+                          🔴 RED: Paid Teardown / Stock Agency / High Risk
+                        </span>
+                      )}
+                    </div>
+
+                    {/* 1-Click Redraw Escape Hatch */}
+                    <button
+                      type="button"
+                      onClick={() => handleApplyRedraw(figIdx)}
+                      className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs font-bold flex items-center gap-1.5 shadow"
+                    >
+                      <Zap className="w-3.5 h-3.5" />
+                      1-Click Redraw Escape Hatch
+                    </button>
+                  </div>
+
+                  <p className="text-xs text-[var(--muted)] font-mono mt-2">
+                    {scanResult.legalClassification}
+                  </p>
+                  <p className="text-[11px] text-[var(--text)] font-mono mt-1">
+                    Caption recommendation: <em>{scanResult.recommendedCaption}</em>
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Figcaption & Source Footer */}
-        <figcaption>
+        <figcaption className="p-3 text-xs font-mono text-[var(--muted)] border-t border-[var(--border)] flex justify-between items-center gap-2">
           <span>{fig.caption || selectedImg?.title || ""}</span>
-          <span className="source-tag">
+          <span className="text-[10px] text-[var(--accent)] uppercase tracking-wider font-semibold">
             {fig.source || selectedImg?.source || "TEARDOWN ARCHIVE"}
           </span>
         </figcaption>
@@ -411,389 +879,130 @@ export default function DraftViewer({
     );
   };
 
-  // Inline Formatter for Markdown (Bold, Italic, Code), KaTeX Inline Math ($...$), and Technical Tangents
-  const renderFormattedText = (text: string): React.ReactNode => {
-    if (!text) return null;
-
-    // Matches: <TechnicalTangent ... />, <span class="tangent-term" ...>, $inline math$, **bold**, *italic*, `code`
-    const regex = /(<TechnicalTangent\s+[^/>]+\/>|<span\s+class(?:Name)?="tangent-term"[^>]*>[\s\S]*?<\/span>|\$[^$\n]+\$|\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g;
-    const elements: React.ReactNode[] = [];
-    let lastIndex = 0;
-    let match: RegExpExecArray | null;
-
-    while ((match = regex.exec(text)) !== null) {
-      if (match.index > lastIndex) {
-        elements.push(text.substring(lastIndex, match.index));
-      }
-
-      const token = match[0];
-      const key = `fmt-${match.index}-${elements.length}`;
-
-      if (token.startsWith("<TechnicalTangent")) {
-        const term = token.match(/term="([^"]+)"/)?.[1] || "Technical Term";
-        const category = token.match(/category="([^"]+)"/)?.[1] || "ENGINEERING";
-        const definition = token.match(/definition="([^"]+)"/)?.[1] || "";
-        const equation = token.match(/equation="([^"]+)"/)?.[1];
-
-        elements.push(
-          <TechnicalTangent
-            key={key}
-            term={term}
-            category={category}
-            definition={definition}
-            equation={equation}
-          />
-        );
-      } else if (token.startsWith("<span")) {
-        const tKey = token.match(/data-tangent="([^"]+)"/)?.[1] || "";
-        const innerText = token.replace(/<[^>]+>/g, "").trim();
-        const dictEntry = activeDraft?.tangents?.[tKey];
-
-        if (dictEntry) {
-          const bodyText = dictEntry.body ? dictEntry.body.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() : "";
-          elements.push(
-            <TechnicalTangent
-              key={key}
-              term={dictEntry.title || innerText}
-              category={dictEntry.tag || "ENGINEERING"}
-              definition={bodyText}
-              equation={dictEntry.equation}
-            />
-          );
-        } else {
-          elements.push(
-            <span key={key} className="tangent-term">
-              {innerText}
-            </span>
-          );
-        }
-      } else if (token.startsWith("$") && token.endsWith("$") && token.length > 2) {
-        const tex = token.slice(1, -1);
-        try {
-          const html = katex.renderToString(tex, {
-            displayMode: false,
-            throwOnError: false,
-          });
-          elements.push(
-            <span
-              key={key}
-              className="inline-math px-0.5"
-              dangerouslySetInnerHTML={{ __html: html }}
-            />
-          );
-        } catch {
-          elements.push(<code key={key} className="font-mono text-amber-400">{token}</code>);
-        }
-      } else if (token.startsWith("**") && token.endsWith("**") && token.length > 4) {
-        elements.push(
-          <strong key={key} className="font-semibold text-[var(--text)]">
-            {renderFormattedText(token.slice(2, -2))}
-          </strong>
-        );
-      } else if (token.startsWith("*") && token.endsWith("*") && token.length > 2) {
-        elements.push(
-          <em key={key} className="italic text-[var(--text)]">
-            {renderFormattedText(token.slice(1, -1))}
-          </em>
-        );
-      } else if (token.startsWith("`") && token.endsWith("`") && token.length > 2) {
-        elements.push(
-          <code
-            key={key}
-            className="px-1.5 py-0.5 rounded bg-[var(--surface)] border border-[var(--border)] font-mono text-xs text-[var(--accent)]"
-          >
-            {token.slice(1, -1)}
-          </code>
-        );
-      }
-
-      lastIndex = match.index + match[0].length;
-    }
-
-    if (lastIndex < text.length) {
-      elements.push(text.substring(lastIndex));
-    }
-
-    return elements.length === 1 ? elements[0] : elements;
-  };
-
-  // Text Chunk Renderer (Headings, Paragraphs, Math, ProcessFlow, TechnicalCard, SpecTables, Callouts)
-  const renderTextChunk = (chunk: string, keyPrefix: string) => {
-    if (!chunk || !chunk.trim()) return null;
-
-    // 1. Normalize line endings
-    let normalized = chunk.replace(/\r\n/g, "\n");
-
-    // 2. Ensure ProcessFlow, TechnicalCard, SpecTable, Callout, SchematicCard, and MetricsBar have blank lines around them
-    normalized = normalized
-      .replace(/\n*(<ProcessFlow[\s\S]*?<\/ProcessFlow>)\n*/g, "\n\n$1\n\n")
-      .replace(/\n*(<TechnicalCard[\s\S]*?<\/TechnicalCard>)\n*/g, "\n\n$1\n\n")
-      .replace(/\n*(<div\s+class(?:Name)?="spec-table-wrap"[\s\S]*?<\/div>)\n*/g, "\n\n$1\n\n")
-      .replace(/\n*(<div\s+class(?:Name)?="callout-box"[\s\S]*?<\/div>)\n*/g, "\n\n$1\n\n")
-      .replace(/\n*(<div\s+class(?:Name)?="schematic-card"[\s\S]*?<\/div>\s*<\/div>)\n*/g, "\n\n$1\n\n")
-      .replace(/\n*(<div\s+class(?:Name)?="(?:executive-metrics-bar|telemetry-bar)"[\s\S]*?<\/div>)\n*/g, "\n\n$1\n\n");
-
-    // 3. Ensure $$...$$ block math has blank lines around it
-    normalized = normalized.replace(/\n*(\$\$[^\$]+?\$\$)\n*/g, "\n\n$1\n\n");
-
-    // 4. Ensure markdown headers (#, ##, ###, ####) have blank lines around them so they never swallow paragraphs
-    normalized = normalized.replace(/(^|\n)(#{1,4}\s+[^\n]+)(\n|$)/g, (_m, p1, p2, p3) => {
-      return p1 + "\n\n" + p2 + "\n\n" + p3;
-    });
-
-    const blocks = normalized
-      .split(/\n\s*\n+/)
-      .map((b) => b.trim())
-      .filter(Boolean);
+  // Section card renderer (6 to 7 modular sections)
+  const renderSectionCard = (sec: DraftSection, secIdx: number) => {
+    const isEditor = sec.type === "editor";
 
     return (
-      <div key={keyPrefix} className="space-y-4">
-        {blocks.map((block, bIdx) => {
-          const trimmed = block;
-
-          if (trimmed.startsWith("# ")) {
-            return (
-              <h1
-                key={`${keyPrefix}-b-${bIdx}`}
-                className="editorial-heading text-3xl sm:text-4xl font-serif text-[var(--text)] mt-8 mb-4 font-normal tracking-tight"
-              >
-                {renderFormattedText(trimmed.replace(/^#\s+/, ""))}
-              </h1>
-            );
-          }
-
-          if (trimmed.startsWith("## ")) {
-            return (
-              <h2
-                key={`${keyPrefix}-b-${bIdx}`}
-                className="editorial-heading text-2xl sm:text-3xl font-serif text-[var(--text)] mt-10 mb-4 font-normal tracking-tight border-b border-[var(--border)] pb-2"
-              >
-                {renderFormattedText(trimmed.replace(/^##\s+/, ""))}
-              </h2>
-            );
-          }
-
-          if (trimmed.startsWith("### ")) {
-            return (
-              <h3
-                key={`${keyPrefix}-b-${bIdx}`}
-                className="editorial-heading text-xl sm:text-2xl font-serif text-[var(--text)] mt-8 mb-3 font-normal"
-              >
-                {renderFormattedText(trimmed.replace(/^###\s+/, ""))}
-              </h3>
-            );
-          }
-
-          if (trimmed.startsWith("#### ")) {
-            return (
-              <h4
-                key={`${keyPrefix}-b-${bIdx}`}
-                className="text-base sm:text-lg font-semibold text-[var(--text)] mt-6 mb-2"
-              >
-                {renderFormattedText(trimmed.replace(/^####\s+/, ""))}
-              </h4>
-            );
-          }
-
-          if (trimmed.startsWith("$$") && trimmed.endsWith("$$")) {
-            const math = trimmed.slice(2, -2).trim();
-            let renderedMathHtml = "";
-            try {
-              renderedMathHtml = katex.renderToString(math, {
-                displayMode: true,
-                throwOnError: false,
-              });
-            } catch (err) {
-              console.error("KaTeX render error:", err);
-            }
-
-            return renderedMathHtml ? (
-              <div
-                key={`${keyPrefix}-b-${bIdx}`}
-                className="math-block"
-                dangerouslySetInnerHTML={{ __html: renderedMathHtml }}
-              />
-            ) : (
-              <div
-                key={`${keyPrefix}-b-${bIdx}`}
-                className="math-block font-mono text-amber-400"
-              >
-                {math}
-              </div>
-            );
-          }
-
-          if (trimmed.includes("<ProcessFlow>")) {
-            const stepRegex = /<ProcessStep\s+step="([^"]+)"\s+title="([^"]+)"(?:\s+parameters="([^"]+)")?>([\s\S]*?)<\/ProcessStep>/g;
-            const steps: Array<{ step: string; title: string; parameters?: string; content: string }> = [];
-            let m;
-            while ((m = stepRegex.exec(trimmed)) !== null) {
-              steps.push({
-                step: m[1],
-                title: m[2],
-                parameters: m[3],
-                content: m[4].trim(),
-              });
-            }
-
-            return (
-              <ProcessFlow key={`${keyPrefix}-b-${bIdx}`}>
-                {steps.map((s, sIdx) => (
-                  <ProcessStep
-                    key={sIdx}
-                    step={s.step}
-                    title={s.title}
-                    parameters={s.parameters}
-                  >
-                    {renderFormattedText(s.content)}
-                  </ProcessStep>
-                ))}
-              </ProcessFlow>
-            );
-          }
-
-          if (trimmed.includes("<TechnicalCard")) {
-            const titleM = trimmed.match(/title="([^"]+)"/);
-            const subtitleM = trimmed.match(/subtitle="([^"]+)"/);
-            const bottleneckM = trimmed.match(/bottleneck="([^"]+)"/);
-            const innerM = trimmed.match(/<TechnicalCard[^>]*>([\s\S]*?)<\/TechnicalCard>/);
-
-            return (
-              <TechnicalCard
-                key={`${keyPrefix}-b-${bIdx}`}
-                title={titleM ? titleM[1] : "TECHNICAL SPECIFICATIONS"}
-                subtitle={subtitleM ? subtitleM[1] : undefined}
-                bottleneck={bottleneckM ? bottleneckM[1] : undefined}
-              >
-                {innerM ? (
-                  <div
-                    className="technical-card-body"
-                    dangerouslySetInnerHTML={{ __html: innerM[1] }}
-                  />
-                ) : null}
-              </TechnicalCard>
-            );
-          }
-
-          if (trimmed.includes("spec-table-wrap") || trimmed.includes("<table")) {
-            return (
-              <div
-                key={`${keyPrefix}-b-${bIdx}`}
-                className="spec-table-wrap"
-                dangerouslySetInnerHTML={{ __html: trimmed }}
-              />
-            );
-          }
-
-          if (trimmed.includes("callout-box")) {
-            return (
-              <div
-                key={`${keyPrefix}-b-${bIdx}`}
-                className="callout-box"
-                dangerouslySetInnerHTML={{ __html: trimmed }}
-              />
-            );
-          }
-
-          if (trimmed.includes("schematic-card")) {
-            return (
-              <div
-                key={`${keyPrefix}-b-${bIdx}`}
-                className="schematic-card"
-                dangerouslySetInnerHTML={{ __html: trimmed }}
-              />
-            );
-          }
-
-          if (trimmed.includes("executive-metrics-bar") || trimmed.includes("telemetry-bar")) {
-            return (
-              <div
-                key={`${keyPrefix}-b-${bIdx}`}
-                dangerouslySetInnerHTML={{ __html: trimmed }}
-              />
-            );
-          }
-
-          // Bullet list handler
-          if (trimmed.split("\n").every((l) => /^\s*[-*]\s+/.test(l))) {
-            const items = trimmed.split("\n").map((l) => l.replace(/^\s*[-*]\s+/, "").trim());
-            return (
-              <ul key={`${keyPrefix}-b-${bIdx}`} className="list-disc pl-6 space-y-1.5 text-base text-[var(--text)] my-3">
-                {items.map((item, idx) => (
-                  <li key={idx}>{renderFormattedText(item)}</li>
-                ))}
-              </ul>
-            );
-          }
-
-          return (
-            <p
-              key={`${keyPrefix}-b-${bIdx}`}
-              className="text-base text-[var(--text)] leading-relaxed font-sans mb-4"
+      <div
+        key={sec.id}
+        className={`my-6 rounded-xl border-2 transition-all p-5 font-mono text-sm shadow-md ${
+          sec.hidden
+            ? "border-[var(--border)] bg-[var(--surface)]/40 opacity-50"
+            : isEditor
+            ? "border-emerald-500/40 bg-[var(--surface)]"
+            : "border-[var(--border)] bg-[var(--surface)]"
+        }`}
+      >
+        {/* Section Card Control Bar */}
+        <div className="flex flex-wrap items-center justify-between border-b border-[var(--border)] pb-3 mb-3 gap-2">
+          <div className="flex items-center gap-2">
+            <span
+              className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+                isEditor
+                  ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+                  : "bg-amber-500/20 text-amber-400 border border-amber-500/40"
+              }`}
             >
-              {renderFormattedText(trimmed)}
-            </p>
-          );
-        })}
+              {isEditor ? "[Your Section]" : "[AI Fill]"}
+            </span>
+            <span className="font-serif text-base font-semibold text-[var(--text)]">
+              {sec.heading}
+            </span>
+            {sec.hidden && (
+              <span className="text-xs text-red-400 font-mono">(Hidden from output)</span>
+            )}
+          </div>
+
+          {/* Action buttons: Reorder, 1-Click Hide */}
+          <div className="flex items-center gap-1 text-xs">
+            <button
+              type="button"
+              onClick={() => moveSection(secIdx, "up")}
+              disabled={secIdx === 0}
+              className="p-1 rounded border border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)] disabled:opacity-30"
+              title="Move Section Up"
+            >
+              <ArrowUp className="w-3.5 h-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => moveSection(secIdx, "down")}
+              disabled={secIdx === activeSections.length - 1}
+              className="p-1 rounded border border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)] disabled:opacity-30"
+              title="Move Section Down"
+            >
+              <ArrowDown className="w-3.5 h-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => toggleSectionHide(sec.id)}
+              className={`flex items-center gap-1 px-2 py-1 rounded border font-mono text-[11px] font-semibold transition-all ${
+                sec.hidden
+                  ? "border-emerald-500/40 text-emerald-400 bg-emerald-500/10"
+                  : "border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)]"
+              }`}
+            >
+              {sec.hidden ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+              {sec.hidden ? "Restore" : "1-Click Hide"}
+            </button>
+          </div>
+        </div>
+
+        {/* Preset Refocus Buttons */}
+        <div className="flex flex-wrap items-center gap-1.5 mb-4 pb-2 border-b border-[var(--border)] text-[10px]">
+          <span className="text-[var(--muted)] uppercase font-semibold mr-1">Refocus Section:</span>
+          {[
+            { mode: "math", label: "📐 Deepen Math" },
+            { mode: "tradeoffs", label: "⚖️ Compare Material Tradeoffs" },
+            { mode: "rules", label: "📋 Add Design Rules" },
+            { mode: "simplify", label: "💡 Simplify" },
+          ].map((item) => (
+            <button
+              key={item.mode}
+              type="button"
+              onClick={() => refocusSection(sec.id, item.mode as any)}
+              disabled={refocusingSecId === sec.id}
+              className="px-2 py-0.5 rounded bg-[var(--card-inner)] border border-[var(--border)] text-[var(--muted)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-all font-mono"
+            >
+              {refocusingSecId === sec.id ? "Refocusing..." : item.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Section Prose / Component Content */}
+        <div className="space-y-4 text-xs sm:text-sm font-sans leading-relaxed text-[var(--text)]">
+          {sec.content.split("\n\n").map((para, pIdx) => {
+            const trimmed = para.trim();
+            if (trimmed.startsWith("### ")) {
+              return null; // Heading is rendered in header bar
+            }
+            if (trimmed.startsWith("$$") && trimmed.endsWith("$$")) {
+              const math = trimmed.slice(2, -2).trim();
+              let html = "";
+              try {
+                html = katex.renderToString(math, { displayMode: true, throwOnError: false });
+              } catch {
+                html = math;
+              }
+              return (
+                <div
+                  key={pIdx}
+                  className="rounded-lg bg-[var(--card-inner)] border border-[var(--border)] p-3 text-center my-3 overflow-x-auto"
+                  dangerouslySetInnerHTML={{ __html: html }}
+                />
+              );
+            }
+            if (trimmed.includes("{{ FIGURE_0 }}")) return renderVisualSwitcherFigure(0);
+            if (trimmed.includes("{{ FIGURE_1 }}")) return renderVisualSwitcherFigure(1);
+            if (trimmed.includes("{{ FIGURE_2 }}")) return renderVisualSwitcherFigure(2);
+            if (trimmed.includes("{{ FIGURE_3 }}")) return renderVisualSwitcherFigure(3);
+
+            return <p key={pIdx}>{para}</p>;
+          })}
+        </div>
       </div>
     );
-  };
-
-  // Full Article In-Line Flow
-  const renderArticleFlow = () => {
-    if (!activeDraft) return null;
-    if (!activeDraft.body_mdx) {
-      if (activeDraft.article_html) {
-        return (
-          <div
-            className="article-body font-sans"
-            dangerouslySetInnerHTML={{ __html: activeDraft.article_html }}
-          />
-        );
-      }
-      return <p className="text-[var(--muted)] italic">No article body loaded.</p>;
-    }
-
-    const text = activeDraft.body_mdx;
-    const regex = /\{\{\s*FIGURE_(\d+)\s*\}\}/g;
-    const elements: React.ReactNode[] = [];
-    const renderedFigIndices = new Set<number>();
-    let lastIndex = 0;
-    let match;
-
-    while ((match = regex.exec(text)) !== null) {
-      const matchIndex = match.index;
-      const figIdx = parseInt(match[1], 10);
-
-      // Render text chunk leading up to figure
-      if (matchIndex > lastIndex) {
-        const chunk = text.substring(lastIndex, matchIndex);
-        elements.push(renderTextChunk(chunk, `text-before-${figIdx}`));
-      }
-
-      // Render Inline Figure Carousel
-      elements.push(renderInlineFigure(figIdx));
-      renderedFigIndices.add(figIdx);
-
-      lastIndex = matchIndex + match[0].length;
-    }
-
-    // Trailing text chunk
-    if (lastIndex < text.length) {
-      const chunk = text.substring(lastIndex);
-      elements.push(renderTextChunk(chunk, "text-trailing"));
-    }
-
-    // Append any figures that weren't tagged in the text
-    if (activeDraft.figures) {
-      activeDraft.figures.forEach((_, figIdx) => {
-        if (!renderedFigIndices.has(figIdx)) {
-          elements.push(renderInlineFigure(figIdx));
-        }
-      });
-    }
-
-    return <div className="space-y-6">{elements}</div>;
   };
 
   if (!isUnlocked) {
@@ -848,7 +1057,7 @@ export default function DraftViewer({
           Queue Triaged & Pristine
         </h2>
         <p className="text-sm text-[var(--muted)] font-sans max-w-md mb-8">
-          All staged drafts have been reviewed. Run the harvester script to top up the queue with new categorized drafts and fresh candidate images.
+          All staged drafts have been reviewed. Run the harvester to maintain the 40+ draft volume floor.
         </p>
         <div className="flex gap-4">
           <button
@@ -880,12 +1089,142 @@ export default function DraftViewer({
         </div>
       )}
 
+      {/* Runway Alert & Queue Tracker Banner */}
+      <div className="mb-6 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-lg">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            {runwayAlert ? (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-amber-500/40 bg-amber-500/15 text-amber-400 font-mono text-xs font-bold animate-pulse">
+                <AlertTriangle className="w-3.5 h-3.5" />
+                3-DAY RUNWAY ALERT ({approvedCount} in buffer)
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-emerald-500/40 bg-emerald-500/15 text-emerald-400 font-mono text-xs font-bold">
+                <Check className="w-3.5 h-3.5" />
+                Buffer Healthy ({approvedCount} in buffer)
+              </span>
+            )}
+
+            <span className="font-mono text-xs text-[var(--muted)]">
+              Needs Review: <span className="text-[var(--text)] font-bold">{drafts.length}</span> (Floor: 40)
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowSeedBox(!showSeedBox)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--accent)]/40 bg-[var(--accent)]/10 text-[var(--accent)] font-mono text-xs font-semibold hover:bg-[var(--accent)]/20 transition-all"
+            >
+              <PlusCircle className="w-3.5 h-3.5" />
+              Quick Topic Seed (Anchor & Fill)
+            </button>
+          </div>
+        </div>
+
+        {/* Quick Seed Box Drawer */}
+        {showSeedBox && (
+          <div className="mt-4 pt-4 border-t border-[var(--border)]">
+            <h4 className="text-sm font-serif text-[var(--text)] font-semibold mb-1">
+              Manual Topic Seeding ("Anchor & Fill")
+            </h4>
+            <p className="text-xs text-[var(--muted)] font-mono mb-3">
+              Drop a topic and optional section bullets. Editor bullets become <code className="text-emerald-400">[Your Section]</code> and structural transitions become <code className="text-amber-400">[AI Fill]</code>.
+            </p>
+
+            <div className="space-y-3 mb-3">
+              <input
+                type="text"
+                placeholder="Topic Title (e.g. Strain Wave Gearing: Surviving 10^7 Cycles in Robot Joints)"
+                value={seedTopic}
+                onChange={(e) => setSeedTopic(e.target.value)}
+                className="w-full bg-[var(--card-inner)] border border-[var(--border)] rounded px-3 py-2 text-xs text-[var(--text)] font-mono focus:outline-none focus:border-[var(--accent)]"
+              />
+              <textarea
+                placeholder="Optional custom section bullets (one per line)..."
+                rows={3}
+                value={seedBullets}
+                onChange={(e) => setSeedBullets(e.target.value)}
+                className="w-full bg-[var(--card-inner)] border border-[var(--border)] rounded px-3 py-2 text-xs text-[var(--text)] font-mono focus:outline-none focus:border-[var(--accent)]"
+              />
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => handleSeedSubmit("full")}
+                disabled={seedLoading}
+                className="px-4 py-2 rounded-lg bg-[var(--accent)] text-white font-mono text-xs font-bold hover:bg-[var(--accent-hover)] shadow flex items-center gap-1.5"
+              >
+                <Zap className="w-3.5 h-3.5" />
+                {seedLoading ? "Building..." : "Generate Full Draft (Stack on Top)"}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSeedSubmit("outline")}
+                disabled={seedLoading}
+                className="px-3 py-2 rounded-lg border border-[var(--border)] text-[var(--text)] font-mono text-xs hover:border-[var(--muted)]"
+              >
+                Preview 6-Section Outline First
+              </button>
+            </div>
+
+            {/* Outline Card Preview Modal/Drawer */}
+            {outlinePreview && (
+              <div className="mt-4 p-4 rounded-xl border border-[var(--border)] bg-[var(--card-inner)]">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-xs font-mono font-bold text-[var(--accent)] uppercase">
+                    Lightweight 6-Section Outline Card
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setOutlinePreview(null)}
+                    className="text-xs text-[var(--muted)] hover:text-[var(--text)]"
+                  >
+                    Close
+                  </button>
+                </div>
+                <div className="space-y-2 mb-4">
+                  {outlinePreview.sections.map((sec: any, idx: number) => (
+                    <div
+                      key={idx}
+                      className="p-2 rounded bg-[var(--surface)] border border-[var(--border)] flex items-center justify-between text-xs font-mono"
+                    >
+                      <span className="text-[var(--text)]">
+                        {idx + 1}. {sec.heading}
+                      </span>
+                      <span
+                        className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                          sec.type === "editor"
+                            ? "bg-emerald-500/20 text-emerald-400"
+                            : "bg-amber-500/20 text-amber-400"
+                        }`}
+                      >
+                        {sec.badge}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleSeedSubmit("full")}
+                  disabled={seedLoading}
+                  className="w-full py-2 rounded bg-[var(--accent)] text-white font-mono text-xs font-bold hover:bg-[var(--accent-hover)]"
+                >
+                  Approve Outline & Generate Full Draft
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
       {/* Triage Header Bar */}
       <div className="flex items-center justify-between border-b border-[var(--border)] pb-4 mb-6">
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/15 text-[var(--accent)] font-mono text-[11px] font-semibold tracking-wide">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
-            EDITORIAL TRIAGE
+            90-SECOND MODULAR EDITOR
           </span>
           <span className="font-mono text-xs text-[var(--muted)]">
             Draft <span className="text-[var(--text)] font-bold">{currentIndex + 1}</span> of {drafts.length}
@@ -920,85 +1259,75 @@ export default function DraftViewer({
         </div>
       </div>
 
-      {/* Article Content with 100% Published Editorial Theme */}
-      <article className="prose prose-invert max-w-none">
-        {/* Meta Line */}
-        <div className="meta-line">
-          <span>STAGED DRAFT #{currentIndex + 1}</span>
-          <span>•</span>
-          <span className={`archive-subject-tag ${getSubjectClass(activeDraft.subject || activeDraft.category)}`}>
-            {activeDraft.subject || activeDraft.category || "ENGINEERING"}
-          </span>
-          <span>•</span>
-          <span id="read-time-badge">{activeDraft.readTime || "12 MIN READ"}</span>
+      {/* 1-Click Title Bar with 4 Distinct Headline Angles */}
+      <div className="mb-6 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm">
+        <div className="text-[10px] font-mono uppercase font-bold text-[var(--muted)] mb-2 flex items-center justify-between">
+          <span>1-Click Title Bar (Select Headline Angle)</span>
+          <button
+            type="button"
+            onClick={() => setIsEditingTitle(!isEditingTitle)}
+            className="text-[var(--accent)] hover:underline flex items-center gap-1"
+          >
+            <Edit2 className="w-3 h-3" />
+            {isEditingTitle ? "Done Editing" : "Custom Edit"}
+          </button>
         </div>
 
-        {/* Title & Live Title Editor */}
-        <div className="group relative mb-3">
-          {isEditingTitle ? (
-            <div className="space-y-2">
-              <input
-                type="text"
-                value={editedTitle}
-                onChange={(e) => setEditedTitle(e.target.value)}
-                className="w-full bg-[var(--surface)] border border-[var(--accent)] rounded p-2 text-2xl sm:text-3xl font-serif text-[var(--text)] focus:outline-none"
-                autoFocus
-              />
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => setIsEditingTitle(false)}
-                  className="px-3 py-1 rounded bg-[var(--accent)] text-white font-mono text-xs font-semibold"
-                >
-                  Save Title
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setEditedTitle(activeDraft.title || "");
-                    setIsEditingTitle(false);
-                  }}
-                  className="px-3 py-1 rounded border border-[var(--border)] text-[var(--muted)] font-mono text-xs hover:text-[var(--text)]"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="flex items-start justify-between gap-4">
-              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-[var(--text)] m-0 leading-tight">
-                {editedTitle || activeDraft.title}
-              </h1>
-              <button
-                type="button"
-                onClick={() => setIsEditingTitle(true)}
-                className="flex items-center gap-1 mt-1 px-2.5 py-1 rounded border border-[var(--border)] bg-[var(--surface)] font-mono text-[11px] text-[var(--muted)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-colors flex-shrink-0"
-                title="Tweak headline"
-              >
-                <Edit2 className="w-3 h-3" />
-                <span className="hidden sm:inline">Edit Title</span>
-              </button>
-            </div>
-          )}
+        {/* 4 Headline Angle Pills */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+          {[
+            { key: "mechanism", label: "⚙️ Mechanism-Focused" },
+            { key: "tradeoff", label: "⚖️ Design Tradeoff" },
+            { key: "teardown", label: "🔬 Teardown Case Study" },
+            { key: "failureMode", label: "⚠️ Failure Mode" },
+          ].map((angle) => (
+            <button
+              key={angle.key}
+              type="button"
+              onClick={() => selectTitleAngle(angle.key as any)}
+              className={`p-2 rounded-lg border text-left text-xs font-mono transition-all ${
+                activeTitleAngle === angle.key
+                  ? "border-[var(--accent)] bg-[var(--accent)]/15 text-[var(--accent)] font-bold shadow"
+                  : "border-[var(--border)] bg-[var(--card-inner)] text-[var(--muted)] hover:text-[var(--text)]"
+              }`}
+            >
+              {angle.label}
+            </button>
+          ))}
         </div>
 
-        {/* Subtitle */}
-        {activeDraft.subtitle && (
-          <p className="text-base sm:text-lg text-[var(--muted)] leading-relaxed mt-2 mb-8 font-sans">
-            {activeDraft.subtitle}
-          </p>
+        {/* Live Headline Display / Input */}
+        {isEditingTitle ? (
+          <input
+            type="text"
+            value={editedTitle}
+            onChange={(e) => setEditedTitle(e.target.value)}
+            className="w-full bg-[var(--card-inner)] border border-[var(--accent)] rounded p-2 text-xl sm:text-2xl font-serif text-[var(--text)] focus:outline-none"
+            autoFocus
+          />
+        ) : (
+          <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal tracking-tight text-[var(--text)] m-0 leading-tight">
+            {editedTitle || activeDraft.title}
+          </h1>
         )}
+      </div>
 
-        {/* Inline Production-Fidelity Article Flow */}
-        <div className="mt-8">
-          {renderArticleFlow()}
-        </div>
-      </article>
+      {/* Subtitle */}
+      {activeDraft.subtitle && (
+        <p className="text-base sm:text-lg text-[var(--muted)] leading-relaxed mt-2 mb-6 font-sans">
+          {activeDraft.subtitle}
+        </p>
+      )}
+
+      {/* Modular Section Cards */}
+      <div className="space-y-4">
+        {activeSections.map((sec, idx) => renderSectionCard(sec, idx))}
+      </div>
 
       {/* Floating Bottom Triage Action Dock */}
       <div className="fixed bottom-0 inset-x-0 z-40 bg-[var(--surface)]/95 border-t border-[var(--border)] backdrop-blur-xl px-4 py-3 sm:py-4 shadow-2xl">
         <div className="max-w-4xl mx-auto flex items-center justify-between gap-3 sm:gap-4">
-          {/* Veto Button */}
+          {/* Veto Button with the 4 standard blueprint tags */}
           <button
             type="button"
             onClick={() => setShowVetoModal(true)}
@@ -1009,10 +1338,21 @@ export default function DraftViewer({
             <span>VETO TOPIC</span>
           </button>
 
-          {/* Approve Button in Terracotta */}
+          {/* Approve to Buffer Button (Dual-Track 10-15 buffer) */}
           <button
             type="button"
-            onClick={handleApprove}
+            onClick={() => handleApprove("buffer")}
+            disabled={loading}
+            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-[var(--accent)]/50 bg-[var(--accent)]/15 text-[var(--accent)] font-mono text-xs sm:text-sm font-bold hover:bg-[var(--accent)]/25 active:scale-[0.98] transition-all disabled:opacity-50"
+          >
+            <Archive className="w-4 h-4 stroke-[2.5]" />
+            <span>APPROVE TO BUFFER</span>
+          </button>
+
+          {/* Approve & Publish Immediately Button */}
+          <button
+            type="button"
+            onClick={() => handleApprove("publish")}
             disabled={loading}
             className="flex-2 flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-mono text-xs sm:text-sm font-bold shadow-lg shadow-[var(--accent)]/20 active:scale-[0.98] transition-all disabled:opacity-50"
           >
@@ -1022,51 +1362,47 @@ export default function DraftViewer({
         </div>
       </div>
 
-      {/* Veto Reason Modal */}
+      {/* Veto Reason Modal with the 4 Blueprint Tags */}
       {showVetoModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="w-full max-w-md rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-2xl">
             <div className="flex items-center gap-2 text-red-400 font-mono text-xs uppercase font-bold mb-3">
               <AlertTriangle className="w-4 h-4" />
-              <span>Veto Editorial Constraint</span>
+              <span>Veto Negative Constraint</span>
             </div>
 
             <h3 className="text-xl font-serif text-[var(--text)] mb-1">
-              Why is this topic being vetoed?
+              Select Veto Tag for this Topic
             </h3>
             <p className="text-xs text-[var(--muted)] font-mono mb-4">
-              Your feedback is appended to <code className="text-[var(--accent)]">vetoes.json</code> to prevent similar topics from being generated.
+              Your feedback is appended to <code className="text-[var(--accent)]">vetoes.json</code> to enforce strict negative constraints for future AI generation.
             </p>
 
-            {/* Quick Reason Pills */}
-            <div className="flex flex-wrap gap-2 mb-4">
-              {[
-                "Off-Topic / Generic",
-                "Factual / Physics Flaw",
-                "Too Surface / High-Level",
-                "Repetitive Subject",
-                "Poor Visual Potential",
-              ].map((reason) => (
-                <button
-                  key={reason}
-                  type="button"
-                  onClick={() => setSelectedVetoReason(reason)}
-                  className={`px-3 py-1.5 rounded-lg font-mono text-xs transition-colors ${
-                    selectedVetoReason === reason
-                      ? "bg-red-500 text-white font-bold"
-                      : "bg-[var(--card-inner)] border border-[var(--border)] text-[var(--text)] hover:border-[var(--muted)]"
-                  }`}
-                >
-                  {reason}
-                </button>
-              ))}
+            {/* The 4 Blueprint Tags */}
+            <div className="grid grid-cols-2 gap-2 mb-4">
+              {["[Too Niche]", "[Too Broad]", "[Not Relevant]", "[Factual/Math Error]"].map(
+                (reason) => (
+                  <button
+                    key={reason}
+                    type="button"
+                    onClick={() => setSelectedVetoReason(reason)}
+                    className={`px-3 py-2 rounded-lg font-mono text-xs transition-colors text-center ${
+                      selectedVetoReason === reason
+                        ? "bg-red-500 text-white font-bold"
+                        : "bg-[var(--card-inner)] border border-[var(--border)] text-[var(--text)] hover:border-[var(--muted)]"
+                    }`}
+                  >
+                    {reason}
+                  </button>
+                )
+              )}
             </div>
 
             {/* Custom Critique Text */}
             <textarea
               value={customCritique}
               onChange={(e) => setCustomCritique(e.target.value)}
-              placeholder="Optional: Provide specific critique to guide future topic generation..."
+              placeholder="Optional: Specify physical or engineering reasons..."
               rows={3}
               className="w-full bg-[var(--card-inner)] border border-[var(--border)] rounded-lg p-3 text-xs text-[var(--text)] placeholder-[var(--muted)] font-sans focus:outline-none focus:border-red-500 mb-4"
             />
