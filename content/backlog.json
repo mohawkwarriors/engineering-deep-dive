@@ -91,49 +91,56 @@
     "discipline": "Materials",
     "topic": "Near-Zero Friction with Diamond-Like Carbon Films",
     "summary": "Depositing sp3-bonded carbon films for extreme surface hardness and near-zero sliding friction.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-10-26"
   },
   {
     "id": "B012",
     "discipline": "Electromechanical",
     "topic": "Nanometer Positioning Using Piezoelectric Surface Waves",
     "summary": "Generating high-frequency elliptical stator surface waves to drive direct-drive rotary torque.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-10-27"
   },
   {
     "id": "B013",
     "discipline": "Design",
     "topic": "Stripping vs Shearing in Mismatched Fastener Joints",
     "summary": "Determining critical engagement depth across mismatched aluminum and steel fasteners.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-10-28"
   },
   {
     "id": "B014",
     "discipline": "Product Dives",
     "topic": "Active Front Grille Shutter Vane Aerodynamics",
     "summary": "Balancing powertrain cooling airflow and aerodynamic drag reduction using motorized louvers.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-10-29"
   },
   {
     "id": "B015",
     "discipline": "Materials",
     "topic": "Sintering Precision Metal Hardware via MIM",
     "summary": "Combining polymer binder flow with fine metal powder sintering for high-density micro-parts.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-10-30"
   },
   {
     "id": "B016",
     "discipline": "Product Dives",
     "topic": "Polar Array Geometry in MagSafe Self-Alignment",
     "summary": "Orienting neodymium arc magnets in alternating polarity arrays to self-align coils with high snap torque.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-10-31"
   },
   {
     "id": "B017",
     "discipline": "Thermal",
     "topic": "Heat Pumping Tradeoffs in Solid-State Peltier Coolers",
     "summary": "Managing Seebeck back-EMF and Joule internal dissipation in solid-state active cooling stages.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-11-01"
   },
   {
     "id": "B018",
