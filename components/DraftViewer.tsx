@@ -365,16 +365,25 @@ export default function DraftViewer({
       // Initialize sections: if draft already has sections, use them; else parse body_mdx
       if (activeDraft.sections && activeDraft.sections.length > 0) {
         setActiveSections(activeDraft.sections);
-      } else if (activeDraft.body_mdx) {
-        // Parse sections from ## / ### headings
-        const rawChunks = activeDraft.body_mdx.split(/(^|\n)##\s+/).filter(Boolean);
+            } else if (activeDraft.body_mdx) {
+        // Parse sections from ## headings safely without capturing delimiter
+        const rawChunks = activeDraft.body_mdx.split(/(?:^|\n)##\s+/).filter((c) => c && c.trim().length > 0);
+        const preamble = rawChunks[0] && !/^\d+\./.test(rawChunks[0].trim()) && !rawChunks[0].includes("###") ? rawChunks[0] : "";
         const parsed: DraftSection[] = [];
         let secIdx = 1;
+        const startIdx = preamble ? 1 : 0;
 
-        for (const chunk of rawChunks) {
-          const lines = chunk.trim().split("\n");
-          const heading = lines[0]?.replace(/^#+\s*/, "") || `Section ${secIdx}`;
-          const content = chunk.trim();
+        for (let i = startIdx; i < rawChunks.length; i++) {
+          const chunk = rawChunks[i].trim();
+          if (!chunk) continue;
+          const lines = chunk.split("\n");
+          const rawHeading = lines[0]?.replace(/^#+\s*/, "").trim() || `Section ${secIdx}`;
+          const heading = rawHeading.replace(/^\d+\.\s*/, "").trim();
+          let content = lines.slice(1).join("\n").trim();
+          if (secIdx === 1 && preamble) {
+            content = preamble.trim() + "\n\n" + content;
+          }
+          if (!content && (!heading || heading.startsWith("Section "))) continue;
           parsed.push({
             id: `sec-${secIdx}`,
             heading,
@@ -1001,6 +1010,10 @@ export default function DraftViewer({
 
   // Section card renderer (6 to 7 modular sections)
   const renderSectionCard = (sec: DraftSection, secIdx: number) => {
+    // Suppress empty ghost sections from malformed splits
+    if (!sec || (!sec.content?.trim() && (!sec.heading || sec.heading.startsWith("Section ")))) {
+      return null;
+    }
     const isEditor = sec.type === "editor";
 
     return (
