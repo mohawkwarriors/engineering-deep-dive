@@ -1,11 +1,11 @@
 {
   "slug": "carbon-fiber-composite-overwrapped-pressure-vessels-copv",
-  "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV): Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Microstructure and alloy design: Material limits of Carbon Fiber Composite Overwrapped Pressure Vessels (COPV)",
   "titleAngles": {
-    "mechanism": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV): Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Carbon Fiber Composite Overwrapped Pressure Vessels (COPV)",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Carbon Fiber Composite Overwrapped Pressure Vessels (COPV)",
-    "failureMode": "Catastrophic Wear & Fatigue: How Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Systems Fail Under Cyclic Load"
+    "mechanism": "Microstructure and alloy design: Material limits of Carbon Fiber Composite Overwrapped Pressure Vessels (COPV)",
+    "tradeoff": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV): Balancing surface hardness against core fracture toughness",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Carbon Fiber Composite Overwrapped Pressure Vessels (COPV)",
+    "failureMode": "Why Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) under cyclic thermal and mechanical stresses.",
   "subject": "Materials",

@@ -1,11 +1,11 @@
 {
   "slug": "bulk-metallic-glasses-bmg-in-micro-gears",
-  "title": "Bulk Metallic Glasses (BMG) in Micro-Gears: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Microstructure and alloy design: Material limits of Bulk Metallic Glasses (BMG) in Micro-Gears",
   "titleAngles": {
-    "mechanism": "Bulk Metallic Glasses (BMG) in Micro-Gears: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Bulk Metallic Glasses (BMG) in Micro-Gears",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Bulk Metallic Glasses (BMG) in Micro-Gears",
-    "failureMode": "Catastrophic Wear & Fatigue: How Bulk Metallic Glasses (BMG) in Micro-Gears Systems Fail Under Cyclic Load"
+    "mechanism": "Microstructure and alloy design: Material limits of Bulk Metallic Glasses (BMG) in Micro-Gears",
+    "tradeoff": "Bulk Metallic Glasses (BMG) in Micro-Gears: Balancing surface hardness against core fracture toughness",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Bulk Metallic Glasses (BMG) in Micro-Gears",
+    "failureMode": "Why Bulk Metallic Glasses (BMG) in Micro-Gears cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Bulk Metallic Glasses (BMG) in Micro-Gears under cyclic thermal and mechanical stresses.",
   "subject": "Materials",

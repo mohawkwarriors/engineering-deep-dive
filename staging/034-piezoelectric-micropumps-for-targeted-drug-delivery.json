@@ -1,11 +1,11 @@
 {
   "slug": "piezoelectric-micropumps-for-targeted-drug-delivery",
-  "title": "Piezoelectric Micropumps for Targeted Drug Delivery: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "High-speed flow dynamics: Hydraulic control in Piezoelectric Micropumps for Targeted Drug Delivery",
   "titleAngles": {
-    "mechanism": "Piezoelectric Micropumps for Targeted Drug Delivery: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Piezoelectric Micropumps for Targeted Drug Delivery",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Piezoelectric Micropumps for Targeted Drug Delivery",
-    "failureMode": "Catastrophic Wear & Fatigue: How Piezoelectric Micropumps for Targeted Drug Delivery Systems Fail Under Cyclic Load"
+    "mechanism": "High-speed flow dynamics: Hydraulic control in Piezoelectric Micropumps for Targeted Drug Delivery",
+    "tradeoff": "Piezoelectric Micropumps for Targeted Drug Delivery: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Piezoelectric Micropumps for Targeted Drug Delivery",
+    "failureMode": "Why Piezoelectric Micropumps for Targeted Drug Delivery fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Piezoelectric Micropumps for Targeted Drug Delivery under cyclic thermal and mechanical stresses.",
   "subject": "Fluids",

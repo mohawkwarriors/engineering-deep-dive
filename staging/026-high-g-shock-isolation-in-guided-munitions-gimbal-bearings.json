@@ -1,11 +1,11 @@
 {
   "slug": "high-g-shock-isolation-in-guided-munitions-gimbal-bearings",
-  "title": "High-G Shock Isolation in Guided Munitions Gimbal Bearings: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Zero-play precision: First-principles physics of High-G Shock Isolation in Guided Munitions Gimbal Bearings",
   "titleAngles": {
-    "mechanism": "High-G Shock Isolation in Guided Munitions Gimbal Bearings: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in High-G Shock Isolation in Guided Munitions Gimbal Bearings",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of High-G Shock Isolation in Guided Munitions Gimbal Bearings",
-    "failureMode": "Catastrophic Wear & Fatigue: How High-G Shock Isolation in Guided Munitions Gimbal Bearings Systems Fail Under Cyclic Load"
+    "mechanism": "Zero-play precision: First-principles physics of High-G Shock Isolation in Guided Munitions Gimbal Bearings",
+    "tradeoff": "High-G Shock Isolation in Guided Munitions Gimbal Bearings: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of High-G Shock Isolation in Guided Munitions Gimbal Bearings",
+    "failureMode": "Why High-G Shock Isolation in Guided Munitions Gimbal Bearings fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of High-G Shock Isolation in Guided Munitions Gimbal Bearings under cyclic thermal and mechanical stresses.",
   "subject": "Design",

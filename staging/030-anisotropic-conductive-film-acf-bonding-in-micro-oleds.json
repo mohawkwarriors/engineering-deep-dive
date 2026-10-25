@@ -1,11 +1,11 @@
 {
   "slug": "anisotropic-conductive-film-acf-bonding-in-micro-oleds",
-  "title": "Anisotropic Conductive Film (ACF) Bonding in Micro-OLEDs: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Sub-micron precision: Manufacturing physics of Anisotropic Conductive Film (ACF) Bonding in Micro-OLEDs",
   "titleAngles": {
-    "mechanism": "Anisotropic Conductive Film (ACF) Bonding in Micro-OLEDs: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Anisotropic Conductive Film (ACF) Bonding in Micro-OLEDs",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Anisotropic Conductive Film (ACF) Bonding in Micro-OLEDs",
-    "failureMode": "Catastrophic Wear & Fatigue: How Anisotropic Conductive Film (ACF) Bonding in Micro-OLEDs Systems Fail Under Cyclic Load"
+    "mechanism": "Sub-micron precision: Manufacturing physics of Anisotropic Conductive Film (ACF) Bonding in Micro-OLEDs",
+    "tradeoff": "Anisotropic Conductive Film (ACF) Bonding in Micro-OLEDs: Balancing surface hardness against core fracture toughness",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Anisotropic Conductive Film (ACF) Bonding in Micro-OLEDs",
+    "failureMode": "Why Anisotropic Conductive Film (ACF) Bonding in Micro-OLEDs cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Anisotropic Conductive Film (ACF) Bonding in Micro-OLEDs under cyclic thermal and mechanical stresses.",
   "subject": "Manufacturing",

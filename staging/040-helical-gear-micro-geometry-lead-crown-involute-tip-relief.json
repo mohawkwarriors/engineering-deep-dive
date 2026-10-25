@@ -1,11 +1,11 @@
 {
   "slug": "helical-gear-micro-geometry-lead-crown-involute-tip-relief",
-  "title": "Helical Gear Micro-Geometry: Lead Crown & Involute Tip Relief: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Helical Gear Micro-Geometry: Exploring Lead Crown & Involute Tip Relief",
   "titleAngles": {
-    "mechanism": "Helical Gear Micro-Geometry: Lead Crown & Involute Tip Relief: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Helical Gear Micro-Geometry",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Helical Gear Micro-Geometry",
-    "failureMode": "Catastrophic Wear & Fatigue: How Helical Gear Micro-Geometry Systems Fail Under Cyclic Load"
+    "mechanism": "Helical Gear Micro-Geometry: Exploring Lead Crown & Involute Tip Relief",
+    "tradeoff": "Helical Gear Micro-Geometry: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Helical Gear Micro-Geometry",
+    "failureMode": "Why Helical Gear Micro-Geometry fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Helical Gear Micro-Geometry: Lead Crown & Involute Tip Relief under cyclic thermal and mechanical stresses.",
   "subject": "Mechanisms",

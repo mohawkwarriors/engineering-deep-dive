@@ -1,11 +1,11 @@
 {
   "slug": "electrostatic-discharge-esd-spring-contacts-in-smartphones",
-  "title": "Electrostatic Discharge (ESD) Spring Contacts in Smartphones: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Electromagnetic precision: Inside high-speed Electrostatic Discharge (ESD) Spring Contacts in Smartphones",
   "titleAngles": {
-    "mechanism": "Electrostatic Discharge (ESD) Spring Contacts in Smartphones: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Electrostatic Discharge (ESD) Spring Contacts in Smartphones",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Electrostatic Discharge (ESD) Spring Contacts in Smartphones",
-    "failureMode": "Catastrophic Wear & Fatigue: How Electrostatic Discharge (ESD) Spring Contacts in Smartphones Systems Fail Under Cyclic Load"
+    "mechanism": "Electromagnetic precision: Inside high-speed Electrostatic Discharge (ESD) Spring Contacts in Smartphones",
+    "tradeoff": "Electrostatic Discharge (ESD) Spring Contacts in Smartphones: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Electrostatic Discharge (ESD) Spring Contacts in Smartphones",
+    "failureMode": "Why Electrostatic Discharge (ESD) Spring Contacts in Smartphones fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Electrostatic Discharge (ESD) Spring Contacts in Smartphones under cyclic thermal and mechanical stresses.",
   "subject": "Electromechanical",

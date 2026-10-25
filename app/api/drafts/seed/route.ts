@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { commitFile } from "@/lib/github";
+import { generateCleanTitleAngles } from "@/lib/title-utils";
 
 export const dynamic = "force-dynamic";
 
@@ -18,8 +19,6 @@ export async function POST(req: NextRequest) {
       : typeof bullets === "string"
       ? bullets.split("\n").map((b) => b.trim().replace(/^[-*•]\s*/, "")).filter(Boolean)
       : [];
-
-    const apiKey = process.env.GEMINI_API_KEY;
 
     // Build the 6-section outline structure
     // Anchor & Fill: Editor bullets -> [Your Section], AI bridging -> [AI Fill]
@@ -52,13 +51,8 @@ export async function POST(req: NextRequest) {
       };
     });
 
-    // 4 Distinct Title Angles as specified in Section 3 of the blueprint
-    const titleAngles = {
-      mechanism: `${cleanTopic}: Kinematic Analysis and Sub-Millimeter Contact Dynamics`,
-      tradeoff: `Designing for Yield: The Critical Material & Tolerance Tradeoffs in ${cleanTopic}`,
-      teardown: `Hardware Teardown: Dissecting the Internal Architecture of ${cleanTopic}`,
-      failureMode: `Catastrophic Wear & Fatigue: How ${cleanTopic} Systems Fail Under Cyclic Load`,
-    };
+    // 4 Distinct Clean Title Angles (direct, engaging, no colon-stacking)
+    const titleAngles = generateCleanTitleAngles(cleanTopic, "Mechanisms");
 
     if (mode === "outline") {
       return NextResponse.json({

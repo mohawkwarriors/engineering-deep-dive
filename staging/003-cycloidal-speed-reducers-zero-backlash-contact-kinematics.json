@@ -1,11 +1,11 @@
 {
   "slug": "cycloidal-speed-reducers-zero-backlash-contact-kinematics",
-  "title": "Cycloidal Speed Reducers: Zero-Backlash Contact Kinematics: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Zero-backlash robotics: How cycloidal reducers transfer high torque",
   "titleAngles": {
-    "mechanism": "Cycloidal Speed Reducers: Zero-Backlash Contact Kinematics: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Cycloidal Speed Reducers",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Cycloidal Speed Reducers",
-    "failureMode": "Catastrophic Wear & Fatigue: How Cycloidal Speed Reducers Systems Fail Under Cyclic Load"
+    "mechanism": "Zero-backlash robotics: How cycloidal reducers transfer high torque",
+    "tradeoff": "Cycloidal drives: Balancing pin-circle runout against contact stress and back-drivability",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Cycloidal Speed Reducers",
+    "failureMode": "Why precision gearboxes bind: Multi-pin runout, fretting wear, and thermal lockup"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Cycloidal Speed Reducers: Zero-Backlash Contact Kinematics under cyclic thermal and mechanical stresses.",
   "subject": "Mechanisms",

@@ -1,11 +1,11 @@
 {
   "slug": "laser-powder-bed-fusion-lpbf-residual-stress-anchors",
-  "title": "Laser Powder Bed Fusion (LPBF): Residual Stress & Anchors: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Sub-micron precision: Manufacturing physics of Residual Stress & Anchors",
   "titleAngles": {
-    "mechanism": "Laser Powder Bed Fusion (LPBF): Residual Stress & Anchors: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Laser Powder Bed Fusion (LPBF)",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Laser Powder Bed Fusion (LPBF)",
-    "failureMode": "Catastrophic Wear & Fatigue: How Laser Powder Bed Fusion (LPBF) Systems Fail Under Cyclic Load"
+    "mechanism": "Sub-micron precision: Manufacturing physics of Residual Stress & Anchors",
+    "tradeoff": "Laser Powder Bed Fusion (LPBF): Balancing surface hardness against core fracture toughness",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Laser Powder Bed Fusion (LPBF)",
+    "failureMode": "Why Laser Powder Bed Fusion (LPBF) cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Laser Powder Bed Fusion (LPBF): Residual Stress & Anchors under cyclic thermal and mechanical stresses.",
   "subject": "Manufacturing",

@@ -1,11 +1,11 @@
 {
   "slug": "sapphire-crystal-to-titanium-diffusion-bonding",
-  "title": "Sapphire Crystal to Titanium Diffusion Bonding: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Microstructure and alloy design: Material limits of Sapphire Crystal to Titanium Diffusion Bonding",
   "titleAngles": {
-    "mechanism": "Sapphire Crystal to Titanium Diffusion Bonding: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Sapphire Crystal to Titanium Diffusion Bonding",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Sapphire Crystal to Titanium Diffusion Bonding",
-    "failureMode": "Catastrophic Wear & Fatigue: How Sapphire Crystal to Titanium Diffusion Bonding Systems Fail Under Cyclic Load"
+    "mechanism": "Microstructure and alloy design: Material limits of Sapphire Crystal to Titanium Diffusion Bonding",
+    "tradeoff": "Sapphire Crystal to Titanium Diffusion Bonding: Balancing surface hardness against core fracture toughness",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Sapphire Crystal to Titanium Diffusion Bonding",
+    "failureMode": "Why Sapphire Crystal to Titanium Diffusion Bonding cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Sapphire Crystal to Titanium Diffusion Bonding under cyclic thermal and mechanical stresses.",
   "subject": "Materials",

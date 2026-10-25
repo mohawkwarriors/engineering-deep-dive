@@ -1,11 +1,11 @@
 {
   "slug": "kinematic-couplings-kelvin-clamps-maxwell-mounts",
-  "title": "Kinematic Couplings: Kelvin Clamps & Maxwell Mounts: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Deterministic positioning: Sub-micron repeatability in Kelvin and Maxwell kinematic mounts",
   "titleAngles": {
-    "mechanism": "Kinematic Couplings: Kelvin Clamps & Maxwell Mounts: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Kinematic Couplings",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Kinematic Couplings",
-    "failureMode": "Catastrophic Wear & Fatigue: How Kinematic Couplings Systems Fail Under Cyclic Load"
+    "mechanism": "Deterministic positioning: Sub-micron repeatability in Kelvin and Maxwell kinematic mounts",
+    "tradeoff": "Kinematic Couplings: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Kinematic Couplings",
+    "failureMode": "Why Kinematic Couplings fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Kinematic Couplings: Kelvin Clamps & Maxwell Mounts under cyclic thermal and mechanical stresses.",
   "subject": "Design",

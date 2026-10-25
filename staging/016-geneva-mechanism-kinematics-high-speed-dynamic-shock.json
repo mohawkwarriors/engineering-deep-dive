@@ -1,11 +1,11 @@
 {
   "slug": "geneva-mechanism-kinematics-high-speed-dynamic-shock",
-  "title": "Geneva Mechanism Kinematics & High-Speed Dynamic Shock: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Intermittent motion: Dynamic shock and acceleration control in Geneva mechanisms",
   "titleAngles": {
-    "mechanism": "Geneva Mechanism Kinematics & High-Speed Dynamic Shock: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Geneva Mechanism Kinematics & High-Speed Dynamic Shock",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Geneva Mechanism Kinematics & High-Speed Dynamic Shock",
-    "failureMode": "Catastrophic Wear & Fatigue: How Geneva Mechanism Kinematics & High-Speed Dynamic Shock Systems Fail Under Cyclic Load"
+    "mechanism": "Intermittent motion: Dynamic shock and acceleration control in Geneva mechanisms",
+    "tradeoff": "Geneva Mechanism Kinematics & High-Speed Dynamic Shock: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Geneva Mechanism Kinematics & High-Speed Dynamic Shock",
+    "failureMode": "Why Geneva Mechanism Kinematics & High-Speed Dynamic Shock fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Geneva Mechanism Kinematics & High-Speed Dynamic Shock under cyclic thermal and mechanical stresses.",
   "subject": "Mechanisms",

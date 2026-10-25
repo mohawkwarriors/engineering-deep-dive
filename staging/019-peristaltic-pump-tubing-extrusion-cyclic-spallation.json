@@ -1,11 +1,11 @@
 {
   "slug": "peristaltic-pump-tubing-extrusion-cyclic-spallation",
-  "title": "Peristaltic Pump Tubing Extrusion & Cyclic Spallation: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "High-speed flow dynamics: Hydraulic control in Peristaltic Pump Tubing Extrusion & Cyclic Spallation",
   "titleAngles": {
-    "mechanism": "Peristaltic Pump Tubing Extrusion & Cyclic Spallation: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Peristaltic Pump Tubing Extrusion & Cyclic Spallation",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Peristaltic Pump Tubing Extrusion & Cyclic Spallation",
-    "failureMode": "Catastrophic Wear & Fatigue: How Peristaltic Pump Tubing Extrusion & Cyclic Spallation Systems Fail Under Cyclic Load"
+    "mechanism": "High-speed flow dynamics: Hydraulic control in Peristaltic Pump Tubing Extrusion & Cyclic Spallation",
+    "tradeoff": "Peristaltic Pump Tubing Extrusion & Cyclic Spallation: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Peristaltic Pump Tubing Extrusion & Cyclic Spallation",
+    "failureMode": "Why Peristaltic Pump Tubing Extrusion & Cyclic Spallation fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Peristaltic Pump Tubing Extrusion & Cyclic Spallation under cyclic thermal and mechanical stresses.",
   "subject": "Fluids",

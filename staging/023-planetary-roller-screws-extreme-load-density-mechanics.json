@@ -1,11 +1,11 @@
 {
   "slug": "planetary-roller-screws-extreme-load-density-mechanics",
-  "title": "Planetary Roller Screws: Extreme Load Density Mechanics: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "High power density: Planetary gear trains and epicyclic kinematics",
   "titleAngles": {
-    "mechanism": "Planetary Roller Screws: Extreme Load Density Mechanics: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Planetary Roller Screws",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Planetary Roller Screws",
-    "failureMode": "Catastrophic Wear & Fatigue: How Planetary Roller Screws Systems Fail Under Cyclic Load"
+    "mechanism": "High power density: Planetary gear trains and epicyclic kinematics",
+    "tradeoff": "Planetary Roller Screws: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Planetary Roller Screws",
+    "failureMode": "Why Planetary Roller Screws fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Planetary Roller Screws: Extreme Load Density Mechanics under cyclic thermal and mechanical stresses.",
   "subject": "Mechanisms",

@@ -1,11 +1,11 @@
 {
   "slug": "5-axis-thermal-drift-compensation-in-precision-machining",
-  "title": "5-Axis Thermal Drift Compensation in Precision Machining: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Sub-micron precision: Manufacturing physics of 5-Axis Thermal Drift Compensation in Precision Machining",
   "titleAngles": {
-    "mechanism": "5-Axis Thermal Drift Compensation in Precision Machining: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in 5-Axis Thermal Drift Compensation in Precision Machining",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of 5-Axis Thermal Drift Compensation in Precision Machining",
-    "failureMode": "Catastrophic Wear & Fatigue: How 5-Axis Thermal Drift Compensation in Precision Machining Systems Fail Under Cyclic Load"
+    "mechanism": "Sub-micron precision: Manufacturing physics of 5-Axis Thermal Drift Compensation in Precision Machining",
+    "tradeoff": "5-Axis Thermal Drift Compensation in Precision Machining: Balancing surface hardness against core fracture toughness",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of 5-Axis Thermal Drift Compensation in Precision Machining",
+    "failureMode": "Why 5-Axis Thermal Drift Compensation in Precision Machining cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of 5-Axis Thermal Drift Compensation in Precision Machining under cyclic thermal and mechanical stresses.",
   "subject": "Manufacturing",

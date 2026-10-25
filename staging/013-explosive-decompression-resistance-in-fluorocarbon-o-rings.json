@@ -1,11 +1,11 @@
 {
   "slug": "explosive-decompression-resistance-in-fluorocarbon-o-rings",
-  "title": "Explosive Decompression Resistance in Fluorocarbon O-Rings: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Sealing under extreme pressure: Preventing explosive decompression in fluorocarbon O-rings",
   "titleAngles": {
-    "mechanism": "Explosive Decompression Resistance in Fluorocarbon O-Rings: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Explosive Decompression Resistance in Fluorocarbon O-Rings",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Explosive Decompression Resistance in Fluorocarbon O-Rings",
-    "failureMode": "Catastrophic Wear & Fatigue: How Explosive Decompression Resistance in Fluorocarbon O-Rings Systems Fail Under Cyclic Load"
+    "mechanism": "Sealing under extreme pressure: Preventing explosive decompression in fluorocarbon O-rings",
+    "tradeoff": "Explosive Decompression Resistance in Fluorocarbon O-Rings: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Explosive Decompression Resistance in Fluorocarbon O-Rings",
+    "failureMode": "Why Explosive Decompression Resistance in Fluorocarbon O-Rings fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Explosive Decompression Resistance in Fluorocarbon O-Rings under cyclic thermal and mechanical stresses.",
   "subject": "Design",

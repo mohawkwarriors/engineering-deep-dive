@@ -1,11 +1,11 @@
 {
   "slug": "piezoelectric-ultrasonic-transducers-pzt-matching-layers",
-  "title": "Piezoelectric Ultrasonic Transducers: PZT Matching Layers: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Acoustic bonding: Ultrasonic metal welding of high-power EV busbars",
   "titleAngles": {
-    "mechanism": "Piezoelectric Ultrasonic Transducers: PZT Matching Layers: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Piezoelectric Ultrasonic Transducers",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Piezoelectric Ultrasonic Transducers",
-    "failureMode": "Catastrophic Wear & Fatigue: How Piezoelectric Ultrasonic Transducers Systems Fail Under Cyclic Load"
+    "mechanism": "Acoustic bonding: Ultrasonic metal welding of high-power EV busbars",
+    "tradeoff": "Piezoelectric Ultrasonic Transducers: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Piezoelectric Ultrasonic Transducers",
+    "failureMode": "Why Piezoelectric Ultrasonic Transducers fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Piezoelectric Ultrasonic Transducers: PZT Matching Layers under cyclic thermal and mechanical stresses.",
   "subject": "Electromechanical",

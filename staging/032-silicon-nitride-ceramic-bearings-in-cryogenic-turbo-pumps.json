@@ -1,11 +1,11 @@
 {
   "slug": "silicon-nitride-ceramic-bearings-in-cryogenic-turbo-pumps",
-  "title": "Silicon Nitride Ceramic Bearings in Cryogenic Turbo-Pumps: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Microstructure and alloy design: Material limits of Silicon Nitride Ceramic Bearings in Cryogenic Turbo-Pumps",
   "titleAngles": {
-    "mechanism": "Silicon Nitride Ceramic Bearings in Cryogenic Turbo-Pumps: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Silicon Nitride Ceramic Bearings in Cryogenic Turbo-Pumps",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Silicon Nitride Ceramic Bearings in Cryogenic Turbo-Pumps",
-    "failureMode": "Catastrophic Wear & Fatigue: How Silicon Nitride Ceramic Bearings in Cryogenic Turbo-Pumps Systems Fail Under Cyclic Load"
+    "mechanism": "Microstructure and alloy design: Material limits of Silicon Nitride Ceramic Bearings in Cryogenic Turbo-Pumps",
+    "tradeoff": "Silicon Nitride Ceramic Bearings in Cryogenic Turbo-Pumps: Balancing surface hardness against core fracture toughness",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Silicon Nitride Ceramic Bearings in Cryogenic Turbo-Pumps",
+    "failureMode": "Why Silicon Nitride Ceramic Bearings in Cryogenic Turbo-Pumps cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Silicon Nitride Ceramic Bearings in Cryogenic Turbo-Pumps under cyclic thermal and mechanical stresses.",
   "subject": "Materials",

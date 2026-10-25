@@ -1,11 +1,11 @@
 {
   "slug": "thread-locking-adhesives-anaerobic-polymerization-kinetics",
-  "title": "Thread-Locking Adhesives: Anaerobic Polymerization Kinetics: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Thread-Locking Adhesives: Exploring Anaerobic Polymerization Kinetics",
   "titleAngles": {
-    "mechanism": "Thread-Locking Adhesives: Anaerobic Polymerization Kinetics: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Thread-Locking Adhesives",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Thread-Locking Adhesives",
-    "failureMode": "Catastrophic Wear & Fatigue: How Thread-Locking Adhesives Systems Fail Under Cyclic Load"
+    "mechanism": "Thread-Locking Adhesives: Exploring Anaerobic Polymerization Kinetics",
+    "tradeoff": "Thread-Locking Adhesives: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Thread-Locking Adhesives",
+    "failureMode": "Why Thread-Locking Adhesives fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Thread-Locking Adhesives: Anaerobic Polymerization Kinetics under cyclic thermal and mechanical stresses.",
   "subject": "Design",

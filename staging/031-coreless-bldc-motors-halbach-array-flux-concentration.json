@@ -1,11 +1,11 @@
 {
   "slug": "coreless-bldc-motors-halbach-array-flux-concentration",
-  "title": "Coreless BLDC Motors: Halbach Array Flux Concentration: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Electromagnetic precision: Inside high-speed Halbach Array Flux Concentration",
   "titleAngles": {
-    "mechanism": "Coreless BLDC Motors: Halbach Array Flux Concentration: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Coreless BLDC Motors",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Coreless BLDC Motors",
-    "failureMode": "Catastrophic Wear & Fatigue: How Coreless BLDC Motors Systems Fail Under Cyclic Load"
+    "mechanism": "Electromagnetic precision: Inside high-speed Halbach Array Flux Concentration",
+    "tradeoff": "Coreless BLDC Motors: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Coreless BLDC Motors",
+    "failureMode": "Why Coreless BLDC Motors fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Coreless BLDC Motors: Halbach Array Flux Concentration under cyclic thermal and mechanical stresses.",
   "subject": "Electromechanical",

@@ -1,11 +1,11 @@
 {
   "slug": "squeeze-film-dampers-in-high-speed-turbomachinery",
-  "title": "Squeeze Film Dampers in High-Speed Turbomachinery: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Zero-play precision: First-principles physics of Squeeze Film Dampers in High-Speed Turbomachinery",
   "titleAngles": {
-    "mechanism": "Squeeze Film Dampers in High-Speed Turbomachinery: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Squeeze Film Dampers in High-Speed Turbomachinery",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Squeeze Film Dampers in High-Speed Turbomachinery",
-    "failureMode": "Catastrophic Wear & Fatigue: How Squeeze Film Dampers in High-Speed Turbomachinery Systems Fail Under Cyclic Load"
+    "mechanism": "Zero-play precision: First-principles physics of Squeeze Film Dampers in High-Speed Turbomachinery",
+    "tradeoff": "Squeeze Film Dampers in High-Speed Turbomachinery: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Squeeze Film Dampers in High-Speed Turbomachinery",
+    "failureMode": "Why Squeeze Film Dampers in High-Speed Turbomachinery fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Squeeze Film Dampers in High-Speed Turbomachinery under cyclic thermal and mechanical stresses.",
   "subject": "Mechanisms",

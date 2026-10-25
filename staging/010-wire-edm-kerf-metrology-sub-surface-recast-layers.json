@@ -1,11 +1,11 @@
 {
   "slug": "wire-edm-kerf-metrology-sub-surface-recast-layers",
-  "title": "Wire EDM Kerf Metrology & Sub-Surface Recast Layers: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Cutting with sparks: Sub-surface recast metrology in precision wire EDM",
   "titleAngles": {
-    "mechanism": "Wire EDM Kerf Metrology & Sub-Surface Recast Layers: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Wire EDM Kerf Metrology & Sub-Surface Recast Layers",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Wire EDM Kerf Metrology & Sub-Surface Recast Layers",
-    "failureMode": "Catastrophic Wear & Fatigue: How Wire EDM Kerf Metrology & Sub-Surface Recast Layers Systems Fail Under Cyclic Load"
+    "mechanism": "Cutting with sparks: Sub-surface recast metrology in precision wire EDM",
+    "tradeoff": "Wire EDM Kerf Metrology & Sub-Surface Recast Layers: Balancing surface hardness against core fracture toughness",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Wire EDM Kerf Metrology & Sub-Surface Recast Layers",
+    "failureMode": "Why Wire EDM Kerf Metrology & Sub-Surface Recast Layers cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Wire EDM Kerf Metrology & Sub-Surface Recast Layers under cyclic thermal and mechanical stresses.",
   "subject": "Manufacturing",

@@ -1,11 +1,11 @@
 {
   "slug": "immersion-two-phase-dielectric-cooling-boiling-heat-transfer",
-  "title": "Immersion Two-Phase Dielectric Cooling: Boiling Heat Transfer: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Submerged compute: Boiling heat transfer in two-phase immersion cooling",
   "titleAngles": {
-    "mechanism": "Immersion Two-Phase Dielectric Cooling: Boiling Heat Transfer: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Immersion Two-Phase Dielectric Cooling",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Immersion Two-Phase Dielectric Cooling",
-    "failureMode": "Catastrophic Wear & Fatigue: How Immersion Two-Phase Dielectric Cooling Systems Fail Under Cyclic Load"
+    "mechanism": "Submerged compute: Boiling heat transfer in two-phase immersion cooling",
+    "tradeoff": "Immersion Two-Phase Dielectric Cooling: Balancing thermal spreading resistance against chassis z-height",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Immersion Two-Phase Dielectric Cooling",
+    "failureMode": "Why Immersion Two-Phase Dielectric Cooling fails: Hotspot dryout and interfacial thermal degradation"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Immersion Two-Phase Dielectric Cooling: Boiling Heat Transfer under cyclic thermal and mechanical stresses.",
   "subject": "Thermal",

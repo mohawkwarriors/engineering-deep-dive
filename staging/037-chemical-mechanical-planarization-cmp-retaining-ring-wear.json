@@ -1,11 +1,11 @@
 {
   "slug": "chemical-mechanical-planarization-cmp-retaining-ring-wear",
-  "title": "Chemical Mechanical Planarization (CMP) Retaining Ring Wear: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Sub-micron precision: Manufacturing physics of Chemical Mechanical Planarization (CMP) Retaining Ring Wear",
   "titleAngles": {
-    "mechanism": "Chemical Mechanical Planarization (CMP) Retaining Ring Wear: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Chemical Mechanical Planarization (CMP) Retaining Ring Wear",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Chemical Mechanical Planarization (CMP) Retaining Ring Wear",
-    "failureMode": "Catastrophic Wear & Fatigue: How Chemical Mechanical Planarization (CMP) Retaining Ring Wear Systems Fail Under Cyclic Load"
+    "mechanism": "Sub-micron precision: Manufacturing physics of Chemical Mechanical Planarization (CMP) Retaining Ring Wear",
+    "tradeoff": "Chemical Mechanical Planarization (CMP) Retaining Ring Wear: Balancing surface hardness against core fracture toughness",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Chemical Mechanical Planarization (CMP) Retaining Ring Wear",
+    "failureMode": "Why Chemical Mechanical Planarization (CMP) Retaining Ring Wear cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Chemical Mechanical Planarization (CMP) Retaining Ring Wear under cyclic thermal and mechanical stresses.",
   "subject": "Manufacturing",

@@ -1,11 +1,11 @@
 {
   "slug": "ultrasonic-metal-welding-of-ev-busbars",
-  "title": "Ultrasonic Metal Welding of EV Busbars: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Acoustic bonding: Ultrasonic metal welding of high-power EV busbars",
   "titleAngles": {
-    "mechanism": "Ultrasonic Metal Welding of EV Busbars: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Ultrasonic Metal Welding of EV Busbars",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Ultrasonic Metal Welding of EV Busbars",
-    "failureMode": "Catastrophic Wear & Fatigue: How Ultrasonic Metal Welding of EV Busbars Systems Fail Under Cyclic Load"
+    "mechanism": "Acoustic bonding: Ultrasonic metal welding of high-power EV busbars",
+    "tradeoff": "Ultrasonic Metal Welding of EV Busbars: Balancing surface hardness against core fracture toughness",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Ultrasonic Metal Welding of EV Busbars",
+    "failureMode": "Why Ultrasonic Metal Welding of EV Busbars cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Ultrasonic Metal Welding of EV Busbars under cyclic thermal and mechanical stresses.",
   "subject": "Manufacturing",

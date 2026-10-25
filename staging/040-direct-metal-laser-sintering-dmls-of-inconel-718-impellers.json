@@ -1,11 +1,11 @@
 {
   "slug": "direct-metal-laser-sintering-dmls-of-inconel-718-impellers",
-  "title": "Direct Metal Laser Sintering (DMLS) of Inconel 718 Impellers: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Sub-micron precision: Manufacturing physics of Direct Metal Laser Sintering (DMLS) of Inconel 718 Impellers",
   "titleAngles": {
-    "mechanism": "Direct Metal Laser Sintering (DMLS) of Inconel 718 Impellers: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Direct Metal Laser Sintering (DMLS) of Inconel 718 Impellers",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Direct Metal Laser Sintering (DMLS) of Inconel 718 Impellers",
-    "failureMode": "Catastrophic Wear & Fatigue: How Direct Metal Laser Sintering (DMLS) of Inconel 718 Impellers Systems Fail Under Cyclic Load"
+    "mechanism": "Sub-micron precision: Manufacturing physics of Direct Metal Laser Sintering (DMLS) of Inconel 718 Impellers",
+    "tradeoff": "Direct Metal Laser Sintering (DMLS) of Inconel 718 Impellers: Balancing surface hardness against core fracture toughness",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Direct Metal Laser Sintering (DMLS) of Inconel 718 Impellers",
+    "failureMode": "Why Direct Metal Laser Sintering (DMLS) of Inconel 718 Impellers cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Direct Metal Laser Sintering (DMLS) of Inconel 718 Impellers under cyclic thermal and mechanical stresses.",
   "subject": "Manufacturing",

@@ -42,6 +42,7 @@ import {
   TradeoffMatrix,
   LayeredCrossSection,
 } from "./interactive";
+import { generateCleanTitleAngles } from "@/lib/title-utils";
 
 interface ImageCandidate {
   url: string;
@@ -217,7 +218,12 @@ export default function DraftViewer({
   // Synchronize state when active draft changes
   useEffect(() => {
     if (activeDraft) {
-      setEditedTitle(activeDraft.title || "");
+      let initialTitle = activeDraft.title || "";
+      if (initialTitle.includes("Kinematic Decomposition") || initialTitle.includes(": Kinematic")) {
+        const angles = generateCleanTitleAngles(initialTitle, activeDraft.subject || activeDraft.category);
+        initialTitle = angles.mechanism;
+      }
+      setEditedTitle(initialTitle);
       setIsEditingTitle(false);
       setActiveTitleAngle("mechanism");
 
@@ -610,16 +616,11 @@ export default function DraftViewer({
   // 1-Click Title Angle selection
   const selectTitleAngle = (key: "mechanism" | "tradeoff" | "teardown" | "failureMode") => {
     setActiveTitleAngle(key);
-    if (activeDraft?.titleAngles?.[key]) {
-      setEditedTitle(activeDraft.titleAngles[key]!);
-    } else {
-      // Fallback angle derivation
-      const base = activeDraft?.title || "Mechanical Hardware Analysis";
-      if (key === "mechanism") setEditedTitle(`${base}: Kinematic Decomposition & Sub-Micron Dynamics`);
-      if (key === "tradeoff") setEditedTitle(`Designing for Yield: The Critical Material Tradeoffs in ${base}`);
-      if (key === "teardown") setEditedTitle(`Hardware Teardown: Dissecting the Architecture of ${base}`);
-      if (key === "failureMode") setEditedTitle(`Catastrophic Wear & Fatigue: How ${base} Fails Under Load`);
-    }
+    const angles = generateCleanTitleAngles(
+      activeDraft?.title || "Mechanical Hardware Analysis",
+      activeDraft?.subject || activeDraft?.category || "Mechanisms"
+    );
+    setEditedTitle(angles[key]);
   };
 
   // The 3-Tab Visual Switcher component for each figure slot

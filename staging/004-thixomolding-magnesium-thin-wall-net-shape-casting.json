@@ -1,11 +1,11 @@
 {
   "slug": "thixomolding-magnesium-thin-wall-net-shape-casting",
-  "title": "Thixomolding Magnesium: Thin-Wall Net-Shape Casting: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Semi-solid magnesium: Net-shape casting for ultra-thin laptop chasses",
   "titleAngles": {
-    "mechanism": "Thixomolding Magnesium: Thin-Wall Net-Shape Casting: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Thixomolding Magnesium",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Thixomolding Magnesium",
-    "failureMode": "Catastrophic Wear & Fatigue: How Thixomolding Magnesium Systems Fail Under Cyclic Load"
+    "mechanism": "Semi-solid magnesium: Net-shape casting for ultra-thin laptop chasses",
+    "tradeoff": "Thixomolding Magnesium: Balancing surface hardness against core fracture toughness",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Thixomolding Magnesium",
+    "failureMode": "Why Thixomolding Magnesium cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Thixomolding Magnesium: Thin-Wall Net-Shape Casting under cyclic thermal and mechanical stresses.",
   "subject": "Manufacturing",

@@ -1,11 +1,11 @@
 {
   "slug": "compliant-titanium-flexure-hinges-in-lithography-stages",
-  "title": "Compliant Titanium Flexure Hinges in Lithography Stages: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Sub-nanometer positioning: Compliant titanium flexures in lithography",
   "titleAngles": {
-    "mechanism": "Compliant Titanium Flexure Hinges in Lithography Stages: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Compliant Titanium Flexure Hinges in Lithography Stages",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Compliant Titanium Flexure Hinges in Lithography Stages",
-    "failureMode": "Catastrophic Wear & Fatigue: How Compliant Titanium Flexure Hinges in Lithography Stages Systems Fail Under Cyclic Load"
+    "mechanism": "Sub-nanometer positioning: Compliant titanium flexures in lithography",
+    "tradeoff": "Compliant mechanisms: Balancing angular deflection range against resonant fatigue life",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Compliant Titanium Flexure Hinges in Lithography Stages",
+    "failureMode": "Why Compliant Titanium Flexure Hinges in Lithography Stages fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Compliant Titanium Flexure Hinges in Lithography Stages under cyclic thermal and mechanical stresses.",
   "subject": "Design",

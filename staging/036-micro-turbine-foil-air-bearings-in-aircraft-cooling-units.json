@@ -1,11 +1,11 @@
 {
   "slug": "micro-turbine-foil-air-bearings-in-aircraft-cooling-units",
-  "title": "Micro-Turbine Foil Air Bearings in Aircraft Cooling Units: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "High-speed flow dynamics: Hydraulic control in Micro-Turbine Foil Air Bearings in Aircraft Cooling Units",
   "titleAngles": {
-    "mechanism": "Micro-Turbine Foil Air Bearings in Aircraft Cooling Units: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Micro-Turbine Foil Air Bearings in Aircraft Cooling Units",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Micro-Turbine Foil Air Bearings in Aircraft Cooling Units",
-    "failureMode": "Catastrophic Wear & Fatigue: How Micro-Turbine Foil Air Bearings in Aircraft Cooling Units Systems Fail Under Cyclic Load"
+    "mechanism": "High-speed flow dynamics: Hydraulic control in Micro-Turbine Foil Air Bearings in Aircraft Cooling Units",
+    "tradeoff": "Micro-Turbine Foil Air Bearings in Aircraft Cooling Units: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Micro-Turbine Foil Air Bearings in Aircraft Cooling Units",
+    "failureMode": "Why Micro-Turbine Foil Air Bearings in Aircraft Cooling Units fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Micro-Turbine Foil Air Bearings in Aircraft Cooling Units under cyclic thermal and mechanical stresses.",
   "subject": "Fluids",

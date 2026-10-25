@@ -1,11 +1,11 @@
 {
   "slug": "microchannel-heat-sinks-laminar-slip-flow-in-silicon",
-  "title": "Microchannel Heat Sinks: Laminar Slip Flow in Silicon: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "How hardware stays cool: Thermal transport in Laminar Slip Flow in Silicon",
   "titleAngles": {
-    "mechanism": "Microchannel Heat Sinks: Laminar Slip Flow in Silicon: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Microchannel Heat Sinks",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Microchannel Heat Sinks",
-    "failureMode": "Catastrophic Wear & Fatigue: How Microchannel Heat Sinks Systems Fail Under Cyclic Load"
+    "mechanism": "How hardware stays cool: Thermal transport in Laminar Slip Flow in Silicon",
+    "tradeoff": "Microchannel Heat Sinks: Balancing thermal spreading resistance against chassis z-height",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Microchannel Heat Sinks",
+    "failureMode": "Why Microchannel Heat Sinks fails: Hotspot dryout and interfacial thermal degradation"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Microchannel Heat Sinks: Laminar Slip Flow in Silicon under cyclic thermal and mechanical stresses.",
   "subject": "Thermal",

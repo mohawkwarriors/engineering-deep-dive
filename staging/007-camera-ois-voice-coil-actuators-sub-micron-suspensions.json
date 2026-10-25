@@ -1,11 +1,11 @@
 {
   "slug": "camera-ois-voice-coil-actuators-sub-micron-suspensions",
-  "title": "Camera OIS Voice Coil Actuators: Sub-Micron Suspensions: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Sub-micron optical stabilization: Inside smartphone voice coil actuators",
   "titleAngles": {
-    "mechanism": "Camera OIS Voice Coil Actuators: Sub-Micron Suspensions: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Camera OIS Voice Coil Actuators",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Camera OIS Voice Coil Actuators",
-    "failureMode": "Catastrophic Wear & Fatigue: How Camera OIS Voice Coil Actuators Systems Fail Under Cyclic Load"
+    "mechanism": "Sub-micron optical stabilization: Inside smartphone voice coil actuators",
+    "tradeoff": "Camera OIS Voice Coil Actuators: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Camera OIS Voice Coil Actuators",
+    "failureMode": "Why Camera OIS Voice Coil Actuators fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Camera OIS Voice Coil Actuators: Sub-Micron Suspensions under cyclic thermal and mechanical stresses.",
   "subject": "Electromechanical",

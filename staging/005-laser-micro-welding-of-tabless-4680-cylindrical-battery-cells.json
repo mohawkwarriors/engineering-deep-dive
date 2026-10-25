@@ -1,11 +1,11 @@
 {
   "slug": "laser-micro-welding-of-tabless-4680-cylindrical-battery-cells",
-  "title": "Laser Micro-Welding of Tabless 4680 Cylindrical Battery Cells: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Defeating copper reflection: Laser micro-welding in tabless 4680 battery cells",
   "titleAngles": {
-    "mechanism": "Laser Micro-Welding of Tabless 4680 Cylindrical Battery Cells: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Laser Micro-Welding of Tabless 4680 Cylindrical Battery Cells",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Laser Micro-Welding of Tabless 4680 Cylindrical Battery Cells",
-    "failureMode": "Catastrophic Wear & Fatigue: How Laser Micro-Welding of Tabless 4680 Cylindrical Battery Cells Systems Fail Under Cyclic Load"
+    "mechanism": "Defeating copper reflection: Laser micro-welding in tabless 4680 battery cells",
+    "tradeoff": "Laser Micro-Welding of Tabless 4680 Cylindrical Battery Cells: Balancing surface hardness against core fracture toughness",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Laser Micro-Welding of Tabless 4680 Cylindrical Battery Cells",
+    "failureMode": "Why Laser Micro-Welding of Tabless 4680 Cylindrical Battery Cells cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Laser Micro-Welding of Tabless 4680 Cylindrical Battery Cells under cyclic thermal and mechanical stresses.",
   "subject": "Manufacturing",

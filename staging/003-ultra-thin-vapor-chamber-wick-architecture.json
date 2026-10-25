@@ -1,6 +1,6 @@
 {
   "slug": "ultra-thin-vapor-chamber-wick-architecture",
-  "title": "Ultra-Thin Vapor Chambers: Capillary Limits in 0.35 mm Smartphone Spreaders",
+  "title": "How smartphones stay cool: Exploring phase change in Ultra-Thin Vapor Chambers",
   "subtitle": "How sintered copper micro-meshes and laser-welded pillar arrays prevent cavitation collapse under 80W die loads.",
   "subject": "Thermal",
   "category": "Thermal",
@@ -189,5 +189,11 @@
       "body": "<p>A dual-layer wick that pairs a coarse underlying copper powder bed (for high-permeability liquid arterial return) with an ultra-fine sintered surface layer (for intense Young-Laplace capillary suction).</p>",
       "equation": "\\Delta P_{\\text{net}} = \\Delta P_c(r_{\\text{fine}}) - \\Delta P_{\\text{drag}}(K_{\\text{coarse}})"
     }
+  },
+  "titleAngles": {
+    "mechanism": "How smartphones stay cool: Exploring phase change in Ultra-Thin Vapor Chambers",
+    "tradeoff": "Ultra-thin vapor chambers: Balancing capillary pumping pressure against vapor flow resistance",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Ultra-Thin Vapor Chambers",
+    "failureMode": "Why vapor chambers dry out: Critical heat flux, boiling limits, and non-condensable gas"
   }
 }

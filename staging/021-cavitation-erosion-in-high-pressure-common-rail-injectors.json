@@ -1,11 +1,11 @@
 {
   "slug": "cavitation-erosion-in-high-pressure-common-rail-injectors",
-  "title": "Cavitation Erosion in High-Pressure Common-Rail Injectors: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "High-speed flow dynamics: Hydraulic control in Cavitation Erosion in High-Pressure Common-Rail Injectors",
   "titleAngles": {
-    "mechanism": "Cavitation Erosion in High-Pressure Common-Rail Injectors: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Cavitation Erosion in High-Pressure Common-Rail Injectors",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Cavitation Erosion in High-Pressure Common-Rail Injectors",
-    "failureMode": "Catastrophic Wear & Fatigue: How Cavitation Erosion in High-Pressure Common-Rail Injectors Systems Fail Under Cyclic Load"
+    "mechanism": "High-speed flow dynamics: Hydraulic control in Cavitation Erosion in High-Pressure Common-Rail Injectors",
+    "tradeoff": "Cavitation Erosion in High-Pressure Common-Rail Injectors: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Cavitation Erosion in High-Pressure Common-Rail Injectors",
+    "failureMode": "Why Cavitation Erosion in High-Pressure Common-Rail Injectors fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Cavitation Erosion in High-Pressure Common-Rail Injectors under cyclic thermal and mechanical stresses.",
   "subject": "Fluids",

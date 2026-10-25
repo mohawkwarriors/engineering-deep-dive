@@ -1,11 +1,11 @@
 {
   "slug": "ball-screw-gothic-arch-preload-stick-slip-dynamics",
-  "title": "Ball Screw Gothic-Arch Preload & Stick-Slip Dynamics: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Smooth under load: How gothic-arch preloading eliminates stick-slip in ball screws",
   "titleAngles": {
-    "mechanism": "Ball Screw Gothic-Arch Preload & Stick-Slip Dynamics: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Ball Screw Gothic-Arch Preload & Stick-Slip Dynamics",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Ball Screw Gothic-Arch Preload & Stick-Slip Dynamics",
-    "failureMode": "Catastrophic Wear & Fatigue: How Ball Screw Gothic-Arch Preload & Stick-Slip Dynamics Systems Fail Under Cyclic Load"
+    "mechanism": "Smooth under load: How gothic-arch preloading eliminates stick-slip in ball screws",
+    "tradeoff": "Ball Screw Gothic-Arch Preload & Stick-Slip Dynamics: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Ball Screw Gothic-Arch Preload & Stick-Slip Dynamics",
+    "failureMode": "Why Ball Screw Gothic-Arch Preload & Stick-Slip Dynamics fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Ball Screw Gothic-Arch Preload & Stick-Slip Dynamics under cyclic thermal and mechanical stresses.",
   "subject": "Mechanisms",

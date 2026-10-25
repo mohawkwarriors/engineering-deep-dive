@@ -1,11 +1,11 @@
 {
   "slug": "metal-injection-molding-mim-sintering-shrinkage-control",
-  "title": "Metal Injection Molding (MIM): Sintering Shrinkage Control: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Microstructure and alloy design: Material limits of Sintering Shrinkage Control",
   "titleAngles": {
-    "mechanism": "Metal Injection Molding (MIM): Sintering Shrinkage Control: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Metal Injection Molding (MIM)",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Metal Injection Molding (MIM)",
-    "failureMode": "Catastrophic Wear & Fatigue: How Metal Injection Molding (MIM) Systems Fail Under Cyclic Load"
+    "mechanism": "Microstructure and alloy design: Material limits of Sintering Shrinkage Control",
+    "tradeoff": "Metal Injection Molding (MIM): Balancing surface hardness against core fracture toughness",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Metal Injection Molding (MIM)",
+    "failureMode": "Why Metal Injection Molding (MIM) cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Metal Injection Molding (MIM): Sintering Shrinkage Control under cyclic thermal and mechanical stresses.",
   "subject": "Materials",

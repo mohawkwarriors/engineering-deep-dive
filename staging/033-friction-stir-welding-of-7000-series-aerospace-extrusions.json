@@ -1,11 +1,11 @@
 {
   "slug": "friction-stir-welding-of-7000-series-aerospace-extrusions",
-  "title": "Friction Stir Welding of 7000-Series Aerospace Extrusions: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "Sub-micron precision: Manufacturing physics of Friction Stir Welding of 7000-Series Aerospace Extrusions",
   "titleAngles": {
-    "mechanism": "Friction Stir Welding of 7000-Series Aerospace Extrusions: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Friction Stir Welding of 7000-Series Aerospace Extrusions",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Friction Stir Welding of 7000-Series Aerospace Extrusions",
-    "failureMode": "Catastrophic Wear & Fatigue: How Friction Stir Welding of 7000-Series Aerospace Extrusions Systems Fail Under Cyclic Load"
+    "mechanism": "Sub-micron precision: Manufacturing physics of Friction Stir Welding of 7000-Series Aerospace Extrusions",
+    "tradeoff": "Friction Stir Welding of 7000-Series Aerospace Extrusions: Balancing surface hardness against core fracture toughness",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Friction Stir Welding of 7000-Series Aerospace Extrusions",
+    "failureMode": "Why Friction Stir Welding of 7000-Series Aerospace Extrusions cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Friction Stir Welding of 7000-Series Aerospace Extrusions under cyclic thermal and mechanical stresses.",
   "subject": "Manufacturing",

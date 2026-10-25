@@ -1,11 +1,11 @@
 {
   "slug": "direct-die-copper-cold-plates-micro-pin-fins-in-ai-servers",
-  "title": "Direct Die Copper Cold Plates: Micro-Pin Fins in AI Servers: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "How hardware stays cool: Thermal transport in Micro-Pin Fins in AI Servers",
   "titleAngles": {
-    "mechanism": "Direct Die Copper Cold Plates: Micro-Pin Fins in AI Servers: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Direct Die Copper Cold Plates",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Direct Die Copper Cold Plates",
-    "failureMode": "Catastrophic Wear & Fatigue: How Direct Die Copper Cold Plates Systems Fail Under Cyclic Load"
+    "mechanism": "How hardware stays cool: Thermal transport in Micro-Pin Fins in AI Servers",
+    "tradeoff": "Direct Die Copper Cold Plates: Balancing thermal spreading resistance against chassis z-height",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Direct Die Copper Cold Plates",
+    "failureMode": "Why Direct Die Copper Cold Plates fails: Hotspot dryout and interfacial thermal degradation"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Direct Die Copper Cold Plates: Micro-Pin Fins in AI Servers under cyclic thermal and mechanical stresses.",
   "subject": "Thermal",

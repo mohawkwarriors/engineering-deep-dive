@@ -1,11 +1,11 @@
 {
   "slug": "hydrostatic-journal-bearings-micro-pocket-fluid-film-pressure",
-  "title": "Hydrostatic Journal Bearings: Micro-Pocket Fluid Film Pressure: Kinematic Decomposition and Sub-Micron Dynamics",
+  "title": "High-speed flow dynamics: Hydraulic control in Micro-Pocket Fluid Film Pressure",
   "titleAngles": {
-    "mechanism": "Hydrostatic Journal Bearings: Micro-Pocket Fluid Film Pressure: Kinematic Decomposition and Sub-Micron Dynamics",
-    "tradeoff": "Designing for Yield: The Critical Material & Tolerance Tradeoffs in Hydrostatic Journal Bearings",
-    "teardown": "Hardware Teardown: Dissecting the Internal Architecture of Hydrostatic Journal Bearings",
-    "failureMode": "Catastrophic Wear & Fatigue: How Hydrostatic Journal Bearings Systems Fail Under Cyclic Load"
+    "mechanism": "High-speed flow dynamics: Hydraulic control in Micro-Pocket Fluid Film Pressure",
+    "tradeoff": "Hydrostatic Journal Bearings: Balancing tight machining tolerances against production yield",
+    "teardown": "Hardware teardown: Dissecting the internal architecture of Hydrostatic Journal Bearings",
+    "failureMode": "Why Hydrostatic Journal Bearings fails: Contact stress, fretting wear, and cyclic fatigue"
   },
   "subtitle": "An exhaustive teardown and kinematic analysis of Hydrostatic Journal Bearings: Micro-Pocket Fluid Film Pressure under cyclic thermal and mechanical stresses.",
   "subject": "Fluids",
