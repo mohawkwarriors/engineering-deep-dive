@@ -23,12 +23,12 @@ export async function POST(req: NextRequest) {
     // Build the 6-section outline structure
     // Anchor & Fill: Editor bullets -> [Your Section], AI bridging -> [AI Fill]
     const defaultHeadings = [
-      "The Mechanical Bottleneck & Failure Mechanism",
-      "Kinematic Decomposition & First-Principles Physics",
-      "Tolerance Stackup & Manufacturing Limits",
-      "Material Selection & Microstructural Tradeoffs",
-      "Empirical Dynamometer Metrology & Teardown Data",
-      "Production Design Rules & Yield Optimization",
+      "The Bottleneck: Why Standard Designs Fail",
+      "How the Mechanism Actually Works",
+      "Tight Tolerances: Where Microns Matter",
+      "Material Tradeoffs: Picking the Right Alloy",
+      "Inside the Teardown: Bench Tests and Measurements",
+      "Shop-Floor Rules for Engineers",
     ];
 
     const outlineSections = defaultHeadings.map((heading, idx) => {
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
           heading: `${idx + 1}. ${clean}`,
           type: "editor" as const,
           badge: "[Your Section]",
-          summary: `Editor-seeded focus on ${clean}`,
+          summary: `Editor focus on ${clean}`,
         };
       }
       const clean = heading.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim();
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
         heading: `${idx + 1}. ${clean}`,
         type: "ai_fill" as const,
         badge: "[AI Fill]",
-        summary: `AI structural bridge examining ${clean.toLowerCase()}`,
+        summary: `Plain-English breakdown of ${clean.toLowerCase()}`,
       };
     });
 
@@ -72,17 +72,17 @@ export async function POST(req: NextRequest) {
       let content = `### ${sec.heading}\n\n`;
 
       if (idx === 0) {
-        content += `In high-performance electro-mechanical assemblies, **${cleanTopic}** operates at the exact boundary of elastic deformation and structural fatigue. When mechanical stress concentrations cycle across interfacial boundaries, micro-fretting and localized thermal gradients induce non-linear degradation.\n\n$$\\sigma_{\\text{contact}} = \\sqrt{\\frac{F_N \\cdot E^*}{\\pi \\cdot R^*}}$$\n\nWhere $F_N$ is the normal contact load, $E^*$ is the composite elastic modulus, and $R^*$ is the effective radius of curvature at the contact interface.`;
+        content += `When you push **${cleanTopic}** hard, standard off-the-shelf parts quickly hit their physical limits. Under repeated loads and fast temperature swings, tiny surface imperfections turn into stress hotspots that cause wear, heat buildup, or sudden jamming.\n\n$$\\sigma_{\\text{contact}} = \\sqrt{\\frac{F_N \\cdot E^*}{\\pi \\cdot R^*}}$$\n\nHere, $F_N$ is the pressing force between the parts, $E^*$ is the combined stiffness of the metals, and $R^*$ is the curve radius where they touch. In plain terms: sharper contact corners concentrate force into a tiny spot and wear the metal out fast.`;
       } else if (idx === 1) {
-        content += `Kinematic motion transfer relies on constrained degrees of freedom. Any radial misalignment converts pure tangential torque into parasitic bending moments along the input shaft.\n\n<ParameterExplorer\n  title="${cleanTopic} Operating Dynamics"\n  equationTex="\\tau_{\\text{shear}} = \\frac{16 \\cdot T}{\\pi \\cdot d^3} \\cdot K_t"\n  takeaway="Maintain notch factor Kt under 1.25 by incorporating generous root transition fillets."\n/>`;
+        content += `To keep motion smooth and predictable, the mechanism has to guide forces along a clean path without wobbling. Even a slight misalignment turns useful driving torque into side-load friction against the housing.\n\n<ParameterExplorer\n  title="${cleanTopic} Operating Behavior"\n  equationTex="\\tau_{\\text{shear}} = \\frac{16 \\cdot T}{\\pi \\cdot d^3} \\cdot K_t"\n  takeaway="Adding generous rounded fillets at sharp corners keeps the stress multiplier Kt under 1.25."\n/>`;
       } else if (idx === 2) {
-        content += `Manufacturing tolerances dictate whether high-volume production achieves zero-backlash engagement or catastrophic binding under temperature excursions.\n\n<ToleranceStackupBar\n  title="${cleanTopic} Critical Interface Clearances"\n  minAllowableGap={0.025}\n  maxAllowableGap={0.085}\n  unit="mm"\n  takeaway="Worst-case arithmetic sum exceeds clearance limits; laser micrometer sort binning is required for grade A fits."\n/>`;
+        content += `On a CAD screen, every part is the exact right size. On the factory floor, every machined dimension varies by a few microns. When you stack five or six parts together, those tiny errors add up—determining whether the assembly glides smoothly or binds solid when it warms up.\n\n<ToleranceStackupBar\n  title="${cleanTopic} Clearance Stackup"\n  minAllowableGap={0.025}\n  maxAllowableGap={0.085}\n  unit="mm"\n  takeaway="Simple worst-case tolerances are too loose; laser-sorting parts into matched size bins keeps clearances tight."\n/>`;
       } else if (idx === 3) {
-        content += `Material selection balances high surface hardness against core fracture toughness under shock loading.\n\n<TradeoffMatrix\n  title="Substrate Alloy Selection for ${cleanTopic}"\n  takeaway="Carburized 8620 steel provides superior resistance to tooth root micro-pitting compared to 4140 pre-hardened alloy."\n/>`;
+        content += `Picking the right alloy is always a tradeoff. A harder metal resists surface wear and denting, but can snap under a sudden shock load. A softer alloy absorbs impacts easily, but wears down under repeated sliding.\n\n<TradeoffMatrix\n  title="Alloy Comparison for ${cleanTopic}"\n  takeaway="Case-hardened 8620 steel gives a hard, wear-resistant skin over a tough core that won't snap under shock."\n/>`;
       } else if (idx === 4) {
-        content += `Dynamometer testing and optical coordinate metrology reveal non-linear hysteresis curves when driving against rated torque payloads.\n\n{{ FIGURE_0 }}\n\nUnder stroboscopic high-speed imaging, micro-slip between adjacent mating surfaces occurs approximately $12^\\circ$ before full engagement.`;
+        content += `Computer simulations only tell half the story. When engineers bolt **${cleanTopic}** onto a test rig and film it under full load with high-speed cameras, real-world flex and tiny surface slip show up right away.\n\n{{ FIGURE_0 }}\n\nUnder high-speed strobe cameras, mating surfaces slip slightly during the first few degrees of contact before locking into smooth steady-state motion.`;
       } else {
-        content += `### Critical Manufacturing Directives\n\n1. **Surface Roughness:** Maintain ground finish $R_a < 0.2\\,\\mu\\text{m}$ along primary contact paths.\n2. **Thermal Dissipation:** Enforce direct copper thermal strap grounding to the outer aluminum chassis.\n3. **Lubricant Viscosity:** Specify synthetic fluorosilicone grease rated for $-40^\\circ\\text{C}$ to $+130^\\circ\\text{C}$ operation.`;
+        content += `### Practical Rules for Production\n\n1. **Keep Contact Surfaces Mirror-Smooth:** Polish load-bearing faces to $R_a < 0.2\\,\\mu\\text{m}$ so microscopic peaks don't scrape through the oil film.\n2. **Give Heat a Direct Exit Path:** Bolt hot components directly against the aluminum frame instead of trapping heat behind plastic brackets.\n3. **Use Wide-Range Synthetic Grease:** Pick a fluorosilicone lubricant rated from $-40^\\circ\\text{C}$ to $+130^\\circ\\text{C}$ so it doesn't gum up in the cold or thin out when hot.`;
       }
 
       return {

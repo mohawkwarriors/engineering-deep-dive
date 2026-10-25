@@ -729,14 +729,14 @@ export async function populateQueueToFloor() {
       failureMode: `Catastrophic Wear & Fatigue: How ${t.topic.split(':')[0]} Systems Fail Under Cyclic Load`
     };
 
-    // 6-7 Modular Sections
+    // 6-7 Modular Sections (Plain-English Morning Read)
     const sectionHeadings = [
-      "The Mechanical Bottleneck & Failure Mechanism",
-      "Kinematic Decomposition & First-Principles Physics",
-      "Tolerance Stackup & Sub-Millimeter Fits",
-      "Material Selection & Microstructural Tradeoffs",
-      "Dynamometer Metrology & Teardown Verification",
-      "Production Design Rules & DFM Constraints"
+      "The Bottleneck: Why Standard Designs Fail",
+      "How the Mechanism Actually Works",
+      "Tight Tolerances: Where Microns Matter",
+      "Material Tradeoffs: Picking the Right Alloy",
+      "Inside the Teardown: Bench Tests and Measurements",
+      "Shop-Floor Rules for Engineers"
     ];
 
     const sections = sectionHeadings.map((heading, sIdx) => {
@@ -744,17 +744,17 @@ export async function populateQueueToFloor() {
       const numberedHeading = `${sIdx + 1}. ${clean}`;
       let content = `### ${numberedHeading}\n\n`;
       if (sIdx === 0) {
-        content += `In precision electro-mechanical assemblies, **${t.topic}** operates at the exact boundary of elastic deformation and structural fatigue. Contact stress concentrations induce localized thermal gradients and micro-fretting wear.\n\n$$${t.equation}$$\n\nWhere governing continuum variables define interfacial deflection under rated operating torque.`;
+        content += `When you push **${t.topic}** to its limits, standard off-the-shelf parts quickly hit a wall. Under heavy loads and fast thermal cycles, tiny surface imperfections turn into stress hotspots that cause wear, heat buildup, or sudden binding.\n\n$${t.equation}$\n\nIn plain English, this equation shows how load, geometry, and material stiffness interact where the parts touch. If any of those drift outside a tight window, friction spikes and the part wears out fast.`;
       } else if (sIdx === 1) {
-        content += `Kinematic motion transfer relies on strictly constrained degrees of freedom. Any radial misalignment converts pure tangential torque into parasitic bending moments along the drive housing.\n\n<ParameterExplorer\n  title="${t.topic} Operating Dynamics"\n  equationTex="${t.equation}"\n  takeaway="${t.cardConfig.takeaway || 'Maintain strict alignment tolerances.'}"\n/>`;
+        content += `To keep motion smooth and predictable, the assembly has to guide forces along a clean path without wobbling. Even a slight misalignment turns useful driving force into side-load friction against the housing.\n\n<ParameterExplorer\n  title="${t.topic} Operating Behavior"\n  equationTex="${t.equation}"\n  takeaway="${t.cardConfig.takeaway || 'Keep alignment tolerances tight to prevent binding.'}"\n/>`;
       } else if (sIdx === 2) {
-        content += `Manufacturing tolerances dictate whether high-volume production achieves zero-backlash engagement or catastrophic binding under thermal expansion.\n\n<ToleranceStackupBar\n  title="${t.topic} Tolerance Stackup"\n  minAllowableGap={${t.cardConfig.minAllowableGap || 0.02}}\n  maxAllowableGap={${t.cardConfig.maxAllowableGap || 0.08}}\n  unit="${t.cardConfig.unit || 'mm'}"\n  takeaway="${t.cardConfig.takeaway || 'Statistical RSS stackup guarantees high Cpk.'}"\n/>`;
+        content += `On a drawing, every part is the exact right size. On the factory floor, every machined surface varies by a few microns. When you stack five or six parts together, those tiny errors add up—determining whether the mechanism glides smoothly or jams solid when it gets warm.\n\n<ToleranceStackupBar\n  title="${t.topic} Clearance Stackup"\n  minAllowableGap={${t.cardConfig.minAllowableGap || 0.02}}\n  maxAllowableGap={${t.cardConfig.maxAllowableGap || 0.08}}\n  unit="${t.cardConfig.unit || 'mm'}"\n  takeaway="${t.cardConfig.takeaway || 'Statistical tolerance stackup keeps factory yield high.'}"\n/>`;
       } else if (sIdx === 3) {
-        content += `Material selection balances high surface hardness against core fracture toughness under shock loading.\n\n<TradeoffMatrix\n  title="Substrate Alloy Selection for ${t.topic.split(':')[0]}"\n  takeaway="${t.cardConfig.takeaway || 'Optimize yield strength against thermal conductivity.'}"\n/>`;
+        content += `Picking the right material is always a compromise. A harder metal resists surface wear and denting, but can crack like glass under a sudden shock load. A softer alloy absorbs impacts easily, but wears down under repeated sliding.\n\n<TradeoffMatrix\n  title="Material Comparison for ${t.topic.split(':')[0]}"\n  takeaway="${t.cardConfig.takeaway || 'Balance surface hardness against core toughness.'}"\n/>`;
       } else if (sIdx === 4) {
-        content += `Dynamometer testing and optical coordinate metrology reveal non-linear hysteresis curves when driving against rated torque payloads.\n\n{{ FIGURE_0 }}\n\nUnder stroboscopic high-speed imaging, micro-slip between adjacent mating surfaces occurs during initial engagement.`;
+        content += `Computer simulations only tell half the story. When engineers bolt **${t.topic.split(':')[0]}** onto a test bench and film it under full load with high-speed cameras, real-world flex and microscopic slip show up immediately.\n\n{{ FIGURE_0 }}\n\nDuring the first few milliseconds of startup, mating surfaces settle into contact before reaching steady-state operation—which is why surface finish matters so much.`;
       } else {
-        content += `### Critical Manufacturing Directives\n\n1. **Surface Roughness:** Maintain ground finish $R_a < 0.2\\,\\mu\\text{m}$ along primary contact paths.\n2. **Thermal Dissipation:** Enforce direct conduction grounding to the outer aluminum chassis.\n3. **Lubricant Viscosity:** Specify synthetic fluorosilicone grease rated for $-40^\\circ\\text{C}$ to $+130^\\circ\\text{C}$ operation.`;
+        content += `### Practical Rules for Production\n\n1. **Keep Contact Surfaces Mirror-Smooth:** Polish load-bearing faces to $R_a < 0.2\\,\\mu\\text{m}$ so microscopic peaks don't scrape through the lubricant film.\n2. **Give Heat a Direct Exit Path:** Bolt heat-generating parts directly against the metal frame rather than trapping heat behind plastic brackets.\n3. **Pick Grease That Handles Temperature Swings:** Use a synthetic lubricant rated from $-40^\\circ\\text{C}$ to $+130^\\circ\\text{C}$ so it doesn't stiffen in the cold or thin out under load.`;
       }
 
       return {

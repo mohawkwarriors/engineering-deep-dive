@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { sectionHeading, currentContent, mode = "math" } = body;
+    const { currentContent, mode = "math" } = body;
 
     if (!currentContent) {
       return NextResponse.json({ error: "Missing currentContent" }, { status: 400 });
@@ -14,18 +14,18 @@ export async function POST(req: NextRequest) {
     let updatedContent = currentContent;
 
     if (mode === "math") {
-      // Deepen Math: append governing differential/algebraic equations and parameter definitions
-      updatedContent = `${currentContent}\n\n#### Governing Continuum Formulation\nUnder transient kinematic loading, governing strain energy dissipation is described by:\n\n$$\\frac{\\partial^2 u}{\\partial t^2} - c^2 \\nabla^2 u + \\gamma \\frac{\\partial u}{\\partial t} = \\frac{F(t)}{\\rho A}$$\n\nWhere $u(x,t)$ is the axial displacement field, $c = \\sqrt{E/\\rho}$ is the acoustic wave velocity through the alloy substrate, and $\\gamma$ represents the viscous damping coefficient.`;
+      // Deepen Math: append governing equation explained in plain English
+      updatedContent = `${currentContent}\n\n#### How the Forces Balance Out\nWhen a sudden load hits the part, the way stress waves travel and damp out follows this balance:\n\n$$\\frac{\\partial^2 u}{\\partial t^2} - c^2 \\nabla^2 u + \\gamma \\frac{\\partial u}{\\partial t} = \\frac{F(t)}{\\rho A}$$\n\nIn plain terms: $u(x,t)$ is how far the metal flexes, $c = \\sqrt{E/\\rho}$ is how fast a shock wave travels through the metal, and $\\gamma$ is how quickly internal friction calms the vibration down.`;
     } else if (mode === "tradeoffs") {
-      // Compare Material Tradeoffs: insert material comparison table with thermal/yield tradeoffs
-      updatedContent = `${currentContent}\n\n#### Interfacial Material Selection Matrix\n\n| Substrate Material | Yield Strength ($R_{p0.2}$) | Thermal Conductivity ($k$) | Thermal Expansion (CTE) | Machinability Index |\n| :--- | :--- | :--- | :--- | :--- |\n| **Oxygen-Free Copper (C10100)** | $69\\,\\text{MPa}$ | $390\\,\\text{W/m}\\cdot\\text{K}$ | $17.0\\times 10^{-6}\\,/\\text{K}$ | High (Soft) |\n| **Beryllium Copper (C17200)** | $1100\\,\\text{MPa}$ | $105\\,\\text{W/m}\\cdot\\text{K}$ | $17.8\\times 10^{-6}\\,/\\text{K}$ | Moderate (Pre-hardened) |\n| **Grade 5 Titanium (Ti-6Al-4V)** | $880\\,\\text{MPa}$ | $6.7\\,\\text{W/m}\\cdot\\text{K}$ | $8.6\\times 10^{-6}\\,/\\text{K}$ | Low (High Galling Risk) |\n| **Anodized 6061-T6 Aluminum** | $276\\,\\text{MPa}$ | $167\\,\\text{W/m}\\cdot\\text{K}$ | $23.2\\times 10^{-6}\\,/\\text{K}$ | High |`;
+      // Compare Material Tradeoffs: insert clear material comparison table
+      updatedContent = `${currentContent}\n\n#### Comparing Common Alloys Side-by-Side\n\n| Material | Yield Strength ($R_{p0.2}$) | Heat Conductivity ($k$) | Thermal Growth (CTE) | How Easy to Machine |\n| :--- | :--- | :--- | :--- | :--- |\n| **Pure Copper (C10100)** | $69\\,\\text{MPa}$ | $390\\,\\text{W/m}\\cdot\\text{K}$ | $17.0\\times 10^{-6}\\,/\\text{K}$ | Easy (Soft & gummy) |\n| **Beryllium Copper (C17200)** | $1100\\,\\text{MPa}$ | $105\\,\\text{W/m}\\cdot\\text{K}$ | $17.8\\times 10^{-6}\\,/\\text{K}$ | Medium (Spring-hard) |\n| **Grade 5 Titanium (Ti-6Al-4V)** | $880\\,\\text{MPa}$ | $6.7\\,\\text{W/m}\\cdot\\text{K}$ | $8.6\\times 10^{-6}\\,/\\text{K}$ | Hard (Wears tools fast) |\n| **6061-T6 Aluminum** | $276\\,\\text{MPa}$ | $167\\,\\text{W/m}\\cdot\\text{K}$ | $23.2\\times 10^{-6}\\,/\\text{K}$ | Very Easy |`;
     } else if (mode === "rules") {
-      // Add Design Rules: enforce concrete tolerance, surface roughness, and DFM directives
-      updatedContent = `${currentContent}\n\n#### DFM & Quality Control Rules\n- **Fillet Transition Radii:** Minimum $R \\ge 1.5\\times$ wall thickness at all sharp internal corners to suppress fatigue notch sensitivity.\n- **Surface Texture Target:** Enforce $R_z < 1.6\\,\\mu\\text{m}$ along high-contact bearing races via post-CNC roller burnishing.\n- **Fastener Torque Margins:** Specify 70% of proof strength preload with medium-strength anaerobic threadlocker to prevent vibrational loosening under $>50g$ impulse shock.`;
+      // Add Design Rules: practical shop-floor rules in plain English
+      updatedContent = `${currentContent}\n\n#### Practical Shop-Floor Rules\n- **Round Off Inside Corners:** Use a fillet radius at least $1.5\\times$ the wall thickness ($R \\ge 1.5t$) so sharp corners don't start fatigue cracks.\n- **Smooth Out Sliding Surfaces:** Polish bearing paths to $R_z < 1.6\\,\\mu\\text{m}$ after CNC milling so rough peaks don't wear away early.\n- **Lock Down Bolts Against Vibration:** Torque fasteners to 70% of their yield limit and add medium-strength threadlocker so $50g$ shocks don't rattle them loose.`;
     } else if (mode === "simplify") {
-      // Simplify: produce clear, high-signal conceptual summary
+      // Simplify: produce clear, plain-English summary
       const firstParagraph = currentContent.split("\n\n")[0] || currentContent;
-      updatedContent = `${firstParagraph}\n\n> **Core Engineering Takeaway:** Ensure radial misalignment remains below $15\\,\\mu\\text{m}$ to prevent localized edge-loading and premature surface fretting wear.`;
+      updatedContent = `${firstParagraph}\n\n> **The Bottom Line:** Keep alignment errors under $15\\,\\mu\\text{m}$ so the load spreads evenly instead of digging into one edge and wearing out the part.`;
     }
 
     return NextResponse.json({

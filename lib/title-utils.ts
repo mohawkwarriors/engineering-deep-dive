@@ -1,11 +1,10 @@
 /**
- * Title generation utility for The HW Insider
+ * Title & Overview generation utility for The HW Insider
  *
  * Enforces editorial standards from Curator-in-the-Loop:
- * - Direct, engaging titles capturing the exact hardware mechanism
- * - Avoids stacked colons and jargon salads
- * - Example: "How smartphones stay cool: Exploring phase change in Ultra-Thin Vapor Chambers"
- * - Pattern: [Engaging Hook / Concept]: [Exact Physical Mechanism in Context]
+ * - Direct, engaging titles in plain English that capture the hardware mechanism
+ * - Avoids textbook jargon salads and stacked colons
+ * - Summary overviews state the direct answer in clear, conversational English
  */
 
 export interface TitleAngles {
@@ -18,13 +17,11 @@ export interface TitleAngles {
 export function cleanTopicSubject(rawTopic: string): { core: string; detail: string } {
   if (!rawTopic) return { core: "Hardware Mechanism", detail: "" };
 
-  // Strip existing double colons or kinematic fluff if already appended
   const sanitized = rawTopic
     .replace(/:\s*Kinematic Decomposition.*$/i, "")
     .replace(/:\s*Sub-Micron Dynamics.*$/i, "")
     .trim();
 
-  // Split on colons, em-dashes, or en-dashes
   const parts = sanitized
     .split(/[:–—]/)
     .map((s) => s.trim())
@@ -49,88 +46,87 @@ export function generateCleanTitleAngles(
   if (lowerTopic.includes("vapor chamber") || lowerTopic.includes("spreader")) {
     mechanism = "How smartphones stay cool: Exploring phase change in Ultra-Thin Vapor Chambers";
   } else if (lowerTopic.includes("immersion") || lowerTopic.includes("dielectric")) {
-    mechanism = "Submerged compute: Boiling heat transfer in two-phase immersion cooling";
+    mechanism = "Submerged servers: How two-phase immersion cooling boils away data center heat";
   } else if (lowerTopic.includes("liquid metal") || lowerTopic.includes("tim")) {
-    mechanism = "Defeating the thermal interface: Gallium alloys and galvanic containment";
+    mechanism = "Cooling with liquid metal: How gallium alloys move heat without eating aluminum";
   } else if (lowerTopic.includes("cycloidal")) {
-    mechanism = "Zero-backlash robotics: How cycloidal reducers transfer high torque";
+    mechanism = "Zero-backlash robotics: How cycloidal gearboxes survive massive shock loads";
   } else if (lowerTopic.includes("strain wave") || lowerTopic.includes("harmonic")) {
-    mechanism = "Flexible steel in precision motion: Kinematics of strain wave gearing";
+    mechanism = "Bending steel for precision: How strain wave gears work without backlash";
   } else if (lowerTopic.includes("lithography") || lowerTopic.includes("flexure")) {
-    mechanism = "Sub-nanometer positioning: Compliant titanium flexures in lithography";
+    mechanism = "Moving without friction: How titanium flexure hinges steer chip-making lasers";
   } else if (lowerTopic.includes("ball screw")) {
-    mechanism = "Smooth under load: How gothic-arch preloading eliminates stick-slip in ball screws";
+    mechanism = "Smooth under load: How gothic-arch grooves stop ball screws from binding";
   } else if (lowerTopic.includes("wire edm")) {
-    mechanism = "Cutting with sparks: Sub-surface recast metrology in precision wire EDM";
+    mechanism = "Cutting metal with sparks: How wire EDM holds micron tolerances";
   } else if (lowerTopic.includes("thixomold")) {
-    mechanism = "Semi-solid magnesium: Net-shape casting for ultra-thin laptop chasses";
+    mechanism = "Molding semi-solid metal: How laptops get featherweight magnesium shells";
   } else if (lowerTopic.includes("tabless 4680") || lowerTopic.includes("battery cell")) {
-    mechanism = "Defeating copper reflection: Laser micro-welding in tabless 4680 battery cells";
+    mechanism = "Welding shiny copper: How green lasers build tabless 4680 battery cells";
   } else if (lowerTopic.includes("voice coil") || lowerTopic.includes("camera ois")) {
-    mechanism = "Sub-micron optical stabilization: Inside smartphone voice coil actuators";
+    mechanism = "Steady smartphone video: Inside tiny camera voice coil actuators";
   } else if (lowerTopic.includes("o-ring") || lowerTopic.includes("explosive decompression")) {
-    mechanism = "Sealing under extreme pressure: Preventing explosive decompression in fluorocarbon O-rings";
+    mechanism = "Sealing high-pressure gas: Why standard rubber O-rings pop under rapid venting";
   } else if (lowerTopic.includes("busbar") || lowerTopic.includes("ultrasonic")) {
-    mechanism = "Acoustic bonding: Ultrasonic metal welding of high-power EV busbars";
+    mechanism = "Welding with sound: How ultrasonic vibrations bond heavy EV copper busbars";
   } else if (lowerTopic.includes("kinematic coupling") || lowerTopic.includes("kelvin")) {
-    mechanism = "Deterministic positioning: Sub-micron repeatability in Kelvin and Maxwell kinematic mounts";
+    mechanism = "Six points of contact: How Kelvin clamps snap optics into the exact same spot";
   } else if (lowerTopic.includes("geneva")) {
-    mechanism = "Intermittent motion: Dynamic shock and acceleration control in Geneva mechanisms";
+    mechanism = "Start-and-stop motion: How Geneva wheels index smoothly at high speed";
   } else if (s.includes("thermal")) {
     const topicDesc = detail || core;
-    mechanism = `How hardware stays cool: Thermal transport in ${topicDesc}`;
+    mechanism = `How hardware stays cool: Inside ${topicDesc}`;
   } else if (s.includes("manufactur")) {
     const topicDesc = detail || core;
-    mechanism = `Sub-micron precision: Manufacturing physics of ${topicDesc}`;
+    mechanism = `Making parts to the micron: How ${topicDesc} works on the factory floor`;
   } else if (s.includes("material")) {
     const topicDesc = detail || core;
-    mechanism = `Microstructure and alloy design: Material limits of ${topicDesc}`;
+    mechanism = `Inside the metal: How alloy design prevents failure in ${topicDesc}`;
   } else if (s.includes("fluid")) {
     const topicDesc = detail || core;
-    mechanism = `High-speed flow dynamics: Hydraulic control in ${topicDesc}`;
+    mechanism = `Controlling high-pressure flow: Inside ${topicDesc}`;
   } else if (s.includes("electromechanical")) {
     const topicDesc = detail || core;
-    mechanism = `Electromagnetic precision: Inside high-speed ${topicDesc}`;
+    mechanism = `Magnets and motion: How ${topicDesc} hits micron accuracy`;
   } else {
-    // General mechanical
     if (detail) {
-      mechanism = `${core}: Exploring ${detail}`;
+      mechanism = `${core}: How ${detail.toLowerCase()} works in practice`;
     } else {
-      mechanism = `Zero-play precision: First-principles physics of ${core}`;
+      mechanism = `Inside ${core}: The mechanics of zero-play precision`;
     }
   }
 
   // 2. Design Tradeoff Angle
   let tradeoff = "";
   if (lowerTopic.includes("vapor chamber")) {
-    tradeoff = "Ultra-thin vapor chambers: Balancing capillary pumping pressure against vapor flow resistance";
+    tradeoff = "Ultra-thin vapor chambers: Balancing wick suction against steam drag in a 0.35 mm gap";
   } else if (lowerTopic.includes("cycloidal")) {
-    tradeoff = "Cycloidal drives: Balancing pin-circle runout against contact stress and back-drivability";
+    tradeoff = "Cycloidal drives: Trading slight torque ripple for 5x higher shock survival";
   } else if (lowerTopic.includes("flexure")) {
-    tradeoff = "Compliant mechanisms: Balancing angular deflection range against resonant fatigue life";
+    tradeoff = "Flexure hinges: Trading travel range for zero friction and infinite fatigue life";
   } else if (s.includes("thermal")) {
-    tradeoff = `${core}: Balancing thermal spreading resistance against chassis z-height`;
+    tradeoff = `${core}: Balancing cooling power against tight device thickness`;
   } else if (s.includes("manufactur") || s.includes("material")) {
-    tradeoff = `${core}: Balancing surface hardness against core fracture toughness`;
+    tradeoff = `${core}: Balancing surface hardness against toughness and cost`;
   } else {
-    tradeoff = `${core}: Balancing tight machining tolerances against production yield`;
+    tradeoff = `${core}: Balancing tight machining tolerances against factory yield`;
   }
 
   // 3. Teardown Case Study Angle
-  const teardown = `Hardware teardown: Dissecting the internal architecture of ${core}`;
+  const teardown = `Hardware teardown: Taking apart ${core} to see what makes it tick`;
 
   // 4. Failure Mode Angle
   let failureMode = "";
   if (lowerTopic.includes("vapor chamber")) {
-    failureMode = "Why vapor chambers dry out: Critical heat flux, boiling limits, and non-condensable gas";
+    failureMode = "Why vapor chambers dry out: Boiling limits, steam choking, and trapped gas";
   } else if (lowerTopic.includes("cycloidal")) {
-    failureMode = "Why precision gearboxes bind: Multi-pin runout, fretting wear, and thermal lockup";
+    failureMode = "Why precision gearboxes jam: Pin runout, surface wear, and heat expansion";
   } else if (s.includes("thermal")) {
-    failureMode = `Why ${core} fails: Hotspot dryout and interfacial thermal degradation`;
+    failureMode = `Why ${core} overheats: Dry-out, air pockets, and bad thermal contact`;
   } else if (s.includes("material") || s.includes("manufactur")) {
-    failureMode = `Why ${core} cracks: Residual stress, micro-voids, and cyclic thermal fatigue`;
+    failureMode = `Why ${core} cracks: Locked-in stress, microscopic voids, and metal fatigue`;
   } else {
-    failureMode = `Why ${core} fails: Contact stress, fretting wear, and cyclic fatigue`;
+    failureMode = `Why ${core} fails: Wear, heat growth, and hidden stress points`;
   }
 
   return {
@@ -143,7 +139,7 @@ export function generateCleanTitleAngles(
 
 /**
  * Ensures the article's short summary overview (subtitle) gives the direct answer
- * rather than repeating "How..." or "Why..." when the title already poses the question.
+ * in plain, accessible English rather than repeating "How..." or using textbook jargon.
  */
 export function formatAnswerOverview(
   rawSubtitle: string,
@@ -152,13 +148,13 @@ export function formatAnswerOverview(
 ): string {
   let sub = (rawSubtitle || "").trim();
 
-  // If the subtitle uses generic harvester boilerplate, replace with a direct answer overview
+  // Replace generic harvester boilerplate with plain-English answer overview
   if (!sub || /^an exhaustive teardown and kinematic analysis of/i.test(sub)) {
     const { core, detail } = cleanTopicSubject(fallbackTopic || title);
     if (detail) {
-      return `${detail} governs the operating envelope of ${core}, preventing structural fatigue and thermal runaway under peak cyclic loads.`;
+      return `By controlling ${detail.toLowerCase()}, engineers keep ${core.toLowerCase()} running smoothly under heavy heat and mechanical loads.`;
     }
-    return `Precision contact geometry and material microstructure allow ${core} to sustain peak operating loads without mechanical degradation.`;
+    return `Tight geometry and smart material choices let ${core.toLowerCase()} handle extreme loads without wearing out or jamming.`;
   }
 
   // Strip leading "How " or "Why " so the overview directly states the answer
@@ -171,4 +167,3 @@ export function formatAnswerOverview(
 
   return sub;
 }
-
