@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { filename, title, figures, sections, target = "publish" } = body;
+    const { filename, title, subtitle, figures, sections, target = "publish" } = body;
 
     if (!filename) {
       return NextResponse.json({ error: "Missing filename" }, { status: 400 });
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
 
     const draft = JSON.parse(draftRes.content);
     const finalTitle = title || draft.title;
-    const finalSubtitle = formatAnswerOverview(draft.subtitle || "", finalTitle, draft.title);
+    const finalSubtitle = subtitle || formatAnswerOverview(draft.subtitle || "", finalTitle, draft.title);
     const finalFigures = figures || draft.figures || [];
 
     // Assemble finalized MDX from modular sections if provided
@@ -101,6 +101,7 @@ export async function POST(req: NextRequest) {
       const updatedDraft = {
         ...draft,
         title: finalTitle,
+        subtitle: finalSubtitle,
         figures: finalFigures,
         sections: sections || draft.sections,
         body_mdx: finalizedMdx,

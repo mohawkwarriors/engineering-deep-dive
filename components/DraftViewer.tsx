@@ -32,6 +32,7 @@ import {
   Send,
   Zap,
   FileText,
+  BookOpen,
   ListOrdered,
   CornerUpLeft,
 } from "lucide-react";
@@ -45,7 +46,7 @@ import {
   TradeoffMatrix,
   LayeredCrossSection,
 } from "./interactive";
-import { generateCleanTitleAngles, formatAnswerOverview } from "@/lib/title-utils";
+import { generateCleanTitleAngles, formatAnswerOverview, generateTechnicalOverviewPresets } from "@/lib/title-utils";
 
 interface ImageCandidate {
   url: string;
@@ -283,6 +284,10 @@ export default function DraftViewer({
   const [activeTitleAngle, setActiveTitleAngle] = useState<string | null>("mechanism");
   const [isPreviewMode, setIsPreviewMode] = useState(false);
 
+  // Editable technical overview state
+  const [isEditingSubtitle, setIsEditingSubtitle] = useState(false);
+  const [editedSubtitle, setEditedSubtitle] = useState("");
+
   // Selected image indices per figure for active draft
   const [selectedImages, setSelectedImages] = useState<Record<number, number>>({});
   const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
@@ -366,6 +371,9 @@ export default function DraftViewer({
       setEditedTitle(initialTitle);
       setIsEditingTitle(false);
       setActiveTitleAngle("mechanism");
+
+      setEditedSubtitle(formatAnswerOverview(activeDraft.subtitle || "", initialTitle, activeDraft.title || ""));
+      setIsEditingSubtitle(false);
 
       // Initialize selected image indices
       const initialImgMap: Record<number, number> = {};
@@ -733,7 +741,7 @@ export default function DraftViewer({
           title: editedTitle || activeDraft.title,
           figures: updatedFigures,
           sections: activeSections,
-          subtitle: activeDraft.subtitle,
+          subtitle: editedSubtitle || activeDraft.subtitle,
         }),
       });
 
@@ -774,6 +782,7 @@ export default function DraftViewer({
         body: JSON.stringify({
           filename: activeDraft.filename,
           title: editedTitle || activeDraft.title,
+          subtitle: editedSubtitle || activeDraft.subtitle,
           figures: updatedFigures,
           sections: activeSections,
           target: "buffer",
@@ -794,6 +803,7 @@ export default function DraftViewer({
         ...activeDraft,
         filename: data.filename || activeDraft.filename,
         title: editedTitle || activeDraft.title,
+        subtitle: editedSubtitle || activeDraft.subtitle,
         sections: activeSections,
         queueOrder: newCount,
       };
@@ -970,6 +980,26 @@ export default function DraftViewer({
       activeDraft?.subject || activeDraft?.category || "Mechanisms"
     );
     setEditedTitle(angles[key]);
+  };
+
+  // 1-Click Technical Overview Preset selection
+  const selectTechnicalOverviewPreset = (mode: "mechanism" | "boundary" | "tradeoff") => {
+    const presets = generateTechnicalOverviewPresets(
+      activeDraft?.title || editedTitle,
+      activeDraft?.subject || activeDraft?.category || "",
+      activeDraft?.summary || ""
+    );
+    setEditedSubtitle(presets[mode]);
+    setActionMessage(
+      `✓ Applied ${
+        mode === "mechanism"
+          ? "Thermodynamic Mechanism"
+          : mode === "boundary"
+          ? "Physical Boundaries"
+          : "Manufacturing Tradeoffs"
+      } preset!`
+    );
+    setTimeout(() => setActionMessage(null), 2000);
   };
 
   // The 3-Tab Visual Switcher component for each figure slot
@@ -2374,7 +2404,7 @@ export default function DraftViewer({
                 {editedTitle || activeDraft.title}
               </h1>
               <p className="text-sm sm:text-base text-neutral-400 font-mono leading-relaxed">
-                {formatAnswerOverview(activeDraft.subtitle || "", editedTitle || activeDraft.title, activeDraft.title)}
+                {editedSubtitle || formatAnswerOverview(activeDraft.subtitle || "", editedTitle || activeDraft.title, activeDraft.title)}
               </p>
             </div>
 
@@ -2445,12 +2475,73 @@ export default function DraftViewer({
             )}
           </div>
 
-          {/* Subtitle */}
-          {activeDraft.subtitle && (
-            <p className="text-base sm:text-lg text-[var(--muted)] leading-relaxed mt-2 mb-6 font-sans">
-              {formatAnswerOverview(activeDraft.subtitle, editedTitle || activeDraft.title, activeDraft.title)}
-            </p>
-          )}
+          {/* Executive Technical Overview Card */}
+          <div className="mb-6 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-5 shadow-sm">
+            <div className="text-[10px] font-mono uppercase font-bold text-[var(--muted)] mb-2 flex items-center justify-between">
+              <span className="flex items-center gap-1.5 text-amber-500">
+                <BookOpen className="w-3.5 h-3.5" />
+                Executive Technical Overview & Physical Mechanism
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsEditingSubtitle(!isEditingSubtitle)}
+                className="text-[var(--accent)] hover:underline flex items-center gap-1 font-mono text-xs"
+              >
+                <Edit2 className="w-3 h-3" />
+                {isEditingSubtitle ? "Done Editing" : "Edit Overview"}
+              </button>
+            </div>
+
+            {/* 3 Physical Preset Pills */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-3">
+              {[
+                { key: "mechanism", label: "⚙️ Primary Mechanism" },
+                { key: "boundary", label: "📐 Physical Boundaries" },
+                { key: "tradeoff", label: "⚖️ Manufacturing Tradeoffs" },
+              ].map((preset) => (
+                <button
+                  key={preset.key}
+                  type="button"
+                  onClick={() => selectTechnicalOverviewPreset(preset.key as any)}
+                  className="p-2 rounded-lg border border-[var(--border)] bg-[var(--card-inner)] hover:border-[var(--accent)]/60 text-left text-xs font-mono text-[var(--muted)] hover:text-[var(--text)] transition-all"
+                  title={`Apply ${preset.label}`}
+                >
+                  {preset.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Live Overview Display / Input */}
+            {isEditingSubtitle ? (
+              <div className="space-y-2">
+                <textarea
+                  value={editedSubtitle}
+                  onChange={(e) => setEditedSubtitle(e.target.value)}
+                  rows={3}
+                  className="w-full bg-[var(--card-inner)] border border-[var(--accent)] rounded-lg p-3 text-sm sm:text-base font-mono text-[var(--text)] focus:outline-none resize-y leading-relaxed"
+                  placeholder="Enter first-principles engineering overview with physical constants, governing laws, and tolerances..."
+                  autoFocus
+                />
+                <div className="flex justify-between items-center text-[10px] font-mono text-[var(--muted)]">
+                  <span>{"LaTeX math syntax supported ($h_{fg}$, $k_{eff}$, $\\Delta P$)"}</span>
+                  <span>{editedSubtitle.length} characters</span>
+                </div>
+              </div>
+            ) : (
+              <div
+                onClick={() => setIsEditingSubtitle(true)}
+                className="group relative cursor-pointer border-l-4 border-amber-500/70 bg-[var(--card-inner)]/50 hover:bg-[var(--card-inner)] p-3.5 rounded-r-lg transition-all"
+                title="Click to customize executive technical overview"
+              >
+                <p className="text-sm sm:text-base text-[var(--text)] font-mono leading-relaxed m-0">
+                  {editedSubtitle || formatAnswerOverview(activeDraft.subtitle || "", editedTitle || activeDraft.title, activeDraft.title)}
+                </p>
+                <span className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-mono text-[var(--muted)] flex items-center gap-1">
+                  <Edit2 className="w-2.5 h-2.5" /> click to edit
+                </span>
+              </div>
+            )}
+          </div>
 
           {/* Modular Section Cards */}
           <div className="space-y-4">

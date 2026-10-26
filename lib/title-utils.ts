@@ -137,9 +137,70 @@ export function generateCleanTitleAngles(
   };
 }
 
+export interface TechnicalOverviewPresets {
+  mechanism: string;
+  boundary: string;
+  tradeoff: string;
+}
+
+export function generateTechnicalOverviewPresets(
+  topic: string = "",
+  subject: string = "",
+  existingSummary: string = ""
+): TechnicalOverviewPresets {
+  const lower = (topic + " " + subject + " " + existingSummary).toLowerCase();
+
+  if (lower.includes("vapor chamber") || lower.includes("two-phase") || lower.includes("wick")) {
+    return {
+      mechanism: "Two-phase latent vaporization ($h_{fg} = 2.26 \\times 10^6\\text{ J/kg}$) across a 0.09 mm vacuum core achieves effective thermal conductivities exceeding 8,000 W/m·K—utilizing 4.8 kPa capillary wick pressure to spread 15W SoC thermal flux without dryout.",
+      boundary: "Balancing sub-micron sintered copper wick pore radius ($r_{eff} \\approx 25\\ \\mu\\text{m}$) against hydraulic liquid permeability $\\kappa$ prevents capillary burnout, while monolithic etched columns withstand 1.0 bar external atmospheric crush pressure.",
+      tradeoff: "Chemical degreasing and vacuum sealing to $10^{-3}\\text{ Torr}$ prevent non-condensable hydrogen ($H_2$) passivation over $10^5$ thermal cycles, sustaining continuous vapor circulation across 0.35 mm total z-height.",
+    };
+  }
+
+  if (lower.includes("cycloidal") || lower.includes("speed reducer") || lower.includes("gear")) {
+    return {
+      mechanism: "Epitrochoidal disc profiles distribute torque simultaneously across 70% of perimeter ring pins, eliminating backlash while suppressing Hertzian contact stresses under continuous dynamic reversing loads.",
+      boundary: "Accumulated pin-circle pitch runout must remain under 12 µm across the ring housing to avoid multi-pin tooth binding and localized micro-pitting fatigue under high torsional shock loads.",
+      tradeoff: "High reduction ratios (up to 119:1 in a single stage) trade sliding friction across pin contacts for zero backlash, requiring ISO VG 220 synthetic polyalphaolefin lubrication to prevent adhesive scuffing.",
+    };
+  }
+
+  if (lower.includes("magnesium") || lower.includes("thixomold") || lower.includes("casting")) {
+    return {
+      mechanism: "Semi-solid injection molding of AZ91D slurry at 580°C suppresses dendritic solidification, producing 0.45 mm thin-wall enclosures with near-zero gas porosity and isotropic yield strength exceeding 160 MPa.",
+      boundary: "Tight mold temperature gradients within ±3°C and injection velocities >80 m/s prevent premature cold-shut freezing across high aspect ratio thin-wall chassis ribs.",
+      tradeoff: "Eliminating secondary CNC machining operations saves 40% cycle time, but requires heated beryllium-copper runner inserts and vacuum-assisted venting to prevent thermal fatigue checking.",
+    };
+  }
+
+  if (lower.includes("laser") || lower.includes("weld") || lower.includes("busbar")) {
+    return {
+      mechanism: "Frequency-doubled green (515 nm) or blue (450 nm) laser wavelengths increase copper absorptivity to >40% at room temperature, suppressing keyhole instability and melt-pool spatter during high-speed seam micro-welding.",
+      boundary: "Heat-affected zone (HAZ) depth must be constrained under 60 µm to prevent thermal degradation of adjacent polymer battery gaskets and avoid intermetallic phase embrittlement.",
+      tradeoff: "Continuous-wave fiber wobble optics bridge 0.05 mm mechanical fit-up gaps without burn-through, trading linear process speed for joint electrical resistance below 1.2 µΩ.",
+    };
+  }
+
+  if (lower.includes("piezo") || lower.includes("actuator") || lower.includes("ultrasonic")) {
+    return {
+      mechanism: "Inverse piezoelectric distortion in lead zirconate titanate (PZT-5H) delivers nanometer-scale displacement and gigapascal blocking forces across microsecond response times under 150V bipolar excitation.",
+      boundary: "Driving past the dynamic Curie depoling temperature or tensile fracture limit (80 MPa) causes domain switching fatigue, requiring compressive mechanical preloading flexures.",
+      tradeoff: "Hysteresis compensation algorithms trade closed-loop processing overhead for sub-micron positioning repeatability across high-frequency optical and fluidic delivery cycles.",
+    };
+  }
+
+  const { core } = cleanTopicSubject(topic);
+  return {
+    mechanism: `First-principles kinematic and structural analysis of ${core.toLowerCase()}: balancing continuous dynamic stress distribution against material fatigue limits to maximize operational service life.`,
+    boundary: `Governing physical tolerance constraints in ${core.toLowerCase()}: maintaining sub-micron geometric tolerances and thermal expansion compliance under full mechanical load capacity.`,
+    tradeoff: `Core engineering tradeoffs in ${core.toLowerCase()}: optimizing manufacturing cycle times and material selection while suppressing localized micro-fretting and failure modes.`,
+  };
+}
+
 /**
- * Ensures the article's short summary overview (subtitle) gives the direct answer
- * in plain, accessible English rather than repeating "How..." or using textbook jargon.
+ * Ensures the article's executive overview (subtitle) delivers high-value,
+ * quantitative engineering insight rather than repeating colloquial or simplistic blurbs.
  */
 export function formatAnswerOverview(
   rawSubtitle: string,
@@ -148,13 +209,15 @@ export function formatAnswerOverview(
 ): string {
   let sub = (rawSubtitle || "").trim();
 
-  // Replace generic harvester boilerplate with plain-English answer overview
-  if (!sub || /^an exhaustive teardown and kinematic analysis of/i.test(sub)) {
-    const { core, detail } = cleanTopicSubject(fallbackTopic || title);
-    if (detail) {
-      return `By controlling ${detail.toLowerCase()}, engineers keep ${core.toLowerCase()} running smoothly under heavy heat and mechanical loads.`;
-    }
-    return `Tight geometry and smart material choices let ${core.toLowerCase()} handle extreme loads without wearing out or jamming.`;
+  // Replace generic or simplistic placeholders with high-value technical mechanism
+  if (
+    !sub ||
+    /^an exhaustive teardown and kinematic analysis of/i.test(sub) ||
+    /tight geometry and smart material choices/i.test(sub) ||
+    /a sealed.*copper pouch.*boiling water/i.test(sub)
+  ) {
+    const presets = generateTechnicalOverviewPresets(fallbackTopic || title, "", "");
+    return presets.mechanism;
   }
 
   // Strip leading "How " or "Why " so the overview directly states the answer
