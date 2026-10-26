@@ -156,53 +156,6 @@ export function deriveVaporChamberPillarSpec(
       material: 'Saturated H₂O Vapor @ 10⁻³ Torr',
       hatchType: 'cavity_vacuum',
       colorScheme: 'cool_fluid',
-      features: [
-        {
-          type: 'pillar',
-          xPercent: 22,
-          widthPx: 38,
-          heightPx: 72,
-          dimLabel: `Ø ${dims.pillarWidth}`,
-          label: 'COLUMN 01',
-        },
-        {
-          type: 'pillar',
-          xPercent: 50,
-          widthPx: 38,
-          heightPx: 72,
-          dimLabel: `Ø ${dims.pillarWidth}`,
-          label: 'COLUMN 02',
-        },
-        {
-          type: 'pillar',
-          xPercent: 78,
-          widthPx: 38,
-          heightPx: 72,
-          dimLabel: `Ø ${dims.pillarWidth}`,
-          label: 'COLUMN 03',
-        },
-      ],
-      flowVectors: [
-        {
-          fromX: 10,
-          toX: 18,
-          direction: 'right',
-          label: 'VAPOR FLUX',
-          velocityOrFlux: '14.2 m/s',
-        },
-        {
-          fromX: 42,
-          toX: 30,
-          direction: 'left',
-          label: 'VAPOR FLUX',
-        },
-        {
-          fromX: 88,
-          toX: 96,
-          direction: 'right',
-          label: 'VAPOR FLUX',
-        },
-      ],
     },
     {
       id: 'cond-wick',
@@ -243,51 +196,21 @@ export function deriveVaporChamberPillarSpec(
     },
   ];
 
-  const callouts: CalloutBox[] = [
-    {
-      targetX: 395,
-      targetY: 155,
-      boxX: 250,
-      boxY: 340,
-      header: 'DIFFUSION WELD INTERFACE',
-      detail: 'Solid-state bonded @ 300°C / 12 MPa',
-      color: '#10B981',
-    },
-    {
-      targetX: 250,
-      targetY: 180,
-      boxX: 30,
-      boxY: 340,
-      header: `PILLAR PITCH: ${dims.pillarPitch}`,
-      detail: 'Limits span deflection to < 1.2 µm',
-      color: '#F59E0B',
-    },
-    {
-      targetX: 550,
-      targetY: 180,
-      boxX: 650,
-      boxY: 340,
-      header: 'HERMETIC VACUUM CAVITY',
-      detail: 'Evacuated to 10⁻³ Torr working fluid',
-      color: '#38BDF8',
-    },
-  ];
-
   return {
     drawingType: 'layered_cross_section',
     title: 'VAPOR CHAMBER INTERNAL COLUMN ARCHITECTURE',
-    subtitle: 'Half-etched support pillar matrix preventing atmospheric collapse under 1 bar pressure differential',
     nominalThickness: dims.totalThickness,
     scaleAnnotation: 'SCALE 250:1 • CAD CROSS-SECTION',
     boundaryLoads,
     layers,
-    callouts,
-    legendItems: [
-      { label: 'C1100 OXYGEN-FREE COPPER', color: '#D97757' },
-      { label: 'SINTERED CAPILLARY WICK', color: '#B45309' },
-      { label: 'VACUUM CAVITY & VAPOR CORE', color: '#38BDF8' },
-      { label: 'DIFFUSION BOND INTERFACE', color: '#10B981' },
-    ],
+    columns: {
+      fromLayerId: 'evap-wick',
+      toLayerId: 'cond-wick',
+      xPercents: [24, 50, 76],
+      widthPx: 38,
+      widthLabel: `Ø ${dims.pillarWidth}`,
+      pitchLabel: `${dims.pillarPitch} PITCH`,
+    },
   };
 }
 
@@ -344,49 +267,12 @@ export function deriveSinteredWickSpec(
     },
   ];
 
-  const callouts: CalloutBox[] = [
-    {
-      targetX: 280,
-      targetY: 150,
-      boxX: 30,
-      boxY: 340,
-      header: 'CAPILLARY PORE NECK',
-      detail: 'Effective meniscus r_eff = 16 µm',
-      color: '#F59E0B',
-    },
-    {
-      targetX: 420,
-      targetY: 200,
-      boxX: 320,
-      boxY: 340,
-      header: 'PERMEABILITY κ',
-      detail: 'High-speed liquid return κ = 2.1×10⁻¹¹ m²',
-      color: '#10B981',
-    },
-    {
-      targetX: 620,
-      targetY: 260,
-      boxX: 650,
-      boxY: 340,
-      header: 'DIFFUSION SINTER JOINT',
-      detail: 'Metallurgical necking @ 880°C in H₂',
-      color: '#D97757',
-    },
-  ];
-
   return {
     drawingType: 'material_microstructure',
     title: 'SINTERED COPPER POWDER WICK ARCHITECTURE',
-    subtitle: 'Biporous gradient microstructure optimizing capillary pressure and liquid permeability',
     nominalThickness: '0.16 mm',
     scaleAnnotation: 'SCALE 500:1 • SEM METROLOGY',
     layers,
-    callouts,
-    legendItems: [
-      { label: 'HIGH-CAPILLARY PORE ZONE', color: '#F59E0B' },
-      { label: 'COARSE LIQUID ARTERY', color: '#B45309' },
-      { label: 'SOLID COPPER SUBSTRATE', color: '#D97757' },
-    ],
   };
 }
 
@@ -410,17 +296,15 @@ export function deriveVaporChamberEnvelopeSpec(
       features: [
         {
           type: 'dimple',
-          xPercent: 15,
-          widthPx: 30,
+          xPercent: 20,
+          widthPx: 32,
           heightPx: 12,
-          label: 'STAMPED LOCATOR',
         },
         {
           type: 'dimple',
-          xPercent: 85,
-          widthPx: 30,
+          xPercent: 80,
+          widthPx: 32,
           heightPx: 12,
-          label: 'STAMPED LOCATOR',
         },
       ],
     },
@@ -432,25 +316,8 @@ export function deriveVaporChamberEnvelopeSpec(
       material: 'Ultra-Pure Deionized H₂O in Vacuum',
       hatchType: 'cavity_vacuum',
       colorScheme: 'cool_fluid',
-      features: [
-        {
-          type: 'pillar',
-          xPercent: 35,
-          widthPx: 34,
-          heightPx: 80,
-          dimLabel: `Ø ${dims.pillarWidth}`,
-        },
-        {
-          type: 'pillar',
-          xPercent: 65,
-          widthPx: 34,
-          heightPx: 80,
-          dimLabel: `Ø ${dims.pillarWidth}`,
-        },
-      ],
       flowVectors: [
-        { fromX: 20, toX: 50, direction: 'right', label: 'LATENT HEAT TRANSPORT' },
-        { fromX: 80, toX: 50, direction: 'left', label: 'LATENT HEAT TRANSPORT' },
+        { fromX: 18, toX: 82, direction: 'right', label: 'LATENT HEAT TRANSPORT' },
       ],
     },
     {
@@ -464,49 +331,12 @@ export function deriveVaporChamberEnvelopeSpec(
     },
   ];
 
-  const callouts: CalloutBox[] = [
-    {
-      targetX: 135,
-      targetY: 150,
-      boxX: 20,
-      boxY: 340,
-      header: 'HERMETIC PINCH-OFF WELD',
-      detail: 'Cold-weld copper evacuation port seal',
-      color: '#10B981',
-    },
-    {
-      targetX: 400,
-      targetY: 200,
-      boxX: 300,
-      boxY: 340,
-      header: 'EVAPORATION ACTIVE ZONE',
-      detail: `High-density heat input area (${dims.heatFlux})`,
-      color: '#EF4444',
-    },
-    {
-      targetX: 670,
-      targetY: 150,
-      boxX: 640,
-      boxY: 340,
-      header: 'PERIMETER DIFFUSION SEAM',
-      detail: '0.25 mm continuous hermetic flange',
-      color: '#D97757',
-    },
-  ];
-
   return {
     drawingType: 'layered_cross_section',
     title: 'PLANAR VAPOR CHAMBER ENVELOPE ARCHITECTURE',
-    subtitle: 'Ultra-thin vacuum envelope stackup with perimeter hermetic weld seal',
     nominalThickness: dims.totalThickness,
     scaleAnnotation: 'SCALE 200:1 • SECTION VIEW',
     layers,
-    callouts,
-    legendItems: [
-      { label: 'C1100 ENVELOPE SHELL', color: '#D97757' },
-      { label: 'VACUUM EVAPORATION CORE', color: '#38BDF8' },
-      { label: 'HERMETIC FLANGE BOND', color: '#10B981' },
-    ],
   };
 }
 
@@ -572,50 +402,13 @@ export function deriveThermalBenchSpec(
     },
   ];
 
-  const callouts: CalloutBox[] = [
-    {
-      targetX: 400,
-      targetY: 105,
-      boxX: 20,
-      boxY: 340,
-      header: `HOTSPOT FLUX: ${dims.heatFlux}`,
-      detail: `Peak junction temperature Tj = ${dims.operatingTemp}`,
-      color: '#EF4444',
-    },
-    {
-      targetX: 250,
-      targetY: 175,
-      boxX: 320,
-      boxY: 340,
-      header: 'RADIAL HEAT SPREADING',
-      detail: 'Spreading thermal resistance θ_sp = 0.045 K/W',
-      color: '#F59E0B',
-    },
-    {
-      targetX: 580,
-      targetY: 220,
-      boxX: 650,
-      boxY: 340,
-      header: 'CALORIMETRIC HEAT SINK',
-      detail: 'Constant-temperature boundary @ 25.0°C',
-      color: '#38BDF8',
-    },
-  ];
-
   return {
     drawingType: 'layered_cross_section',
     title: 'HIGH-FLUX THERMAL BENCH INSTRUMENTATION',
-    subtitle: 'Calibrated heat source interface and radial two-phase spreading isotherm verification',
     nominalThickness: '2.82 mm',
     scaleAnnotation: 'SCALE 100:1 • CALIBRATION STACK',
     boundaryLoads,
     layers,
-    callouts,
-    legendItems: [
-      { label: 'SILICON HEAT DIE', color: '#EF4444' },
-      { label: 'TWO-PHASE VAPOR SPREADER', color: '#D97757' },
-      { label: 'CALORIMETRIC COLD PLATE', color: '#38BDF8' },
-    ],
   };
 }
 
@@ -670,49 +463,12 @@ export function deriveMicrofluidicMemsSpec(
     },
   ];
 
-  const callouts: CalloutBox[] = [
-    {
-      targetX: 400,
-      targetY: 105,
-      boxX: 30,
-      boxY: 340,
-      header: 'PIEZOELECTRIC STROKE',
-      detail: 'd33 acoustic displacement ~ 180 nm @ 32V',
-      color: '#8B5CF6',
-    },
-    {
-      targetX: 400,
-      targetY: 200,
-      boxX: 330,
-      boxY: 340,
-      header: 'NOZZLE EXIT VELOCITY',
-      detail: 'Droplet ejection v = 8.5 m/s @ 45 kHz',
-      color: '#38BDF8',
-    },
-    {
-      targetX: 600,
-      targetY: 150,
-      boxX: 650,
-      boxY: 340,
-      header: 'DRIE ETCH SIDEWALL',
-      detail: 'Bosch process scallop depth < 30 nm',
-      color: '#0284C7',
-    },
-  ];
-
   return {
     drawingType: 'micro_channel_flow',
     title: 'PRECISION MEMS PIEZOELECTRIC ACTUATOR & NOZZLE',
-    subtitle: 'Deep reactive-ion etched silicon chamber with sol-gel PZT transducer stack',
     nominalThickness: '0.068 mm',
     scaleAnnotation: 'SCALE 1000:1 • MEMS METROLOGY',
     layers,
-    callouts,
-    legendItems: [
-      { label: 'PZT PIEZOELECTRIC FILM', color: '#8B5CF6' },
-      { label: 'SINGLE-CRYSTAL SILICON', color: '#0284C7' },
-      { label: 'FLUID CAVITY & JET STREAM', color: '#38BDF8' },
-    ],
   };
 }
 
@@ -746,24 +502,6 @@ export function deriveGenericEngineeringSpec(
       material: 'Precision Internal Assembly',
       hatchType: 'fluid_channel',
       colorScheme: 'cool_fluid',
-      features: [
-        {
-          type: 'pillar',
-          xPercent: 30,
-          widthPx: 36,
-          heightPx: 65,
-          dimLabel: dims.pillarWidth,
-          label: 'DATUM POST',
-        },
-        {
-          type: 'pillar',
-          xPercent: 70,
-          widthPx: 36,
-          heightPx: 65,
-          dimLabel: dims.pillarWidth,
-          label: 'DATUM POST',
-        },
-      ],
       flowVectors: [
         { fromX: 20, toX: 80, direction: 'bidirectional', label: 'CLEARANCE AXIS' },
       ],
@@ -779,40 +517,12 @@ export function deriveGenericEngineeringSpec(
     },
   ];
 
-  const callouts: CalloutBox[] = [
-    {
-      targetX: 300,
-      targetY: 170,
-      boxX: 30,
-      boxY: 340,
-      header: 'CRITICAL CLEARANCE FIT',
-      detail: `Operating clearance envelope ${dims.airGap}`,
-      color: '#10B981',
-    },
-    {
-      targetX: 550,
-      targetY: 170,
-      boxX: 620,
-      boxY: 340,
-      header: 'DATUM LOCATOR SPACING',
-      detail: `Positional tolerance ±0.005 mm (${dims.pillarPitch})`,
-      color: '#D97757',
-    },
-  ];
-
   return {
     drawingType: 'layered_cross_section',
     title: figTitle.toUpperCase().slice(0, 50),
-    subtitle: params.caption ? params.caption.slice(0, 100) : 'Precision engineering cross-section',
     nominalThickness: dims.totalThickness,
     scaleAnnotation: 'SCALE 1:1 • CAD METROLOGY',
     layers,
-    callouts,
-    legendItems: [
-      { label: 'STRUCTURAL ENVELOPE', color: '#EDEDEB' },
-      { label: 'INTERNAL CAVITY', color: '#38BDF8' },
-      { label: 'DATUM INTERFACE', color: '#10B981' },
-    ],
   };
 }
 

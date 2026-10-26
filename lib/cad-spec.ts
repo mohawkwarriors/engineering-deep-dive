@@ -109,6 +109,20 @@ export interface CalloutBox {
   color?: string;
 }
 
+/**
+ * A row of support columns (pillars / dimples) that bridge one or more
+ * internal layers. Rendered monolithic with the layer above `fromLayerId`
+ * (i.e. half-etched from the top plate) and dimensioned below the stack.
+ */
+export interface ColumnArray {
+  fromLayerId: string; // columns start at the top edge of this layer
+  toLayerId: string;   // columns end at the bottom edge of this layer
+  xPercents: number[]; // column centers, 0..100 across the section
+  widthPx: number;
+  widthLabel?: string; // e.g. "Ø 0.35"
+  pitchLabel?: string; // e.g. "1.20 PITCH"
+}
+
 export interface DrawingSpec {
   drawingType: DrawingType;
   title: string;
@@ -118,7 +132,10 @@ export interface DrawingSpec {
   scaleAnnotation?: string;
   boundaryLoads?: BoundaryLoad[];
   layers?: DrawingLayer[];
+  columns?: ColumnArray;
   dimensions?: DimensionAnnotation[];
+  /** @deprecated Not rendered — callout boxes add clutter. */
   callouts?: CalloutBox[];
+  /** @deprecated Not rendered — layer labels already identify materials. */
   legendItems?: Array<{ label: string; color: string }>;
 }
