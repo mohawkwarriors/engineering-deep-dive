@@ -1147,15 +1147,11 @@ export default function DraftViewer({
             {cadSvgs[figIdx] ? (
               <div>
                 <div dangerouslySetInnerHTML={{ __html: cadSvgs[figIdx] }} />
-                <div className="mt-3 flex justify-between items-center text-xs font-mono text-[var(--muted)]">
-                  <span className="text-emerald-400 flex items-center gap-1 font-semibold">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    Clean House-Style CAD Vector Schematic (0% Copyright Liability)
-                  </span>
+                <div className="mt-2.5 flex justify-end items-center text-xs font-mono text-[var(--muted)]">
                   <button
                     type="button"
                     onClick={() => handleGenerateCad(figIdx)}
-                    className="text-[var(--accent)] hover:underline flex items-center gap-1"
+                    className="text-[var(--accent)] hover:underline flex items-center gap-1 font-mono text-xs"
                   >
                     <RefreshCw className="w-3 h-3" />
                     Regenerate CAD
@@ -1636,7 +1632,6 @@ export default function DraftViewer({
           />
           <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800 flex justify-between items-center gap-2">
             <span>{fig.caption || selectedImg?.title || editedTitle || activeDraft.title}</span>
-            <span className="text-[10px] text-emerald-400 uppercase tracking-wider font-semibold">100% CLEAN HOUSE-STYLE CAD SCHEMATIC</span>
           </figcaption>
         </figure>
       );

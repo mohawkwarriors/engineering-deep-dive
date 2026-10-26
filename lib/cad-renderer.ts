@@ -9,6 +9,41 @@ function escapeXml(str: string): string {
     .replace(/'/g, '&apos;');
 }
 
+function cleanLayerName(name: string): string {
+  const n = (name || '').trim();
+
+  // Concise 1-2 word abstractions for high-scent, uncluttered CAD graphics
+  if (/upper|top|lid/i.test(n) && /copper|plate|shell|foil/i.test(n)) {
+    return 'TOP COPPER';
+  }
+  if (/bottom|lower|base/i.test(n) && /copper|plate|shell|foil/i.test(n)) {
+    return 'BOTTOM COPPER';
+  }
+  if (/fine/i.test(n)) {
+    return 'FINE WICK';
+  }
+  if (/coarse|arterial/i.test(n)) {
+    return 'COARSE WICK';
+  }
+  if (/vapor|cavity|core|channel/i.test(n)) {
+    return 'VAPOR CORE';
+  }
+  if (/wick|sintered/i.test(n)) {
+    return 'POROUS WICK';
+  }
+
+  return n
+    .replace(/\s*&\s*Pillar\s*Matrix/i, '')
+    .replace(/\s*(?:stamped|sintered|monolithic|hermetic|capillary|arterial)\s*/gi, ' ')
+    .replace(/\s*(?:layer|matrix|array|structure|base)\b/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function cleanThickness(label: string): string {
+  return (label || '').replace(/\s*\([^)]*\)/g, '').trim();
+}
+
 function getColorToken(scheme: ColorScheme | string): { primary: string; secondary: string; bg: string } {
   switch (scheme) {
     case 'copper':
@@ -36,14 +71,14 @@ function getColorToken(scheme: ColorScheme | string): { primary: string; seconda
 export function renderDrawingSpec(spec: DrawingSpec): string {
   const uid = `cad-${Math.random().toString(36).substring(2, 8)}`;
   const width = 860;
-  const height = 400;
+  const height = 360;
 
-  // Geometry viewport configuration
-  const viewLeft = 110;
-  const viewWidth = 460;
+  // Centered, balanced geometry viewport
+  const viewLeft = 100;
+  const viewWidth = 500;
   const viewRight = viewLeft + viewWidth;
-  const viewTop = 74;
-  const viewHeight = 190;
+  const viewTop = 64;
+  const viewHeight = 180;
   const viewBottom = viewTop + viewHeight;
 
   // Layer vertical allocation
@@ -80,10 +115,10 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
       <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#232220" stroke-width="0.9"/>
     </pattern>
 
-    <!-- Metallic 45° ANSI Copper Hatch -->
-    <pattern id="hatch-copper-${uid}" width="8" height="8" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
-      <rect width="8" height="8" fill="#241712"/>
-      <line x1="0" y1="0" x2="0" y2="8" stroke="#D97757" stroke-width="1.3" stroke-opacity="0.45"/>
+    <!-- Metallic 45° ANSI Copper Hatch - Clean Spacing -->
+    <pattern id="hatch-copper-${uid}" width="12" height="12" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+      <rect width="12" height="12" fill="#241712"/>
+      <line x1="0" y1="0" x2="0" y2="12" stroke="#D97757" stroke-width="1.1" stroke-opacity="0.35"/>
     </pattern>
 
     <!-- Silicon Monolithic Crystalline Hatch -->
@@ -92,12 +127,11 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
       <path d="M 0 5 L 10 5 M 5 0 L 5 10" stroke="#0284C7" stroke-width="0.7" stroke-opacity="0.4"/>
     </pattern>
 
-    <!-- Porous Sintered Spherical Powder Matrix -->
-    <pattern id="hatch-sintered-${uid}" width="12" height="12" patternUnits="userSpaceOnUse">
-      <rect width="12" height="12" fill="#1C1613"/>
-      <circle cx="3" cy="3" r="2.2" fill="#B45309" stroke="#F59E0B" stroke-width="0.5" opacity="0.85"/>
-      <circle cx="9" cy="3" r="1.8" fill="#92400E" stroke="#D97757" stroke-width="0.5" opacity="0.85"/>
-      <circle cx="6" cy="9" r="2.4" fill="#B45309" stroke="#F59E0B" stroke-width="0.5" opacity="0.85"/>
+    <!-- Porous Sintered Spherical Powder Matrix - Calm Micro-Pore Texture -->
+    <pattern id="hatch-sintered-${uid}" width="16" height="16" patternUnits="userSpaceOnUse">
+      <rect width="16" height="16" fill="#1C1613"/>
+      <circle cx="4" cy="4" r="1.5" fill="#D97757" opacity="0.45"/>
+      <circle cx="12" cy="12" r="1.2" fill="#F59E0B" opacity="0.4"/>
     </pattern>
 
     <!-- Ferroelectric Sol-Gel PZT Dipole Hatch -->
@@ -145,52 +179,25 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
 
   <rect width="100%" height="100%" fill="url(#cadMajor-${uid})" />
 
-  <!-- 1. Header Information Strip -->
+  <!-- 1. Header Information Strip (Clean title without redundant scale boilerplate) -->
   <text x="24" y="26" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#D97757" letter-spacing="0.05em">
     SECTION // ${escapeXml(spec.title.toUpperCase())}
   </text>
-  <text x="836" y="26" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#9E9C94">
-    ${escapeXml(spec.nominalThickness ? `${spec.nominalThickness} • ` : '')}${escapeXml(spec.scaleAnnotation || 'SCALE 250:1 • CAD METROLOGY')}
-  </text>
 
-  <!-- 2. Boundary External Loads (Top & Bottom) -->
-  ${(spec.boundaryLoads || []).map((load) => {
-    if (load.side === 'top' && load.direction === 'inward') {
-      const step = viewWidth / (load.arrows + 1);
-      return `
-      <g>
-        <text x="${viewLeft + viewWidth / 2}" y="50" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="${load.color || '#F87171'}">
-          ${escapeXml(load.label)}${load.magnitude ? ` (${escapeXml(load.magnitude)})` : ''}
-        </text>
-        ${Array.from({ length: load.arrows }).map((_, i) => {
-          const arrowX = viewLeft + (i + 1) * step;
-          return `<line x1="${arrowX}" y1="56" x2="${arrowX}" y2="${viewTop - 5}" stroke="${load.color || '#F87171'}" stroke-width="1.3" marker-end="url(#arr-red-end-${uid})"/>`;
-        }).join('')}
-      </g>`;
-    }
-    if (load.side === 'bottom' && load.direction === 'inward') {
-      const step = viewWidth / (load.arrows + 1);
-      const hasColumns = spec.columns && spec.columns.xPercents && spec.columns.xPercents.length > 0;
-      const topHasSameLabel = (spec.boundaryLoads || []).some(
-        (b) => b.side === 'top' && b.label && b.label.trim().toLowerCase() === (load.label || '').trim().toLowerCase()
-      );
-      // Suppress redundant bottom label when top already has it or when columns occupy the bottom metrology corridor
-      const shouldRenderBottomLabel = Boolean(load.label && !topHasSameLabel && !hasColumns);
-
-      return `
-      <g>
-        ${Array.from({ length: load.arrows }).map((_, i) => {
-          const arrowX = viewLeft + (i + 1) * step;
-          return `<line x1="${arrowX}" y1="${finalLayerBottom + 16}" x2="${arrowX}" y2="${finalLayerBottom + 4}" stroke="${load.color || '#F87171'}" stroke-width="1.3" marker-end="url(#arr-red-end-${uid})"/>`;
-        }).join('')}
-        ${shouldRenderBottomLabel ? `
-        <text x="${viewLeft + viewWidth / 2}" y="${finalLayerBottom + 30}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="${load.color || '#F87171'}">
-          ${escapeXml(load.label)}${load.magnitude ? ` (${escapeXml(load.magnitude)})` : ''}
-        </text>` : ''}
-      </g>`;
-    }
-    return '';
-  }).join('')}
+  <!-- 2. Boundary External Loads (Single Centered Clean Load Vector) -->
+  ${(() => {
+    const topLoad = (spec.boundaryLoads || []).find((b) => b.side === 'top' && b.direction === 'inward');
+    if (!topLoad) return '';
+    const centerX = viewLeft + viewWidth / 2;
+    const labelText = topLoad.magnitude ? `${topLoad.magnitude} • ${topLoad.label}` : topLoad.label;
+    return `
+    <g>
+      <text x="${centerX}" y="40" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="${topLoad.color || '#F87171'}">
+        ${escapeXml(labelText)}
+      </text>
+      <line x1="${centerX}" y1="46" x2="${centerX}" y2="${viewTop - 4}" stroke="${topLoad.color || '#F87171'}" stroke-width="1.4" marker-end="url(#arr-red-end-${uid})"/>
+    </g>`;
+  })()}
 
   <!-- 3. Layer Stackup -->
   <g>
@@ -274,32 +281,27 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
 
   <!-- 5. Left Total Stackup Dimension Annotation -->
   <g>
-    <line x1="${viewLeft - 38}" y1="${viewTop}" x2="${viewLeft - 6}" y2="${viewTop}" stroke="#EDEDEB" stroke-width="0.8" stroke-dasharray="2 2"/>
-    <line x1="${viewLeft - 38}" y1="${finalLayerBottom}" x2="${viewLeft - 6}" y2="${finalLayerBottom}" stroke="#EDEDEB" stroke-width="0.8" stroke-dasharray="2 2"/>
-    <line x1="${viewLeft - 26}" y1="${viewTop + 4}" x2="${viewLeft - 26}" y2="${finalLayerBottom - 4}" stroke="#EDEDEB" stroke-width="1.2" marker-start="url(#arr-white-start-${uid})" marker-end="url(#arr-white-end-${uid})"/>
-    <rect x="14" y="${(viewTop + finalLayerBottom) / 2 - 18}" width="86" height="34" rx="4" fill="#1C1B19" stroke="#EDEDEB" stroke-width="1"/>
-    <text x="57" y="${(viewTop + finalLayerBottom) / 2 - 3}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9.5" font-weight="700" fill="#EDEDEB">
+    <line x1="${viewLeft - 30}" y1="${viewTop}" x2="${viewLeft - 6}" y2="${viewTop}" stroke="#9E9C94" stroke-width="0.8"/>
+    <line x1="${viewLeft - 30}" y1="${finalLayerBottom}" x2="${viewLeft - 6}" y2="${finalLayerBottom}" stroke="#9E9C94" stroke-width="0.8"/>
+    <line x1="${viewLeft - 18}" y1="${viewTop + 4}" x2="${viewLeft - 18}" y2="${finalLayerBottom - 4}" stroke="#EDEDEB" stroke-width="1.2" marker-start="url(#arr-white-start-${uid})" marker-end="url(#arr-white-end-${uid})"/>
+    <text x="${viewLeft - 24}" y="${(viewTop + finalLayerBottom) / 2 + 3.5}" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="9.5" font-weight="700" fill="#EDEDEB">
       ${escapeXml(spec.nominalThickness || '0.35 mm')}
-    </text>
-    <text x="57" y="${(viewTop + finalLayerBottom) / 2 + 9}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#9E9C94">
-      TOTAL ENVELOPE
     </text>
   </g>
 
-  <!-- 6. Right-Hand Layer Witness Brackets & Exact Thickness Callouts -->
+  <!-- 6. Right-Hand Clean Layer Leaders & Compact Metrics -->
   <g>
     ${computedLayers.map((l) => {
       const midY = (l.yTop + l.yBottom) / 2;
+      const cleanName = escapeXml(cleanLayerName(l.name).toUpperCase());
+      const cleanDim = escapeXml(cleanThickness(l.thicknessLabel));
       return `
       <g>
-        <line x1="${viewRight + 2}" y1="${l.yTop}" x2="${viewRight + 18}" y2="${l.yTop}" stroke="${l.colors.primary}" stroke-width="0.8"/>
-        <line x1="${viewRight + 2}" y1="${l.yBottom}" x2="${viewRight + 18}" y2="${l.yBottom}" stroke="${l.colors.primary}" stroke-width="0.8"/>
-        <line x1="${viewRight + 12}" y1="${l.yTop + 3}" x2="${viewRight + 12}" y2="${l.yBottom - 3}" stroke="${l.colors.primary}" stroke-width="1.2" marker-start="url(#arr-orange-start-${uid})" marker-end="url(#arr-orange-end-${uid})"/>
-        <text x="${viewRight + 24}" y="${midY - 2}" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="${l.colors.primary}">
-          ${escapeXml(l.name.toUpperCase())}
-        </text>
-        <text x="${viewRight + 24}" y="${midY + 10}" font-family="'JetBrains Mono', monospace" font-size="8" fill="#EDEDEB">
-          ${escapeXml(l.thicknessLabel)}${l.material ? ` • ${escapeXml(l.material.length > 28 ? l.material.slice(0, 26) + '…' : l.material)}` : ''}
+        <line x1="${viewRight + 4}" y1="${midY}" x2="${viewRight + 22}" y2="${midY}" stroke="${l.colors.primary}" stroke-width="1.2"/>
+        <circle cx="${viewRight + 4}" cy="${midY}" r="2" fill="${l.colors.primary}"/>
+        <text x="${viewRight + 28}" y="${midY + 3.5}" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600" fill="#EDEDEB">
+          <tspan fill="${l.colors.primary}" font-weight="700">${cleanName}</tspan>
+          <tspan fill="#9E9C94"> • ${cleanDim}</tspan>
         </text>
       </g>`;
     }).join('')}
@@ -309,11 +311,9 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
   ${(() => {
     if (!spec.columns || !spec.columns.xPercents || spec.columns.xPercents.length === 0) return '';
     const widthPx = spec.columns.widthPx || 38;
-    const hasBottomLoad = (spec.boundaryLoads || []).some(b => b.side === 'bottom');
-    // Extension lines start cleanly below bottom pressure arrow vectors (finalLayerBottom + 20)
-    const extStartY = hasBottomLoad ? finalLayerBottom + 20 : finalLayerBottom + 4;
-    const dimWidthY = hasBottomLoad ? finalLayerBottom + 38 : finalLayerBottom + 24;
-    const dimPitchY = hasBottomLoad ? finalLayerBottom + 66 : finalLayerBottom + 52;
+    const extStartY = finalLayerBottom + 4;
+    const dimWidthY = finalLayerBottom + 22;
+    const dimPitchY = finalLayerBottom + 48;
 
     // Use column 0 for width dimension
     const col0CenterX = viewLeft + (spec.columns.xPercents[0] / 100) * viewWidth;
@@ -329,20 +329,20 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
     <g>
       ${spec.columns.widthLabel ? `
       <!-- Pillar Width Dimension -->
-      <line x1="${col0Left}" y1="${extStartY}" x2="${col0Left}" y2="${dimWidthY + 5}" stroke="#9E9C94" stroke-width="0.8" stroke-dasharray="2 2"/>
-      <line x1="${col0Right}" y1="${extStartY}" x2="${col0Right}" y2="${dimWidthY + 5}" stroke="#9E9C94" stroke-width="0.8" stroke-dasharray="2 2"/>
+      <line x1="${col0Left}" y1="${extStartY}" x2="${col0Left}" y2="${dimWidthY + 4}" stroke="#9E9C94" stroke-width="0.8" stroke-dasharray="2 2"/>
+      <line x1="${col0Right}" y1="${extStartY}" x2="${col0Right}" y2="${dimWidthY + 4}" stroke="#9E9C94" stroke-width="0.8" stroke-dasharray="2 2"/>
       <line x1="${col0Left + 2}" y1="${dimWidthY}" x2="${col0Right - 2}" y2="${dimWidthY}" stroke="#EDEDEB" stroke-width="1.2" marker-start="url(#arr-white-start-${uid})" marker-end="url(#arr-white-end-${uid})"/>
-      <text x="${col0CenterX}" y="${dimWidthY - 5}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="#EDEDEB" style="paint-order: stroke fill; stroke: #141413; stroke-width: 4px; stroke-linejoin: round;">
+      <text x="${col0CenterX}" y="${dimWidthY - 4}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="#EDEDEB" style="paint-order: stroke fill; stroke: #141413; stroke-width: 4px; stroke-linejoin: round;">
         ${escapeXml(spec.columns.widthLabel)}
       </text>
       ` : ''}
 
       ${spec.columns.pitchLabel && col1CenterX > 0 ? `
       <!-- Pillar Array Pitch Dimension (Stepped cleanly below feature width dimension) -->
-      <line x1="${col0CenterX}" y1="${dimWidthY + 10}" x2="${col0CenterX}" y2="${dimPitchY + 5}" stroke="#F59E0B" stroke-width="0.8" stroke-dasharray="2 2"/>
-      <line x1="${col1CenterX}" y1="${dimWidthY + 10}" x2="${col1CenterX}" y2="${dimPitchY + 5}" stroke="#F59E0B" stroke-width="0.8" stroke-dasharray="2 2"/>
+      <line x1="${col0CenterX}" y1="${dimWidthY + 8}" x2="${col0CenterX}" y2="${dimPitchY + 4}" stroke="#F59E0B" stroke-width="0.8" stroke-dasharray="2 2"/>
+      <line x1="${col1CenterX}" y1="${dimWidthY + 8}" x2="${col1CenterX}" y2="${dimPitchY + 4}" stroke="#F59E0B" stroke-width="0.8" stroke-dasharray="2 2"/>
       <line x1="${col0CenterX + 2}" y1="${dimPitchY}" x2="${col1CenterX - 2}" y2="${dimPitchY}" stroke="#F59E0B" stroke-width="1.2" marker-start="url(#arr-amber-start-${uid})" marker-end="url(#arr-amber-end-${uid})"/>
-      <text x="${(col0CenterX + col1CenterX) / 2}" y="${dimPitchY - 5}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="#F59E0B" style="paint-order: stroke fill; stroke: #141413; stroke-width: 4px; stroke-linejoin: round;">
+      <text x="${(col0CenterX + col1CenterX) / 2}" y="${dimPitchY - 4}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="#F59E0B" style="paint-order: stroke fill; stroke: #141413; stroke-width: 4px; stroke-linejoin: round;">
         ${escapeXml(spec.columns.pitchLabel)}
       </text>
       ` : ''}

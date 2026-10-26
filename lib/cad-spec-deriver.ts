@@ -180,17 +180,9 @@ export function deriveVaporChamberPillarSpec(
   const boundaryLoads: BoundaryLoad[] = [
     {
       side: 'top',
-      label: 'ATMOSPHERIC PRESSURE LOAD',
-      magnitude: dims.pressureDiff,
-      arrows: 6,
-      direction: 'inward',
-      color: '#F87171',
-    },
-    {
-      side: 'bottom',
-      label: '', // Symmetrical inward vector arrows; omit duplicate text label to keep bottom metrology corridor 100% collision-free
-      magnitude: '',
-      arrows: 6,
+      label: 'ATMOSPHERIC LOAD',
+      magnitude: '1.0 bar (101.3 kPa)',
+      arrows: 1,
       direction: 'inward',
       color: '#F87171',
     },
@@ -200,7 +192,6 @@ export function deriveVaporChamberPillarSpec(
     drawingType: 'layered_cross_section',
     title: 'VAPOR CHAMBER INTERNAL COLUMN ARCHITECTURE',
     nominalThickness: dims.totalThickness,
-    scaleAnnotation: 'SCALE 250:1 • CAD CROSS-SECTION',
     boundaryLoads,
     layers,
     columns: {
