@@ -187,16 +187,19 @@ function renderRichHtml(html: string): string {
   out = out.replace(
     /<ProcessStep\s+step="([^"]+)"\s+title="([^"]+)"(?:\s+parameters="([^"]*)")?\s*>([\s\S]*?)<\/ProcessStep>/g,
     (_, step, title, params, content) => {
+      const stepNumber = String(step).padStart(2, "0");
       return `
-        <div class="relative pl-8 sm:pl-10 group my-3">
-          <div class="absolute left-0 top-1 flex h-8 w-8 items-center justify-center rounded-md border border-[var(--border)] bg-[var(--surface)] font-mono text-xs font-semibold text-[var(--accent)] shadow-sm">
-            ${step}
+        <div class="relative pl-12 sm:pl-14 group my-3">
+          <div class="absolute left-[17px] sm:left-[21px] top-9 -bottom-4 w-[2px] bg-[var(--border)] group-last:hidden"></div>
+          <div class="absolute left-0 top-1 flex flex-col items-center justify-center w-9 h-9 rounded-lg border border-[var(--border)] bg-[var(--card-inner)] font-mono text-[10px] font-bold text-[var(--accent)] shadow-sm">
+            <span class="text-[7.5px] text-[var(--muted)] leading-none uppercase tracking-tighter">STEP</span>
+            <span class="leading-tight mt-0.5">${stepNumber}</span>
           </div>
-          <div class="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-4 font-mono">
-            <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-[var(--border)] pb-2 mb-2">
-              <span class="text-sm font-semibold uppercase tracking-wide text-[var(--text)]">${title}</span>
-              ${params ? `<span class="text-xs text-[var(--muted)] bg-[var(--card-inner)] px-2 py-0.5 rounded border border-[var(--border)]">${params}</span>` : ""}
+          <div class="rounded-lg border border-[var(--border)] bg-[var(--card-inner)]/50 hover:bg-[var(--card-inner)] p-3.5 sm:p-4 transition-all font-mono">
+            <div class="flex flex-wrap items-baseline justify-between gap-2 mb-1.5">
+              <span class="text-xs sm:text-sm font-bold uppercase tracking-wide text-[var(--text)] font-mono">${title}</span>
             </div>
+            ${params ? `<div class="text-[11px] font-mono text-[var(--accent)] bg-[var(--surface)] px-2.5 py-1 rounded border border-[var(--border)] inline-block mb-2">⚙️ ${params}</div>` : ""}
             <div class="text-xs leading-relaxed text-[var(--muted)] font-sans">
               ${content}
             </div>
@@ -205,7 +208,35 @@ function renderRichHtml(html: string): string {
       `;
     }
   );
-  out = out.replace(/<ProcessFlow>([\s\S]*?)<\/ProcessFlow>/g, '<div class="my-6 space-y-2">$1</div>');
+
+  // ProcessFlow with optional title, subtitle, and tag
+  out = out.replace(
+    /<ProcessFlow(?:\s+title="([^"]*)")?(?:\s+subtitle="([^"]*)")?(?:\s+tag="([^"]*)")?\s*>([\s\S]*?)<\/ProcessFlow>/g,
+    (_, title, subtitle, tag, content) => {
+      const flowTitle = title || "4-Stage Manufacturing Sequence";
+      const flowSub = subtitle || "Precision fabrication workflow from raw material processing to final hermetic seal";
+      const flowTag = tag || "MANUFACTURING PIPELINE // ASSEMBLY SEQUENCE";
+      return `
+        <div class="my-8 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 font-mono shadow-lg not-prose">
+          <div class="flex flex-wrap items-center justify-between border-b border-[var(--border)] pb-3.5 mb-5 gap-2">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-[var(--accent)] flex items-center gap-1.5">
+                ${flowTag}
+              </span>
+              <h4 class="text-base font-serif text-[var(--text)] font-semibold mt-1">${flowTitle}</h4>
+              <p class="text-xs text-[var(--muted)] mt-0.5 font-sans leading-relaxed">${flowSub}</p>
+            </div>
+            <span class="px-2.5 py-1 rounded-full bg-[var(--card-inner)] border border-[var(--border)] text-[10px] font-mono text-[var(--muted)]">
+              Sequential Workflow
+            </span>
+          </div>
+          <div class="space-y-4">
+            ${content}
+          </div>
+        </div>
+      `;
+    }
+  );
 
   // TechnicalCard
   out = out.replace(
