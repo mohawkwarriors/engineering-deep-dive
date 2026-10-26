@@ -242,7 +242,7 @@ export function validateDrawingSvg(svg: string, label: string = 'CAD Drawing'): 
     }
   }
 
-  // 5. Check text-to-text collisions
+  // 5. Check text-to-text collisions and line-slicing
   for (let i = 0; i < texts.length; i++) {
     for (let j = i + 1; j < texts.length; j++) {
       const a = texts[i];
@@ -252,12 +252,33 @@ export function validateDrawingSvg(svg: string, label: string = 'CAD Drawing'): 
       const overlapX = Math.min(a.right, b.right) - Math.max(a.left, b.left);
       const overlapY = Math.min(a.bottomY, b.bottomY) - Math.max(a.topY, b.topY);
 
-      if (overlapX > 8 && overlapY > 2) {
+      if (overlapX > 8 && overlapY > -2) {
         // Exclude intentional shadows or identical overlapping keys
         if (Math.abs(a.x - b.x) > 2 || Math.abs(a.y - b.y) > 2) {
           errors.push({
             code: 'TEXT_COLLISION',
-            message: `${label}: Text collision between "${a.raw.slice(0, 25)}" [y=${Math.round(a.y)}] and "${b.raw.slice(0, 25)}" [y=${Math.round(b.y)}] (overlap: ${Math.round(overlapX)}px)`,
+            message: `${label}: Text collision between "${a.raw.slice(0, 25)}" [y=${Math.round(a.y)}] and "${b.raw.slice(0, 25)}" [y=${Math.round(b.y)}] (horizontal overlap: ${Math.round(overlapX)}px)`,
+          });
+        }
+      }
+    }
+
+    // Check if vertical extension lines slice directly through text
+    const textItem = texts[i];
+    for (const l of lines) {
+      if (Math.abs(l.x1 - l.x2) < 1.5) {
+        const lineX = (l.x1 + l.x2) / 2;
+        const lineMinY = Math.min(l.y1, l.y2);
+        const lineMaxY = Math.max(l.y1, l.y2);
+        if (
+          lineX > textItem.left + 5 &&
+          lineX < textItem.right - 5 &&
+          lineMinY < textItem.topY &&
+          lineMaxY > textItem.bottomY
+        ) {
+          errors.push({
+            code: 'LINE_SLICES_TEXT',
+            message: `${label}: Vertical extension line at x=${Math.round(lineX)} [y=${Math.round(lineMinY)}..${Math.round(lineMaxY)}] slices through text "${textItem.raw.slice(0, 30)}" [x=${Math.round(textItem.left)}..${Math.round(textItem.right)}]`,
           });
         }
       }

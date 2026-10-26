@@ -170,15 +170,23 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
     }
     if (load.side === 'bottom' && load.direction === 'inward') {
       const step = viewWidth / (load.arrows + 1);
+      const hasColumns = spec.columns && spec.columns.xPercents && spec.columns.xPercents.length > 0;
+      const topHasSameLabel = (spec.boundaryLoads || []).some(
+        (b) => b.side === 'top' && b.label && b.label.trim().toLowerCase() === (load.label || '').trim().toLowerCase()
+      );
+      // Suppress redundant bottom label when top already has it or when columns occupy the bottom metrology corridor
+      const shouldRenderBottomLabel = Boolean(load.label && !topHasSameLabel && !hasColumns);
+
       return `
       <g>
         ${Array.from({ length: load.arrows }).map((_, i) => {
           const arrowX = viewLeft + (i + 1) * step;
-          return `<line x1="${arrowX}" y1="${finalLayerBottom + 22}" x2="${arrowX}" y2="${finalLayerBottom + 5}" stroke="${load.color || '#F87171'}" stroke-width="1.3" marker-end="url(#arr-red-end-${uid})"/>`;
+          return `<line x1="${arrowX}" y1="${finalLayerBottom + 16}" x2="${arrowX}" y2="${finalLayerBottom + 4}" stroke="${load.color || '#F87171'}" stroke-width="1.3" marker-end="url(#arr-red-end-${uid})"/>`;
         }).join('')}
-        <text x="${viewLeft + viewWidth / 2}" y="${finalLayerBottom + 35}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="${load.color || '#F87171'}">
+        ${shouldRenderBottomLabel ? `
+        <text x="${viewLeft + viewWidth / 2}" y="${finalLayerBottom + 30}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="${load.color || '#F87171'}">
           ${escapeXml(load.label)}${load.magnitude ? ` (${escapeXml(load.magnitude)})` : ''}
-        </text>
+        </text>` : ''}
       </g>`;
     }
     return '';
@@ -302,8 +310,10 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
     if (!spec.columns || !spec.columns.xPercents || spec.columns.xPercents.length === 0) return '';
     const widthPx = spec.columns.widthPx || 38;
     const hasBottomLoad = (spec.boundaryLoads || []).some(b => b.side === 'bottom');
-    const dimWidthY = hasBottomLoad ? finalLayerBottom + 52 : finalLayerBottom + 26;
-    const dimPitchY = hasBottomLoad ? finalLayerBottom + 82 : finalLayerBottom + 56;
+    // Extension lines start cleanly below bottom pressure arrow vectors (finalLayerBottom + 20)
+    const extStartY = hasBottomLoad ? finalLayerBottom + 20 : finalLayerBottom + 4;
+    const dimWidthY = hasBottomLoad ? finalLayerBottom + 38 : finalLayerBottom + 24;
+    const dimPitchY = hasBottomLoad ? finalLayerBottom + 66 : finalLayerBottom + 52;
 
     // Use column 0 for width dimension
     const col0CenterX = viewLeft + (spec.columns.xPercents[0] / 100) * viewWidth;
@@ -319,20 +329,20 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
     <g>
       ${spec.columns.widthLabel ? `
       <!-- Pillar Width Dimension -->
-      <line x1="${col0Left}" y1="${finalLayerBottom + 2}" x2="${col0Left}" y2="${dimWidthY + 6}" stroke="#9E9C94" stroke-width="0.8" stroke-dasharray="2 2"/>
-      <line x1="${col0Right}" y1="${finalLayerBottom + 2}" x2="${col0Right}" y2="${dimWidthY + 6}" stroke="#9E9C94" stroke-width="0.8" stroke-dasharray="2 2"/>
+      <line x1="${col0Left}" y1="${extStartY}" x2="${col0Left}" y2="${dimWidthY + 5}" stroke="#9E9C94" stroke-width="0.8" stroke-dasharray="2 2"/>
+      <line x1="${col0Right}" y1="${extStartY}" x2="${col0Right}" y2="${dimWidthY + 5}" stroke="#9E9C94" stroke-width="0.8" stroke-dasharray="2 2"/>
       <line x1="${col0Left + 2}" y1="${dimWidthY}" x2="${col0Right - 2}" y2="${dimWidthY}" stroke="#EDEDEB" stroke-width="1.2" marker-start="url(#arr-white-start-${uid})" marker-end="url(#arr-white-end-${uid})"/>
-      <text x="${col0CenterX}" y="${dimWidthY - 5}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="#EDEDEB">
+      <text x="${col0CenterX}" y="${dimWidthY - 5}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="#EDEDEB" style="paint-order: stroke fill; stroke: #141413; stroke-width: 4px; stroke-linejoin: round;">
         ${escapeXml(spec.columns.widthLabel)}
       </text>
       ` : ''}
 
       ${spec.columns.pitchLabel && col1CenterX > 0 ? `
-      <!-- Pillar Array Pitch Dimension -->
-      <line x1="${col0CenterX}" y1="${finalLayerBottom + 2}" x2="${col0CenterX}" y2="${dimPitchY + 6}" stroke="#F59E0B" stroke-width="0.8" stroke-dasharray="2 2"/>
-      <line x1="${col1CenterX}" y1="${finalLayerBottom + 2}" x2="${col1CenterX}" y2="${dimPitchY + 6}" stroke="#F59E0B" stroke-width="0.8" stroke-dasharray="2 2"/>
+      <!-- Pillar Array Pitch Dimension (Stepped cleanly below feature width dimension) -->
+      <line x1="${col0CenterX}" y1="${dimWidthY + 10}" x2="${col0CenterX}" y2="${dimPitchY + 5}" stroke="#F59E0B" stroke-width="0.8" stroke-dasharray="2 2"/>
+      <line x1="${col1CenterX}" y1="${dimWidthY + 10}" x2="${col1CenterX}" y2="${dimPitchY + 5}" stroke="#F59E0B" stroke-width="0.8" stroke-dasharray="2 2"/>
       <line x1="${col0CenterX + 2}" y1="${dimPitchY}" x2="${col1CenterX - 2}" y2="${dimPitchY}" stroke="#F59E0B" stroke-width="1.2" marker-start="url(#arr-amber-start-${uid})" marker-end="url(#arr-amber-end-${uid})"/>
-      <text x="${(col0CenterX + col1CenterX) / 2}" y="${dimPitchY - 5}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="#F59E0B">
+      <text x="${(col0CenterX + col1CenterX) / 2}" y="${dimPitchY - 5}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="#F59E0B" style="paint-order: stroke fill; stroke: #141413; stroke-width: 4px; stroke-linejoin: round;">
         ${escapeXml(spec.columns.pitchLabel)}
       </text>
       ` : ''}

@@ -188,8 +188,8 @@ export function deriveVaporChamberPillarSpec(
     },
     {
       side: 'bottom',
-      label: 'ATMOSPHERIC PRESSURE LOAD',
-      magnitude: dims.pressureDiff,
+      label: '', // Symmetrical inward vector arrows; omit duplicate text label to keep bottom metrology corridor 100% collision-free
+      magnitude: '',
       arrows: 6,
       direction: 'inward',
       color: '#F87171',
