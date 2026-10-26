@@ -271,6 +271,7 @@ export default function DraftViewer({
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
   const [activeTitleAngle, setActiveTitleAngle] = useState<string | null>("mechanism");
+  const [isPreviewMode, setIsPreviewMode] = useState(false);
 
   // Selected image indices per figure for active draft
   const [selectedImages, setSelectedImages] = useState<Record<number, number>>({});
@@ -1474,6 +1475,259 @@ export default function DraftViewer({
     );
   };
 
+  const renderProductionFigure = (figIdx: number) => {
+    if (!activeDraft?.figures || !activeDraft.figures[figIdx]) return null;
+    const fig = activeDraft.figures[figIdx];
+    const currentSelectedIdx = selectedImages[figIdx] ?? (fig.selectedIndex || 0);
+    const selectedImg = fig.images[currentSelectedIdx] || fig.images[0];
+    const activeTab = activeFigTabs[figIdx] || fig.activeTab || "carousel";
+    const currentCadSvg = cadSvgs[figIdx] || fig.cadSvg;
+
+    if ((activeTab === "cad" || !selectedImg?.url) && currentCadSvg) {
+      return (
+        <figure key={`prod-fig-${figIdx}`} className="product-figure my-8 rounded-xl border border-neutral-800 bg-neutral-900/60 overflow-hidden shadow-2xl not-prose">
+          <div
+            className="img-wrapper relative w-full bg-[#141413] p-2 sm:p-4 flex items-center justify-center"
+            dangerouslySetInnerHTML={{ __html: currentCadSvg }}
+          />
+          <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800 flex justify-between items-center gap-2">
+            <span>{fig.caption || selectedImg?.title || editedTitle || activeDraft.title}</span>
+            <span className="text-[10px] text-emerald-400 uppercase tracking-wider font-semibold">100% CLEAN HOUSE-STYLE CAD SCHEMATIC</span>
+          </figcaption>
+        </figure>
+      );
+    }
+
+    return (
+      <figure key={`prod-fig-${figIdx}`} className="product-figure my-8 rounded-xl border border-neutral-800 bg-neutral-900/60 overflow-hidden shadow-2xl not-prose">
+        <div className="img-wrapper relative w-full h-72 sm:h-96 bg-neutral-950 flex items-center justify-center overflow-hidden">
+          {selectedImg?.url ? (
+            <img
+              src={selectedImg.url}
+              alt={fig.caption || selectedImg.title || activeDraft.title}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="text-neutral-500 font-mono text-xs">No image available</div>
+          )}
+        </div>
+        <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800 flex justify-between items-center gap-2">
+          <span>{fig.caption || selectedImg?.title || ""}</span>
+          <span className="text-[10px] text-amber-500 uppercase tracking-wider">{fig.source || selectedImg?.source || "TEARDOWN ARCHIVE"}</span>
+        </figcaption>
+      </figure>
+    );
+  };
+
+  const renderProductionSection = (sec: DraftSection, secIdx: number) => {
+    if (!sec || (!sec.content?.trim() && (!sec.heading || sec.heading.startsWith("Section ")))) {
+      return null;
+    }
+    const cleanHeading = sec.heading.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim();
+
+    return (
+      <div key={`prod-sec-${sec.id || secIdx}`} className="mb-10">
+        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-neutral-100 font-sans mt-8 mb-4 pb-2 border-b border-neutral-800/60 flex items-center gap-2">
+          <span className="text-[var(--accent)] font-mono text-lg font-bold">
+            {secIdx + 1}.
+          </span>
+          <span>{cleanHeading}</span>
+        </h2>
+
+        <div className="space-y-4 text-sm sm:text-base font-sans leading-relaxed text-neutral-300">
+          {sec.content
+            .replace(/(^|\n)(#{2,4}\s+[^\n]+)\n(?!\n)/g, "$1$2\n\n")
+            .split(/\n\n+/)
+            .map((para, pIdx) => {
+              const trimmed = para.trim();
+              if (!trimmed) return null;
+
+              // Figures
+              if (trimmed.includes("{{ FIGURE_0 }}")) return renderProductionFigure(0);
+              if (trimmed.includes("{{ FIGURE_1 }}")) return renderProductionFigure(1);
+              if (trimmed.includes("{{ FIGURE_2 }}")) return renderProductionFigure(2);
+              if (trimmed.includes("{{ FIGURE_3 }}")) return renderProductionFigure(3);
+
+              // Display Math
+              if (trimmed.startsWith("$$") && trimmed.endsWith("$$")) {
+                const math = trimmed.slice(2, -2).trim();
+                let html = "";
+                try {
+                  html = katex.renderToString(math, { displayMode: true, throwOnError: false });
+                } catch {
+                  html = math;
+                }
+                return (
+                  <div
+                    key={pIdx}
+                    className="rounded-lg bg-[var(--card-inner)] border border-[var(--border)] p-3 text-center my-3 overflow-x-auto"
+                    dangerouslySetInnerHTML={{ __html: html }}
+                  />
+                );
+              }
+
+              // Subheadings
+              if (trimmed.startsWith("### ")) {
+                const subLines = trimmed.split("\n");
+                const headingText = subLines[0].replace(/^###\s+/, "").trim();
+                const restText = subLines.slice(1).join("\n").trim();
+                const cleanSub = headingText.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim().toLowerCase();
+                const cleanSec = sec.heading.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim().toLowerCase();
+                const isDuplicate = cleanSub === cleanSec;
+
+                return (
+                  <div key={pIdx} className="space-y-2">
+                    {!isDuplicate && (
+                      <h3 className="text-base sm:text-lg font-bold font-sans text-neutral-100 mt-6 mb-2 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+                        {headingText}
+                      </h3>
+                    )}
+                    {restText && (
+                      <p
+                        className="my-2 leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: renderInlineKaTeXAndMarkdown(restText) }}
+                      />
+                    )}
+                  </div>
+                );
+              }
+              if (trimmed.startsWith("#### ")) {
+                const headingText = trimmed.replace(/^####\s+/, "").trim();
+                return (
+                  <h4
+                    key={pIdx}
+                    className="text-sm sm:text-base font-semibold font-sans text-[var(--accent)] mt-4 mb-1"
+                  >
+                    {headingText}
+                  </h4>
+                );
+              }
+
+              // Interactive Hardware Components
+              if (trimmed.startsWith("<ParameterExplorer")) {
+                const props = parseJsxProps(trimmed);
+                return (
+                  <div key={pIdx} className="my-6">
+                    <ParameterExplorer
+                      title={props.title || "Operating Dynamics"}
+                      equationTex={props.equationTex || ""}
+                      takeaway={props.takeaway}
+                    />
+                  </div>
+                );
+              }
+              if (trimmed.startsWith("<ToleranceStackupBar")) {
+                const props = parseJsxProps(trimmed);
+                return (
+                  <div key={pIdx} className="my-6">
+                    <ToleranceStackupBar
+                      title={props.title || "Tolerance Stackup"}
+                      minAllowableGap={props.minAllowableGap ?? 0.02}
+                      maxAllowableGap={props.maxAllowableGap ?? 0.08}
+                      unit={props.unit || "mm"}
+                      takeaway={props.takeaway}
+                    />
+                  </div>
+                );
+              }
+              if (trimmed.startsWith("<TradeoffMatrix")) {
+                const props = parseJsxProps(trimmed);
+                return (
+                  <div key={pIdx} className="my-6">
+                    <TradeoffMatrix
+                      title={props.title || "Tradeoff Matrix"}
+                      takeaway={props.takeaway}
+                    />
+                  </div>
+                );
+              }
+              if (trimmed.startsWith("<LayeredCrossSection")) {
+                const props = parseJsxProps(trimmed);
+                return (
+                  <div key={pIdx} className="my-6">
+                    <LayeredCrossSection
+                      title={props.title || "Layered Cross-Section"}
+                      totalThickness={props.totalThickness || "1.0 mm"}
+                      takeaway={props.takeaway}
+                    />
+                  </div>
+                );
+              }
+              if (trimmed.startsWith("<MechanismWalkthrough")) {
+                const props = parseJsxProps(trimmed);
+                return (
+                  <div key={pIdx} className="my-6">
+                    <MechanismWalkthrough
+                      title={props.title || "Mechanism Walkthrough"}
+                      takeaway={props.takeaway}
+                    />
+                  </div>
+                );
+              }
+
+              // Raw HTML / Custom Containers
+              if (
+                trimmed.startsWith("<div") ||
+                trimmed.startsWith("<table") ||
+                trimmed.startsWith("<ProcessFlow") ||
+                trimmed.startsWith("<TechnicalCard")
+              ) {
+                const html = renderRichHtml(trimmed);
+                return (
+                  <div
+                    key={pIdx}
+                    className="my-4 overflow-x-auto"
+                    dangerouslySetInnerHTML={{ __html: html }}
+                  />
+                );
+              }
+
+              // Lists
+              const pLines = trimmed.split("\n");
+              if (pLines.length > 0 && pLines.every((l) => l.trim().startsWith("- ") || l.trim().startsWith("* "))) {
+                return (
+                  <ul key={pIdx} className="list-disc pl-5 space-y-2 my-4 text-sm sm:text-base">
+                    {pLines.map((l, lIdx) => (
+                      <li
+                        key={lIdx}
+                        dangerouslySetInnerHTML={{
+                          __html: renderInlineKaTeXAndMarkdown(l.trim().replace(/^[-*]\s+/, "")),
+                        }}
+                      />
+                    ))}
+                  </ul>
+                );
+              }
+              if (pLines.length > 0 && pLines.every((l) => /^\d+\.\s+/.test(l.trim()))) {
+                return (
+                  <ol key={pIdx} className="list-decimal pl-5 space-y-2 my-4 text-sm sm:text-base">
+                    {pLines.map((l, lIdx) => (
+                      <li
+                        key={lIdx}
+                        dangerouslySetInnerHTML={{
+                          __html: renderInlineKaTeXAndMarkdown(l.trim().replace(/^\d+\.\s+/, "")),
+                        }}
+                      />
+                    ))}
+                  </ol>
+                );
+              }
+
+              // Prose Paragraph
+              return (
+                <p
+                  key={pIdx}
+                  className="my-3 leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: renderInlineKaTeXAndMarkdown(trimmed) }}
+                />
+              );
+            })}
+        </div>
+      </div>
+    );
+  };
+
   if (!isUnlocked) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
@@ -1728,83 +1982,164 @@ export default function DraftViewer({
         </div>
       </div>
 
-      {/* 1-Click Title Bar with 4 Distinct Headline Angles */}
-      <div className="mb-6 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm">
-        <div className="text-[10px] font-mono uppercase font-bold text-[var(--muted)] mb-2 flex items-center justify-between">
-          <span>1-Click Title Bar (Select Headline Angle)</span>
-          <button
-            type="button"
-            onClick={() => setIsEditingTitle(!isEditingTitle)}
-            className="text-[var(--accent)] hover:underline flex items-center gap-1"
-          >
-            <Edit2 className="w-3 h-3" />
-            {isEditingTitle ? "Done Editing" : "Custom Edit"}
-          </button>
-        </div>
-
-        {/* 4 Headline Angle Pills */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
-          {[
-            { key: "mechanism", label: "⚙️ Mechanism-Focused" },
-            { key: "tradeoff", label: "⚖️ Design Tradeoff" },
-            { key: "teardown", label: "🔬 Teardown Case Study" },
-            { key: "failureMode", label: "⚠️ Failure Mode" },
-          ].map((angle) => (
+      {isPreviewMode ? (
+        <div className="mb-8">
+          {/* Production Preview Mode Alert Banner */}
+          <div className="mb-8 p-3.5 sm:p-4 rounded-xl border border-sky-500/50 bg-sky-500/10 text-sky-200 font-mono text-xs flex items-center justify-between shadow-xl backdrop-blur-md">
+            <div className="flex items-center gap-2.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-sky-400 animate-pulse" />
+              <span className="font-bold uppercase tracking-wider text-sky-300">Live Production Preview</span>
+              <span className="hidden sm:inline text-sky-300/70">• Exactly as readers will see it on the-hw-insider.com</span>
+            </div>
             <button
-              key={angle.key}
               type="button"
-              onClick={() => selectTitleAngle(angle.key as any)}
-              className={`p-2 rounded-lg border text-left text-xs font-mono transition-all ${
-                activeTitleAngle === angle.key
-                  ? "border-[var(--accent)] bg-[var(--accent)]/15 text-[var(--accent)] font-bold shadow"
-                  : "border-[var(--border)] bg-[var(--card-inner)] text-[var(--muted)] hover:text-[var(--text)]"
-              }`}
+              onClick={() => setIsPreviewMode(false)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-white font-bold border border-sky-500/50 transition-all text-xs"
             >
-              {angle.label}
+              <Edit2 className="w-3.5 h-3.5" />
+              <span>Exit Preview</span>
             </button>
-          ))}
+          </div>
+
+          {/* Production Article Layout matching app/issue/[id]/page.tsx */}
+          <article className="prose prose-invert max-w-none not-prose">
+            <div className="border-b border-neutral-800 pb-6 mb-8">
+              <div className="flex items-center gap-2 font-mono text-xs text-amber-500 uppercase tracking-widest mb-2">
+                <span>ISSUE #{activeDraft.filename?.replace(/\.json$/, "").toUpperCase() || "PREVIEW"}</span>
+                <span>•</span>
+                <span>{activeDraft.subject || activeDraft.category || "HARDWARE"}</span>
+                <span>•</span>
+                <span>{activeDraft.readTime || "12 MIN READ"}</span>
+              </div>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-neutral-100 font-sans mb-3 leading-tight">
+                {editedTitle || activeDraft.title}
+              </h1>
+              <p className="text-sm sm:text-base text-neutral-400 font-mono leading-relaxed">
+                {formatAnswerOverview(activeDraft.subtitle || "", editedTitle || activeDraft.title, activeDraft.title)}
+              </p>
+            </div>
+
+            <div className="text-neutral-300 leading-relaxed font-sans space-y-6">
+              {activeSections
+                .filter((sec) => !sec.hidden)
+                .map((sec, secIdx) => renderProductionSection(sec, secIdx))}
+            </div>
+
+            <div className="mt-14 pt-6 border-t border-neutral-800 flex justify-between font-mono text-xs text-neutral-500">
+              <span className="text-amber-400 hover:text-amber-300 cursor-pointer">← Browse Archive</span>
+              <span>{activeDraft.date || new Date().toISOString().split("T")[0]}</span>
+            </div>
+          </article>
         </div>
+      ) : (
+        <>
+          {/* 1-Click Title Bar with 4 Distinct Headline Angles */}
+          <div className="mb-6 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm">
+            <div className="text-[10px] font-mono uppercase font-bold text-[var(--muted)] mb-2 flex items-center justify-between">
+              <span>1-Click Title Bar (Select Headline Angle)</span>
+              <button
+                type="button"
+                onClick={() => setIsEditingTitle(!isEditingTitle)}
+                className="text-[var(--accent)] hover:underline flex items-center gap-1"
+              >
+                <Edit2 className="w-3 h-3" />
+                {isEditingTitle ? "Done Editing" : "Custom Edit"}
+              </button>
+            </div>
 
-        {/* Live Headline Display / Input */}
-        {isEditingTitle ? (
-          <input
-            type="text"
-            value={editedTitle}
-            onChange={(e) => setEditedTitle(e.target.value)}
-            className="w-full bg-[var(--card-inner)] border border-[var(--accent)] rounded p-2 text-xl sm:text-2xl font-serif text-[var(--text)] focus:outline-none"
-            autoFocus
-          />
-        ) : (
-          <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal tracking-tight text-[var(--text)] m-0 leading-tight">
-            {editedTitle || activeDraft.title}
-          </h1>
-        )}
-      </div>
+            {/* 4 Headline Angle Pills */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+              {[
+                { key: "mechanism", label: "⚙️ Mechanism-Focused" },
+                { key: "tradeoff", label: "⚖️ Design Tradeoff" },
+                { key: "teardown", label: "🔬 Teardown Case Study" },
+                { key: "failureMode", label: "⚠️ Failure Mode" },
+              ].map((angle) => (
+                <button
+                  key={angle.key}
+                  type="button"
+                  onClick={() => selectTitleAngle(angle.key as any)}
+                  className={`p-2 rounded-lg border text-left text-xs font-mono transition-all ${
+                    activeTitleAngle === angle.key
+                      ? "border-[var(--accent)] bg-[var(--accent)]/15 text-[var(--accent)] font-bold shadow"
+                      : "border-[var(--border)] bg-[var(--card-inner)] text-[var(--muted)] hover:text-[var(--text)]"
+                  }`}
+                >
+                  {angle.label}
+                </button>
+              ))}
+            </div>
 
-      {/* Subtitle */}
-      {activeDraft.subtitle && (
-        <p className="text-base sm:text-lg text-[var(--muted)] leading-relaxed mt-2 mb-6 font-sans">
-          {formatAnswerOverview(activeDraft.subtitle, editedTitle || activeDraft.title, activeDraft.title)}
-        </p>
+            {/* Live Headline Display / Input */}
+            {isEditingTitle ? (
+              <input
+                type="text"
+                value={editedTitle}
+                onChange={(e) => setEditedTitle(e.target.value)}
+                className="w-full bg-[var(--card-inner)] border border-[var(--accent)] rounded p-2 text-xl sm:text-2xl font-serif text-[var(--text)] focus:outline-none"
+                autoFocus
+              />
+            ) : (
+              <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal tracking-tight text-[var(--text)] m-0 leading-tight">
+                {editedTitle || activeDraft.title}
+              </h1>
+            )}
+          </div>
+
+          {/* Subtitle */}
+          {activeDraft.subtitle && (
+            <p className="text-base sm:text-lg text-[var(--muted)] leading-relaxed mt-2 mb-6 font-sans">
+              {formatAnswerOverview(activeDraft.subtitle, editedTitle || activeDraft.title, activeDraft.title)}
+            </p>
+          )}
+
+          {/* Modular Section Cards */}
+          <div className="space-y-4">
+            {activeSections.map((sec, idx) => renderSectionCard(sec, idx))}
+          </div>
+        </>
       )}
-
-      {/* Modular Section Cards */}
-      <div className="space-y-4">
-        {activeSections.map((sec, idx) => renderSectionCard(sec, idx))}
-      </div>
 
       {/* Floating Bottom Triage Action Dock */}
       <div className="fixed bottom-0 inset-x-0 z-40 bg-[var(--surface)]/95 border-t border-[var(--border)] backdrop-blur-xl px-4 py-3 sm:py-4 shadow-2xl">
-        <div className="max-w-4xl mx-auto flex items-center justify-between gap-3 sm:gap-4">
+        <div className="max-w-4xl mx-auto flex items-center justify-between gap-2 sm:gap-3">
           {/* Veto Button with the 4 standard blueprint tags */}
           <button
             type="button"
             onClick={() => setShowVetoModal(true)}
             disabled={loading}
-            className="flex-1 flex items-center justify-center gap-2 py-3 px-3 rounded-xl border border-red-500/40 bg-red-500/10 text-red-400 font-mono text-xs sm:text-sm font-semibold hover:bg-red-500/20 active:scale-[0.98] transition-all disabled:opacity-50"
+            className="flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-3 rounded-xl border border-red-500/40 bg-red-500/10 text-red-400 font-mono text-xs sm:text-sm font-semibold hover:bg-red-500/20 active:scale-[0.98] transition-all disabled:opacity-50"
           >
             <X className="w-4 h-4 stroke-[2.5]" />
-            <span>VETO TOPIC</span>
+            <span className="hidden sm:inline">VETO TOPIC</span>
+            <span className="sm:hidden">VETO</span>
+          </button>
+
+          {/* Production Preview Toggle Button */}
+          <button
+            type="button"
+            onClick={() => setIsPreviewMode(!isPreviewMode)}
+            disabled={loading}
+            className={`flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-3 rounded-xl border font-mono text-xs sm:text-sm font-semibold transition-all active:scale-[0.98] ${
+              isPreviewMode
+                ? "border-amber-500/80 bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 shadow-lg shadow-amber-500/10"
+                : "border-sky-500/50 bg-sky-500/10 text-sky-400 hover:bg-sky-500/20 hover:border-sky-500/70"
+            }`}
+            title={isPreviewMode ? "Return to editing section controls" : "Preview like it would be in production"}
+          >
+            {isPreviewMode ? (
+              <>
+                <Edit2 className="w-4 h-4 stroke-[2.5]" />
+                <span className="hidden sm:inline">EDIT MODE</span>
+                <span className="sm:hidden">EDIT</span>
+              </>
+            ) : (
+              <>
+                <Eye className="w-4 h-4 stroke-[2.5]" />
+                <span className="hidden sm:inline">PROD PREVIEW</span>
+                <span className="sm:hidden">PREVIEW</span>
+              </>
+            )}
           </button>
 
           {/* Save Draft in-place */}
@@ -1812,11 +2147,12 @@ export default function DraftViewer({
             type="button"
             onClick={handleSaveDraft}
             disabled={loading}
-            className="flex-1 flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl border border-[var(--border)] bg-[var(--card-inner)] text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--accent)] font-mono text-xs sm:text-sm font-semibold transition-all disabled:opacity-50"
+            className="flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-3 rounded-xl border border-[var(--border)] bg-[var(--card-inner)] text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--accent)] font-mono text-xs sm:text-sm font-semibold transition-all disabled:opacity-50"
             title="Save changes to staging draft without publishing"
           >
             <UploadCloud className="w-4 h-4 stroke-[2]" />
-            <span>SAVE DRAFT</span>
+            <span className="hidden sm:inline">SAVE DRAFT</span>
+            <span className="sm:hidden">SAVE</span>
           </button>
 
           {/* Approve to Buffer Button (Dual-Track 10-15 buffer) */}
@@ -1824,10 +2160,11 @@ export default function DraftViewer({
             type="button"
             onClick={() => handleApprove("buffer")}
             disabled={loading}
-            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-[var(--accent)]/50 bg-[var(--accent)]/15 text-[var(--accent)] font-mono text-xs sm:text-sm font-bold hover:bg-[var(--accent)]/25 active:scale-[0.98] transition-all disabled:opacity-50"
+            className="flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-4 rounded-xl border border-[var(--accent)]/50 bg-[var(--accent)]/15 text-[var(--accent)] font-mono text-xs sm:text-sm font-bold hover:bg-[var(--accent)]/25 active:scale-[0.98] transition-all disabled:opacity-50"
           >
             <Archive className="w-4 h-4 stroke-[2.5]" />
-            <span>APPROVE TO BUFFER</span>
+            <span className="hidden md:inline">APPROVE TO BUFFER</span>
+            <span className="md:hidden">BUFFER</span>
           </button>
 
           {/* Approve & Publish Immediately Button */}
@@ -1835,10 +2172,11 @@ export default function DraftViewer({
             type="button"
             onClick={() => handleApprove("publish")}
             disabled={loading}
-            className="flex-2 flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-mono text-xs sm:text-sm font-bold shadow-lg shadow-[var(--accent)]/20 active:scale-[0.98] transition-all disabled:opacity-50"
+            className="flex-2 flex items-center justify-center gap-1.5 py-3 px-3 sm:px-6 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-mono text-xs sm:text-sm font-bold shadow-lg shadow-[var(--accent)]/20 active:scale-[0.98] transition-all disabled:opacity-50"
           >
             <Check className="w-4 h-4 stroke-[3]" />
-            <span>APPROVE & PUBLISH ISSUE</span>
+            <span className="hidden md:inline">APPROVE & PUBLISH ISSUE</span>
+            <span className="md:hidden">PUBLISH ISSUE</span>
           </button>
         </div>
       </div>
