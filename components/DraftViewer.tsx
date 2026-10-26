@@ -31,6 +31,9 @@ import {
   Archive,
   Send,
   Zap,
+  FileText,
+  ListOrdered,
+  CornerUpLeft,
 } from "lucide-react";
 import { ProcessFlow, ProcessStep } from "./ProcessFlow";
 import { TechnicalCard } from "./TechnicalCard";
@@ -93,6 +96,8 @@ interface DraftItem {
   summary?: string;
   figures?: DraftFigure[];
   sections?: DraftSection[];
+  queueOrder?: number;
+  status?: string;
   body_mdx?: string;
   tangents?: Record<string, any>;
   source?: string;
@@ -240,10 +245,12 @@ function renderRichHtml(html: string): string {
 
 export default function DraftViewer({
   initialDrafts,
+  initialApprovedDrafts = [],
   initiallyUnlocked = false,
   initialApprovedCount = 0,
 }: {
   initialDrafts: DraftItem[];
+  initialApprovedDrafts?: DraftItem[];
   initiallyUnlocked?: boolean;
   initialApprovedCount?: number;
 }) {
@@ -252,12 +259,15 @@ export default function DraftViewer({
   const [pinError, setPinError] = useState(false);
 
   const [drafts, setDrafts] = useState<DraftItem[]>(initialDrafts);
+  const [approvedQueue, setApprovedQueue] = useState<DraftItem[]>(initialApprovedDrafts);
+  const [activeView, setActiveView] = useState<"staging" | "queue">("staging");
+  const [expandedQueueFilename, setExpandedQueueFilename] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [actionMessage, setActionMessage] = useState<string | null>(null);
 
   // Runway & Buffer state
-  const [approvedCount, setApprovedCount] = useState<number>(initialApprovedCount);
+  const [approvedCount, setApprovedCount] = useState<number>(initialApprovedCount || initialApprovedDrafts.length);
   const runwayAlert = approvedCount <= 3;
 
   // Quick Seed Box state ("Anchor & Fill")
@@ -462,6 +472,9 @@ export default function DraftViewer({
           }
           if (typeof data.approvedCount === "number") {
             setApprovedCount(data.approvedCount);
+          }
+          if (Array.isArray(data.approvedDrafts)) {
+            setApprovedQueue(data.approvedDrafts);
           }
           setCurrentIndex(0);
         }
@@ -739,13 +752,13 @@ export default function DraftViewer({
     }
   };
 
-  // Approval handlers: "buffer" vs "publish"
-  const handleApprove = async (targetMode: "buffer" | "publish" = "publish") => {
+  // Primary approval handler: strictly approve to buffer queue
+  const [reorderingFilename, setReorderingFilename] = useState<string | null>(null);
+
+  const handleApproveToBuffer = async () => {
     if (!activeDraft) return;
     setLoading(true);
-    setActionMessage(
-      targetMode === "buffer" ? "Moving to 10–15 Approved Buffer..." : "Publishing daily issue..."
-    );
+    setActionMessage("Adding to Approved Buffer Queue...");
 
     try {
       const updatedFigures = (activeDraft.figures || []).map((fig, idx) => ({
@@ -763,7 +776,7 @@ export default function DraftViewer({
           title: editedTitle || activeDraft.title,
           figures: updatedFigures,
           sections: activeSections,
-          target: targetMode,
+          target: "buffer",
         }),
       });
 
@@ -773,12 +786,20 @@ export default function DraftViewer({
       }
 
       const data = await res.json();
-      if (targetMode === "buffer") {
-        setApprovedCount(data.approvedCount || approvedCount + 1);
-        setActionMessage(`✓ Added to Approved Buffer (${data.approvedCount} in runway)!`);
-      } else {
-        setActionMessage(`✓ Published as Issue #${data.issueId}!`);
-      }
+      const newCount = data.approvedCount || approvedCount + 1;
+      setApprovedCount(newCount);
+
+      // Add to local approved queue
+      const approvedEntry: DraftItem = {
+        ...activeDraft,
+        filename: data.filename || activeDraft.filename,
+        title: editedTitle || activeDraft.title,
+        sections: activeSections,
+        queueOrder: newCount,
+      };
+      setApprovedQueue((prev) => [...prev, approvedEntry]);
+
+      setActionMessage(`✓ Added to Buffer Queue (#${newCount} in line)!`);
 
       try {
         const locallyApproved = JSON.parse(localStorage.getItem("hw_approved_filenames") || "[]");
@@ -794,6 +815,99 @@ export default function DraftViewer({
       }, 700);
     } catch (err: any) {
       alert(`Approval error: ${err.message}`);
+      setActionMessage(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const moveQueueItem = async (index: number, direction: "up" | "down") => {
+    const targetIdx = direction === "up" ? index - 1 : index + 1;
+    if (targetIdx < 0 || targetIdx >= approvedQueue.length) return;
+
+    const movingItem = approvedQueue[index];
+    setReorderingFilename(movingItem.filename);
+
+    const reordered = [...approvedQueue];
+    const temp = reordered[index];
+    reordered[index] = reordered[targetIdx];
+    reordered[targetIdx] = temp;
+
+    // Update display orders optimistically
+    const updated = reordered.map((item, idx) => ({
+      ...item,
+      queueOrder: idx + 1,
+    }));
+    setApprovedQueue(updated);
+
+    try {
+      const res = await fetch("/api/drafts/queue", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderedFilenames: reordered.map((item) => item.filename),
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Failed to update queue order");
+      }
+
+      const data = await res.json();
+      if (Array.isArray(data.queue)) {
+        setApprovedQueue(data.queue);
+      }
+      setActionMessage("✓ Buffer publishing sequence saved — pulls in exact order!");
+      setTimeout(() => setActionMessage(null), 2000);
+    } catch (err: any) {
+      console.error("Queue reorder failed:", err);
+      setActionMessage("⚠️ Reorder failed: " + err.message);
+      setTimeout(() => setActionMessage(null), 3000);
+      refreshDrafts();
+    } finally {
+      setReorderingFilename(null);
+    }
+  };
+
+  const returnToStaging = async (item: DraftItem) => {
+    if (!confirm(`Return "${item.title}" from approved buffer back to staging for editing?`)) {
+      return;
+    }
+    setLoading(true);
+    setActionMessage(`Returning "${item.title.slice(0, 30)}..." to Staging...`);
+
+    try {
+      const res = await fetch(`/api/drafts/queue?filename=${encodeURIComponent(item.filename)}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Failed to return to staging");
+      }
+
+      const data = await res.json();
+      setApprovedQueue((prev) => prev.filter((d) => d.filename !== item.filename));
+      setApprovedCount((prev) => Math.max(0, prev - 1));
+
+      // Append back to drafts
+      const returnedItem: DraftItem = {
+        ...item,
+        filename: data.returnedFilename || item.filename.replace(/^\d{3}-/, ""),
+      };
+      setDrafts((prev) => [returnedItem, ...prev]);
+
+      try {
+        const locallyApproved = JSON.parse(localStorage.getItem("hw_approved_filenames") || "[]");
+        const nextSet = locallyApproved.filter((fn: string) => fn !== item.filename && fn !== returnedItem.filename);
+        localStorage.setItem("hw_approved_filenames", JSON.stringify(nextSet));
+      } catch {}
+
+      setActionMessage("✓ Draft returned to Staging queue!");
+      setTimeout(() => setActionMessage(null), 2500);
+    } catch (err: any) {
+      alert(`Return error: ${err.message}`);
       setActionMessage(null);
     } finally {
       setLoading(false);
@@ -1770,38 +1884,6 @@ export default function DraftViewer({
     );
   }
 
-  if (!activeDraft || drafts.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
-        <div className="w-14 h-14 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/30 flex items-center justify-center mb-5 text-[var(--accent)]">
-          <Sparkles className="w-7 h-7" />
-        </div>
-        <h2 className="text-2xl font-serif font-normal text-[var(--text)] mb-2">
-          Queue Triaged & Pristine
-        </h2>
-        <p className="text-sm text-[var(--muted)] font-sans max-w-md mb-8">
-          All staged drafts have been reviewed. Run the harvester to maintain the 40+ draft volume floor.
-        </p>
-        <div className="flex gap-4">
-          <button
-            onClick={refreshDrafts}
-            disabled={loading}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] font-mono text-xs text-[var(--text)] hover:border-[var(--accent)] transition-colors"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
-            Check for New Drafts
-          </button>
-          <Link
-            href="/"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[var(--accent)] text-white font-mono text-xs font-semibold hover:bg-[var(--accent-hover)] transition-colors shadow-md shadow-[var(--accent)]/20"
-          >
-            View Live Publication
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="relative pb-36">
       {/* Toast Notification */}
@@ -1942,7 +2024,284 @@ export default function DraftViewer({
         )}
       </div>
 
-      {/* Triage Header Bar */}
+      {/* View Switcher: Staging Triage vs. Buffer Queue Manager */}
+      <div className="flex items-center gap-2 mb-6 border-b border-[var(--border)] pb-3">
+        <button
+          type="button"
+          onClick={() => setActiveView("staging")}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl font-mono text-xs font-bold transition-all ${
+            activeView === "staging"
+              ? "bg-[var(--accent)] text-white shadow-md shadow-[var(--accent)]/20"
+              : "bg-[var(--surface)] border border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--muted)]"
+          }`}
+        >
+          <FileText className="w-3.5 h-3.5" />
+          <span>STAGING REVIEW</span>
+          <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${activeView === "staging" ? "bg-black/25 text-white" : "bg-[var(--card-inner)] text-[var(--muted)]"}`}>
+            {drafts.length}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveView("queue")}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl font-mono text-xs font-bold transition-all ${
+            activeView === "queue"
+              ? "bg-[var(--accent)] text-white shadow-md shadow-[var(--accent)]/20"
+              : "bg-[var(--surface)] border border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--muted)]"
+          }`}
+        >
+          <Archive className="w-3.5 h-3.5" />
+          <span>BUFFER QUEUE</span>
+          <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
+            activeView === "queue"
+              ? "bg-black/25 text-white"
+              : runwayAlert
+              ? "bg-amber-500/20 text-amber-400"
+              : "bg-emerald-500/20 text-emerald-400"
+          }`}>
+            {approvedQueue.length}
+          </span>
+        </button>
+      </div>
+
+      {activeView === "queue" ? (
+        <div className="space-y-4 mb-16">
+          <div className="p-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--accent)]">
+                  Approved Buffer Publishing Queue
+                </span>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[var(--accent)]/15 text-[var(--accent)] border border-[var(--accent)]/30">
+                  {approvedQueue.length} {approvedQueue.length === 1 ? "Issue" : "Issues"} Ready
+                </span>
+              </div>
+              <p className="text-xs text-[var(--muted)] font-mono mt-1">
+                The automated daily publisher pulls issues from top to bottom. Click <span className="text-[var(--text)] font-bold">↑</span> and <span className="text-[var(--text)] font-bold">↓</span> to arrange which article goes live next.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={refreshDrafts}
+              disabled={loading}
+              className="self-start sm:self-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border)] text-xs font-mono text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--accent)] transition-colors"
+              title="Refresh Queue from Disk"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+              <span>Sync Queue</span>
+            </button>
+          </div>
+
+          {approvedQueue.length === 0 ? (
+            <div className="p-12 text-center rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
+              <Archive className="w-10 h-10 text-[var(--muted)] mx-auto mb-3 opacity-40" />
+              <h3 className="text-lg font-serif text-[var(--text)] mb-1">Buffer Queue is Empty</h3>
+              <p className="text-xs text-[var(--muted)] font-mono max-w-md mx-auto mb-5">
+                No issues are queued for automatic daily publishing. Switch to the Staging Review tab and click "Approve to Buffer" to load articles into the queue.
+              </p>
+              <button
+                type="button"
+                onClick={() => setActiveView("staging")}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--accent)] text-white font-mono text-xs font-bold hover:bg-[var(--accent-hover)] transition-all shadow"
+              >
+                <FileText className="w-4 h-4" />
+                Go to Staging Review ({drafts.length})
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {approvedQueue.map((item, idx) => {
+                const isNextUp = idx === 0;
+                const isExpanded = expandedQueueFilename === item.filename;
+                const isMoving = reorderingFilename === item.filename;
+
+                return (
+                  <div
+                    key={item.filename || idx}
+                    className={`rounded-xl border transition-all ${
+                      isNextUp
+                        ? "border-emerald-500/50 bg-emerald-500/[0.04] shadow-lg shadow-emerald-500/5"
+                        : "border-[var(--border)] bg-[var(--surface)] hover:border-[var(--muted)]"
+                    }`}
+                  >
+                    <div className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                      <div className="flex items-start gap-3 flex-1 min-w-0">
+                        {/* Queue Position Pill */}
+                        <div className="flex flex-col items-center">
+                          <span
+                            className={`font-mono text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 ${
+                              isNextUp
+                                ? "bg-emerald-500 text-black font-extrabold shadow-sm"
+                                : "bg-[var(--card-inner)] border border-[var(--border)] text-[var(--muted)]"
+                            }`}
+                          >
+                            #{idx + 1}
+                          </span>
+                          {isNextUp && (
+                            <span className="text-[9px] font-mono text-emerald-400 font-bold uppercase mt-1 tracking-tighter">
+                              Next Up
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Title and metadata */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 font-mono text-[11px] text-[var(--muted)] uppercase tracking-wider mb-1">
+                            <span className="text-[var(--accent)] font-semibold">
+                              {item.subject || item.category || "Hardware"}
+                            </span>
+                            <span>•</span>
+                            <span>{item.readTime || "12 MIN READ"}</span>
+                            <span>•</span>
+                            <span className="truncate max-w-[200px] text-[10px] text-neutral-400">
+                              {item.filename}
+                            </span>
+                          </div>
+                          <h3 className="font-serif text-base sm:text-lg text-[var(--text)] font-semibold leading-snug truncate">
+                            {item.title}
+                          </h3>
+                          {item.subtitle && (
+                            <p className="text-xs text-[var(--muted)] font-sans line-clamp-1 mt-0.5">
+                              {item.subtitle}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Action Controls */}
+                      <div className="flex items-center gap-1.5 self-end md:self-auto shrink-0">
+                        {/* Move Up */}
+                        <button
+                          type="button"
+                          onClick={() => moveQueueItem(idx, "up")}
+                          disabled={idx === 0 || loading || isMoving}
+                          className="p-2 rounded-lg border border-[var(--border)] bg-[var(--card-inner)] text-[var(--text)] hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:opacity-30 disabled:hover:border-[var(--border)] disabled:hover:text-[var(--text)] transition-all"
+                          title="Move Up (Publish Earlier)"
+                        >
+                          <ArrowUp className="w-4 h-4" />
+                        </button>
+
+                        {/* Move Down */}
+                        <button
+                          type="button"
+                          onClick={() => moveQueueItem(idx, "down")}
+                          disabled={idx === approvedQueue.length - 1 || loading || isMoving}
+                          className="p-2 rounded-lg border border-[var(--border)] bg-[var(--card-inner)] text-[var(--text)] hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:opacity-30 disabled:hover:border-[var(--border)] disabled:hover:text-[var(--text)] transition-all"
+                          title="Move Down (Publish Later)"
+                        >
+                          <ArrowDown className="w-4 h-4" />
+                        </button>
+
+                        {/* Return to Staging */}
+                        <button
+                          type="button"
+                          onClick={() => returnToStaging(item)}
+                          disabled={loading}
+                          className="flex items-center gap-1 px-2.5 py-2 rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20 font-mono text-xs transition-all"
+                          title="Return this issue back to staging review for editing"
+                        >
+                          <CornerUpLeft className="w-3.5 h-3.5" />
+                          <span className="hidden sm:inline">Staging</span>
+                        </button>
+
+                        {/* Quick Content Preview Toggle */}
+                        <button
+                          type="button"
+                          onClick={() => setExpandedQueueFilename(isExpanded ? null : item.filename)}
+                          className={`flex items-center gap-1 px-2.5 py-2 rounded-lg border font-mono text-xs transition-all ${
+                            isExpanded
+                              ? "border-sky-500/60 bg-sky-500/20 text-sky-300"
+                              : "border-[var(--border)] bg-[var(--card-inner)] text-[var(--muted)] hover:text-[var(--text)]"
+                          }`}
+                          title="Preview sections and details"
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                          <span className="hidden sm:inline">{isExpanded ? "Collapse" : "Preview"}</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Collapsible Article Content Preview */}
+                    {isExpanded && (
+                      <div className="p-4 border-t border-[var(--border)] bg-[var(--card-inner)]/50 rounded-b-xl space-y-3">
+                        <div className="text-xs font-mono text-[var(--muted)] flex items-center justify-between">
+                          <span>Article Breakdown</span>
+                          <span>{item.sections?.length || 0} Sections</span>
+                        </div>
+                        {item.sections && item.sections.length > 0 ? (
+                          <div className="space-y-2">
+                            {item.sections.map((sec: any, secIdx: number) => (
+                              <div
+                                key={secIdx}
+                                className="p-2.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] text-xs font-mono"
+                              >
+                                <div className="font-semibold text-[var(--text)] mb-1">
+                                  {sec.heading}
+                                </div>
+                                <div className="text-[var(--muted)] font-sans line-clamp-2 text-xs">
+                                  {sec.content?.replace(/<[^>]+>/g, "").slice(0, 200)}...
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-xs font-mono text-[var(--muted)]">
+                            {item.body_mdx ? `${item.body_mdx.slice(0, 300)}...` : "No preview content available."}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ) : !activeDraft || drafts.length === 0 ? (
+        /* Empty State for Staging Review */
+        <div className="flex flex-col items-center justify-center min-h-[40vh] text-center px-4 py-12 rounded-2xl border border-[var(--border)] bg-[var(--surface)] mb-16">
+          <div className="w-14 h-14 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/30 flex items-center justify-center mb-5 text-[var(--accent)]">
+            <Sparkles className="w-7 h-7" />
+          </div>
+          <h2 className="text-2xl font-serif font-normal text-[var(--text)] mb-2">
+            Staging Queue Triaged & Pristine
+          </h2>
+          <p className="text-sm text-[var(--muted)] font-sans max-w-md mb-6">
+            All staged drafts have been reviewed. Manage the buffer queue or seed a new manual topic.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => setActiveView("queue")}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--accent)] text-white font-mono text-xs font-bold hover:bg-[var(--accent-hover)] transition-colors shadow-md shadow-[var(--accent)]/20"
+            >
+              <Archive className="w-4 h-4" />
+              View & Arrange Buffer Queue ({approvedQueue.length})
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowSeedBox(true)}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--card-inner)] font-mono text-xs text-[var(--text)] hover:border-[var(--accent)] transition-colors"
+            >
+              <PlusCircle className="w-3.5 h-3.5" />
+              Seed New Topic
+            </button>
+            <button
+              type="button"
+              onClick={refreshDrafts}
+              disabled={loading}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--card-inner)] font-mono text-xs text-[var(--text)] hover:border-[var(--accent)] transition-colors"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+              Check for New Drafts
+            </button>
+          </div>
+        </div>
+      ) : (
+        /* Staging Review Active Draft Editor */
+        <>
+          {/* Triage Header Bar */}
       <div className="flex items-center justify-between border-b border-[var(--border)] pb-4 mb-6">
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/15 text-[var(--accent)] font-mono text-[11px] font-semibold tracking-wide">
@@ -2099,87 +2458,79 @@ export default function DraftViewer({
           </div>
         </>
       )}
+      </>
+      )}
 
-      {/* Floating Bottom Triage Action Dock */}
-      <div className="fixed bottom-0 inset-x-0 z-40 bg-[var(--surface)]/95 border-t border-[var(--border)] backdrop-blur-xl px-4 py-3 sm:py-4 shadow-2xl">
-        <div className="max-w-4xl mx-auto flex items-center justify-between gap-2 sm:gap-3">
-          {/* Veto Button with the 4 standard blueprint tags */}
-          <button
-            type="button"
-            onClick={() => setShowVetoModal(true)}
-            disabled={loading}
-            className="flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-3 rounded-xl border border-red-500/40 bg-red-500/10 text-red-400 font-mono text-xs sm:text-sm font-semibold hover:bg-red-500/20 active:scale-[0.98] transition-all disabled:opacity-50"
-          >
-            <X className="w-4 h-4 stroke-[2.5]" />
-            <span className="hidden sm:inline">VETO TOPIC</span>
-            <span className="sm:hidden">VETO</span>
-          </button>
+      {/* Floating Bottom Triage Action Dock (Staging Review Only) */}
+      {activeView === "staging" && drafts.length > 0 && activeDraft && (
+        <div className="fixed bottom-0 inset-x-0 z-40 bg-[var(--surface)]/95 border-t border-[var(--border)] backdrop-blur-xl px-4 py-3 sm:py-4 shadow-2xl">
+          <div className="max-w-4xl mx-auto flex items-center justify-between gap-2 sm:gap-3">
+            {/* Veto Button with the 4 standard blueprint tags */}
+            <button
+              type="button"
+              onClick={() => setShowVetoModal(true)}
+              disabled={loading}
+              className="flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-3 rounded-xl border border-red-500/40 bg-red-500/10 text-red-400 font-mono text-xs sm:text-sm font-semibold hover:bg-red-500/20 active:scale-[0.98] transition-all disabled:opacity-50"
+            >
+              <X className="w-4 h-4 stroke-[2.5]" />
+              <span className="hidden sm:inline">VETO TOPIC</span>
+              <span className="sm:hidden">VETO</span>
+            </button>
 
-          {/* Production Preview Toggle Button */}
-          <button
-            type="button"
-            onClick={() => setIsPreviewMode(!isPreviewMode)}
-            disabled={loading}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-3 rounded-xl border font-mono text-xs sm:text-sm font-semibold transition-all active:scale-[0.98] ${
-              isPreviewMode
-                ? "border-amber-500/80 bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 shadow-lg shadow-amber-500/10"
-                : "border-sky-500/50 bg-sky-500/10 text-sky-400 hover:bg-sky-500/20 hover:border-sky-500/70"
-            }`}
-            title={isPreviewMode ? "Return to editing section controls" : "Preview like it would be in production"}
-          >
-            {isPreviewMode ? (
-              <>
-                <Edit2 className="w-4 h-4 stroke-[2.5]" />
-                <span className="hidden sm:inline">EDIT MODE</span>
-                <span className="sm:hidden">EDIT</span>
-              </>
-            ) : (
-              <>
-                <Eye className="w-4 h-4 stroke-[2.5]" />
-                <span className="hidden sm:inline">PROD PREVIEW</span>
-                <span className="sm:hidden">PREVIEW</span>
-              </>
-            )}
-          </button>
+            {/* Production Preview Toggle Button */}
+            <button
+              type="button"
+              onClick={() => setIsPreviewMode(!isPreviewMode)}
+              disabled={loading}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-3 rounded-xl border font-mono text-xs sm:text-sm font-semibold transition-all active:scale-[0.98] ${
+                isPreviewMode
+                  ? "border-amber-500/80 bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 shadow-lg shadow-amber-500/10"
+                  : "border-sky-500/50 bg-sky-500/10 text-sky-400 hover:bg-sky-500/20 hover:border-sky-500/70"
+              }`}
+              title={isPreviewMode ? "Return to editing section controls" : "Preview like it would be in production"}
+            >
+              {isPreviewMode ? (
+                <>
+                  <Edit2 className="w-4 h-4 stroke-[2.5]" />
+                  <span className="hidden sm:inline">EDIT MODE</span>
+                  <span className="sm:hidden">EDIT</span>
+                </>
+              ) : (
+                <>
+                  <Eye className="w-4 h-4 stroke-[2.5]" />
+                  <span className="hidden sm:inline">PROD PREVIEW</span>
+                  <span className="sm:hidden">PREVIEW</span>
+                </>
+              )}
+            </button>
 
-          {/* Save Draft in-place */}
-          <button
-            type="button"
-            onClick={handleSaveDraft}
-            disabled={loading}
-            className="flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-3 rounded-xl border border-[var(--border)] bg-[var(--card-inner)] text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--accent)] font-mono text-xs sm:text-sm font-semibold transition-all disabled:opacity-50"
-            title="Save changes to staging draft without publishing"
-          >
-            <UploadCloud className="w-4 h-4 stroke-[2]" />
-            <span className="hidden sm:inline">SAVE DRAFT</span>
-            <span className="sm:hidden">SAVE</span>
-          </button>
+            {/* Save Draft in-place */}
+            <button
+              type="button"
+              onClick={handleSaveDraft}
+              disabled={loading}
+              className="flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-3 rounded-xl border border-[var(--border)] bg-[var(--card-inner)] text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--accent)] font-mono text-xs sm:text-sm font-semibold transition-all disabled:opacity-50"
+              title="Save changes to staging draft without publishing"
+            >
+              <UploadCloud className="w-4 h-4 stroke-[2]" />
+              <span className="hidden sm:inline">SAVE DRAFT</span>
+              <span className="sm:hidden">SAVE</span>
+            </button>
 
-          {/* Approve to Buffer Button (Dual-Track 10-15 buffer) */}
-          <button
-            type="button"
-            onClick={() => handleApprove("buffer")}
-            disabled={loading}
-            className="flex-1 flex items-center justify-center gap-1.5 py-3 px-2 sm:px-4 rounded-xl border border-[var(--accent)]/50 bg-[var(--accent)]/15 text-[var(--accent)] font-mono text-xs sm:text-sm font-bold hover:bg-[var(--accent)]/25 active:scale-[0.98] transition-all disabled:opacity-50"
-          >
-            <Archive className="w-4 h-4 stroke-[2.5]" />
-            <span className="hidden md:inline">APPROVE TO BUFFER</span>
-            <span className="md:hidden">BUFFER</span>
-          </button>
-
-          {/* Approve & Publish Immediately Button */}
-          <button
-            type="button"
-            onClick={() => handleApprove("publish")}
-            disabled={loading}
-            className="flex-2 flex items-center justify-center gap-1.5 py-3 px-3 sm:px-6 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-mono text-xs sm:text-sm font-bold shadow-lg shadow-[var(--accent)]/20 active:scale-[0.98] transition-all disabled:opacity-50"
-          >
-            <Check className="w-4 h-4 stroke-[3]" />
-            <span className="hidden md:inline">APPROVE & PUBLISH ISSUE</span>
-            <span className="md:hidden">PUBLISH ISSUE</span>
-          </button>
+            {/* Approve to Buffer Button (Primary Action - Enqueues in buffer) */}
+            <button
+              type="button"
+              onClick={handleApproveToBuffer}
+              disabled={loading}
+              className="flex-2 flex items-center justify-center gap-2 py-3 px-3 sm:px-6 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-mono text-xs sm:text-sm font-bold shadow-lg shadow-[var(--accent)]/20 active:scale-[0.98] transition-all disabled:opacity-50"
+            >
+              <Archive className="w-4 h-4 stroke-[2.5]" />
+              <span className="hidden sm:inline">APPROVE TO BUFFER</span>
+              <span className="sm:hidden">BUFFER</span>
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Veto Reason Modal with the 4 Blueprint Tags */}
       {showVetoModal && (

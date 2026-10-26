@@ -54,7 +54,13 @@ export async function GET() {
     ]);
 
     const drafts = draftsResults.filter(Boolean);
-    const approvedDrafts = approvedResults.filter(Boolean);
+    const approvedDrafts = approvedResults.filter(Boolean) as any[];
+    approvedDrafts.sort((a, b) => {
+      const orderA = typeof a.queueOrder === "number" ? a.queueOrder : parseInt(a.filename.match(/^(\d{3})-/)?.[1] || "999", 10);
+      const orderB = typeof b.queueOrder === "number" ? b.queueOrder : parseInt(b.filename.match(/^(\d{3})-/)?.[1] || "999", 10);
+      if (orderA !== orderB) return orderA - orderB;
+      return a.filename.localeCompare(b.filename);
+    });
 
     const approvedCount = approvedFiles.length;
     const runwayDays = approvedCount; // 1 article published per day

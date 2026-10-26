@@ -92,19 +92,26 @@ export async function POST(req: NextRequest) {
 
     // TARGET 1: Buffer ("Ready to Go" - 10-15 buffer queue)
     if (target === "buffer") {
+      const allApproved = await listApprovedDrafts();
+      const nextIndex = allApproved.length + 1;
+      const baseSlug = cleanFilename.replace(/^\d{3}-/, "").replace(/\.json$/, "");
+      const newFilename = `${String(nextIndex).padStart(3, "0")}-${baseSlug}.json`;
+      const targetApprovedPath = `approved/${newFilename}`;
+
       const updatedDraft = {
         ...draft,
         title: finalTitle,
         figures: finalFigures,
         sections: sections || draft.sections,
         body_mdx: finalizedMdx,
+        queueOrder: nextIndex,
         approvedAt: new Date().toISOString(),
       };
 
       await commitFile(
-        approvedPath,
+        targetApprovedPath,
         JSON.stringify(updatedDraft, null, 2),
-        `feat(buffer): approve draft "${finalTitle}" to approved buffer`
+        `feat(buffer): approve draft #${nextIndex} "${finalTitle}" to approved buffer`
       );
 
       // If it was in staging, remove from staging
@@ -112,12 +119,14 @@ export async function POST(req: NextRequest) {
         await deleteFile(stagingPath, `chore(staging): move approved draft to buffer ${cleanFilename}`);
       }
 
-      const allApproved = await listApprovedDrafts();
+      const updatedApproved = await listApprovedDrafts();
       return NextResponse.json({
         success: true,
         target: "buffer",
-        approvedCount: allApproved.length,
-        message: `✓ Draft moved to Approved Buffer (${allApproved.length} articles ready).`,
+        queueOrder: nextIndex,
+        approvedFilename: newFilename,
+        approvedCount: updatedApproved.length,
+        message: `✓ Draft added to Approved Buffer as #${nextIndex} in line.`,
       });
     }
 

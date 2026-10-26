@@ -78,25 +78,44 @@ export async function publishDaily() {
 
   // 4. Dual-Track Execution: Track 1 (Pull from Approved Buffer)
   if (approvedFiles.length > 0) {
-    // Sort oldest approved first
-    approvedFiles.sort();
+    // Sort by queue order prefix (001-, 002-, etc.)
+    approvedFiles.sort((a, b) => {
+      const numA = parseInt(a.split('-')[0], 10);
+      const numB = parseInt(b.split('-')[0], 10);
+      if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+      return a.localeCompare(b);
+    });
     const approvedFilename = approvedFiles[0];
     const approvedPath = path.join(APPROVED_DIR, approvedFilename);
     const draft = JSON.parse(fs.readFileSync(approvedPath, 'utf8'));
 
-    console.log(`[Publisher] Track 1: Publishing editor-approved draft "${draft.title}" from approved buffer.`);
+    console.log(`[Publisher] Track 1: Publishing editor-approved draft "${draft.title}" from approved buffer (${approvedFilename}).`);
 
     let finalizedMdx = draft.body_mdx || '';
     const figures = draft.figures || [];
 
-    // Replace figure placeholders
+    // Replace figure placeholders (handling CAD vector schematics)
     for (let i = 0; i < figures.length; i++) {
       const fig = figures[i];
       const selIdx = typeof fig.selectedIndex === 'number' ? fig.selectedIndex : 0;
       const img = fig.images?.[selIdx] || fig.images?.[0] || { url: '', title: '' };
       const placeholder = fig.placeholder || `{{ FIGURE_${i} }}`;
 
-      const figureSnippet = `
+      let figureSnippet = "";
+      if (fig.activeTab === "cad" && fig.cadSvg) {
+        figureSnippet = `
+<figure className="product-figure my-8 rounded-lg border border-neutral-800 bg-neutral-900/60 overflow-hidden">
+  <div className="img-wrapper relative w-full bg-[#141413] p-2 sm:p-4 flex items-center justify-center">
+    ${fig.cadSvg}
+  </div>
+  <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800 flex justify-between items-center gap-2">
+    <span>${fig.caption || img.title || draft.title}</span>
+    <span className="text-[10px] text-emerald-400 uppercase tracking-wider font-semibold">100% CLEAN HOUSE-STYLE CAD SCHEMATIC</span>
+  </figcaption>
+</figure>
+`;
+      } else {
+        figureSnippet = `
 <figure className="product-figure my-8 rounded-lg border border-neutral-800 bg-neutral-900/60 overflow-hidden">
   <div className="img-wrapper relative w-full h-72 sm:h-96 bg-neutral-950">
     <img src="${img.url}" alt="${fig.caption || img.title || draft.title}" className="w-full h-full object-cover" />
@@ -107,6 +126,7 @@ export async function publishDaily() {
   </figcaption>
 </figure>
 `;
+      }
       finalizedMdx = finalizedMdx.split(placeholder).join(figureSnippet);
     }
 
