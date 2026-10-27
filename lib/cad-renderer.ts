@@ -19,6 +19,18 @@ function cleanLayerName(name: string): string {
   if (/bottom|lower|base/i.test(n) && /copper|plate|shell|foil/i.test(n)) {
     return 'BOTTOM COPPER';
   }
+  if (/silicon|die|chip|heat\s*source/i.test(n)) {
+    return 'SILICON DIE';
+  }
+  if (/thermal\s*interface|tim/i.test(n)) {
+    return 'TIM';
+  }
+  if (/spreader|vapor\s*chamber/i.test(n)) {
+    return 'VC SPREADER';
+  }
+  if (/cold\s*plate|heat\s*sink|cooler/i.test(n)) {
+    return 'COLD PLATE';
+  }
   if (/fine/i.test(n)) {
     return 'FINE WICK';
   }
@@ -37,7 +49,8 @@ function cleanLayerName(name: string): string {
     .replace(/\s*(?:stamped|sintered|monolithic|hermetic|capillary|arterial)\s*/gi, ' ')
     .replace(/\s*(?:layer|matrix|array|structure|base)\b/gi, '')
     .replace(/\s+/g, ' ')
-    .trim();
+    .trim()
+    .slice(0, 20);
 }
 
 function cleanThickness(label: string): string {
@@ -73,24 +86,60 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
   const width = 860;
   const height = 360;
 
-  // Centered, balanced geometry viewport
-  const viewLeft = 100;
-  const viewWidth = 500;
+  // 1. Horizontal Calculations (Equidistant Left & Right Margins)
+  const nominalLabel = spec.nominalThickness || '0.35 mm';
+  const leftAnnotationSpan = Math.max(70, Math.round(24 + nominalLabel.length * 5.8 + 6));
+
+  const layers = spec.layers || [];
+  const maxLabelChars = Math.max(
+    14,
+    ...layers.map((l) => (cleanLayerName(l.name) + ' • ' + cleanThickness(l.thicknessLabel)).length)
+  );
+  const rightAnnotationSpan = Math.round(28 + maxLabelChars * 5.4 + 6);
+
+  // Responsive chamber width preserving balance
+  const availableChamberWidth = width - leftAnnotationSpan - rightAnnotationSpan;
+  const viewWidth = Math.min(480, Math.max(420, availableChamberWidth - 120));
+
+  const totalGraphicWidth = leftAnnotationSpan + viewWidth + rightAnnotationSpan;
+  const horizontalMargin = Math.floor((width - totalGraphicWidth) / 2);
+  const viewLeft = horizontalMargin + leftAnnotationSpan;
   const viewRight = viewLeft + viewWidth;
-  const viewTop = 64;
-  const viewHeight = 180;
+
+  // 2. Vertical Calculations (Equidistant Top & Bottom Margins)
+  const hasTopLoad = (spec.boundaryLoads || []).some((b) => b.side === 'top' && b.direction === 'inward');
+  const topOverhead = hasTopLoad ? 36 : 0;
+
+  const hasBottomPitch = !!(spec.columns && spec.columns.pitchLabel && spec.columns.xPercents && spec.columns.xPercents.length > 1);
+  const hasBottomWidth = !!(spec.columns && spec.columns.widthLabel);
+  const bottomOverhead = hasBottomPitch ? 54 : (hasBottomWidth ? 28 : 0);
+
+  // Dynamic chamber height: taller if no bottom dimensions to eliminate empty void
+  const viewHeight = bottomOverhead === 0 ? 190 : 176;
+  const totalContentHeight = topOverhead + viewHeight + bottomOverhead;
+  const verticalMargin = Math.floor((height - totalContentHeight) / 2);
+  const viewTop = verticalMargin + topOverhead;
   const viewBottom = viewTop + viewHeight;
 
-  // Layer vertical allocation
-  const layers = spec.layers || [];
+  // Layer vertical allocation (Exact sum equals viewHeight)
   const totalThicknessUnits = layers.reduce((sum, l) => sum + (l.thickness > 0 ? l.thickness : 1), 0) || 1;
+  const safeMin = Math.min(16, Math.floor(viewHeight / Math.max(1, layers.length)));
 
+  let remainingHeight = viewHeight;
   let currentY = viewTop;
-  const computedLayers = layers.map((layer) => {
-    const rawH = (layer.thickness / totalThicknessUnits) * viewHeight;
-    const layerH = Math.max(16, rawH);
+
+  const computedLayers = layers.map((layer, idx) => {
+    const isLast = idx === layers.length - 1;
+    let layerH: number;
+    if (isLast) {
+      layerH = Math.max(safeMin, remainingHeight);
+    } else {
+      const propH = Math.round((layer.thickness / totalThicknessUnits) * viewHeight);
+      layerH = Math.max(safeMin, propH);
+      remainingHeight -= layerH;
+    }
     const yTop = currentY;
-    const yBottom = currentY + layerH;
+    const yBottom = yTop + layerH;
     currentY = yBottom;
     return {
       ...layer,
@@ -192,10 +241,10 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
     const labelText = topLoad.magnitude ? `${topLoad.magnitude} • ${topLoad.label}` : topLoad.label;
     return `
     <g>
-      <text x="${centerX}" y="40" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="${topLoad.color || '#F87171'}">
+      <text x="${centerX}" y="${viewTop - 20}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="${topLoad.color || '#F87171'}">
         ${escapeXml(labelText)}
       </text>
-      <line x1="${centerX}" y1="46" x2="${centerX}" y2="${viewTop - 4}" stroke="${topLoad.color || '#F87171'}" stroke-width="1.4" marker-end="url(#arr-red-end-${uid})"/>
+      <line x1="${centerX}" y1="${viewTop - 14}" x2="${centerX}" y2="${viewTop - 4}" stroke="${topLoad.color || '#F87171'}" stroke-width="1.4" marker-end="url(#arr-red-end-${uid})"/>
     </g>`;
   })()}
 
@@ -299,10 +348,7 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
       <g>
         <line x1="${viewRight + 4}" y1="${midY}" x2="${viewRight + 22}" y2="${midY}" stroke="${l.colors.primary}" stroke-width="1.2"/>
         <circle cx="${viewRight + 4}" cy="${midY}" r="2" fill="${l.colors.primary}"/>
-        <text x="${viewRight + 28}" y="${midY + 3.5}" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600" fill="#EDEDEB">
-          <tspan fill="${l.colors.primary}" font-weight="700">${cleanName}</tspan>
-          <tspan fill="#9E9C94"> • ${cleanDim}</tspan>
-        </text>
+        <text x="${viewRight + 28}" y="${midY + 3.5}" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600" fill="#EDEDEB"><tspan fill="${l.colors.primary}" font-weight="700">${cleanName}</tspan><tspan fill="#9E9C94"> • ${cleanDim}</tspan></text>
       </g>`;
     }).join('')}
   </g>
