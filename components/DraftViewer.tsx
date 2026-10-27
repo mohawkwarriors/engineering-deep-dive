@@ -223,8 +223,8 @@ function renderRichHtml(html: string): string {
               <span class="text-[10px] font-bold uppercase tracking-wider text-[var(--accent)] flex items-center gap-1.5">
                 ${flowTag}
               </span>
-              <h4 class="text-base font-serif text-[var(--text)] font-semibold mt-1">${flowTitle}</h4>
-              <p class="text-xs text-[var(--muted)] mt-0.5 font-sans leading-relaxed">${flowSub}</p>
+              <h4 class="text-sm sm:text-base font-mono font-bold text-[var(--text)] tracking-tight mt-1">${flowTitle}</h4>
+              <p class="text-xs text-[var(--muted)] mt-0.5 font-mono leading-relaxed">${flowSub}</p>
             </div>
             <span class="px-2.5 py-1 rounded-full bg-[var(--card-inner)] border border-[var(--border)] text-[10px] font-mono text-[var(--muted)]">
               Sequential Workflow
@@ -245,7 +245,7 @@ function renderRichHtml(html: string): string {
       return `
         <div class="my-6 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-5 font-mono text-sm text-[var(--text)]">
           <div class="mb-3">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)]">${title}</h4>
+            <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-[var(--accent)]">${title}</h4>
             ${subtitle ? `<p class="text-xs text-[var(--muted)] mt-0.5">${subtitle}</p>` : ""}
           </div>
           <div class="space-y-3">${content}</div>
@@ -1226,7 +1226,7 @@ export default function DraftViewer({
             ) : (
               <div className="text-center py-10 px-4">
                 <FileCode className="w-10 h-10 text-[var(--accent)] mx-auto mb-3" />
-                <h5 className="text-base font-serif text-[var(--text)] mb-1">On-Demand CAD Cross-Section Generator</h5>
+                <h5 className="text-sm font-mono font-bold text-[var(--text)] mb-1">On-Demand CAD Cross-Section Generator</h5>
                 <p className="text-xs text-[var(--muted)] font-mono max-w-sm mx-auto mb-4">
                   Generates a section-specific engineering cross-section CAD schematic with dimensioned plates, air gap, and structural support geometry.
                 </p>
@@ -2034,7 +2034,7 @@ export default function DraftViewer({
         {/* Quick Seed Box Drawer */}
         {showSeedBox && (
           <div className="mt-4 pt-4 border-t border-[var(--border)]">
-            <h4 className="text-sm font-serif text-[var(--text)] font-semibold mb-1">
+            <h4 className="text-sm font-mono font-bold text-[var(--text)] mb-1">
               Manual Topic Seeding ("Anchor & Fill")
             </h4>
             <p className="text-xs text-[var(--muted)] font-mono mb-3">

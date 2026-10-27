@@ -56,8 +56,8 @@ export function LayeredCrossSection({
             <Layers className="w-3.5 h-3.5" />
             Layered Cross-Section Breakdown
           </span>
-          <h4 className="text-base font-serif text-[var(--text)] font-semibold mt-0.5">{title}</h4>
-          {subtitle && <p className="text-xs text-[var(--muted)] mt-0.5 font-sans">{subtitle}</p>}
+          <h4 className="text-sm sm:text-base font-mono font-bold text-[var(--text)] tracking-tight mt-1">{title}</h4>
+          {subtitle && <p className="text-xs text-[var(--muted)] mt-0.5 font-mono">{subtitle}</p>}
         </div>
 
         <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--card-inner)] border border-[var(--border)] text-xs font-mono">

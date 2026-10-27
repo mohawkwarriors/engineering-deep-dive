@@ -64,8 +64,8 @@ export function ProcessFlow({
             <Layers className="w-3.5 h-3.5" />
             {tag}
           </span>
-          <h4 className="text-base font-serif text-[var(--text)] font-semibold mt-1">{title}</h4>
-          {subtitle && <p className="text-xs text-[var(--muted)] mt-0.5 font-sans leading-relaxed">{subtitle}</p>}
+          <h4 className="text-sm sm:text-base font-mono font-bold text-[var(--text)] tracking-tight mt-1">{title}</h4>
+          {subtitle && <p className="text-xs text-[var(--muted)] mt-0.5 font-mono leading-relaxed">{subtitle}</p>}
         </div>
         <span className="px-2.5 py-1 rounded-full bg-[var(--card-inner)] border border-[var(--border)] text-[10px] font-mono text-[var(--muted)]">
           Sequential Workflow

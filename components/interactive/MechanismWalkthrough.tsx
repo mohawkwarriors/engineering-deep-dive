@@ -57,8 +57,8 @@ export function MechanismWalkthrough({
             <PlayCircle className="w-3.5 h-3.5" />
             Mechanism Motion Walkthrough
           </span>
-          <h4 className="text-base font-serif text-[var(--text)] font-semibold mt-0.5">{title}</h4>
-          {subtitle && <p className="text-xs text-[var(--muted)] mt-0.5 font-sans">{subtitle}</p>}
+          <h4 className="text-sm sm:text-base font-mono font-bold text-[var(--text)] tracking-tight mt-1">{title}</h4>
+          {subtitle && <p className="text-xs text-[var(--muted)] mt-0.5 font-mono">{subtitle}</p>}
         </div>
 
         {/* Step Indicator */}
@@ -92,7 +92,7 @@ export function MechanismWalkthrough({
             <span className="w-6 h-6 rounded-full bg-[var(--accent)] text-white text-xs font-bold flex items-center justify-center">
               {activeStage.step || currentStep + 1}
             </span>
-            <h5 className="text-sm sm:text-base font-semibold text-[var(--text)] font-sans">
+            <h5 className="text-sm sm:text-base font-bold text-[var(--text)] font-mono">
               {activeStage.title}
             </h5>
           </div>

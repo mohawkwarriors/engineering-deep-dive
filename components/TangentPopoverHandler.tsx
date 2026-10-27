@@ -204,7 +204,7 @@ export function TangentPopoverHandler({
           </div>
 
           {/* Title */}
-          <h4 className="font-serif text-sm font-semibold text-[var(--text)] mb-2">
+          <h4 className="font-mono text-xs font-bold text-[var(--text)] mb-2">
             {popover.data.title || popover.data.term || popover.key.replace(/_/g, " ").toUpperCase()}
           </h4>
 
