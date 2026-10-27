@@ -94,15 +94,35 @@ export function autoSanitizeArticleHtml(html) {
     return match;
   });
 
-  // 3. Ensure all tables have class="spec-table" and are wrapped in .spec-table-wrap
-  out = out.replace(/<table(?!\b[^>]*\bclass=)[^>]*>/gi, '<table class="spec-table">');
-  out = out.replace(/<table\b([^>]*)class=["']([^"']*)["']([^>]*)>/gi, (m, pre, cls, post) => {
+  // 3. Ensure all tables have class="spec-table", are wrapped in .spec-table-wrap, and have titled .spec-table-header
+  out = out.replace(/<table(?![^>]*class=)[^>]*>/gi, '<table class="spec-table">');
+  out = out.replace(/<table([^>]*)class=["']([^"']*)["']([^>]*)>/gi, (m, pre, cls, post) => {
     if (!cls.includes('spec-table')) {
       return `<table${pre}class="spec-table ${cls}"${post}>`;
     }
     return m;
   });
   out = out.replace(/<div class="process-card"[^>]*>\s*(<table class="spec-table")/gi, '<div class="spec-table-wrap">\n  $1');
+
+  // 3B. Ensure bare <table class="spec-table"> is wrapped in .spec-table-wrap
+  out = out.replace(/<table\b[^>]*\bclass=["'][^"']*spec-table[^"']*["'][\s\S]*?<\/table>/gi, (tableHtml, offset, fullStr) => {
+    const precedingStr = fullStr.slice(Math.max(0, offset - 500), offset);
+    if (!/<div\s+class=["']spec-table-wrap["'][^>]*>\s*(?:<div class=["']spec-table-header["'][\s\S]*?<\/div>\s*)?$/i.test(precedingStr)) {
+      return `<div class="spec-table-wrap">\n  ${tableHtml}\n</div>`;
+    }
+    return tableHtml;
+  });
+
+  // 3C. Ensure each .spec-table-wrap has a titled .spec-table-header
+  let autoTableNum = 1;
+  out = out.replace(/<div class="spec-table-wrap">([\s\S]*?)<table\b/gi, (m, innerPre) => {
+    if (!innerPre.includes('spec-table-header')) {
+      const padded = String(autoTableNum++).padStart(2, '0');
+      const headerHtml = `\n  <div class="spec-table-header">\n    <span class="spec-table-title">TABLE ${padded} &mdash; SPECIFICATION BENCHMARK</span>\n    <span class="spec-table-subtitle">TECHNICAL ARCHITECTURE ARCHIVE</span>\n  </div>\n  `;
+      return `<div class="spec-table-wrap">${headerHtml}<table`;
+    }
+    return m;
+  });
 
   // 4. Sanitize amateur/casual keywords in captions to engineering terminology
   out = out.replace(/<figcaption>([\s\S]*?)<\/figcaption>/gi, (match, inner) => {
@@ -389,7 +409,13 @@ export function validateArticleHtml(html, fileLabel = 'article') {
   const imgMatches = [...html.matchAll(/src=["']([^"']+)["']/g)].map(m => m[1]);
   for (const src of imgMatches) {
     if (!src.startsWith('http') && !src.startsWith('data:')) {
-      const cleanPath = src.split('?')[0].split('#')[0];
+      let cleanPath = src.split('?')[0].split('#')[0];
+      if (cleanPath.startsWith('/') && !fs.existsSync(cleanPath)) {
+        const publicCandidate = path.join('public', cleanPath.replace(/^\/+/, ''));
+        if (fs.existsSync(publicCandidate)) {
+          cleanPath = publicCandidate;
+        }
+      }
       if (!fs.existsSync(cleanPath)) {
         errors.push(`Missing referenced image in ${fileLabel}: ${cleanPath}`);
       } else {
@@ -667,15 +693,23 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     }
   }
 
-  // 3B. Check tables for consistent .spec-table styling
+  // 3B. Check tables for consistent .spec-table styling and mandatory titled header bar
   const tables = [...html.matchAll(/<table\b([^>]*)>([\s\S]*?)<\/table>/gi)];
   for (let tIdx = 0; tIdx < tables.length; tIdx++) {
     const tbl = tables[tIdx];
+    const tblIndex = tbl.index;
     if (!tbl[1].includes('class="spec-table"')) {
       errors.push(`Table #${tIdx + 1} in ${fileLabel} does not use standard class="spec-table".`);
     }
     if (/style=/i.test(tbl[1]) || /style=/i.test(tbl[2])) {
       errors.push(`Table #${tIdx + 1} in ${fileLabel} contains inline styles; must rely on global .spec-table CSS variables.`);
+    }
+
+    // Check that table is enclosed in .spec-table-wrap with .spec-table-header and .spec-table-title
+    const lookback = html.slice(Math.max(0, tblIndex - 500), tblIndex);
+    const hasHeader = /<div class(?:Name)?=["']spec-table-header["'][\s\S]*?<span class(?:Name)?=["']spec-table-title["'][\s\S]*?<\/div>/i.test(lookback);
+    if (!hasHeader) {
+      errors.push(`Table #${tIdx + 1} in ${fileLabel} is missing mandatory titled header bar (<div class="spec-table-header"><span class="spec-table-title">...</span></div>). Every table must have a header name/title.`);
     }
   }
 
@@ -1014,12 +1048,11 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     }
   }
 
-  // 6. Global CSS Class Coverage Audit against index.html
-  const indexHtml = fs.existsSync('index.html')
-    ? fs.readFileSync('index.html', 'utf8')
-    : fs.existsSync('legacy/index.html')
-    ? fs.readFileSync('legacy/index.html', 'utf8')
-    : '';
+  // 6. Global CSS Class Coverage Audit against index.html and app/globals.css
+  let indexHtml = '';
+  if (fs.existsSync('index.html')) indexHtml += fs.readFileSync('index.html', 'utf8') + '\n';
+  if (fs.existsSync('legacy/index.html')) indexHtml += fs.readFileSync('legacy/index.html', 'utf8') + '\n';
+  if (fs.existsSync('app/globals.css')) indexHtml += fs.readFileSync('app/globals.css', 'utf8') + '\n';
   if (indexHtml) {
 
 
@@ -1079,6 +1112,14 @@ function runCli() {
       const closeFigures = (fileContent.match(/<\/figure>/gi) || []).length;
       if (openFigures !== closeFigures) {
         console.error(`[TRUNCATION/COMPLETENESS ERROR] ${file} has mismatched figure tags: ${openFigures} opened vs ${closeFigures} closed.`);
+        hasViolation = true;
+      }
+
+      // Verify all specification tables have titled header bars (.spec-table-header)
+      const tableCount = (fileContent.match(/<table\b/gi) || []).length;
+      const tableHeaderCount = (fileContent.match(/<div class(?:Name)?=["']spec-table-header["']/gi) || []).length;
+      if (tableCount > 0 && tableHeaderCount < tableCount) {
+        console.error(`[TABLE TITLE AUDIT ERROR] ${file} has ${tableCount} tables but only ${tableHeaderCount} spec-table-header blocks. Every table must have a titled header bar.`);
         hasViolation = true;
       }
     }

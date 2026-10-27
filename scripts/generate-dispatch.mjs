@@ -412,6 +412,17 @@ STRICT EDITORIAL REQUIREMENTS:
    - Explain the "Why" in Plain English: Directly beneath every formula, state the immediate physical takeaway in one clean, plain-English sentence (e.g. "Doubling the bend radius cuts strain in half, keeping the glass well below its fracture limit.").
    - LaTeX Formatting: Display formulas must use <div class="math-block">$$...$$</div>; inline symbols must use $F$, $\rho$, $\mu$.
    - Deep Academic Formulations: Keep advanced derivations in the clickable 'tangents' popovers where readers can optionally explore them.
+6. SPECIFICATION & BENCHMARK TABLES (MANDATORY TITLED HEADER BARS):
+   - Every specification, DFM tolerance, or comparison table MUST be wrapped in <div class="spec-table-wrap">.
+   - Every table MUST begin with a dedicated, uppercase header bar (<div class="spec-table-header">) containing both a title and subtitle:
+     <div class="spec-table-wrap">
+       <div class="spec-table-header">
+         <span class="spec-table-title">TABLE 0X — TITLE</span>
+         <span class="spec-table-subtitle">SUBTITLE &amp; SCOPE</span>
+       </div>
+       <table class="spec-table">
+         <thead>...
+   - STRICTLY FORBIDDEN: NEVER output a bare <table> without a titled header bar.
 7. TANGENT ANNOTATIONS & THE "NO-BARE-JARGON" RULE (THE GRIFFITH & TOOL-STEEL RULE):
    - Wrap 4-7 specialized, non-intuitive technical terms in <span class="tangent-term" data-tangent="key"> with rich, educational popover definitions in the "tangents" dictionary so readers learn something new and fascinating each morning.
    - MANDATORY 100% TWO-WAY LINKING RULE: Every single key defined in the "tangents" dictionary MUST be linked at least once in the article text via <span class="tangent-term" data-tangent="key"> (ZERO orphaned/unlinked definitions). Conversely, every data-tangent attribute used in the HTML must have a corresponding entry in "tangents" (ZERO missing definitions).
