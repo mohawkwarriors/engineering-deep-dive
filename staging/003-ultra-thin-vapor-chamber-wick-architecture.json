@@ -1,11 +1,11 @@
 {
   "slug": "ultra-thin-vapor-chamber-wick-architecture",
   "title": "How smartphones stay cool: Exploring phase change in Ultra-Thin Vapor Chambers",
-  "subtitle": "Two-phase latent vaporization ($h_{fg} = 2.26 \\times 10^6\\text{ J/kg}$) across a 0.09 mm vacuum core achieves effective thermal conductivities exceeding 8,000 W/m·K—utilizing 4.8 kPa capillary wick pressure to spread 15W SoC thermal flux without dryout.",
+  "subtitle": "Two-phase latent vaporization (h_fg = 2.26 × 10⁶ J/kg) across a 0.09 mm vacuum core achieves effective thermal conductivities exceeding 8,000 W/m·K—utilizing 4.8 kPa capillary wick pressure to spread 15W SoC thermal flux without dryout.",
   "subject": "Thermal",
   "category": "Thermal",
   "readTime": "12 min",
-  "summary": "First-principles thermal and thermodynamic analysis of 0.35 mm ultra-thin vapor chambers: two-phase latent vaporization ($h_{fg} = 2.26 \\times 10^6\\text{ J/kg}$), sintered copper capillary suction dynamics, and hydrogen outgassing passivation under 15W SoC thermal loads.",
+  "summary": "First-principles thermal and thermodynamic analysis of 0.35 mm ultra-thin vapor chambers: two-phase latent vaporization (h_fg = 2.26 × 10⁶ J/kg), sintered copper capillary suction dynamics, and hydrogen outgassing passivation under 15W SoC thermal loads.",
   "tags": [
     "Thermal",
     "Vapor Chamber",

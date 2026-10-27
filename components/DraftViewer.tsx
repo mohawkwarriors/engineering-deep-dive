@@ -46,7 +46,7 @@ import {
   TradeoffMatrix,
   LayeredCrossSection,
 } from "./interactive";
-import { generateCleanTitleAngles, formatAnswerOverview, generateTechnicalOverviewPresets } from "@/lib/title-utils";
+import { generateCleanTitleAngles, formatAnswerOverview, generateTechnicalOverviewPresets, cleanRawLatex } from "@/lib/title-utils";
 
 interface ImageCandidate {
   url: string;
@@ -2429,9 +2429,14 @@ export default function DraftViewer({
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-neutral-100 font-sans mb-3 leading-tight">
                 {editedTitle || activeDraft.title}
               </h1>
-              <p className="text-sm sm:text-base text-neutral-400 font-mono leading-relaxed">
-                {editedSubtitle || formatAnswerOverview(activeDraft.subtitle || "", editedTitle || activeDraft.title, activeDraft.title)}
-              </p>
+              <p
+                className="text-sm sm:text-base text-neutral-400 font-mono leading-relaxed"
+                dangerouslySetInnerHTML={{
+                  __html: renderInlineKaTeXAndMarkdown(
+                    editedSubtitle || formatAnswerOverview(activeDraft.subtitle || "", editedTitle || activeDraft.title, activeDraft.title)
+                  ),
+                }}
+              />
             </div>
 
             <div className="text-neutral-300 leading-relaxed font-sans space-y-6">
@@ -2559,9 +2564,14 @@ export default function DraftViewer({
                 className="group relative cursor-pointer border-l-4 border-amber-500/70 bg-[var(--card-inner)]/50 hover:bg-[var(--card-inner)] p-3.5 rounded-r-lg transition-all"
                 title="Click to customize executive technical overview"
               >
-                <p className="text-sm sm:text-base text-[var(--text)] font-mono leading-relaxed m-0">
-                  {editedSubtitle || formatAnswerOverview(activeDraft.subtitle || "", editedTitle || activeDraft.title, activeDraft.title)}
-                </p>
+                <p
+                  className="text-sm sm:text-base text-[var(--text)] font-mono leading-relaxed m-0"
+                  dangerouslySetInnerHTML={{
+                    __html: renderInlineKaTeXAndMarkdown(
+                      editedSubtitle || formatAnswerOverview(activeDraft.subtitle || "", editedTitle || activeDraft.title, activeDraft.title)
+                    ),
+                  }}
+                />
                 <span className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-mono text-[var(--muted)] flex items-center gap-1">
                   <Edit2 className="w-2.5 h-2.5" /> click to edit
                 </span>

@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { mdxComponents } from "@/components/mdx-components";
 import { preprocessMathForMdx, cleanAndRenderArticleHtml } from "@/lib/mdx-utils";
+import { cleanRawLatex } from "@/lib/title-utils";
 import { TangentPopoverHandler } from "@/components/TangentPopoverHandler";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -28,7 +29,7 @@ export function generateMetadata({ params }: { params: { id: string } }): Metada
   const { data } = matter(fileContent);
 
   const title = `Issue #${data.issue || params.id}: ${data.title} — The HW Insider`;
-  const description = data.subtitle || "The HW Insider hardware engineering intelligence dispatch.";
+  const description = cleanRawLatex(data.subtitle) || "The HW Insider hardware engineering intelligence dispatch.";
 
   return {
     title,
@@ -87,7 +88,7 @@ export default function IssuePage({ params }: { params: { id: string } }) {
           {data.title}
         </h1>
         <p className="text-sm sm:text-base text-neutral-400 font-mono leading-relaxed">
-          {data.subtitle}
+          {cleanRawLatex(data.subtitle)}
         </p>
       </div>
 

@@ -143,6 +143,73 @@ export interface TechnicalOverviewPresets {
   tradeoff: string;
 }
 
+/**
+ * Converts raw LaTeX math markup into clean, readable Unicode engineering typography.
+ * E.g., "$h_{fg} = 2.26 \times 10^6\text{ J/kg}$" -> "h_fg = 2.26 × 10⁶ J/kg"
+ *       "$r_{eff} \approx 25\ \mu\text{m}$" -> "r_eff ≈ 25 µm"
+ *       "$10^{-3}\text{ Torr}$" -> "10⁻³ Torr"
+ *       "$H_2$" -> "H₂"
+ */
+export function cleanRawLatex(text: string): string {
+  if (!text) return "";
+
+  let res = text;
+
+  // 1. Math symbols and operators
+  res = res
+    .replace(/\\times/g, "×")
+    .replace(/\\approx/g, "≈")
+    .replace(/\\leq?/g, "≤")
+    .replace(/\\geq?/g, "≥")
+    .replace(/\\pm/g, "±")
+    .replace(/\\Delta/g, "Δ")
+    .replace(/\\kappa/g, "κ")
+    .replace(/\\mu/g, "µ")
+    .replace(/\\Omega/g, "Ω")
+    .replace(/\\cdot/g, "·")
+    .replace(/\\degree/g, "°")
+    .replace(/\\circ/g, "°");
+
+  // 2. LaTeX text wrappers and spacing
+  res = res
+    .replace(/\\text\{([^}]+)\}/g, "$1")
+    .replace(/\\[ ,;]/g, " ")
+    .replace(/\\quad/g, " ");
+
+  // 3. Superscripts: numbers, signs, and variables
+  const superMap: Record<string, string> = {
+    "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴",
+    "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹",
+    "-": "⁻", "+": "⁺", "n": "ⁿ",
+  };
+  res = res.replace(/\^\{?([0-9\-+n]+)\}?/g, (_, p1) => {
+    return p1.split("").map((c: string) => superMap[c] || c).join("");
+  });
+
+  // 4. Subscripts: convert numeric subscripts to Unicode subscripts (e.g., H_2 -> H₂)
+  const subMap: Record<string, string> = {
+    "0": "₀", "1": "₁", "2": "₂", "3": "₃", "4": "₄",
+    "5": "₅", "6": "₆", "7": "₇", "8": "₈", "9": "₉",
+  };
+  res = res.replace(/_\{?([0-9]+)\}?/g, (_, p1) => {
+    return p1.split("").map((c: string) => subMap[c] || c).join("");
+  });
+
+  // 5. Letter subscripts: e.g. _{fg} -> _fg, _{eff} -> _eff
+  res = res.replace(/_\{([a-zA-Z0-9]+)\}/g, "_$1");
+
+  // 6. Strip math delimiters $ and $$
+  res = res.replace(/\$\$?/g, "");
+
+  // 7. Clean up multiple spaces and spaces before punctuation
+  res = res
+    .replace(/[ \t]+/g, " ")
+    .replace(/\s+([,.:;?!])/g, "$1")
+    .trim();
+
+  return res;
+}
+
 export function generateTechnicalOverviewPresets(
   topic: string = "",
   subject: string = "",
@@ -152,9 +219,9 @@ export function generateTechnicalOverviewPresets(
 
   if (lower.includes("vapor chamber") || lower.includes("two-phase") || lower.includes("wick")) {
     return {
-      mechanism: "Two-phase latent vaporization ($h_{fg} = 2.26 \\times 10^6\\text{ J/kg}$) across a 0.09 mm vacuum core achieves effective thermal conductivities exceeding 8,000 W/m·K—utilizing 4.8 kPa capillary wick pressure to spread 15W SoC thermal flux without dryout.",
-      boundary: "Balancing sub-micron sintered copper wick pore radius ($r_{eff} \\approx 25\\ \\mu\\text{m}$) against hydraulic liquid permeability $\\kappa$ prevents capillary burnout, while monolithic etched columns withstand 1.0 bar external atmospheric crush pressure.",
-      tradeoff: "Chemical degreasing and vacuum sealing to $10^{-3}\\text{ Torr}$ prevent non-condensable hydrogen ($H_2$) passivation over $10^5$ thermal cycles, sustaining continuous vapor circulation across 0.35 mm total z-height.",
+      mechanism: "Two-phase latent vaporization (h_fg = 2.26 × 10⁶ J/kg) across a 0.09 mm vacuum core achieves effective thermal conductivities exceeding 8,000 W/m·K—utilizing 4.8 kPa capillary wick pressure to spread 15W SoC thermal flux without dryout.",
+      boundary: "Balancing sub-micron sintered copper wick pore radius (r_eff ≈ 25 µm) against hydraulic liquid permeability κ prevents capillary burnout, while monolithic etched columns withstand 1.0 bar external atmospheric crush pressure.",
+      tradeoff: "Chemical degreasing and vacuum sealing to 10⁻³ Torr prevent non-condensable hydrogen (H₂) passivation over 10⁵ thermal cycles, sustaining continuous vapor circulation across 0.35 mm total z-height.",
     };
   }
 
@@ -217,7 +284,7 @@ export function formatAnswerOverview(
     /a sealed.*copper pouch.*boiling water/i.test(sub)
   ) {
     const presets = generateTechnicalOverviewPresets(fallbackTopic || title, "", "");
-    return presets.mechanism;
+    return cleanRawLatex(presets.mechanism);
   }
 
   // Strip leading "How " or "Why " so the overview directly states the answer
@@ -228,5 +295,5 @@ export function formatAnswerOverview(
     sub = sub.charAt(0).toUpperCase() + sub.slice(1);
   }
 
-  return sub;
+  return cleanRawLatex(sub);
 }
