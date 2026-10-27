@@ -1058,6 +1058,148 @@ export function validateArticleHtml(html, fileLabel = 'article') {
   return errors;
 }
 
+
+/**
+ * Editorial Cadence Audit: Ensures there are NEVER 2 cards one after the next
+ * without intervening narrative prose. Visual cards include:
+ * - Figures ({{ FIGURE_X }}, <figure>, .schematic-card)
+ * - Tables (.spec-table-wrap, <table>, markdown tables)
+ * - Interactive components (<ProcessFlow>, <InteractiveArchitecture>, <TradeoffMatrix>, etc.)
+ * - Metric grids (.metric-grid)
+ * - Callout cards (.callout-box, <TechnicalCard>, <Callout>)
+ */
+export function auditConsecutiveCards(mdxOrHtml, fileName) {
+  if (!mdxOrHtml) return [];
+  const errors = [];
+  const lines = mdxOrHtml.split('\n');
+
+  const cardComponents = [
+    'ProcessFlow',
+    'InteractiveArchitecture',
+    'WaveformComparison',
+    'ComparisonSlider',
+    'TradeoffMatrix',
+    'ToleranceStackupBar',
+    'ParameterExplorer',
+    'FsmDiagram',
+    'TechnicalCard',
+    'Callout',
+    'Warning',
+  ];
+
+  const cards = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    // 1. Figure placeholders
+    const figMatch = line.match(/{{\s*FIGURE_(\d+)\s*}}/);
+    if (figMatch) {
+      cards.push({ start: i, end: i, type: `Figure ${figMatch[1]}`, snippet: line });
+      continue;
+    }
+
+    // 2. HTML figure or schematic card
+    if (line.includes('<figure class="product-figure"') || line.includes('<figure') || line.includes('<div class="schematic-card"')) {
+      const type = line.includes('schematic-card') ? 'SchematicCard' : 'ProductFigure';
+      const start = i;
+      let depth = 0;
+      let end = i;
+      const tag = type === 'SchematicCard' ? 'div' : 'figure';
+      for (let j = i; j < lines.length; j++) {
+        const l = lines[j];
+        const openTags = (l.match(new RegExp(`<${tag}\\b`, 'g')) || []).length;
+        const closeTags = (l.match(new RegExp(`</${tag}>`, 'g')) || []).length;
+        depth += (openTags - closeTags);
+        if (depth <= 0) {
+          end = j;
+          break;
+        }
+      }
+      cards.push({ start, end, type, snippet: lines[start].slice(0, 60) });
+      i = end;
+      continue;
+    }
+
+    // 3. Spec-table-wrap or metric-grid
+    if (line.includes('className="spec-table-wrap"') || line.includes("className='spec-table-wrap'") ||
+        line.includes('class="spec-table-wrap"') || line.includes("class='spec-table-wrap'") ||
+        line.includes('className="metric-grid"') || line.includes("className='metric-grid'") ||
+        line.includes('class="metric-grid"') || line.includes("class='metric-grid'")) {
+      const type = line.includes('spec-table-wrap') ? 'SpecTable' : 'MetricGrid';
+      const start = i;
+      let depth = 0;
+      let end = i;
+      for (let j = i; j < lines.length; j++) {
+        const l = lines[j];
+        const openDivs = (l.match(/<div\b/g) || []).length;
+        const closeDivs = (l.match(/<\/div>/g) || []).length;
+        depth += (openDivs - closeDivs);
+        if (depth <= 0) {
+          end = j;
+          break;
+        }
+      }
+      cards.push({ start, end, type, snippet: lines[start].slice(0, 60) });
+      i = end;
+      continue;
+    }
+
+    // 4. Markdown table
+    if (line.startsWith('|') && line.endsWith('|')) {
+      const start = i;
+      let end = i;
+      while (end + 1 < lines.length && lines[end + 1].trim().startsWith('|')) {
+        end++;
+      }
+      cards.push({ start, end, type: 'MarkdownTable', snippet: lines[start].slice(0, 60) });
+      i = end;
+      continue;
+    }
+
+    // 5. Interactive card components
+    for (const comp of cardComponents) {
+      const openRegex = new RegExp(`<${comp}\\b`);
+      if (openRegex.test(line)) {
+        const start = i;
+        let end = i;
+        if (line.includes('/>')) {
+          end = i;
+        } else {
+          for (let j = i; j < lines.length; j++) {
+            if (lines[j].includes(`</${comp}>`) || lines[j].includes('/>')) {
+              end = j;
+              break;
+            }
+          }
+        }
+        cards.push({ start, end, type: comp, snippet: lines[start].slice(0, 60) });
+        i = end;
+        break;
+      }
+    }
+  }
+
+  for (let c = 0; c < cards.length - 1; c++) {
+    const card1 = cards[c];
+    const card2 = cards[c + 1];
+
+    const between = lines.slice(card1.end + 1, card2.start);
+    const prose = between
+      .map(l => l.trim().replace(/<[^>]+>/g, ''))
+      .filter(l => l.length > 0 && !l.startsWith('#') && !l.startsWith('---') && !l.startsWith('$'));
+
+    const substantialProse = prose.filter(l => l.length >= 35);
+
+    if (substantialProse.length === 0) {
+      errors.push(`[LAYOUT CADENCE ERROR] ${fileName}: Consecutive cards detected (${card1.type} at line ${card1.start + 1} followed by ${card2.type} at line ${card2.start + 1}) without intervening narrative prose. There should never be 2 cards one after the next.`);
+    }
+  }
+
+  return errors;
+}
+
 function runCli() {
   console.log('Running Deep Dive Media & Global SVG Geometry Audit...');
   let hasViolation = false;
@@ -1209,6 +1351,14 @@ function runCli() {
         console.log(`[AUTO-HEALED] Repaired mechanical formatting in ${file}`);
       }
 
+      
+      // Verify no consecutive cards exist without intervening narrative prose
+      const cadenceErrs = auditConsecutiveCards(data.body_mdx || data.article_html || '', file);
+      for (const cErr of cadenceErrs) {
+        console.error(cErr);
+        hasViolation = true;
+      }
+
       const errs = validateArticleHtml(data.article_html || '', file);
       for (const err of errs) {
         console.error(`[LINT ERROR] ${err}`);
@@ -1218,6 +1368,20 @@ function runCli() {
   }
 
   // Audit Staging Draft CAD SVGs and High-Level Subtitles against Automated Quality Gate
+  
+    // Audit markdown content files for consecutive cards
+    if (fs.existsSync('content')) {
+      const mdFiles = fs.readdirSync('content').filter(f => f.endsWith('.md'));
+      for (const mf of mdFiles) {
+        const mdContent = fs.readFileSync(path.join('content', mf), 'utf8');
+        const mdCadenceErrs = auditConsecutiveCards(mdContent, mf);
+        for (const cErr of mdCadenceErrs) {
+          console.error(cErr);
+          hasViolation = true;
+        }
+      }
+    }
+
   if (fs.existsSync(STAGING_DIR)) {
     const stagingFiles = fs.readdirSync(STAGING_DIR).filter(f => f.endsWith('.json'));
     for (const sFile of stagingFiles) {
@@ -1246,6 +1410,14 @@ function runCli() {
         const sSections = sH2Markdown + sH2Html;
         if (sSections < 5) {
           console.error(`[TRUNCATION/COMPLETENESS ERROR] ${sFile} has fewer than 5 sections (${sSections} found). Must contain at least 5 structured sections.`);
+          hasViolation = true;
+        }
+
+        
+        // 4. Audit Consecutive Cards (Never 2 cards one after the next)
+        const sCadenceErrs = auditConsecutiveCards(sBody, sFile);
+        for (const cErr of sCadenceErrs) {
+          console.error(cErr);
           hasViolation = true;
         }
 

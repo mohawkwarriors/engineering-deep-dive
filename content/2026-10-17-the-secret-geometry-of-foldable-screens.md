@@ -318,6 +318,11 @@
   </figcaption>
 </figure>
 
+<p>
+  <strong>Tooling Steel Selection for MIM:</strong><br>
+  Injecting abrasive, metal-powder-loaded feedstock at $180^\circ\text{C}$ and $110 \text{MPa}$ causes severe abrasive tool wear. Mold cavities are machined from premium powder-metallurgy super-steels (specifically <span class="tangent-term" data-tangent="pm_tool_steels">Böhler M390 Microclean or Uddeholm Elmax</span>—wear-resistant alloys formed by atomizing liquid steel into microscopic powder to prevent brittle carbide clumps). Vacuum hardened to <strong>58–60 HRC</strong> and coated with Titanium Aluminum Nitride (TiAlN), these tooling inserts resist abrasive erosion across 500,000 injection shots without losing micron-level tolerances.
+</p>
+
 <div class="spec-table-wrap">
   <table class="spec-table">
     <thead>
@@ -375,11 +380,6 @@
     </tbody>
   </table>
 </div>
-
-<p>
-  <strong>Tooling Steel Selection for MIM:</strong><br>
-  Injecting abrasive, metal-powder-loaded feedstock at $180^\circ\text{C}$ and $110 \text{MPa}$ causes severe abrasive tool wear. Mold cavities are machined from premium powder-metallurgy super-steels (specifically <span class="tangent-term" data-tangent="pm_tool_steels">Böhler M390 Microclean or Uddeholm Elmax</span>—wear-resistant alloys formed by atomizing liquid steel into microscopic powder to prevent brittle carbide clumps). Vacuum hardened to <strong>58–60 HRC</strong> and coated with Titanium Aluminum Nitride (TiAlN), these tooling inserts resist abrasive erosion across 500,000 injection shots without losing micron-level tolerances.
-</p>
 
 <h2 id="section-metallurgy-tribology">5. Metallurgy, Hertzian Cam Stress & Tribology</h2>
 <p>
