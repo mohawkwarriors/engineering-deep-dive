@@ -30,12 +30,21 @@ export function autoSanitizeArticleHtml(html) {
     return m;
   });
 
-  // 0C. Normalize process-step classes
+  // 0C. Normalize process-step classes & ensure mini flowchart SVGs have proper class
   out = out.replace(/class=["']step-number["']/g, 'class="process-step-tag"');
   out = out.replace(/class=["']step-title["']/g, 'class="process-step-title"');
   out = out.replace(/(<div class="process-step-card">\s*<div class="process-step-tag">[\s\S]*?<div class="process-step-title">[\s\S]*?)(<p\b[^>]*>)([\s\S]*?<\/p>)/gi, (m, top, pTag, pRest) => {
     if (!pTag.includes('process-step-desc')) {
       return `${top}<p class="process-step-desc">${pRest}`;
+    }
+    return m;
+  });
+  // Ensure <svg> in .process-step-visual has flowchart-mini-svg class
+  out = out.replace(/(<div class="process-step-visual"[^>]*>\s*)(<svg\b[^>]*>)/gi, (m, pre, svg) => {
+    if (!svg.includes('class=')) {
+      return `${pre}${svg.replace('<svg', '<svg class="flowchart-mini-svg"')}`;
+    } else if (!svg.includes('flowchart-mini-svg')) {
+      return `${pre}${svg.replace(/class=["']([^"']*)["']/, 'class="$1 flowchart-mini-svg"')}`;
     }
     return m;
   });

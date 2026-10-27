@@ -334,6 +334,180 @@ figcaption strong {
   letter-spacing: 0.03em;
 }
 
+.schematic-viewport {
+  padding: 18px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--card-inner);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 100%;
+}
+
+.schematic-viewport svg {
+  width: 100%;
+  max-width: 960px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.svg-canvas-bg {
+  fill: var(--surface) !important;
+}
+
+/* ==========================================================================
+   Process Flow Grid Cards & Visual Flowcharts (FIG Process Sequences)
+   ========================================================================== */
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 32px 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Seamless integration when embedded inside .schematic-card */
+.schematic-card > .process-grid,
+.schematic-card .process-grid {
+  border: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  padding: 14px;
+}
+
+/* Individual Step Card */
+.process-step-card {
+  background: var(--card-inner);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-width: 0; /* Prevents grid cell breakout */
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.process-step-card:hover {
+  border-color: rgba(217, 119, 87, 0.45);
+}
+
+.process-step-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.process-step-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.process-step-arrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+.process-step-title {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.35;
+  margin: 2px 0 6px 0;
+}
+
+/* Compact Visual Sandbox for Mini CAD & Flowchart SVGs */
+.process-step-visual {
+  width: 100%;
+  height: 56px;
+  max-height: 56px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin: 6px 0 8px 0 !important;
+  padding: 4px 6px;
+  box-sizing: border-box;
+}
+
+.process-step-visual svg,
+.flowchart-mini-svg {
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 46px !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+/* Compact Technical Prose Description (overrides Tailwind prose defaults) */
+.process-step-desc,
+.prose .process-grid p.process-step-desc,
+.prose .process-step-card p {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 11px !important;
+  line-height: 1.45 !important;
+  color: var(--muted) !important;
+  margin: 0 !important;
+  flex: 1;
+}
+
+/* Compact Technical Operating Metric Pill */
+.process-step-metric {
+  margin-top: 10px;
+  padding: 3px 7px;
+  background: rgba(217, 119, 87, 0.1);
+  border: 1px solid rgba(217, 119, 87, 0.28);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--accent);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: fit-content;
+  white-space: nowrap;
+}
+
+/* Responsive Grid Breakpoints */
+@media (max-width: 900px) and (min-width: 601px) {
+  .process-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+    gap: 10px !important;
+    padding: 12px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .process-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    padding: 12px !important;
+  }
+}
+
 .comparison-grid {
   display: grid;
   grid-template-columns: 1fr;
