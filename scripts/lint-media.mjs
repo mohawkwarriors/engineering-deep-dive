@@ -349,6 +349,12 @@ export function autoSanitizeArticleHtml(html) {
         .replace(/\btelemetry-val\b/g, 'metric-cell-val')
         .replace(/\btelemetry-sub\b/g, 'metric-cell-sub');
       out = out.slice(0, startIndex) + fixed + out.slice(endIndex);
+    } else {
+      let cutStart = startIndex;
+      while (cutStart > 0 && (out[cutStart - 1] === '\n' || out[cutStart - 1] === '\r' || out[cutStart - 1] === ' ')) {
+        cutStart--;
+      }
+      out = out.slice(0, cutStart) + out.slice(endIndex);
     }
   }
 
@@ -1025,27 +1031,7 @@ export function validateArticleHtml(html, fileLabel = 'article') {
 
   const telemetryBars = [...html.matchAll(/<div class="telemetry-bar"[^>]*>/gi)];
   for (const m of telemetryBars) {
-    const startIndex = m.index;
-    let depth = 0;
-    let endIndex = startIndex;
-    const tagRegex = /<\/?div\b[^>]*>/gi;
-    tagRegex.lastIndex = startIndex;
-    let tm;
-    while ((tm = tagRegex.exec(html)) !== null) {
-      if (tm[0].startsWith('</')) {
-        depth--;
-        if (depth === 0) {
-          endIndex = tm.index + tm[0].length;
-          break;
-        }
-      } else {
-        depth++;
-      }
-    }
-    const fullBlock = html.slice(startIndex, endIndex);
-    if (fullBlock.includes('telemetry-cell') || fullBlock.includes('metric-cell')) {
-      errors.push(`Class collision in ${fileLabel}: <div class="telemetry-bar"> contains metric cells. Must use <div class="executive-metrics-bar">.`);
-    }
+    errors.push(`Obsolete rating card detected in ${fileLabel}: <div class="telemetry-bar"> is forbidden and must be removed.`);
   }
 
   // 6. Global CSS Class Coverage Audit against index.html and app/globals.css
@@ -1120,6 +1106,12 @@ function runCli() {
       const tableHeaderCount = (fileContent.match(/<div class(?:Name)?=["']spec-table-header["']/gi) || []).length;
       if (tableCount > 0 && tableHeaderCount < tableCount) {
         console.error(`[TABLE TITLE AUDIT ERROR] ${file} has ${tableCount} tables but only ${tableHeaderCount} spec-table-header blocks. Every table must have a titled header bar.`);
+        hasViolation = true;
+      }
+
+      // Verify no obsolete rating cards exist in published issues
+      if (fileContent.includes('telemetry-bar') || fileContent.includes('Background Quality Telemetry')) {
+        console.error(`[EDITORIAL QUALITY ERROR] ${file} contains obsolete rating card (.telemetry-bar). Rating cards must be removed.`);
         hasViolation = true;
       }
     }

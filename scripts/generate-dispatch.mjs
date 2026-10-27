@@ -545,7 +545,7 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
       "body": "<p>Detailed definition.</p><div class=\\"modal-equation-box\\"><div class=\\"math-label\\">Concept:</div>$$Formula$$<div class=\\"math-meta\\">Legend</div></div><p>Engineering application.</p>"
     }
   },
-  "article_html": "full article html starting with <div class=\"meta-line\">...<h1>Title</h1><p class=\"subtitle\">Subtitle</p><figure class=\"product-figure\"><div class=\"img-wrapper\"><img ...></div><figcaption><span><strong>FIG 01 — TITLE:</strong> ...</span><span class=\"source-tag\">...</span></figcaption></figure><h2>1. ... through <h2>6. ... and ending with an executive summary dashboard <div class=\"executive-metrics-bar\"><div class=\"metric-cell\"><span class=\"metric-cell-label\">LABEL</span><span class=\"metric-cell-val\">VAL</span><span class=\"metric-cell-sub\">SUB</span></div>... (4 cells total)</div>. Do NOT output reader voting buttons (telemetry-bar is injected automatically)."
+  "article_html": "full article html starting with <div class=\"meta-line\">...<h1>Title</h1><p class=\"subtitle\">Subtitle</p><figure class=\"product-figure\"><div class=\"img-wrapper\"><img ...></div><figcaption><span><strong>FIG 01 — TITLE:</strong> ...</span><span class=\"source-tag\">...</span></figcaption></figure><h2>1. ... through <h2>6. ... and ending with an executive summary dashboard <div class=\"executive-metrics-bar\"><div class=\"metric-cell\"><span class=\"metric-cell-label\">LABEL</span><span class=\"metric-cell-val\">VAL</span><span class=\"metric-cell-sub\">SUB</span></div>... (4 cells total)</div>. Do NOT output reader voting buttons or rating cards (telemetry-bar is obsolete and forbidden)."
 }`;
 
   const candidateModels = [
@@ -682,26 +682,10 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
     return `<div class="executive-metrics-bar">\n${fixedInner.trim()}\n</div>`;
   });
 
-  // 2. Ensure telemetry voting bar is ALWAYS present at the end
-  if (!articleData.article_html.includes('id="telemetry-up"') || !articleData.article_html.includes('class="telemetry-actions"')) {
-    articleData.article_html = articleData.article_html.replace(/<div class="telemetry-bar">\s*<\/div>/gi, '');
-    articleData.article_html += `\n<div class="telemetry-bar">
-  <div class="telemetry-info">
-    <span class="telemetry-title">Background Quality Telemetry</span>
-    <span class="telemetry-desc">Rate this topic to train the automated curation model for future dispatches.</span>
-  </div>
-  <div class="telemetry-actions">
-    <button class="score-btn" id="telemetry-up" onclick="recordTelemetry('up')">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-      Good Topic
-    </button>
-    <button class="score-btn" id="telemetry-down" onclick="recordTelemetry('down')">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg>
-      Poor Topic
-    </button>
-  </div>
-</div>\n`;
-  }
+  // 2. Ensure obsolete rating card (.telemetry-bar) is NEVER present
+  articleData.article_html = articleData.article_html
+    .replace(/<div class=["']telemetry-bar["'][\s\S]*?<\/div>\s*<\/div>\s*<\/div>/gi, '')
+    .replace(/<div class=["']telemetry-bar["']>[\s\S]*?<\/div>/gi, '');
 
   // Deterministic Auto-Sanitizer + Global SVG Geometry Validation Gate
   articleData.article_html = autoSanitizeArticleHtml(articleData.article_html);

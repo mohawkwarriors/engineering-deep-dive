@@ -11,6 +11,9 @@ export function preprocessMathForMdx(rawContent: string): string {
   // 0. Strip HTML comments which cause Acorn / MDX compilation errors
   let out = rawContent.replace(/<!--[\s\S]*?-->/g, "");
 
+  // 0B. Strip obsolete rating card (.telemetry-bar) if present
+  out = out.replace(/<div class=["']telemetry-bar["'][\s\S]*?<\/div>\s*<\/div>\s*<\/div>/gi, "");
+
   // 1. Normalize image paths to root-relative
   out = out
     .replace(/src="images\//gi, 'src="/images/')
@@ -56,6 +59,7 @@ export function cleanAndRenderArticleHtml(rawHtml: string): string {
     .replace(/<p class="subtitle">[\s\S]*?<\/p>/gi, "")
     .replace(/src="images\//gi, 'src="/images/')
     .replace(/this\.src='images\//gi, "this.src='/images/")
+    .replace(/<div class=["']telemetry-bar["'][\s\S]*?<\/div>\s*<\/div>\s*<\/div>/gi, "")
     .trim();
 
   // 2. Render KaTeX display equations ($$ ... $$)

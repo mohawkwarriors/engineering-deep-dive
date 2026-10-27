@@ -735,20 +735,3 @@
   <li><strong>AZ91D for Rigid Internal Mid-Plates:</strong> With 9.0% aluminum, AZ91D precipitates a high density of brittle intermetallic $\text{Mg}_{17} \text{Al}_{12}$ along its grain boundaries. This boosts tensile yield strength to <strong>160 MPa</strong> with high hardness, making it the premier choice for internal chassis frames and keyboard deck stiffeners that must not bow under heavy typing loads. However, its elongation at break is modest (3.5% to 5.0%), meaning sharp corner impacts can cause brittle fracture.</li>
   <li><strong>AM60B for Exterior Corner Shells:</strong> For outer bezel rims and vulnerable corner bumpers, engineers switch to <strong>AM60B</strong> (6.0% aluminum, 0.3% manganese). Lowering the aluminum content drastically reduces the brittle intermetallic phase, allowing the matrix to yield plastically. AM60B delivers an exceptional elongation at break of <strong>8.0% to 12.0%</strong> with an impact energy toughness exceeding <strong>18 Joules</strong>. Under a severe 4-foot corner drop, an AM60B bumper deforms plastically, absorbing energy through controlled collapse without cracking, completely shielding internal glass displays from catastrophic shock failure.</li>
 </ul>
-
-<div class="telemetry-bar">
-  <div class="telemetry-info">
-    <span class="telemetry-title">Background Quality Telemetry</span>
-    <span class="telemetry-desc">Rate this topic to train the automated curation model for future dispatches.</span>
-  </div>
-  <div class="telemetry-actions">
-    <button class="score-btn" id="telemetry-up" onclick="recordTelemetry('up')">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-      Good Topic
-    </button>
-    <button class="score-btn" id="telemetry-down" onclick="recordTelemetry('down')">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg>
-      Poor Topic
-    </button>
-  </div>
-</div>

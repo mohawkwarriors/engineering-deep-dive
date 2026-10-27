@@ -145,8 +145,8 @@ for (const file of issues) {
     }
   }
 
-  if (!html.includes('class="telemetry-bar"')) {
-    console.error(`[ERROR] ${file} is missing standard .telemetry-bar.`);
+  if (html.includes('class="telemetry-bar"') || html.includes('Background Quality Telemetry')) {
+    console.error(`[ERROR] ${file} contains obsolete rating card (.telemetry-bar). All rating cards must be removed.`);
     issueErrors++;
   }
 }
@@ -278,31 +278,10 @@ for (const issue of issues) {
     }
   }
 
-  // 2. Audit Telemetry Bar Isolation
-  const tbMatches = [...html.matchAll(/<div class="telemetry-bar"[^>]*>/gi)];
-  for (const m of tbMatches) {
-    const startIndex = m.index;
-    let depth = 0;
-    let endIndex = startIndex;
-    const tagRegex = /<\/?div\b[^>]*>/gi;
-    tagRegex.lastIndex = startIndex;
-    let tm;
-    while ((tm = tagRegex.exec(html)) !== null) {
-      if (tm[0].startsWith('</')) {
-        depth--;
-        if (depth === 0) {
-          endIndex = tm.index + tm[0].length;
-          break;
-        }
-      } else {
-        depth++;
-      }
-    }
-    const fullBlock = html.slice(startIndex, endIndex);
-    if (fullBlock.includes('telemetry-cell') || fullBlock.includes('metric-cell')) {
-      console.error(`[ERROR] ${issue} has class collision: .telemetry-bar contains metric cells. Must use .executive-metrics-bar.`);
-      componentErrors++;
-    }
+  // 2. Audit Telemetry Bar (Must NOT be present)
+  if (html.includes('class="telemetry-bar"') || html.includes('Background Quality Telemetry')) {
+    console.error(`[ERROR] ${issue} contains obsolete rating card (.telemetry-bar). All rating cards must be removed.`);
+    componentErrors++;
   }
 
   // 3. Collect Classes for CSS Coverage Audit

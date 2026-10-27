@@ -454,20 +454,3 @@
   <li><strong>Peak-to-Valley Trench Depth ($D_v$):</strong> Benchmark teardrop designs achieve $D_v < 32\,\mu\text{m}$(versus$> 120\,\mu\text{m}$ on first-gen U-shape folds).</li>
   <li><strong>Maximum Slope Angle ($heta_{\text{crease}}$):</strong> The human fingertip cannot detect height steps below $40\,\mu\text{m}$ if the transition slope is gradual. By spreading the deformation over a wide $12 \text{mm}$ span, the slope remains below $1.2^\circ$—rendering the crease visually invisible and tactilely undetectable during swipe gestures.</li>
 </ul>
-
-<div class="telemetry-bar">
-  <div class="telemetry-info">
-    <span class="telemetry-title">Background Quality Telemetry</span>
-    <span class="telemetry-desc">Rate this topic to train the automated curation model for future dispatches.</span>
-  </div>
-  <div class="telemetry-actions">
-    <button class="score-btn" id="telemetry-up" onclick="recordTelemetry('up')">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-      Good Topic
-    </button>
-    <button class="score-btn" id="telemetry-down" onclick="recordTelemetry('down')">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg>
-      Poor Topic
-    </button>
-  </div>
-</div>
