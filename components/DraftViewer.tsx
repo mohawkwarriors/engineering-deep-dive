@@ -1526,13 +1526,20 @@ export default function DraftViewer({
                 const cleanSub = headingText.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim().toLowerCase();
                 const cleanSec = sec.heading.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim().toLowerCase();
                 const isDuplicate = cleanSub === cleanSec;
+                const numMatch = headingText.match(/^(\d+(?:\.\d+)?\.?)\s*(.*)$/);
 
                 return (
                   <div key={pIdx} className="space-y-2">
                     {!isDuplicate && (
-                      <h3 className="text-sm sm:text-base font-bold font-sans text-[var(--text)] mt-5 mb-2 pt-2 border-t border-[var(--border)]/40 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
-                        {headingText}
+                      <h3 className="font-serif text-lg sm:text-xl font-semibold tracking-tight text-[var(--text)] mt-6 mb-2 pt-3 border-t border-[var(--border)]/40 flex items-baseline gap-2">
+                        {numMatch ? (
+                          <>
+                            <span className="text-[var(--accent)] font-mono text-sm font-bold">{numMatch[1]}</span>
+                            <span>{numMatch[2]}</span>
+                          </>
+                        ) : (
+                          <span>{headingText}</span>
+                        )}
                       </h3>
                     )}
                     {restText && (
@@ -1731,8 +1738,8 @@ export default function DraftViewer({
 
     return (
       <div key={`prod-sec-${sec.id || secIdx}`} className="mb-10">
-        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-neutral-100 font-sans mt-8 mb-4 pb-2 border-b border-neutral-800/60 flex items-center gap-2">
-          <span className="text-[var(--accent)] font-mono text-lg font-bold">
+        <h2 className="font-serif text-2xl sm:text-3xl font-semibold tracking-tight text-[var(--text)] mt-10 mb-4 pb-2 border-b border-[var(--border)] flex items-baseline gap-2.5">
+          <span className="text-[var(--accent)] font-mono text-lg sm:text-xl font-bold">
             {secIdx + 1}.
           </span>
           <span>{cleanHeading}</span>
@@ -1778,13 +1785,20 @@ export default function DraftViewer({
                 const cleanSub = headingText.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim().toLowerCase();
                 const cleanSec = sec.heading.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim().toLowerCase();
                 const isDuplicate = cleanSub === cleanSec;
+                const numMatch = headingText.match(/^(\d+(?:\.\d+)?\.?)\s*(.*)$/);
 
                 return (
                   <div key={pIdx} className="space-y-2">
                     {!isDuplicate && (
-                      <h3 className="text-base sm:text-lg font-bold font-sans text-neutral-100 mt-6 mb-2 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
-                        {headingText}
+                      <h3 className="font-serif text-xl sm:text-2xl font-semibold tracking-tight text-[var(--text)] mt-8 mb-3 flex items-baseline gap-2.5">
+                        {numMatch ? (
+                          <>
+                            <span className="text-[var(--accent)] font-mono text-base font-bold">{numMatch[1]}</span>
+                            <span>{numMatch[2]}</span>
+                          </>
+                        ) : (
+                          <span>{headingText}</span>
+                        )}
                       </h3>
                     )}
                     {restText && (
