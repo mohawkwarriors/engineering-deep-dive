@@ -1047,6 +1047,33 @@ function runCli() {
       }
     }
 
+    // Minimum Section & Word Count Completeness Quality Gate for Published Issues
+    const publishedIssues = fs.readdirSync(ISSUES_DIR).filter(f => /^\d{3}\.(mdx|md)$/.test(f));
+    for (const file of publishedIssues) {
+      const fileContent = fs.readFileSync(path.join(ISSUES_DIR, file), 'utf8');
+      const h2Markdown = (fileContent.match(/^##\s+/gm) || []).length;
+      const h2Html = (fileContent.match(/<h2\b/gi) || []).length;
+      const totalSections = h2Markdown + h2Html;
+      const words = fileContent.split(/\s+/).filter(Boolean).length;
+
+      if (totalSections < 5) {
+        console.error(`[TRUNCATION/COMPLETENESS ERROR] ${file} is cut short: only ${totalSections} sections found (minimum required: 5).`);
+        hasViolation = true;
+      }
+      if (words < 1500) {
+        console.error(`[TRUNCATION/COMPLETENESS ERROR] ${file} word count is too low: ${words} words found (minimum required: 1500).`);
+        hasViolation = true;
+      }
+
+      // Verify unclosed figure tags
+      const openFigures = (fileContent.match(/<figure\b/gi) || []).length;
+      const closeFigures = (fileContent.match(/<\/figure>/gi) || []).length;
+      if (openFigures !== closeFigures) {
+        console.error(`[TRUNCATION/COMPLETENESS ERROR] ${file} has mismatched figure tags: ${openFigures} opened vs ${closeFigures} closed.`);
+        hasViolation = true;
+      }
+    }
+
     const jsonFiles = fs.readdirSync(ISSUES_DIR).filter(f => f.endsWith('.json'));
     for (const file of jsonFiles) {
       const fullPath = path.join(ISSUES_DIR, file);
@@ -1062,6 +1089,21 @@ function runCli() {
       if (!data.subtitle || typeof data.subtitle !== 'string' || !data.subtitle.trim()) {
         console.error(`[LINT ERROR] Missing top-level 'subtitle' field in ${file}`);
         hasViolation = true;
+      }
+
+      if (data.body_mdx) {
+        const h2Markdown = (data.body_mdx.match(/^##\s+/gm) || []).length;
+        const h2Html = (data.body_mdx.match(/<h2\b/gi) || []).length;
+        const totalSections = h2Markdown + h2Html;
+        const words = data.body_mdx.split(/\s+/).filter(Boolean).length;
+        if (totalSections < 5) {
+          console.error(`[TRUNCATION/COMPLETENESS ERROR] ${file} body_mdx is cut short: only ${totalSections} sections found (minimum required: 5).`);
+          hasViolation = true;
+        }
+        if (words < 1500) {
+          console.error(`[TRUNCATION/COMPLETENESS ERROR] ${file} body_mdx word count is too low: ${words} words found (minimum required: 1500).`);
+          hasViolation = true;
+        }
       }
 
       if (data.article_html) {
@@ -1155,7 +1197,17 @@ function runCli() {
           }
         }
 
-        // 2. Audit CAD Figures
+        // 2. Audit Section Count (Minimum 5 sections)
+        const sBody = sData.body_mdx || sData.article_html || '';
+        const sH2Markdown = (sBody.match(/^##\s+/gm) || []).length;
+        const sH2Html = (sBody.match(/<h2\b/gi) || []).length;
+        const sSections = sH2Markdown + sH2Html;
+        if (sSections < 5) {
+          console.error(`[TRUNCATION/COMPLETENESS ERROR] ${sFile} has fewer than 5 sections (${sSections} found). Must contain at least 5 structured sections.`);
+          hasViolation = true;
+        }
+
+        // 3. Audit CAD Figures
         if (Array.isArray(sData.figures)) {
           sData.figures.forEach((fig, fIdx) => {
             if (fig.cadSvg) {

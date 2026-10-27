@@ -8,8 +8,11 @@ import katex from "katex";
 export function preprocessMathForMdx(rawContent: string): string {
   if (!rawContent) return rawContent;
 
+  // 0. Strip HTML comments which cause Acorn / MDX compilation errors
+  let out = rawContent.replace(/<!--[\s\S]*?-->/g, "");
+
   // 1. Normalize image paths to root-relative
-  let out = rawContent
+  out = out
     .replace(/src="images\//gi, 'src="/images/')
     .replace(/this\.src='images\//gi, "this.src='/images/");
 

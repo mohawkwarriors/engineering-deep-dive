@@ -398,6 +398,7 @@ STRICT EDITORIAL REQUIREMENTS:
    - STRICTLY FORBIDDEN IN SUBTITLES/SUMMARIES: Do NOT cram raw technical stats, multi-variable equations, tolerance numbers, or dimension lists into the subtitle (e.g. NEVER write "Two-phase latent vaporization (h_fg = 2.26 × 10⁶ J/kg) across a 0.09 mm vacuum core achieves 8,000 W/m·K—utilizing 4.8 kPa...").
    - Instead, explain what is being accomplished and why in clean, engaging English (e.g. "How ultra-thin vapor chambers use vacuum evaporation and sintered copper wicks to rapidly pull heat away from cramped smartphone processors.").
 4. STRUCTURE: 6 detailed, deeply technical sections with numbers:
+   - MANDATORY FULL-LENGTH COMPLETENESS (ZERO TRUNCATION): Every single section (1 through 6) MUST be written out in full, comprehensive engineering depth (minimum 2,000 words total). NEVER abbreviate, summarize into one-liners, omit sections, or cut the article short. All 6 numbered sections (<h2>1. ... through <h2>6.) must be present and fully elaborated.
    - 1. Governing Physics & First Principles (Equations, quantitative load paths, boundary conditions)
    - 2. Component Architecture & Part-Level Anatomy (Detailed exploded breakdown, physical packaging)
    - 3. Manufacturing, Tooling & DFM Clearances (GD&T tolerances in microns, tooling steels, surface finish Ra, draft angles)
@@ -712,7 +713,15 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
         if (repairedRaw) {
           const repairedObj = safeJsonParse(repairedRaw);
           if (repairedObj.article_html) {
-            articleData.article_html = autoSanitizeArticleHtml(repairedObj.article_html);
+            const origSections = (articleData.article_html.match(/<h2\b|^##\s+/gm) || []).length;
+            const repairedSections = (repairedObj.article_html.match(/<h2\b|^##\s+/gm) || []).length;
+            const origWords = articleData.article_html.split(/\s+/).length;
+            const repairedWords = repairedObj.article_html.split(/\s+/).length;
+            if (repairedSections >= origSections && repairedWords >= origWords * 0.8) {
+              articleData.article_html = autoSanitizeArticleHtml(repairedObj.article_html);
+            } else {
+              console.warn(`Automated SVG repair pass returned truncated HTML (${repairedWords} words vs ${origWords} words, ${repairedSections} sections vs ${origSections} sections). Discarding repair to preserve article completeness.`);
+            }
           }
         }
       } else {

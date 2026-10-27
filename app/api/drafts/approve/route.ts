@@ -90,6 +90,17 @@ export async function POST(req: NextRequest) {
       finalizedMdx = finalizedMdx.split(placeholder).join(figureSnippet);
     }
 
+    // Quality & Truncation Guardrail: ensure article has at least 5 sections and is complete
+    const sectionCount = (finalizedMdx.match(/^##\s+|(?<=<h2\b)/gm) || []).length;
+    if (sectionCount < 5) {
+      return NextResponse.json(
+        {
+          error: `Cannot approve draft: Article has only ${sectionCount} sections (minimum 5 required). The article appears to be truncated.`,
+        },
+        { status: 400 }
+      );
+    }
+
     // TARGET 1: Buffer ("Ready to Go" - 10-15 buffer queue)
     if (target === "buffer") {
       const allApproved = await listApprovedDrafts();
