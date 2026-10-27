@@ -23,7 +23,7 @@ const config: Config = {
         muted: "var(--muted)",
       },
       fontFamily: {
-        serif: ["'Instrument Serif'", "Georgia", "serif"],
+        serif: ["'Newsreader'", "'Instrument Serif'", "Georgia", "serif"],
         mono: ["'JetBrains Mono'", "monospace"],
         sans: ["'Inter'", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
       },

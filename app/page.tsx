@@ -50,24 +50,24 @@ export default function HomePage() {
 
   return (
     <article className="prose prose-invert max-w-none">
-      <div className="border-b border-neutral-800 pb-6 mb-8">
-        <div className="flex items-center gap-2 font-mono text-xs text-amber-500 uppercase tracking-widest mb-2">
+      <div className="border-b border-[var(--border)] pb-6 mb-8">
+        <div className="flex items-center gap-2 font-mono text-xs text-[var(--accent)] uppercase tracking-widest mb-2.5">
           <span>ISSUE #{data.issue || issueNumber}</span>
           <span>•</span>
           <span>{data.subject}</span>
           <span>•</span>
           <span>{data.readTime}</span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-100 font-sans mb-3">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-medium tracking-tight text-[var(--text)] mb-3">
           {data.title}
         </h1>
-        <p className="text-sm sm:text-base text-neutral-400 font-mono leading-relaxed">
+        <p className="text-base sm:text-lg text-[var(--muted)] font-sans leading-relaxed">
           {data.subtitle}
         </p>
       </div>
 
       <TangentPopoverHandler tangents={tangents}>
-        <div className="text-neutral-300 leading-relaxed font-sans space-y-6">
+        <div className="text-[var(--text)] leading-relaxed font-sans space-y-6">
           {isHtml ? (
             <div
               className="article-body font-sans"
@@ -79,11 +79,11 @@ export default function HomePage() {
         </div>
       </TangentPopoverHandler>
 
-      <div className="mt-12 pt-6 border-t border-neutral-800 flex justify-between font-mono text-xs">
-        <Link href="/archive" className="text-amber-400 hover:text-amber-300">
+      <div className="mt-12 pt-6 border-t border-[var(--border)] flex justify-between font-mono text-xs">
+        <Link href="/archive" className="text-[var(--accent)] hover:underline">
           ← Browse Archive
         </Link>
-        <span className="text-neutral-500">{data.date}</span>
+        <span className="text-[var(--muted)]">{data.date}</span>
       </div>
     </article>
   );

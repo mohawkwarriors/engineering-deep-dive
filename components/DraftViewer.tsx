@@ -1697,12 +1697,12 @@ export default function DraftViewer({
 
     if ((activeTab === "cad" || !selectedImg?.url) && currentCadSvg) {
       return (
-        <figure key={`prod-fig-${figIdx}`} className="product-figure my-8 rounded-xl border border-neutral-800 bg-neutral-900/60 overflow-hidden shadow-2xl not-prose">
+        <figure key={`prod-fig-${figIdx}`} className="product-figure my-8 rounded-xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden shadow-sm not-prose">
           <div
             className="img-wrapper relative w-full bg-[#141413] p-2 sm:p-4 flex items-center justify-center"
             dangerouslySetInnerHTML={{ __html: currentCadSvg }}
           />
-          <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800 flex justify-between items-center gap-2">
+          <figcaption className="p-3.5 text-xs font-mono text-[var(--muted)] border-t border-[var(--border)] bg-[var(--surface)]/60 flex justify-between items-center gap-2">
             <span>{fig.caption || selectedImg?.title || editedTitle || activeDraft.title}</span>
           </figcaption>
         </figure>
@@ -1710,7 +1710,7 @@ export default function DraftViewer({
     }
 
     return (
-      <figure key={`prod-fig-${figIdx}`} className="product-figure my-8 rounded-xl border border-neutral-800 bg-neutral-900/60 overflow-hidden shadow-2xl not-prose">
+      <figure key={`prod-fig-${figIdx}`} className="product-figure my-8 rounded-xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden shadow-sm not-prose">
         <div className="img-wrapper relative w-full h-72 sm:h-96 bg-neutral-950 flex items-center justify-center overflow-hidden">
           {selectedImg?.url ? (
             <img
@@ -1722,9 +1722,9 @@ export default function DraftViewer({
             <div className="text-neutral-500 font-mono text-xs">No image available</div>
           )}
         </div>
-        <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800 flex justify-between items-center gap-2">
+        <figcaption className="p-3.5 text-xs font-mono text-[var(--muted)] border-t border-[var(--border)] bg-[var(--surface)]/60 flex justify-between items-center gap-2">
           <span>{fig.caption || selectedImg?.title || ""}</span>
-          <span className="text-[10px] text-amber-500 uppercase tracking-wider">{fig.source || selectedImg?.source || "TEARDOWN ARCHIVE"}</span>
+          <span className="text-[10px] text-[var(--accent)] font-semibold uppercase tracking-wider bg-[var(--accent)]/10 px-2.5 py-0.5 rounded-full border border-[var(--accent)]/30">{fig.source || selectedImg?.source || "TEARDOWN ARCHIVE"}</span>
         </figcaption>
       </figure>
     );
@@ -1745,7 +1745,7 @@ export default function DraftViewer({
           <span>{cleanHeading}</span>
         </h2>
 
-        <div className="space-y-4 text-sm sm:text-base font-sans leading-relaxed text-neutral-300">
+        <div className="space-y-4 text-sm sm:text-base font-sans leading-relaxed text-[var(--text)]">
           {sec.content
             .replace(/(^|\n)(#{2,4}\s+[^\n]+)\n(?!\n)/g, "$1$2\n\n")
             .split(/\n\n+/)
@@ -2553,19 +2553,19 @@ export default function DraftViewer({
 
               {/* Production Article Layout matching app/issue/[id]/page.tsx */}
               <article className="prose prose-invert max-w-none not-prose">
-                <div className="border-b border-neutral-800 pb-6 mb-8">
-                  <div className="flex items-center gap-2 font-mono text-xs text-amber-500 uppercase tracking-widest mb-2">
+                <div className="border-b border-[var(--border)] pb-6 mb-8">
+                  <div className="flex items-center gap-2 font-mono text-xs text-[var(--accent)] uppercase tracking-widest mb-2.5">
                     <span>ISSUE #{activeDraft.filename?.replace(/\.json$/, "").toUpperCase() || "PREVIEW"}</span>
                     <span>•</span>
                     <span>{activeDraft.subject || activeDraft.category || "HARDWARE"}</span>
                     <span>•</span>
                     <span>{activeDraft.readTime || "12 MIN READ"}</span>
                   </div>
-                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-neutral-100 font-sans mb-3 leading-tight">
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-medium tracking-tight text-[var(--text)] mb-3 leading-tight">
                     {editedTitle || activeDraft.title}
                   </h1>
                   <p
-                    className="text-sm sm:text-base text-neutral-400 font-mono leading-relaxed"
+                    className="text-base sm:text-lg text-[var(--muted)] font-sans leading-relaxed"
                     dangerouslySetInnerHTML={{
                       __html: renderInlineKaTeXAndMarkdown(
                         editedSubtitle || formatAnswerOverview(activeDraft.subtitle || "", editedTitle || activeDraft.title, activeDraft.title)
@@ -2574,14 +2574,14 @@ export default function DraftViewer({
                   />
                 </div>
 
-                <div className="text-neutral-300 leading-relaxed font-sans space-y-6">
+                <div className="text-[var(--text)] leading-relaxed font-sans space-y-6">
                   {activeSections
                     .filter((sec) => !sec.hidden)
                     .map((sec, secIdx) => renderProductionSection(sec, secIdx))}
                 </div>
 
-                <div className="mt-14 pt-6 border-t border-neutral-800 flex justify-between font-mono text-xs text-neutral-500">
-                  <span className="text-amber-400 hover:text-amber-300 cursor-pointer">← Browse Archive</span>
+                <div className="mt-14 pt-6 border-t border-[var(--border)] flex justify-between font-mono text-xs text-[var(--muted)]">
+                  <span className="text-[var(--accent)] hover:underline cursor-pointer">← Browse Archive</span>
                   <span>{activeDraft.date || new Date().toISOString().split("T")[0]}</span>
                 </div>
               </article>

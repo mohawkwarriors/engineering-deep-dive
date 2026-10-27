@@ -1367,6 +1367,28 @@ function runCli() {
     }
   }
 
+  // Audit all SVGs inside issues for stroke bleed and banned autopilot placeholders
+  if (fs.existsSync(ISSUES_DIR)) {
+    const issueMdxFiles = fs.readdirSync(ISSUES_DIR).filter(f => f.endsWith('.mdx'));
+    for (const iFile of issueMdxFiles) {
+      const iPath = path.join(ISSUES_DIR, iFile);
+      const iContent = fs.readFileSync(iPath, 'utf8');
+
+      // Check 1: Banned Autopilot Watermarks
+      if (/AUTOPILOT\s+SCHEMATIC/i.test(iContent) || /SAFE\s+AUTOPILOT\s+VECTOR/i.test(iContent)) {
+        console.error(`[CAD QUALITY GATE ERROR] ${iFile}: Contains banned AUTOPILOT placeholder watermark.`);
+        hasViolation = true;
+      }
+
+      // Check 2: Inherited Stroke Bleed on Text
+      const strokeGroupRegex = /<g\b[^>]*\bstroke=["'](?!none\b)[^"']+["'][^>]*>(?:(?!<\/g>)[\s\S])*?<text\b(?![^>]*\bstroke=["'](?:none|transparent)["'])/gi;
+      if (strokeGroupRegex.test(iContent)) {
+        console.error(`[CAD QUALITY GATE ERROR] ${iFile}: Contains SVG text inheriting active stroke from parent <g>. This causes bloated/unreadable font outlines.`);
+        hasViolation = true;
+      }
+    }
+  }
+
   // Audit Staging Draft CAD SVGs and High-Level Subtitles against Automated Quality Gate
   
     // Audit markdown content files for consecutive cards
