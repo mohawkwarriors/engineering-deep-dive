@@ -20,13 +20,13 @@ function generateAutopilotVectorSchematic(figNum, title, caption, sectionHeading
   });
 
   return `
-<figure className="product-figure my-8 rounded-lg border border-neutral-800 bg-neutral-900/60 overflow-hidden">
+<figure className="product-figure my-8 rounded-xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden shadow-sm">
   <div className="img-wrapper relative w-full bg-[#161615] p-2 sm:p-4 flex items-center justify-center">
     ${svg}
   </div>
-  <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800 flex justify-between items-center gap-2">
+  <figcaption className="p-3.5 text-xs font-mono text-[var(--muted)] border-t border-[var(--border)] bg-[var(--surface)]/60 flex justify-between items-center gap-2">
     <span>${caption || `FIG 0${figNum} — Section-specific CAD cross-section schematic.`}</span>
-    <span className="text-[10px] text-emerald-400 uppercase tracking-wider font-semibold">100% CLEAN HOUSE-STYLE CAD SCHEMATIC</span>
+    <span className="text-[10px] text-[var(--accent)] font-semibold uppercase tracking-wider bg-[var(--accent)]/10 px-2.5 py-0.5 rounded-full border border-[var(--accent)]/30">CAD METROLOGY</span>
   </figcaption>
 </figure>
 `;
@@ -184,13 +184,13 @@ ${finalizedMdx}
           title: "Public Domain Hardware Metrology"
         };
         const heroSnippet = `
-<figure className="product-figure my-8 rounded-lg border border-neutral-800 bg-neutral-900/60 overflow-hidden">
-  <div className="img-wrapper relative w-full h-72 sm:h-96 bg-neutral-950">
+<figure className="product-figure my-8 rounded-xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden shadow-sm">
+  <div className="img-wrapper relative w-full h-72 sm:h-96 bg-[var(--card-inner)]">
     <img src="${heroImg.url}" alt="${fig.caption || heroImg.title}" className="w-full h-full object-cover" />
   </div>
-  <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800 flex justify-between items-center gap-2">
+  <figcaption className="p-3.5 text-xs font-mono text-[var(--muted)] border-t border-[var(--border)] bg-[var(--surface)]/60 flex justify-between items-center gap-2">
     <span>${fig.caption || heroImg.title}</span>
-    <span className="text-[10px] text-emerald-400 uppercase tracking-wider font-semibold">PRE-VERIFIED PUBLIC DOMAIN</span>
+    <span className="text-[10px] text-[var(--muted)] font-mono uppercase tracking-wider">${heroImg.source || "COMMONS ARCHIVE"}</span>
   </figcaption>
 </figure>
 `;

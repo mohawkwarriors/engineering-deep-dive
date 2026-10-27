@@ -1374,9 +1374,9 @@ function runCli() {
       const iPath = path.join(ISSUES_DIR, iFile);
       const iContent = fs.readFileSync(iPath, 'utf8');
 
-      // Check 1: Banned Autopilot Watermarks
-      if (/AUTOPILOT\s+SCHEMATIC/i.test(iContent) || /SAFE\s+AUTOPILOT\s+VECTOR/i.test(iContent)) {
-        console.error(`[CAD QUALITY GATE ERROR] ${iFile}: Contains banned AUTOPILOT placeholder watermark.`);
+      // Check 1: Banned Autopilot & Developer Watermarks
+      if (/(?:AUTOPILOT\s+SCHEMATIC|SAFE\s+AUTOPILOT|0%\s+LIABILITY|PRE-VERIFIED\s+PUBLIC\s+DOMAIN|100%\s+CLEAN\s+HOUSE-STYLE)/i.test(iContent)) {
+        console.error(`[CAD QUALITY GATE ERROR] ${iFile}: Contains prohibited autopilot/liability developer badge watermark.`);
         hasViolation = true;
       }
 
