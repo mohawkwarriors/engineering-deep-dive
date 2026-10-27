@@ -314,6 +314,7 @@ export default function DraftViewer({
   const [editedTitle, setEditedTitle] = useState("");
   const [activeTitleAngle, setActiveTitleAngle] = useState<string | null>("mechanism");
   const [isPreviewMode, setIsPreviewMode] = useState(false);
+  const [activePreviewSectionId, setActivePreviewSectionId] = useState<string>("section-0");
 
   // Editable technical overview state
   const [isEditingSubtitle, setIsEditingSubtitle] = useState(false);
@@ -493,6 +494,39 @@ export default function DraftViewer({
       }
     }
   }, [currentIndex, activeDraft]);
+
+  // ScrollSpy: Real-time active section tracking in Preview Mode
+  useEffect(() => {
+    if (!isPreviewMode) return;
+
+    const handleScroll = () => {
+      const scrollPos = window.scrollY + 140;
+      const visible = activeSections.filter((s) => !s.hidden);
+      let current = "section-0";
+
+      for (let i = 0; i < visible.length; i++) {
+        const el = document.getElementById(`section-${i}`);
+        if (el && el.offsetTop <= scrollPos) {
+          current = `section-${i}`;
+        }
+      }
+      setActivePreviewSectionId(current);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isPreviewMode, activeSections]);
+
+  const scrollToPreviewSection = (secIdx: number) => {
+    const targetId = `section-${secIdx}`;
+    const el = document.getElementById(targetId);
+    if (el) {
+      const y = el.getBoundingClientRect().top + window.pageYOffset - 80;
+      window.scrollTo({ top: y, behavior: "smooth" });
+      setActivePreviewSectionId(targetId);
+    }
+  };
 
   const refreshDrafts = async () => {
     setLoading(true);
@@ -2398,9 +2432,9 @@ export default function DraftViewer({
       </div>
 
       {isPreviewMode ? (
-        <div className="mb-8">
+        <div className="mb-8 w-full">
           {/* Production Preview Mode Alert Banner */}
-          <div className="mb-8 p-3.5 sm:p-4 rounded-xl border border-sky-500/50 bg-sky-500/10 text-sky-200 font-mono text-xs flex items-center justify-between shadow-xl backdrop-blur-md">
+          <div className="mb-6 p-3.5 sm:p-4 rounded-xl border border-sky-500/50 bg-sky-500/10 text-sky-200 font-mono text-xs flex items-center justify-between shadow-xl backdrop-blur-md">
             <div className="flex items-center gap-2.5">
               <span className="w-2.5 h-2.5 rounded-full bg-sky-400 animate-pulse" />
               <span className="font-bold uppercase tracking-wider text-sky-300">Live Production Preview</span>
@@ -2416,43 +2450,132 @@ export default function DraftViewer({
             </button>
           </div>
 
-          {/* Production Article Layout matching app/issue/[id]/page.tsx */}
-          <article className="prose prose-invert max-w-none not-prose">
-            <div className="border-b border-neutral-800 pb-6 mb-8">
-              <div className="flex items-center gap-2 font-mono text-xs text-amber-500 uppercase tracking-widest mb-2">
-                <span>ISSUE #{activeDraft.filename?.replace(/\.json$/, "").toUpperCase() || "PREVIEW"}</span>
-                <span>•</span>
-                <span>{activeDraft.subject || activeDraft.category || "HARDWARE"}</span>
-                <span>•</span>
-                <span>{activeDraft.readTime || "12 MIN READ"}</span>
+          {/* Desktop 2-Column Content Grid: Left Navigation Outline + Right Article */}
+          <div className="lg:grid lg:grid-cols-[240px_1fr] lg:gap-10 xl:gap-12 items-start">
+            {/* Desktop Left Sidebar: Overview Navigation Outline (Sticky) */}
+            <aside className="hidden lg:block sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto pr-3 pb-8 select-none">
+              <div className="text-[11px] font-mono font-bold tracking-widest text-[var(--muted)] uppercase mb-3 px-3 flex items-center justify-between">
+                <span>OVERVIEW</span>
+                <span className="text-[10px] text-[var(--accent)] font-semibold">
+                  {activeSections.filter((s) => !s.hidden).length} SECTIONS
+                </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-neutral-100 font-sans mb-3 leading-tight">
-                {editedTitle || activeDraft.title}
-              </h1>
-              <p
-                className="text-sm sm:text-base text-neutral-400 font-mono leading-relaxed"
-                dangerouslySetInnerHTML={{
-                  __html: renderInlineKaTeXAndMarkdown(
-                    editedSubtitle || formatAnswerOverview(activeDraft.subtitle || "", editedTitle || activeDraft.title, activeDraft.title)
-                  ),
-                }}
-              />
-            </div>
+              <nav className="border-l-2 border-[var(--border)] pl-3 space-y-1">
+                {activeSections
+                  .filter((s) => !s.hidden)
+                  .map((sec, secIdx) => {
+                    const targetId = `section-${secIdx}`;
+                    const isActive = activePreviewSectionId === targetId;
+                    const cleanHeading = sec.heading
+                      .replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "")
+                      .trim();
 
-            <div className="text-neutral-300 leading-relaxed font-sans space-y-6">
-              {activeSections
-                .filter((sec) => !sec.hidden)
-                .map((sec, secIdx) => renderProductionSection(sec, secIdx))}
-            </div>
+                    return (
+                      <button
+                        key={sec.id || secIdx}
+                        type="button"
+                        onClick={() => scrollToPreviewSection(secIdx)}
+                        className={`w-full text-left py-1.5 px-2.5 text-xs font-mono transition-all rounded-r block leading-snug group ${
+                          isActive
+                            ? "text-[var(--accent)] font-bold border-l-2 border-[var(--accent)] -ml-[14px] pl-2.5 bg-[var(--accent)]/10 shadow-sm"
+                            : "text-[var(--muted)] hover:text-[var(--text)] hover:bg-[var(--surface)]"
+                        }`}
+                        title={cleanHeading}
+                      >
+                        <div className="flex items-start gap-1.5">
+                          <span
+                            className={`font-bold shrink-0 ${
+                              isActive ? "text-[var(--accent)]" : "text-[var(--muted)] group-hover:text-[var(--text)]"
+                            }`}
+                          >
+                            {secIdx + 1}.
+                          </span>
+                          <span className="line-clamp-2">{cleanHeading}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+              </nav>
+            </aside>
 
-            <div className="mt-14 pt-6 border-t border-neutral-800 flex justify-between font-mono text-xs text-neutral-500">
-              <span className="text-amber-400 hover:text-amber-300 cursor-pointer">← Browse Archive</span>
-              <span>{activeDraft.date || new Date().toISOString().split("T")[0]}</span>
+            {/* Main Production Article Column */}
+            <div className="min-w-0">
+              {/* Mobile Horizontal Section Navigator Pill Bar (Screen < lg) */}
+              <div className="lg:hidden mb-6 p-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-xs font-mono">
+                <div className="text-[10px] uppercase font-bold text-[var(--muted)] mb-2 flex items-center justify-between">
+                  <span>OVERVIEW OUTLINE</span>
+                  <span className="text-[var(--accent)]">
+                    {activeSections.filter((s) => !s.hidden).length} SECTIONS
+                  </span>
+                </div>
+                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-thin">
+                  {activeSections
+                    .filter((s) => !s.hidden)
+                    .map((sec, secIdx) => {
+                      const targetId = `section-${secIdx}`;
+                      const isActive = activePreviewSectionId === targetId;
+                      const cleanTitle = sec.heading
+                        .replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "")
+                        .trim()
+                        .split(/[:—]/)[0];
+
+                      return (
+                        <button
+                          key={sec.id || secIdx}
+                          type="button"
+                          onClick={() => scrollToPreviewSection(secIdx)}
+                          className={`shrink-0 px-2.5 py-1 rounded-full border text-[11px] font-mono transition-all ${
+                            isActive
+                              ? "border-[var(--accent)] bg-[var(--accent)]/20 text-[var(--accent)] font-bold"
+                              : "border-[var(--border)] text-[var(--muted)] bg-[var(--card-inner)] hover:text-[var(--text)]"
+                          }`}
+                        >
+                          {secIdx + 1}. {cleanTitle}
+                        </button>
+                      );
+                    })}
+                </div>
+              </div>
+
+              {/* Production Article Layout matching app/issue/[id]/page.tsx */}
+              <article className="prose prose-invert max-w-none not-prose">
+                <div className="border-b border-neutral-800 pb-6 mb-8">
+                  <div className="flex items-center gap-2 font-mono text-xs text-amber-500 uppercase tracking-widest mb-2">
+                    <span>ISSUE #{activeDraft.filename?.replace(/\.json$/, "").toUpperCase() || "PREVIEW"}</span>
+                    <span>•</span>
+                    <span>{activeDraft.subject || activeDraft.category || "HARDWARE"}</span>
+                    <span>•</span>
+                    <span>{activeDraft.readTime || "12 MIN READ"}</span>
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-neutral-100 font-sans mb-3 leading-tight">
+                    {editedTitle || activeDraft.title}
+                  </h1>
+                  <p
+                    className="text-sm sm:text-base text-neutral-400 font-mono leading-relaxed"
+                    dangerouslySetInnerHTML={{
+                      __html: renderInlineKaTeXAndMarkdown(
+                        editedSubtitle || formatAnswerOverview(activeDraft.subtitle || "", editedTitle || activeDraft.title, activeDraft.title)
+                      ),
+                    }}
+                  />
+                </div>
+
+                <div className="text-neutral-300 leading-relaxed font-sans space-y-6">
+                  {activeSections
+                    .filter((sec) => !sec.hidden)
+                    .map((sec, secIdx) => renderProductionSection(sec, secIdx))}
+                </div>
+
+                <div className="mt-14 pt-6 border-t border-neutral-800 flex justify-between font-mono text-xs text-neutral-500">
+                  <span className="text-amber-400 hover:text-amber-300 cursor-pointer">← Browse Archive</span>
+                  <span>{activeDraft.date || new Date().toISOString().split("T")[0]}</span>
+                </div>
+              </article>
             </div>
-          </article>
+          </div>
         </div>
       ) : (
-        <>
+        <div className="max-w-4xl mx-auto">
           {/* 1-Click Title Bar with 4 Distinct Headline Angles */}
           <div className="mb-6 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm">
             <div className="text-[10px] font-mono uppercase font-bold text-[var(--muted)] mb-2 flex items-center justify-between">
@@ -2583,7 +2706,7 @@ export default function DraftViewer({
           <div className="space-y-4">
             {activeSections.map((sec, idx) => renderSectionCard(sec, idx))}
           </div>
-        </>
+        </div>
       )}
       </>
       )}

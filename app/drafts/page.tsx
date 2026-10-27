@@ -72,7 +72,7 @@ export default async function DraftsPage({
     approvedDrafts.sort((a, b) => (a.queueOrder || 999) - (b.queueOrder || 999));
 
     return (
-      <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6">
+      <div className="w-full mx-auto px-2 sm:px-4 py-4 sm:py-6">
         <DraftViewer
           initialDrafts={drafts}
           initialApprovedDrafts={approvedDrafts}
@@ -86,7 +86,7 @@ export default async function DraftsPage({
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-4 sm:py-6">
+    <div className="w-full mx-auto px-2 sm:px-4 py-4 sm:py-6">
       <DraftViewer
         initialDrafts={drafts}
         initialApprovedDrafts={[]}
