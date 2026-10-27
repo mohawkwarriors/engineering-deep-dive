@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Helical Gear Micro-Geometry",
     "failureMode": "Why Helical Gear Micro-Geometry fails: Contact stress, fretting wear, and cyclic fatigue"
   },
-  "subtitle": "5-micron lead crowning compensates for shaft torsional windup and bearing deflection under 500 Nm load.",
+  "subtitle": "How microscopic tooth crowning compensates for shaft twisting and bearing flex to keep automotive transmissions whisper-quiet.",
   "subject": "Mechanisms",
   "category": "Mechanisms",
   "readTime": "11 min",

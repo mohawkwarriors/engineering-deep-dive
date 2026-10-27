@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Geneva Mechanism Kinematics & High-Speed Dynamic Shock",
     "failureMode": "Why Geneva Mechanism Kinematics & High-Speed Dynamic Shock fails: Contact stress, fretting wear, and cyclic fatigue"
   },
-  "subtitle": "Drive pins require synthetic elastomeric dampers stops tooth bouncing during entry at >600 RPM.",
+  "subtitle": "How Geneva wheels convert continuous rotary motion into precise indexing steps while managing high-speed dynamic shock.",
   "subject": "Mechanisms",
   "category": "Mechanisms",
   "readTime": "9 min",

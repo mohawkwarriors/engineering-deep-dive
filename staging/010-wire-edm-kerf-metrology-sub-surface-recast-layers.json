@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Wire EDM Kerf Metrology & Sub-Surface Recast Layers",
     "failureMode": "Why Wire EDM Kerf Metrology & Sub-Surface Recast Layers cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
-  "subtitle": "Multi-pass skim cuts reduce white recast layer from 18 microns down to under 1.5 microns.",
+  "subtitle": "How spark erosion cuts hardened tool steels to micron tolerances without introducing cutting tool deflection.",
   "subject": "Manufacturing",
   "category": "Manufacturing",
   "readTime": "9 min",

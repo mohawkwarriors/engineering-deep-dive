@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of 5-Axis Thermal Drift Compensation in Precision Machining",
     "failureMode": "Why 5-Axis Thermal Drift Compensation in Precision Machining cracks: Residual stress, micro-voids, and cyclic thermal fatigue"
   },
-  "subtitle": "Real-time FBG fiber-optic temperature telemetry corrects spindle growth within 1.5 microns over 8-hour shifts.",
+  "subtitle": "How real-time thermal compensation models counteract spindle growth and ambient factory temperature swings.",
   "subject": "Manufacturing",
   "category": "Manufacturing",
   "readTime": "10 min",

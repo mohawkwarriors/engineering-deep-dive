@@ -219,55 +219,71 @@ export function generateTechnicalOverviewPresets(
 
   if (lower.includes("vapor chamber") || lower.includes("two-phase") || lower.includes("wick")) {
     return {
-      mechanism: "Two-phase latent vaporization (h_fg = 2.26 × 10⁶ J/kg) across a 0.09 mm vacuum core achieves effective thermal conductivities exceeding 8,000 W/m·K—utilizing 4.8 kPa capillary wick pressure to spread 15W SoC thermal flux without dryout.",
-      boundary: "Balancing sub-micron sintered copper wick pore radius (r_eff ≈ 25 µm) against hydraulic liquid permeability κ prevents capillary burnout, while monolithic etched columns withstand 1.0 bar external atmospheric crush pressure.",
-      tradeoff: "Chemical degreasing and vacuum sealing to 10⁻³ Torr prevent non-condensable hydrogen (H₂) passivation over 10⁵ thermal cycles, sustaining continuous vapor circulation across 0.35 mm total z-height.",
+      mechanism: "Vaporizing purified water inside a sealed vacuum envelope moves heat away from dense processor hotspots far faster than solid copper, turning liquid into steam at the warm die and condensing it across the cooler frame.",
+      boundary: "Cooling capacity is physically capped by the capillary wick—if steam boils away faster than capillary suction can pump water back through the porous copper, the chamber dries out and temperatures spike.",
+      tradeoff: "Making the vapor cavity razor-thin saves smartphone thickness, but constricts internal vapor flow and demands internal support pillars so atmospheric pressure doesn't crush the hollow shell.",
     };
   }
 
   if (lower.includes("cycloidal") || lower.includes("speed reducer") || lower.includes("gear")) {
     return {
-      mechanism: "Epitrochoidal disc profiles distribute torque simultaneously across 70% of perimeter ring pins, eliminating backlash while suppressing Hertzian contact stresses under continuous dynamic reversing loads.",
-      boundary: "Accumulated pin-circle pitch runout must remain under 12 µm across the ring housing to avoid multi-pin tooth binding and localized micro-pitting fatigue under high torsional shock loads.",
-      tradeoff: "High reduction ratios (up to 119:1 in a single stage) trade sliding friction across pin contacts for zero backlash, requiring ISO VG 220 synthetic polyalphaolefin lubrication to prevent adhesive scuffing.",
+      mechanism: "A wobbling eccentric disc rolls across an outer ring of steel pins, sharing driving torque across multiple teeth simultaneously to achieve zero backlash under sudden shock loads.",
+      boundary: "If pin spacing or housing tolerances drift, rolling pins bind against the disc teeth, multiplying sliding friction and causing rapid surface pitting.",
+      tradeoff: "Achieving zero backlash and extreme reduction ratios in a single stage trades rolling efficiency for contact friction, demanding continuous high-pressure boundary lubrication.",
     };
   }
 
   if (lower.includes("magnesium") || lower.includes("thixomold") || lower.includes("casting")) {
     return {
-      mechanism: "Semi-solid injection molding of AZ91D slurry at 580°C suppresses dendritic solidification, producing 0.45 mm thin-wall enclosures with near-zero gas porosity and isotropic yield strength exceeding 160 MPa.",
-      boundary: "Tight mold temperature gradients within ±3°C and injection velocities >80 m/s prevent premature cold-shut freezing across high aspect ratio thin-wall chassis ribs.",
-      tradeoff: "Eliminating secondary CNC machining operations saves 40% cycle time, but requires heated beryllium-copper runner inserts and vacuum-assisted venting to prevent thermal fatigue checking.",
+      mechanism: "Injecting semi-solid magnesium slurry into a high-pressure mold prevents turbulent air bubbles, creating ultra-thin laptop unibodies that combine featherweight handling with high structural rigidity.",
+      boundary: "Because semi-solid slurry chills rapidly on contact with cold steel, mold temperatures and injection speeds must stay tightly synchronized to keep thin walls from freezing prematurely.",
+      tradeoff: "Eliminating secondary CNC machining passes dramatically cuts production cycle times, but requires complex heated runners and vacuum venting to prevent mold fatigue checking.",
     };
   }
 
   if (lower.includes("laser") || lower.includes("weld") || lower.includes("busbar")) {
     return {
-      mechanism: "Frequency-doubled green (515 nm) or blue (450 nm) laser wavelengths increase copper absorptivity to >40% at room temperature, suppressing keyhole instability and melt-pool spatter during high-speed seam micro-welding.",
-      boundary: "Heat-affected zone (HAZ) depth must be constrained under 60 µm to prevent thermal degradation of adjacent polymer battery gaskets and avoid intermetallic phase embrittlement.",
-      tradeoff: "Continuous-wave fiber wobble optics bridge 0.05 mm mechanical fit-up gaps without burn-through, trading linear process speed for joint electrical resistance below 1.2 µΩ.",
+      mechanism: "Short-wavelength green or blue laser beams overcome copper's natural surface reflectivity, forming clean, spatter-free seam welds without overheating sensitive adjacent components.",
+      boundary: "Weld pool depth must be kept under tight control so intense laser energy bonds the copper foils without scorching underlying polymer insulation or battery seals.",
+      tradeoff: "Wobbling the laser spot across the seam bridges small assembly gaps reliably, trading linear welding speed for lower electrical joint resistance.",
     };
   }
 
   if (lower.includes("piezo") || lower.includes("actuator") || lower.includes("ultrasonic")) {
     return {
-      mechanism: "Inverse piezoelectric distortion in lead zirconate titanate (PZT-5H) delivers nanometer-scale displacement and gigapascal blocking forces across microsecond response times under 150V bipolar excitation.",
-      boundary: "Driving past the dynamic Curie depoling temperature or tensile fracture limit (80 MPa) causes domain switching fatigue, requiring compressive mechanical preloading flexures.",
-      tradeoff: "Hysteresis compensation algorithms trade closed-loop processing overhead for sub-micron positioning repeatability across high-frequency optical and fluidic delivery cycles.",
+      mechanism: "Applying electric fields to specialized piezoceramic crystals expands their crystal lattices, delivering ultra-precise, sub-micron physical displacement in fractions of a millisecond.",
+      boundary: "Driving crystals past their electrical or thermal limits causes permanent depoling and micro-cracking, requiring preloaded spring flexures to keep the material in safe compression.",
+      tradeoff: "Compensating for natural ceramic hysteresis achieves nanometer positioning repeatability, but adds closed-loop control overhead to high-frequency motion stages.",
     };
   }
 
   const { core } = cleanTopicSubject(topic);
   return {
-    mechanism: `First-principles kinematic and structural analysis of ${core.toLowerCase()}: balancing continuous dynamic stress distribution against material fatigue limits to maximize operational service life.`,
-    boundary: `Governing physical tolerance constraints in ${core.toLowerCase()}: maintaining sub-micron geometric tolerances and thermal expansion compliance under full mechanical load capacity.`,
-    tradeoff: `Core engineering tradeoffs in ${core.toLowerCase()}: optimizing manufacturing cycle times and material selection while suppressing localized micro-fretting and failure modes.`,
+    mechanism: `How ${core.toLowerCase()} guides operating loads along direct mechanical paths, using precision geometry to maintain smooth motion without binding or play.`,
+    boundary: `The operating envelope is limited by material yield and thermal growth—keeping clearances balanced so parts glide freely without loose play or thermal seizure.`,
+    tradeoff: `Balancing tight manufacturing tolerances against factory yield, trading ultra-precise fit-up for assembly speed and long-term wear resistance.`,
   };
 }
 
 /**
- * Ensures the article's executive overview (subtitle) delivers high-value,
- * quantitative engineering insight rather than repeating colloquial or simplistic blurbs.
+ * Detects whether a subtitle or overview is overly dense with numeric statistics,
+ * equations, or unit specifications rather than providing a high-level narrative.
+ */
+export function isTooStatsHeavy(text: string): boolean {
+  if (!text) return false;
+  // Multiple numbers associated with units (e.g. 0.09 mm, 8,000 W/m·K, 4.8 kPa)
+  const statsMatches = text.match(/\b\d+(\.\d+)?\s*(mm|µm|kPa|MPa|Torr|W\/m|W\/cm²|kgf|bar|RPM|Hz|J\/kg)\b/gi);
+  if (statsMatches && statsMatches.length >= 2) return true;
+
+  // Formula patterns like h_fg =, r_eff ≈, k_eff >=
+  if (/[a-zA-Z]_[a-zA-Z0-9]+\s*[=≈≤≥]/i.test(text)) return true;
+
+  return false;
+}
+
+/**
+ * Ensures the article's executive overview (subtitle) delivers an engaging,
+ * high-level overview of what is discussed without dumping dense technical stats.
  */
 export function formatAnswerOverview(
   rawSubtitle: string,
@@ -276,12 +292,13 @@ export function formatAnswerOverview(
 ): string {
   let sub = (rawSubtitle || "").trim();
 
-  // Replace generic or simplistic placeholders with high-value technical mechanism
+  // Replace generic, simplistic, or stat-bloated placeholders with high-level conceptual mechanism
   if (
     !sub ||
     /^an exhaustive teardown and kinematic analysis of/i.test(sub) ||
     /tight geometry and smart material choices/i.test(sub) ||
-    /a sealed.*copper pouch.*boiling water/i.test(sub)
+    /a sealed.*copper pouch.*boiling water/i.test(sub) ||
+    isTooStatsHeavy(sub)
   ) {
     const presets = generateTechnicalOverviewPresets(fallbackTopic || title, "", "");
     return cleanRawLatex(presets.mechanism);

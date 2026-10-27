@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Direct Die Copper Cold Plates",
     "failureMode": "Why Direct Die Copper Cold Plates fails: Hotspot dryout and interfacial thermal degradation"
   },
-  "subtitle": "Staggered 150-micron diamond micro-pins suppress boundary layer growth at 1.2 LPM coolant flow.",
+  "subtitle": "How diamond micro-pin arrays disrupt stagnant thermal boundaries to cool ultra-dense datacenter accelerators.",
   "subject": "Thermal",
   "category": "Thermal",
   "readTime": "12 min",

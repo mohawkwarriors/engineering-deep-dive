@@ -7,7 +7,7 @@
     "teardown": "Hardware teardown: Dissecting the internal architecture of Piezoelectric Ultrasonic Transducers",
     "failureMode": "Why Piezoelectric Ultrasonic Transducers fails: Contact stress, fretting wear, and cyclic fatigue"
   },
-  "subtitle": "Quarter-wave acoustic impedance matching eliminates reflection loss between 30 MRayl PZT and water.",
+  "subtitle": "How acoustic matching layers bridge the impedance mismatch between dense piezoceramics and human tissue.",
   "subject": "Electromechanical",
   "category": "Electromechanical",
   "readTime": "11 min",

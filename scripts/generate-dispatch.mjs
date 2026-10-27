@@ -393,7 +393,10 @@ STRICT EDITORIAL REQUIREMENTS:
    - Title Standard: Use clean, curiosity-inducing, plain-English titles (e.g. "How Laptops Get Featherweight Metal Shells"). Avoid long, dense compound titles or heavy academic jargon.
    - Early Technology Definition & Comparison: In Section 1, immediately define the core technology in vivid, plain-English terms early on, and explicitly contrast why it beats traditional legacy methods.
    - De-Jargonized Section Headings: Clean, punchy headers leading with physical intuition (e.g. "2. The Slurpee State: Why Semi-Solid Metal Flows Like Soft-Serve").
-3. SUBTITLE: A captivating, single-sentence narrative hook highlighting the core mechanical tension or engineering trade-off without meta-announcements or filler.
+3. SUBTITLE & EXECUTIVE SUMMARY (HIGH-LEVEL OVERVIEW - LIMIT STATS):
+   - A captivating, single-sentence narrative hook highlighting the core mechanical tension or physical trade-off at a high level.
+   - STRICTLY FORBIDDEN IN SUBTITLES/SUMMARIES: Do NOT cram raw technical stats, multi-variable equations, tolerance numbers, or dimension lists into the subtitle (e.g. NEVER write "Two-phase latent vaporization (h_fg = 2.26 × 10⁶ J/kg) across a 0.09 mm vacuum core achieves 8,000 W/m·K—utilizing 4.8 kPa...").
+   - Instead, explain what is being accomplished and why in clean, engaging English (e.g. "How ultra-thin vapor chambers use vacuum evaporation and sintered copper wicks to rapidly pull heat away from cramped smartphone processors.").
 4. STRUCTURE: 6 detailed, deeply technical sections with numbers:
    - 1. Governing Physics & First Principles (Equations, quantitative load paths, boundary conditions)
    - 2. Component Architecture & Part-Level Anatomy (Detailed exploded breakdown, physical packaging)
@@ -521,7 +524,7 @@ STRICT EDITORIAL REQUIREMENTS:
 RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surrounding commentary, and ensure all LaTeX math backslashes like \\frac, \\approx, \\rho, \\mu, \\Delta are strictly escaped as double backslashes within JSON string values):
 {
   "title": "Clean Plain-English Title",
-  "subtitle": "Single-sentence narrative hook.",
+  "subtitle": "High-level single-sentence narrative hook explaining what is discussed conceptually without dense stats or equations.",
   "subject": "Discipline Name (One of the 8)",
   "tangents": {
     "key1": {

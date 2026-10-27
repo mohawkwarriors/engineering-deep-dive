@@ -1133,13 +1133,29 @@ function runCli() {
     }
   }
 
-  // Audit Staging Draft CAD SVGs against Automated Visual Quality Gate
+  // Audit Staging Draft CAD SVGs and High-Level Subtitles against Automated Quality Gate
   if (fs.existsSync(STAGING_DIR)) {
     const stagingFiles = fs.readdirSync(STAGING_DIR).filter(f => f.endsWith('.json'));
     for (const sFile of stagingFiles) {
       const sPath = path.join(STAGING_DIR, sFile);
       try {
         const sData = JSON.parse(fs.readFileSync(sPath, 'utf8'));
+
+        // 1. Audit Subtitle & Summary for High-Level Narrative (Limit Technical Stats & Equations)
+        for (const [field, text] of [['subtitle', sData.subtitle], ['summary', sData.summary]]) {
+          if (!text) continue;
+          if (/\$[^\$]+\$/.test(text)) {
+            console.error(`[EDITORIAL QUALITY ERROR] ${sFile} ${field} contains unrendered LaTeX: "${text}"`);
+            hasViolation = true;
+          }
+          const numMatches = text.match(/\b\d+(\.\d+)?\s*(mm|µm|kPa|MPa|Torr|W\/m|W\/cm²|kgf|bar|RPM|Hz|J\/kg)\b/gi);
+          if (numMatches && numMatches.length >= 3) {
+            console.error(`[EDITORIAL QUALITY ERROR] ${sFile} ${field} has excessive technical stats (${numMatches.join(', ')}). Must provide a high-level overview instead.`);
+            hasViolation = true;
+          }
+        }
+
+        // 2. Audit CAD Figures
         if (Array.isArray(sData.figures)) {
           sData.figures.forEach((fig, fIdx) => {
             if (fig.cadSvg) {
