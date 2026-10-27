@@ -11,12 +11,12 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "The HW Insider — Hardware Engineering Intelligence",
-  description: "Daily mechanical hardware engineering intelligence, teardowns, and interactive physics.",
+  title: "The HW Insider — Curated Articles for a Curious Engineering Mind",
+  description: "Curated articles for a curious engineering mind: deep-dive teardowns, mechanical engineering, and interactive physics.",
   metadataBase: new URL("https://thehwinsider.com"),
   openGraph: {
-    title: "The HW Insider — Hardware Engineering Intelligence",
-    description: "Daily mechanical hardware engineering intelligence, teardowns, and interactive physics.",
+    title: "The HW Insider — Curated Articles for a Curious Engineering Mind",
+    description: "Curated articles for a curious engineering mind: deep-dive teardowns, mechanical engineering, and interactive physics.",
     siteName: "The HW Insider",
     type: "website",
   },
@@ -63,7 +63,7 @@ export default function RootLayout({
           {children}
         </main>
         <footer className="border-t border-[var(--border)] py-6 text-center font-mono text-xs text-[var(--muted)]">
-          The HW Insider • Autonomous Daily Mechanical Hardware Intelligence Pipeline
+          The HW Insider • Curated articles for a curious engineering mind
         </footer>
       </body>
     </html>

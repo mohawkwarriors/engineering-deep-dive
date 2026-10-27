@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Archive — The HW Insider",
-  description: "All published daily mechanical engineering intelligence dispatches and teardowns.",
+  description: "All published curated articles and teardowns for curious engineering minds.",
 };
 
 export default function ArchivePage() {
