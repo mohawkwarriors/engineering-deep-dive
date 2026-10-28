@@ -1095,7 +1095,7 @@ export default function DraftViewer({
     return (
       <figure key={`fig-${figIdx}`} className="product-figure my-8 rounded-xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden shadow-xl not-prose">
         {/* Figure Top Control Header */}
-        <div className="flex flex-wrap items-center justify-between px-4 py-2.5 bg-[var(--surface-hover)] border-b border-[var(--border)] font-mono text-xs gap-2">
+        <div className="flex flex-wrap items-center justify-between px-4 py-3 bg-[var(--surface-hover)] border-b border-[var(--border)] font-mono text-xs sm:text-sm gap-2">
           <span className="text-[var(--accent)] font-bold uppercase tracking-wider flex items-center gap-1.5">
             <Layers className="w-3.5 h-3.5" />
             {fig.caption ? fig.caption.split(":")[0] : `FIG ${String(figIdx + 1).padStart(2, "0")}`}
@@ -1106,13 +1106,13 @@ export default function DraftViewer({
             <button
               type="button"
               onClick={() => setActiveFigTabs((prev) => ({ ...prev, [figIdx]: "carousel" }))}
-              className={`px-2 py-0.5 rounded text-[11px] font-mono transition-all flex items-center gap-1 ${
+              className={`px-2.5 py-1 rounded text-xs font-mono transition-all flex items-center gap-1.5 ${
                 activeTab === "carousel"
                   ? "bg-[var(--accent)] text-white font-bold shadow"
                   : "text-[var(--muted)] hover:text-[var(--text)]"
               }`}
             >
-              <Search className="w-3 h-3" />
+              <Search className="w-3.5 h-3.5" />
               Tab 1: Verified Carousel
             </button>
             <button
@@ -1123,25 +1123,25 @@ export default function DraftViewer({
                   handleGenerateCad(figIdx);
                 }
               }}
-              className={`px-2 py-0.5 rounded text-[11px] font-mono transition-all flex items-center gap-1 ${
+              className={`px-2.5 py-1 rounded text-xs font-mono transition-all flex items-center gap-1.5 ${
                 activeTab === "cad"
                   ? "bg-[var(--accent)] text-white font-bold shadow"
                   : "text-[var(--muted)] hover:text-[var(--text)]"
               }`}
             >
-              <FileCode className="w-3 h-3" />
+              <FileCode className="w-3.5 h-3.5" />
               Tab 2: On-Demand CAD
             </button>
             <button
               type="button"
               onClick={() => setActiveFigTabs((prev) => ({ ...prev, [figIdx]: "scanner" }))}
-              className={`px-2 py-0.5 rounded text-[11px] font-mono transition-all flex items-center gap-1 ${
+              className={`px-2.5 py-1 rounded text-xs font-mono transition-all flex items-center gap-1.5 ${
                 activeTab === "scanner"
                   ? "bg-[var(--accent)] text-white font-bold shadow"
                   : "text-[var(--muted)] hover:text-[var(--text)]"
               }`}
             >
-              <UploadCloud className="w-3 h-3" />
+              <UploadCloud className="w-3.5 h-3.5" />
               Tab 3: Paste & Scanner
             </button>
           </div>
@@ -1224,10 +1224,12 @@ export default function DraftViewer({
 
         {/* TAB 2: On-Demand CAD Vector Generator */}
         {activeTab === "cad" && (
-          <div className="p-4 bg-[var(--card-inner)]">
+          <div className="p-3 sm:p-4 bg-[var(--card-inner)]">
             {cadSvgs[figIdx] ? (
               <div>
-                <div dangerouslySetInnerHTML={{ __html: cadSvgs[figIdx] }} />
+                <div className="overflow-x-auto scrollbar-thin rounded-lg">
+                  <div className="min-w-[500px] sm:min-w-0" dangerouslySetInnerHTML={{ __html: cadSvgs[figIdx] }} />
+                </div>
                 <div className="mt-2.5 flex justify-end items-center text-xs font-mono text-[var(--muted)]">
                   <button
                     type="button"
@@ -1331,9 +1333,9 @@ export default function DraftViewer({
         )}
 
         {/* Figcaption & Source Footer */}
-        <figcaption className="p-3 text-xs font-mono text-[var(--muted)] border-t border-[var(--border)] flex justify-between items-center gap-2">
-          <span>{fig.caption || selectedImg?.title || ""}</span>
-          <span className="text-[10px] text-[var(--accent)] uppercase tracking-wider font-semibold">
+        <figcaption className="p-3.5 sm:p-4 text-xs sm:text-sm font-mono text-[var(--muted)] border-t border-[var(--border)] bg-[var(--surface)]/70 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+          <span className="leading-relaxed">{fig.caption || selectedImg?.title || ""}</span>
+          <span className="text-xs text-[var(--accent)] uppercase tracking-wider font-semibold whitespace-nowrap self-start sm:self-auto bg-[var(--accent)]/10 px-2.5 py-0.5 rounded border border-[var(--accent)]/30">
             {fig.source || selectedImg?.source || "TEARDOWN ARCHIVE"}
           </span>
         </figcaption>
@@ -1502,7 +1504,7 @@ export default function DraftViewer({
         </div>
 
         {/* Section Prose / Component Content */}
-        <div className="space-y-4 text-xs sm:text-sm font-sans leading-relaxed text-[var(--text)]">
+        <div className="space-y-4 text-[15px] sm:text-base font-sans leading-relaxed text-[var(--text)]">
           {sec.content
             .replace(/(^|\n)(#{2,4}\s+[^\n]+)\n(?!\n)/g, "$1$2\n\n")
             .split(/\n\n+/)
@@ -1716,12 +1718,15 @@ export default function DraftViewer({
     if ((activeTab === "cad" || !selectedImg?.url) && currentCadSvg) {
       return (
         <figure key={`prod-fig-${figIdx}`} className="product-figure my-8 rounded-xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden shadow-sm not-prose">
-          <div
-            className="img-wrapper relative w-full bg-[#141413] p-2 sm:p-4 flex items-center justify-center"
-            dangerouslySetInnerHTML={{ __html: currentCadSvg }}
-          />
-          <figcaption className="p-3.5 text-xs font-mono text-[var(--muted)] border-t border-[var(--border)] bg-[var(--surface)]/60 flex justify-between items-center gap-2">
-            <span>{fig.caption || selectedImg?.title || editedTitle || activeDraft.title}</span>
+          <div className="img-wrapper relative w-full bg-[#141413] p-2 sm:p-4 overflow-x-auto scrollbar-thin flex items-center justify-center">
+            <div
+              className="w-full min-w-[500px] sm:min-w-0"
+              dangerouslySetInnerHTML={{ __html: currentCadSvg }}
+            />
+          </div>
+          <figcaption className="p-3.5 sm:p-4 text-xs sm:text-sm font-mono text-[var(--muted)] border-t border-[var(--border)] bg-[var(--surface)]/60 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+            <span className="leading-relaxed">{fig.caption || selectedImg?.title || editedTitle || activeDraft.title}</span>
+            <span className="text-xs text-[var(--accent)] font-semibold uppercase tracking-wider bg-[var(--accent)]/10 px-2.5 py-0.5 rounded-full border border-[var(--accent)]/30 self-start sm:self-auto whitespace-nowrap">{fig.source || selectedImg?.source || "CAD TEARDOWN ARCHIVE"}</span>
           </figcaption>
         </figure>
       );
@@ -1740,9 +1745,9 @@ export default function DraftViewer({
             <div className="text-neutral-500 font-mono text-xs">No image available</div>
           )}
         </div>
-        <figcaption className="p-3.5 text-xs font-mono text-[var(--muted)] border-t border-[var(--border)] bg-[var(--surface)]/60 flex justify-between items-center gap-2">
-          <span>{fig.caption || selectedImg?.title || ""}</span>
-          <span className="text-[10px] text-[var(--accent)] font-semibold uppercase tracking-wider bg-[var(--accent)]/10 px-2.5 py-0.5 rounded-full border border-[var(--accent)]/30">{fig.source || selectedImg?.source || "TEARDOWN ARCHIVE"}</span>
+        <figcaption className="p-3.5 sm:p-4 text-xs sm:text-sm font-mono text-[var(--muted)] border-t border-[var(--border)] bg-[var(--surface)]/60 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+          <span className="leading-relaxed">{fig.caption || selectedImg?.title || ""}</span>
+          <span className="text-xs text-[var(--accent)] font-semibold uppercase tracking-wider bg-[var(--accent)]/10 px-2.5 py-0.5 rounded-full border border-[var(--accent)]/30 self-start sm:self-auto whitespace-nowrap">{fig.source || selectedImg?.source || "TEARDOWN ARCHIVE"}</span>
         </figcaption>
       </figure>
     );
@@ -1763,7 +1768,7 @@ export default function DraftViewer({
           <span>{cleanHeading}</span>
         </h2>
 
-        <div className="space-y-4 text-sm sm:text-base font-sans leading-relaxed text-[var(--text)]">
+        <div className="space-y-4 text-[15px] sm:text-base font-sans leading-relaxed text-[var(--text)]">
           {sec.content
             .replace(/(^|\n)(#{2,4}\s+[^\n]+)\n(?!\n)/g, "$1$2\n\n")
             .split(/\n\n+/)

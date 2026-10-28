@@ -86,20 +86,20 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
   const width = 860;
   const height = 360;
 
-  // 1. Horizontal Calculations (Equidistant Left & Right Margins)
+  // 1. Horizontal Calculations (Equidistant Left & Right Margins with Enhanced Legibility)
   const nominalLabel = spec.nominalThickness || '0.35 mm';
-  const leftAnnotationSpan = Math.max(70, Math.round(24 + nominalLabel.length * 5.8 + 6));
+  const leftAnnotationSpan = Math.max(82, Math.round(28 + nominalLabel.length * 7.2 + 8));
 
   const layers = spec.layers || [];
   const maxLabelChars = Math.max(
     14,
     ...layers.map((l) => (cleanLayerName(l.name) + ' • ' + cleanThickness(l.thicknessLabel)).length)
   );
-  const rightAnnotationSpan = Math.round(28 + maxLabelChars * 5.4 + 6);
+  const rightAnnotationSpan = Math.round(30 + maxLabelChars * 6.6 + 8);
 
   // Responsive chamber width preserving balance
   const availableChamberWidth = width - leftAnnotationSpan - rightAnnotationSpan;
-  const viewWidth = Math.min(480, Math.max(420, availableChamberWidth - 120));
+  const viewWidth = Math.min(480, Math.max(380, availableChamberWidth - 30));
 
   const totalGraphicWidth = leftAnnotationSpan + viewWidth + rightAnnotationSpan;
   const horizontalMargin = Math.floor((width - totalGraphicWidth) / 2);
@@ -229,7 +229,7 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
   <rect width="100%" height="100%" fill="url(#cadMajor-${uid})" />
 
   <!-- 1. Header Information Strip (Clean title without redundant scale boilerplate) -->
-  <text x="24" y="26" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#D97757" letter-spacing="0.05em">
+  <text x="24" y="27" font-family="'JetBrains Mono', monospace" font-size="12.5" font-weight="700" fill="#D97757" letter-spacing="0.05em">
     SECTION // ${escapeXml(spec.title.toUpperCase())}
   </text>
 
@@ -241,10 +241,10 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
     const labelText = topLoad.magnitude ? `${topLoad.magnitude} • ${topLoad.label}` : topLoad.label;
     return `
     <g>
-      <text x="${centerX}" y="${viewTop - 20}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="${topLoad.color || '#F87171'}">
+      <text x="${centerX}" y="${viewTop - 18}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11.5" font-weight="700" fill="${topLoad.color || '#F87171'}">
         ${escapeXml(labelText)}
       </text>
-      <line x1="${centerX}" y1="${viewTop - 14}" x2="${centerX}" y2="${viewTop - 4}" stroke="${topLoad.color || '#F87171'}" stroke-width="1.4" marker-end="url(#arr-red-end-${uid})"/>
+      <line x1="${centerX}" y1="${viewTop - 13}" x2="${centerX}" y2="${viewTop - 4}" stroke="${topLoad.color || '#F87171'}" stroke-width="1.5" marker-end="url(#arr-red-end-${uid})"/>
     </g>`;
   })()}
 
@@ -294,7 +294,7 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
           <g>
             <line x1="${fromX}" y1="${flowY}" x2="${toX}" y2="${flowY}" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-cyan-end-${uid})"/>
             ${vec.label ? `
-              <text x="${(fromX + toX) / 2}" y="${flowY - 4}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#38BDF8">
+              <text x="${(fromX + toX) / 2}" y="${flowY - 5}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="700" fill="#38BDF8">
                 ${escapeXml(vec.label)}
               </text>` : ''}
           </g>`;
@@ -330,10 +330,10 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
 
   <!-- 5. Left Total Stackup Dimension Annotation -->
   <g>
-    <line x1="${viewLeft - 30}" y1="${viewTop}" x2="${viewLeft - 6}" y2="${viewTop}" stroke="#9E9C94" stroke-width="0.8"/>
-    <line x1="${viewLeft - 30}" y1="${finalLayerBottom}" x2="${viewLeft - 6}" y2="${finalLayerBottom}" stroke="#9E9C94" stroke-width="0.8"/>
-    <line x1="${viewLeft - 18}" y1="${viewTop + 4}" x2="${viewLeft - 18}" y2="${finalLayerBottom - 4}" stroke="#EDEDEB" stroke-width="1.2" marker-start="url(#arr-white-start-${uid})" marker-end="url(#arr-white-end-${uid})"/>
-    <text x="${viewLeft - 24}" y="${(viewTop + finalLayerBottom) / 2 + 3.5}" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="9.5" font-weight="700" fill="#EDEDEB">
+    <line x1="${viewLeft - 32}" y1="${viewTop}" x2="${viewLeft - 6}" y2="${viewTop}" stroke="#9E9C94" stroke-width="0.9"/>
+    <line x1="${viewLeft - 32}" y1="${finalLayerBottom}" x2="${viewLeft - 6}" y2="${finalLayerBottom}" stroke="#9E9C94" stroke-width="0.9"/>
+    <line x1="${viewLeft - 18}" y1="${viewTop + 4}" x2="${viewLeft - 18}" y2="${finalLayerBottom - 4}" stroke="#EDEDEB" stroke-width="1.3" marker-start="url(#arr-white-start-${uid})" marker-end="url(#arr-white-end-${uid})"/>
+    <text x="${viewLeft - 24}" y="${(viewTop + finalLayerBottom) / 2 + 4.5}" text-anchor="end" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700" fill="#EDEDEB">
       ${escapeXml(spec.nominalThickness || '0.35 mm')}
     </text>
   </g>
@@ -346,9 +346,9 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
       const cleanDim = escapeXml(cleanThickness(l.thicknessLabel));
       return `
       <g>
-        <line x1="${viewRight + 4}" y1="${midY}" x2="${viewRight + 22}" y2="${midY}" stroke="${l.colors.primary}" stroke-width="1.2"/>
-        <circle cx="${viewRight + 4}" cy="${midY}" r="2" fill="${l.colors.primary}"/>
-        <text x="${viewRight + 28}" y="${midY + 3.5}" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600" fill="#EDEDEB"><tspan fill="${l.colors.primary}" font-weight="700">${cleanName}</tspan><tspan fill="#9E9C94"> • ${cleanDim}</tspan></text>
+        <line x1="${viewRight + 4}" y1="${midY}" x2="${viewRight + 22}" y2="${midY}" stroke="${l.colors.primary}" stroke-width="1.3"/>
+        <circle cx="${viewRight + 4}" cy="${midY}" r="2.2" fill="${l.colors.primary}"/>
+        <text x="${viewRight + 28}" y="${midY + 4}" font-family="'JetBrains Mono', monospace" font-size="11.5" font-weight="600" fill="#EDEDEB"><tspan fill="${l.colors.primary}" font-weight="700">${cleanName}</tspan><tspan fill="#9E9C94"> • ${cleanDim}</tspan></text>
       </g>`;
     }).join('')}
   </g>
@@ -357,9 +357,9 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
   ${(() => {
     if (!spec.columns || !spec.columns.xPercents || spec.columns.xPercents.length === 0) return '';
     const widthPx = spec.columns.widthPx || 38;
-    const extStartY = finalLayerBottom + 4;
-    const dimWidthY = finalLayerBottom + 22;
-    const dimPitchY = finalLayerBottom + 48;
+    const extStartY = finalLayerBottom + 3;
+    const dimWidthY = finalLayerBottom + 16;
+    const dimPitchY = finalLayerBottom + 46;
 
     // Use column 0 for width dimension
     const col0CenterX = viewLeft + (spec.columns.xPercents[0] / 100) * viewWidth;
@@ -375,20 +375,20 @@ export function renderDrawingSpec(spec: DrawingSpec): string {
     <g>
       ${spec.columns.widthLabel ? `
       <!-- Pillar Width Dimension -->
-      <line x1="${col0Left}" y1="${extStartY}" x2="${col0Left}" y2="${dimWidthY + 4}" stroke="#9E9C94" stroke-width="0.8" stroke-dasharray="2 2"/>
-      <line x1="${col0Right}" y1="${extStartY}" x2="${col0Right}" y2="${dimWidthY + 4}" stroke="#9E9C94" stroke-width="0.8" stroke-dasharray="2 2"/>
-      <line x1="${col0Left + 2}" y1="${dimWidthY}" x2="${col0Right - 2}" y2="${dimWidthY}" stroke="#EDEDEB" stroke-width="1.2" marker-start="url(#arr-white-start-${uid})" marker-end="url(#arr-white-end-${uid})"/>
-      <text x="${col0CenterX}" y="${dimWidthY - 4}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="#EDEDEB" style="paint-order: stroke fill; stroke: #141413; stroke-width: 4px; stroke-linejoin: round;">
+      <line x1="${col0Left}" y1="${extStartY}" x2="${col0Left}" y2="${dimWidthY + 3}" stroke="#9E9C94" stroke-width="0.9" stroke-dasharray="2 2"/>
+      <line x1="${col0Right}" y1="${extStartY}" x2="${col0Right}" y2="${dimWidthY + 3}" stroke="#9E9C94" stroke-width="0.9" stroke-dasharray="2 2"/>
+      <line x1="${col0Left + 2}" y1="${dimWidthY}" x2="${col0Right - 2}" y2="${dimWidthY}" stroke="#EDEDEB" stroke-width="1.3" marker-start="url(#arr-white-start-${uid})" marker-end="url(#arr-white-end-${uid})"/>
+      <text x="${col0CenterX}" y="${dimWidthY + 13}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#EDEDEB" style="paint-order: stroke fill; stroke: #141413; stroke-width: 4px; stroke-linejoin: round;">
         ${escapeXml(spec.columns.widthLabel)}
       </text>
       ` : ''}
 
       ${spec.columns.pitchLabel && col1CenterX > 0 ? `
       <!-- Pillar Array Pitch Dimension (Stepped cleanly below feature width dimension) -->
-      <line x1="${col0CenterX}" y1="${dimWidthY + 8}" x2="${col0CenterX}" y2="${dimPitchY + 4}" stroke="#F59E0B" stroke-width="0.8" stroke-dasharray="2 2"/>
-      <line x1="${col1CenterX}" y1="${dimWidthY + 8}" x2="${col1CenterX}" y2="${dimPitchY + 4}" stroke="#F59E0B" stroke-width="0.8" stroke-dasharray="2 2"/>
-      <line x1="${col0CenterX + 2}" y1="${dimPitchY}" x2="${col1CenterX - 2}" y2="${dimPitchY}" stroke="#F59E0B" stroke-width="1.2" marker-start="url(#arr-amber-start-${uid})" marker-end="url(#arr-amber-end-${uid})"/>
-      <text x="${(col0CenterX + col1CenterX) / 2}" y="${dimPitchY - 4}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="700" fill="#F59E0B" style="paint-order: stroke fill; stroke: #141413; stroke-width: 4px; stroke-linejoin: round;">
+      <line x1="${col0CenterX}" y1="${dimWidthY + 18}" x2="${col0CenterX}" y2="${dimPitchY + 3}" stroke="#F59E0B" stroke-width="0.9" stroke-dasharray="2 2"/>
+      <line x1="${col1CenterX}" y1="${dimWidthY + 18}" x2="${col1CenterX}" y2="${dimPitchY + 3}" stroke="#F59E0B" stroke-width="0.9" stroke-dasharray="2 2"/>
+      <line x1="${col0CenterX + 2}" y1="${dimPitchY}" x2="${col1CenterX - 2}" y2="${dimPitchY}" stroke="#F59E0B" stroke-width="1.3" marker-start="url(#arr-amber-start-${uid})" marker-end="url(#arr-amber-end-${uid})"/>
+      <text x="${(col0CenterX + col1CenterX) / 2}" y="${dimPitchY + 13}" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#F59E0B" style="paint-order: stroke fill; stroke: #141413; stroke-width: 4px; stroke-linejoin: round;">
         ${escapeXml(spec.columns.pitchLabel)}
       </text>
       ` : ''}
