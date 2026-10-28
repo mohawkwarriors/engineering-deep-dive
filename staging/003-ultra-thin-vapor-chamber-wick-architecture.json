@@ -46,9 +46,9 @@
           "source": "CAD Teardown Archive"
         },
         {
-          "url": "/images/references/vapor-chamber/exploded-layer-stack.png",
-          "title": "CAD Layer Architecture: Shells, Sintered Wick, and Cavity",
-          "source": "Thermal Design Lab"
+          "url": "/images/references/vapor-chamber/etched-half-shells.webp",
+          "title": "Photochemically Etched Internal Vapor Spreader Half-Shell",
+          "source": "Photochemical Machining Lab"
         },
         {
           "url": "https://www.mdpi.com/micromachines/micromachines-15-00627/article_deploy/html/images/micromachines-15-00627-g001.png",
@@ -174,11 +174,6 @@
           "url": "/images/references/vapor-chamber/exploded-layer-stack.png",
           "title": "Support Pillar Spacing and Vapor Cavity Clearance Profile",
           "source": "Thermal Design Lab"
-        },
-        {
-          "url": "/images/vapor-chamber-exploded-stack.png",
-          "title": "Laser Seam-Welded Perimeter and Internal Mechanical Column Array",
-          "source": "CAD Teardown Archive"
         },
         {
           "url": "/images/references/vapor-chamber/etched-half-shells.webp",

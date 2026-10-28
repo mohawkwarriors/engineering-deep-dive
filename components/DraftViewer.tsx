@@ -47,6 +47,7 @@ import {
   LayeredCrossSection,
 } from "./interactive";
 import { generateCleanTitleAngles, formatAnswerOverview, generateTechnicalOverviewPresets, cleanRawLatex } from "@/lib/title-utils";
+import { deduplicateFigureImages } from "@/lib/media-dedup";
 
 interface ImageCandidate {
   url: string;
@@ -676,19 +677,20 @@ export default function DraftViewer({
       if (res.ok) {
         const data = await res.json();
         if (data.images && activeDraft?.figures?.[figIdx]) {
+          const deduplicated = deduplicateFigureImages(data.images);
           setDrafts((prev) => {
             const next = [...prev];
             const current = { ...next[currentIndex] };
             if (current.figures && current.figures[figIdx]) {
               const updatedFigs = [...current.figures];
-              updatedFigs[figIdx] = { ...updatedFigs[figIdx], images: data.images };
+              updatedFigs[figIdx] = { ...updatedFigs[figIdx], images: deduplicated };
               current.figures = updatedFigs;
               next[currentIndex] = current;
             }
             return next;
           });
           setSelectedImages((prev) => ({ ...prev, [figIdx]: 0 }));
-          setActionMessage(`✓ Loaded ${data.images.length} verified candidates for Figure ${figIdx + 1}`);
+          setActionMessage(`✓ Loaded ${deduplicated.length} verified candidates for Figure ${figIdx + 1}`);
           setTimeout(() => setActionMessage(null), 2000);
         }
       }
@@ -791,12 +793,18 @@ export default function DraftViewer({
     setActionMessage("Saving draft changes...");
 
     try {
-      const updatedFigures = (activeDraft.figures || []).map((fig, idx) => ({
-        ...fig,
-        selectedIndex: selectedImages[idx] ?? 0,
-        activeTab: activeFigTabs[idx] || "carousel",
-        cadSvg: cadSvgs[idx] || fig.cadSvg,
-      }));
+      const updatedFigures = (activeDraft.figures || []).map((fig, idx) => {
+        const unique = deduplicateFigureImages(fig.images);
+        const rawIdx = selectedImages[idx] ?? 0;
+        const safeIdx = Math.min(Math.max(0, rawIdx), Math.max(0, unique.length - 1));
+        return {
+          ...fig,
+          images: unique,
+          selectedIndex: safeIdx,
+          activeTab: activeFigTabs[idx] || "carousel",
+          cadSvg: cadSvgs[idx] || fig.cadSvg,
+        };
+      });
 
       const res = await fetch("/api/drafts/save", {
         method: "POST",
@@ -834,12 +842,18 @@ export default function DraftViewer({
     setActionMessage("Adding to Approved Buffer Queue...");
 
     try {
-      const updatedFigures = (activeDraft.figures || []).map((fig, idx) => ({
-        ...fig,
-        selectedIndex: selectedImages[idx] ?? 0,
-        activeTab: activeFigTabs[idx] || "carousel",
-        cadSvg: cadSvgs[idx] || fig.cadSvg,
-      }));
+      const updatedFigures = (activeDraft.figures || []).map((fig, idx) => {
+        const unique = deduplicateFigureImages(fig.images);
+        const rawIdx = selectedImages[idx] ?? 0;
+        const safeIdx = Math.min(Math.max(0, rawIdx), Math.max(0, unique.length - 1));
+        return {
+          ...fig,
+          images: unique,
+          selectedIndex: safeIdx,
+          activeTab: activeFigTabs[idx] || "carousel",
+          cadSvg: cadSvgs[idx] || fig.cadSvg,
+        };
+      });
 
       const res = await fetch("/api/drafts/approve", {
         method: "POST",
@@ -1071,8 +1085,10 @@ export default function DraftViewer({
   const renderVisualSwitcherFigure = (figIdx: number) => {
     if (!activeDraft?.figures || !activeDraft.figures[figIdx]) return null;
     const fig = activeDraft.figures[figIdx];
-    const currentSelectedIdx = selectedImages[figIdx] ?? 0;
-    const selectedImg = fig.images[currentSelectedIdx] || fig.images[0];
+    const uniqueImages = deduplicateFigureImages(fig.images);
+    const rawSelectedIdx = selectedImages[figIdx] ?? (fig.selectedIndex || 0);
+    const currentSelectedIdx = Math.min(Math.max(0, rawSelectedIdx), Math.max(0, uniqueImages.length - 1));
+    const selectedImg = uniqueImages[currentSelectedIdx] || uniqueImages[0];
     const activeTab = activeFigTabs[figIdx] || "carousel";
     const scanResult = scanResults[figIdx];
 
@@ -1173,14 +1189,14 @@ export default function DraftViewer({
               </button>
             </div>
 
-            {/* 12-Image Carousel */}
+            {/* Verified Technical Carousel (Guaranteed Zero Repeats) */}
             <div className="p-3 bg-[var(--card-inner)] border-t border-[var(--border)]">
               <div className="flex gap-2.5 overflow-x-auto pb-1 scrollbar-thin">
-                {fig.images.map((img, imgIdx) => {
+                {uniqueImages.map((img, imgIdx) => {
                   const isSelected = imgIdx === currentSelectedIdx;
                   return (
                     <button
-                      key={imgIdx}
+                      key={`${img.url}-${imgIdx}`}
                       type="button"
                       onClick={() => setSelectedImages((prev) => ({ ...prev, [figIdx]: imgIdx }))}
                       className={`relative flex-shrink-0 w-28 h-20 rounded overflow-hidden border-2 transition-all ${
@@ -1690,8 +1706,10 @@ export default function DraftViewer({
   const renderProductionFigure = (figIdx: number) => {
     if (!activeDraft?.figures || !activeDraft.figures[figIdx]) return null;
     const fig = activeDraft.figures[figIdx];
-    const currentSelectedIdx = selectedImages[figIdx] ?? (fig.selectedIndex || 0);
-    const selectedImg = fig.images[currentSelectedIdx] || fig.images[0];
+    const uniqueImages = deduplicateFigureImages(fig.images);
+    const rawSelectedIdx = selectedImages[figIdx] ?? (fig.selectedIndex || 0);
+    const currentSelectedIdx = Math.min(Math.max(0, rawSelectedIdx), Math.max(0, uniqueImages.length - 1));
+    const selectedImg = uniqueImages[currentSelectedIdx] || uniqueImages[0];
     const activeTab = activeFigTabs[figIdx] || fig.activeTab || "carousel";
     const currentCadSvg = cadSvgs[figIdx] || fig.cadSvg;
 

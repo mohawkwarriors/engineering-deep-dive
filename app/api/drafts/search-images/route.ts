@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { searchDuckDuckGoImages, DISQUALIFYING_TERMS, POSITIVE_ENGINEERING_TERMS } from "@/scripts/fetch-media.mjs";
+import { deduplicateFigureImages, normalizeImageUrl, normalizeImageTitle } from "@/lib/media-dedup";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,7 @@ export async function POST(req: NextRequest) {
 
     const rawCandidates: any[] = [];
     const seenUrls = new Set<string>();
+    const seenTitles = new Set<string>();
 
     // Blocked hosts that reject hotlinks or return 403
     const blockedHosts = [
@@ -51,8 +53,13 @@ export async function POST(req: NextRequest) {
       try {
         const results = await searchDuckDuckGoImages(q, 15);
         for (const r of results) {
-          if (!r.url || seenUrls.has(r.url)) continue;
-          seenUrls.add(r.url);
+          if (!r.url) continue;
+
+          const normUrl = normalizeImageUrl(r.url);
+          if (!normUrl || seenUrls.has(normUrl)) continue;
+
+          const normTitle = normalizeImageTitle(r.title);
+          if (normTitle && seenTitles.has(normTitle)) continue;
 
           const fullSnippet = `${r.title || ""} ${r.url || ""}`.toLowerCase();
 
@@ -81,6 +88,9 @@ export async function POST(req: NextRequest) {
           for (const term of POSITIVE_ENGINEERING_TERMS) {
             if (fullSnippet.includes(term)) score += 2;
           }
+
+          seenUrls.add(normUrl);
+          if (normTitle) seenTitles.add(normTitle);
 
           rawCandidates.push({
             url: r.url,
@@ -163,18 +173,21 @@ export async function POST(req: NextRequest) {
       },
     ];
 
-    const finalCandidates = [...rawCandidates];
+    const finalCandidates = deduplicateFigureImages(rawCandidates);
     for (const fb of technicalFallbacks) {
       if (finalCandidates.length >= limit) break;
-      if (!seenUrls.has(fb.url)) {
-        seenUrls.add(fb.url);
+      const normFbUrl = normalizeImageUrl(fb.url);
+      const normFbTitle = normalizeImageTitle(fb.title);
+      if (!seenUrls.has(normFbUrl) && (!normFbTitle || !seenTitles.has(normFbTitle))) {
+        seenUrls.add(normFbUrl);
+        if (normFbTitle) seenTitles.add(normFbTitle);
         finalCandidates.push(fb);
       }
     }
 
     return NextResponse.json({
       success: true,
-      images: finalCandidates.slice(0, limit),
+      images: deduplicateFigureImages(finalCandidates).slice(0, limit),
     });
   } catch (err: any) {
     console.error("Search error:", err);
