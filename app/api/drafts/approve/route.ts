@@ -67,9 +67,8 @@ export async function POST(req: NextRequest) {
   <div className="img-wrapper relative w-full bg-[#191918] p-2 sm:p-4 flex items-center justify-center">
     ${fig.cadSvg}
   </div>
-  <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800 flex justify-between items-center gap-2">
+  <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800">
     <span>${fig.caption || selectedImg.title || finalTitle}</span>
-    <span className="text-[10px] text-emerald-400 uppercase tracking-wider font-semibold">100% CLEAN HOUSE-STYLE CAD SCHEMATIC</span>
   </figcaption>
 </figure>
 `;
@@ -79,9 +78,8 @@ export async function POST(req: NextRequest) {
   <div className="img-wrapper relative w-full h-72 sm:h-96 bg-neutral-950">
     <img src="${selectedImg.url}" alt="${fig.caption || selectedImg.title || finalTitle}" className="w-full h-full object-cover" />
   </div>
-  <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800 flex justify-between items-center gap-2">
+  <figcaption className="p-3 text-xs font-mono text-neutral-400 border-t border-neutral-800">
     <span>${fig.caption || selectedImg.title || ""}</span>
-    <span className="text-[10px] text-amber-500 uppercase tracking-wider">${fig.source || selectedImg.source || "TEARDOWN ARCHIVE"}</span>
   </figcaption>
 </figure>
 `;

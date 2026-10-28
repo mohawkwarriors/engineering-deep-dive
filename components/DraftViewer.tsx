@@ -1332,12 +1332,9 @@ export default function DraftViewer({
           </div>
         )}
 
-        {/* Figcaption & Source Footer */}
-        <figcaption className="p-3.5 sm:p-4 text-xs sm:text-sm font-mono text-[var(--muted)] border-t border-[var(--border)] bg-[var(--surface)]/70 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+        {/* Figcaption Description */}
+        <figcaption className="p-3.5 sm:p-4 text-xs sm:text-sm font-mono text-[var(--muted)] border-t border-[var(--border)] bg-[var(--surface)]/70">
           <span className="leading-relaxed">{fig.caption || selectedImg?.title || ""}</span>
-          <span className="text-xs text-[var(--accent)] uppercase tracking-wider font-semibold whitespace-nowrap self-start sm:self-auto bg-[var(--accent)]/10 px-2.5 py-0.5 rounded border border-[var(--accent)]/30">
-            {fig.source || selectedImg?.source || "TEARDOWN ARCHIVE"}
-          </span>
         </figcaption>
       </figure>
     );
@@ -1724,9 +1721,8 @@ export default function DraftViewer({
               dangerouslySetInnerHTML={{ __html: currentCadSvg }}
             />
           </div>
-          <figcaption className="p-3.5 sm:p-4 text-xs sm:text-sm font-mono text-[var(--muted)] border-t border-[var(--border)] bg-[var(--surface)]/60 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+          <figcaption className="p-3.5 sm:p-4 text-xs sm:text-sm font-mono text-[var(--muted)] border-t border-[var(--border)] bg-[var(--surface)]/60">
             <span className="leading-relaxed">{fig.caption || selectedImg?.title || editedTitle || activeDraft.title}</span>
-            <span className="text-xs text-[var(--accent)] font-semibold uppercase tracking-wider bg-[var(--accent)]/10 px-2.5 py-0.5 rounded-full border border-[var(--accent)]/30 self-start sm:self-auto whitespace-nowrap">{fig.source || selectedImg?.source || "CAD TEARDOWN ARCHIVE"}</span>
           </figcaption>
         </figure>
       );
@@ -1745,9 +1741,8 @@ export default function DraftViewer({
             <div className="text-neutral-500 font-mono text-xs">No image available</div>
           )}
         </div>
-        <figcaption className="p-3.5 sm:p-4 text-xs sm:text-sm font-mono text-[var(--muted)] border-t border-[var(--border)] bg-[var(--surface)]/60 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+        <figcaption className="p-3.5 sm:p-4 text-xs sm:text-sm font-mono text-[var(--muted)] border-t border-[var(--border)] bg-[var(--surface)]/60">
           <span className="leading-relaxed">{fig.caption || selectedImg?.title || ""}</span>
-          <span className="text-xs text-[var(--accent)] font-semibold uppercase tracking-wider bg-[var(--accent)]/10 px-2.5 py-0.5 rounded-full border border-[var(--accent)]/30 self-start sm:self-auto whitespace-nowrap">{fig.source || selectedImg?.source || "TEARDOWN ARCHIVE"}</span>
         </figcaption>
       </figure>
     );

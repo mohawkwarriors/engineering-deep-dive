@@ -69,68 +69,55 @@
       "id": "FIGURE_0",
       "placeholder": "{{ FIGURE_0 }}",
       "caption": "FIG 01 — CARBON FIBER COMPOSITE OVERWRAPPED PRESSURE VESSELS (COPV): Disassembled precision sub-assembly cutaway.",
-      "source": "HARDWARE TEARDOWN ARCHIVE",
       "selectedIndex": 0,
       "images": [
         {
           "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=2000",
-          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Precision Teardown Macro",
-          "source": "Hardware Teardown Lab"
+          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Precision Teardown Macro"
         },
         {
           "url": "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&q=80&w=2000",
-          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Sub-Assembly Metrology",
-          "source": "Optical CMM Metrology"
+          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Sub-Assembly Metrology"
         },
         {
           "url": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2000",
-          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) High-Aspect Cross Section",
-          "source": "Materials Lab"
+          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) High-Aspect Cross Section"
         },
         {
           "url": "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=2000",
-          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Internal Kinematic Interface",
-          "source": "Kinematics Archive"
+          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Internal Kinematic Interface"
         },
         {
           "url": "https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&q=80&w=2000",
-          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Surface Profilometry Scan",
-          "source": "Interferometry Metrology"
+          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Surface Profilometry Scan"
         },
         {
           "url": "https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&q=80&w=2000",
-          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Dynamometer Test Cell",
-          "source": "Dynamometer Dynamics"
+          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Dynamometer Test Cell"
         },
         {
           "url": "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?auto=format&fit=crop&q=80&w=2000",
-          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Thermal Infrared Hot Spot Map",
-          "source": "FLIR Calibrated Thermal"
+          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Thermal Infrared Hot Spot Map"
         },
         {
           "url": "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&q=80&w=2000",
-          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) SEM Fractography Analysis",
-          "source": "SEM Microscopy"
+          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) SEM Fractography Analysis"
         },
         {
           "url": "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&q=80&w=2000",
-          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Micro-Cavitation Pitting",
-          "source": "Tribology Institute"
+          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Micro-Cavitation Pitting"
         },
         {
           "url": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80&w=2000",
-          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Laser Seam Interferogram",
-          "source": "Laser Optics Group"
+          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Laser Seam Interferogram"
         },
         {
           "url": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=2000",
-          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Production Assembly Fixture",
-          "source": "Automation Metrology"
+          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Production Assembly Fixture"
         },
         {
           "url": "https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&q=80&w=2000",
-          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Final Quality Acceptance Gauge",
-          "source": "CMM Metrology"
+          "title": "Carbon Fiber Composite Overwrapped Pressure Vessels (COPV) Final Quality Acceptance Gauge"
         }
       ]
     }

@@ -443,8 +443,7 @@ STRICT EDITORIAL REQUIREMENTS:
      * UNIFIED CAPTION SCHEMA (MANDATORY ON ALL FIGURES AND SCHEMATICS):
        Every <figcaption> and <div class="schematic-caption"> MUST follow this exact markup structure:
        <span><strong>FIG XX — TITLE:</strong> Detailed engineering description...</span>
-       <span class="source-tag">ARCHIVE / SOURCE</span>
-       Never omit the FIG XX prefix, never use standalone figure badges, and always include the <span class="source-tag">.
+       Never include source badges, attribution tags, or archive labels. Captions must strictly contain only the figure number and description.
    - TIER 2 (GENERATED VISUALS — WHEN REAL PHOTOS DO NOT EXIST):
       * STRICT BAN ON FREEHAND SVG COMPARISONS, PROCEDURES & KINETIC SIMULATORS:
          - NEVER output interactive sliders, dynamic JS simulation engines, or moving vector components.
@@ -500,7 +499,6 @@ STRICT EDITORIAL REQUIREMENTS:
           </div>
           <div class="schematic-caption">
             <span><strong>FIG 02 — TITLE:</strong> Caption description...</span>
-            <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
           </div>
       * RHYTHMIC VISUAL DENSITY MANDATE (MAX 2-3 PARAGRAPHS PER VISUAL):
         - A visual element MUST appear at least once every 2 to 3 paragraphs across the ENTIRE dispatch.
@@ -545,7 +543,7 @@ RETURN ONLY VALID JSON WITH THIS EXACT STRUCTURE (no markdown fence, no surround
       "body": "<p>Detailed definition.</p><div class=\\"modal-equation-box\\"><div class=\\"math-label\\">Concept:</div>$$Formula$$<div class=\\"math-meta\\">Legend</div></div><p>Engineering application.</p>"
     }
   },
-  "article_html": "full article html starting with <div class=\"meta-line\">...<h1>Title</h1><p class=\"subtitle\">Subtitle</p><figure class=\"product-figure\"><div class=\"img-wrapper\"><img ...></div><figcaption><span><strong>FIG 01 — TITLE:</strong> ...</span><span class=\"source-tag\">...</span></figcaption></figure><h2>1. ... through <h2>6. ... and ending with an executive summary dashboard <div class=\"executive-metrics-bar\"><div class=\"metric-cell\"><span class=\"metric-cell-label\">LABEL</span><span class=\"metric-cell-val\">VAL</span><span class=\"metric-cell-sub\">SUB</span></div>... (4 cells total)</div>. Do NOT output reader voting buttons or rating cards (telemetry-bar is obsolete and forbidden)."
+  "article_html": "full article html starting with <div class=\"meta-line\">...<h1>Title</h1><p class=\"subtitle\">Subtitle</p><figure class=\"product-figure\"><div class=\"img-wrapper\"><img ...></div><figcaption><span><strong>FIG 01 — TITLE:</strong> ...</span></figcaption></figure><h2>1. ... through <h2>6. ... and ending with an executive summary dashboard <div class=\"executive-metrics-bar\"><div class=\"metric-cell\"><span class=\"metric-cell-label\">LABEL</span><span class=\"metric-cell-val\">VAL</span><span class=\"metric-cell-sub\">SUB</span></div>... (4 cells total)</div>. Do NOT output reader voting buttons or rating cards (telemetry-bar is obsolete and forbidden)."
 }`;
 
   const candidateModels = [

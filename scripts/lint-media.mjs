@@ -141,18 +141,22 @@ export function autoSanitizeArticleHtml(html) {
     return match;
   });
 
-  // 6. Automatically inject source-tags on captions if omitted
-  out = out.replace(/(<figcaption>[\s\S]*?)(<\/figcaption>)/gi, (m, body, close) => {
-    if (!body.includes('class="source-tag"')) {
-      return `${body.trim()} <span class="source-tag">COMMONS TEARDOWN ARCHIVE</span>\n  ${close}`;
-    }
-    return m;
+  // 6. Strip any source-tags, badges, or attribution pills from captions
+  out = out.replace(/(<figcaption[^>]*>)([\s\S]*?)(<\/figcaption>)/gi, (m, openTag, body, close) => {
+    let cleanOpen = openTag.replace(/\s*flex\s+justify-between\s+items-center(?:\s+gap-\d+)?/gi, '');
+    let cleanBody = body
+      .replace(/\s*<span\s+class(?:Name)?=["'][^"']*(?:source-tag|rounded-full|tracking-wider|text-amber-500|text-emerald-400)[^"']*["']>[\s\S]*?<\/span>/gi, '')
+      .replace(/\s*<span\s+class(?:Name)?=["'][^"']*font-mono[^"']*["']>\s*[^<]*(?:ARCHIVE|SCHEMATIC|METROLOGY|CAD)[\s\S]*?<\/span>/gi, '')
+      .replace(/\s+$/, '');
+    return `${cleanOpen}${cleanBody}\n  ${close}`;
   });
-  out = out.replace(/(<div class="schematic-caption">[\s\S]*?)(<\/div>)/gi, (m, body, close) => {
-    if (!body.includes('class="source-tag"')) {
-      return `${body.trim()} <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>\n  ${close}`;
-    }
-    return m;
+  out = out.replace(/(<div class="schematic-caption"[^>]*>)([\s\S]*?)(<\/div>)/gi, (m, openTag, body, close) => {
+    let cleanOpen = openTag.replace(/\s*flex\s+justify-between\s+items-center(?:\s+gap-\d+)?/gi, '');
+    let cleanBody = body
+      .replace(/\s*<span\s+class(?:Name)?=["'][^"']*(?:source-tag|rounded-full|tracking-wider|text-amber-500|text-emerald-400)[^"']*["']>[\s\S]*?<\/span>/gi, '')
+      .replace(/\s*<span\s+class(?:Name)?=["'][^"']*font-mono[^"']*["']>\s*[^<]*(?:ARCHIVE|SCHEMATIC|METROLOGY|CAD)[\s\S]*?<\/span>/gi, '')
+      .replace(/\s+$/, '');
+    return `${cleanOpen}${cleanBody}\n  ${close}`;
   });
 
   // 7. Ensure standard format and strictly sequential figure numbering (FIG 01, FIG 02, FIG 03...)
@@ -516,16 +520,16 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     const isFigCap = capHtml.startsWith('<figcaption>');
     const tagType = isFigCap ? 'figcaption' : 'schematic-caption';
 
-    // Must have standard title: <span><strong>FIG XX — TITLE:</strong> ...</span>
-    const figNumMatch = capHtml.match(/<strong>FIG\s*(\d+)\s*—\s*([^:<]+):<\/strong>/);
+    // Must have standard title: <span><strong>FIG XX — TITLE:</strong> ...</span> (or <span>FIG XX — TITLE: ...</span>)
+    const figNumMatch = capHtml.match(/<strong>FIG\s*(\d+)\s*(?:—|-)\s*([^:<]+):<\/strong>|FIG\s*(\d+)\s*(?:—|-)\s*([^:<]+):/i);
     if (!figNumMatch) {
       errors.push(
-        `${tagType} #${cIdx + 1} in ${fileLabel} does not match required format "<span><strong>FIG XX — TITLE:</strong> description</span> <span class="source-tag">SOURCE</span>": ${capHtml.replace(/\s+/g, ' ').slice(0, 80)}...`
+        `${tagType} #${cIdx + 1} in ${fileLabel} does not match required format "<span><strong>FIG XX — TITLE:</strong> description</span>": ${capHtml.replace(/\s+/g, ' ').slice(0, 80)}...`
       );
       continue;
     }
 
-    const figNum = parseInt(figNumMatch[1], 10);
+    const figNum = parseInt(figNumMatch[1] || figNumMatch[3], 10);
 
     // Check for duplicate figure numbers (e.g. two FIG 01s)
     if (seenFigNums.has(figNum)) {
@@ -539,9 +543,9 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     }
     expectedFigNum = figNum + 1;
 
-    // Must have <span class="source-tag">
-    if (!capHtml.includes('class="source-tag"')) {
-      errors.push(`${tagType} #${cIdx + 1} in ${fileLabel} is missing standard <span class="source-tag">...</span> tag.`);
+    // Must NOT have source tags or archive badges
+    if (capHtml.includes('class="source-tag"') || capHtml.includes('className="source-tag"') || /<span\s+class(?:Name)?=["'][^"']*(?:rounded-full|tracking-wider)[^"']*["']>/i.test(capHtml)) {
+      errors.push(`${tagType} #${cIdx + 1} in ${fileLabel} contains forbidden source tag or archive badge. Captions must strictly contain only the figure number and description.`);
     }
   }
 
@@ -777,16 +781,16 @@ export function validateArticleHtml(html, fileLabel = 'article') {
     }
   });
 
-  const figcaps = [...html.matchAll(/<figcaption>([\s\S]*?)<\/figcaption>/gi)];
+  const figcaps = [...html.matchAll(/<figcaption[^>]*>([\s\S]*?)<\/figcaption>/gi)];
   for (const fc of figcaps) {
-    if (!fc[1].includes('class="source-tag"')) {
-      errors.push(`<figcaption> in ${fileLabel} is missing mandatory <span class="source-tag">.`);
+    if (fc[1].includes('class="source-tag"') || fc[1].includes('className="source-tag"') || /<span\s+class(?:Name)?=["'][^"']*(?:rounded-full|tracking-wider)[^"']*["']>/i.test(fc[1])) {
+      errors.push(`<figcaption> in ${fileLabel} contains forbidden source tag or archive badge.`);
     }
   }
-  const schemCaps = [...html.matchAll(/<div class="schematic-caption">([\s\S]*?)<\/div>/gi)];
+  const schemCaps = [...html.matchAll(/<div class="schematic-caption"[^>]*>([\s\S]*?)<\/div>/gi)];
   for (const sc of schemCaps) {
-    if (!sc[1].includes('class="source-tag"')) {
-      errors.push(`<div class="schematic-caption"> in ${fileLabel} is missing mandatory <span class="source-tag">.`);
+    if (sc[1].includes('class="source-tag"') || sc[1].includes('className="source-tag"') || /<span\s+class(?:Name)?=["'][^"']*(?:rounded-full|tracking-wider)[^"']*["']>/i.test(sc[1])) {
+      errors.push(`<div class="schematic-caption"> in ${fileLabel} contains forbidden source tag or archive badge.`);
     }
   }
 

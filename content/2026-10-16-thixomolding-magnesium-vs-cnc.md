@@ -14,7 +14,6 @@
   </div>
   <figcaption>
     <span><strong>FIG 01 — PRODUCTION MAGNESIUM CHASSIS:</strong> Internal thin-wall structural ribbing, mounting bosses, and drive bays of a magnesium alloy laptop bottom enclosure (Lenovo ThinkPad architecture), showcasing the complex sub-millimeter net-shape features enabled by semi-solid molding.</span>
-    <span class="source-tag">COMMONS TEARDOWN ARCHIVE</span>
   </figcaption>
 </figure>
 
@@ -157,7 +156,6 @@
   </div>
   <div class="schematic-caption">
     <span><strong>FIG 02 — PROCESS ARCHITECTURE:</strong> The 5-stage automated thixomolding sequence transforming chipped magnesium granules directly into ultra-thin near-net-shape structural laptop enclosures in an 18-second cycle.</span>
-    <span class="source-tag">FLOWCHART 01</span>
   </div>
 </div>
 
@@ -454,7 +452,6 @@
   </div>
   <div class="schematic-caption">
     <span><strong>FIG 03 — RECIPROCATING SCREW THIXOMOLDER:</strong> Vector CAD cutaway of the Japan Steel Works (JSW) reciprocating screw thixomolding barrel, illustrating argon chip feeding, progressive shear-thinning thermal zones, and the 120 MPa hydraulic injection accumulator.</span>
-    <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
   </div>
 </div>
 
@@ -590,7 +587,6 @@
 
   <div class="schematic-caption">
     <span><strong>FIG 04 — METALLURGICAL GRAIN STRUCTURE:</strong> Scanning electron comparison illustrating why thixomolded magnesium achieves pore-free structural integrity compared to conventional die-casting gas cavities.</span>
-    <span class="source-tag">SCHEMATIC: SEM ARCHIVE</span>
   </div>
 </div>
 </div>

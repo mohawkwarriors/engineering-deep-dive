@@ -69,18 +69,18 @@ for (const file of issues) {
     }
   }
 
-  // 1F. Unified source tags on all captions
-  const figcaps = [...html.matchAll(/<figcaption>([\s\S]*?)<\/figcaption>/gi)];
+  // 1F. Verified clean captions (no source tags or archive badges)
+  const figcaps = [...html.matchAll(/<figcaption[^>]*>([\s\S]*?)<\/figcaption>/gi)];
   for (const fc of figcaps) {
-    if (!fc[1].includes('class="source-tag"')) {
-      console.error(`[ERROR] ${file} has <figcaption> missing <span class="source-tag">.`);
+    if (fc[1].includes('class="source-tag"') || fc[1].includes('className="source-tag"') || /<span\s+class(?:Name)?=["'][^"']*(?:rounded-full|tracking-wider)[^"']*["']>/i.test(fc[1])) {
+      console.error(`[ERROR] ${file} has <figcaption> containing forbidden source tag or archive badge.`);
       issueErrors++;
     }
   }
-  const schemCaps = [...html.matchAll(/<div class="schematic-caption">([\s\S]*?)<\/div>/gi)];
+  const schemCaps = [...html.matchAll(/<div class="schematic-caption"[^>]*>([\s\S]*?)<\/div>/gi)];
   for (const sc of schemCaps) {
-    if (!sc[1].includes('class="source-tag"')) {
-      console.error(`[ERROR] ${file} has <div class="schematic-caption"> missing <span class="source-tag">.`);
+    if (sc[1].includes('class="source-tag"') || sc[1].includes('className="source-tag"') || /<span\s+class(?:Name)?=["'][^"']*(?:rounded-full|tracking-wider)[^"']*["']>/i.test(sc[1])) {
+      console.error(`[ERROR] ${file} has <div class="schematic-caption"> containing forbidden source tag or archive badge.`);
       issueErrors++;
     }
   }
@@ -152,7 +152,7 @@ for (const file of issues) {
 }
 
 if (issueErrors === 0) {
-  console.log(`✓ All ${issues.length} articles passed content, image, tangent, subtitle, caption source, and structural audits.`);
+  console.log(`✓ All ${issues.length} articles passed content, image, tangent, subtitle, clean caption, and structural audits.`);
 }
 
 console.log('\n--- 2. AUDITING SYNCHRONIZED MARKDOWN MIRRORS ---');

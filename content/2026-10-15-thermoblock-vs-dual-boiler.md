@@ -13,7 +13,6 @@
   </div>
   <figcaption>
     <span><strong>FIG 01 — THE EXTRACTION ENGINE:</strong> A commercial espresso machine group head with a locked-in bottomless portafilter. Maintaining exact 93.3°C water temperature across the coffee puck requires massive thermal ballast to prevent incoming cold water from quenching the brew zone.</span>
-    <span class="source-tag">IMAGE: HARDWARE TEARDOWN ARCHIVE</span>
   </figcaption>
 </figure>
 
@@ -136,7 +135,6 @@
   </div>
   <div class="schematic-caption">
     <span><strong>FIG 02 — CAPILLARY THERMODYNAMICS:</strong> Cutaway cross-section of a high-pressure espresso thermoblock showing the co-axial A380 aluminum body, embedded 1,350W heating element, and internal stainless water conduit.</span>
-    <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
   </div>
 </div>
 
@@ -261,7 +259,6 @@
   </div>
   <div class="schematic-caption">
     <span><strong>FIG 03 — SATURATED FLUIDIC COUPLING:</strong> Longitudinal cutaway showing an independent 1.8 L stainless brew vessel continuously connected to the group head via a welded neck, enabling passive thermosiphon convection that prevents cold-nose stagnation.</span>
-    <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
   </div>
 </div>
 
@@ -353,7 +350,6 @@
   </div>
   <figcaption>
     <span><strong>FIG 04 — BOILER CHASSIS & HYDRAULIC PLUMBING:</strong> Top-down engineering teardown of an espresso machine chassis showing the heavy-gauge brass brew boiler, immersion element terminals, high-pressure copper delivery conduit, and 3-way solenoid valve assembly.</span>
-    <span class="source-tag">IMAGE: STUDIO TEARDOWN ARCHIVE</span>
   </figcaption>
 </figure>
 
@@ -487,7 +483,6 @@
   </div>
   <div class="schematic-caption">
     <span><strong>FIG 05 — FLUIDIC SEQUENCING:</strong> Five-stage hydraulic and thermal pathway from ambient 18°C feedwater pressurization through steam-jacket pre-heating to isothermal saturated puck delivery.</span>
-    <span class="source-tag">FLOWCHART 01</span>
   </div>
 </div>
 

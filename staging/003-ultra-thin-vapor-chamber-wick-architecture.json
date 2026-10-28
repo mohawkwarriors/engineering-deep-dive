@@ -17,68 +17,55 @@
       "id": "FIGURE_0",
       "placeholder": "{{ FIGURE_0 }}",
       "caption": "FIG 01 — PLANAR VAPOR CHAMBER TEARDOWN: 0.35 mm ultra-thin copper envelope precision-cleaved to expose internal capillary wick and vapor cavity.",
-      "source": "HARDWARE TEARDOWN ARCHIVE",
       "selectedIndex": 0,
       "images": [
         {
           "url": "/images/vapor-chamber-modern-teardown.jpg",
-          "title": "0.35 mm Smartphone Copper Vapor Chamber Studio Teardown",
-          "source": "Public Technical Teardown Archive"
+          "title": "0.35 mm Smartphone Copper Vapor Chamber Studio Teardown"
         },
         {
           "url": "/images/references/vapor-chamber/etched-half-shells-hires.jpg",
-          "title": "Real Photochemical Etched Copper Half-Shells with Support Pillar Array",
-          "source": "Photochemical Etching Lab"
+          "title": "Real Photochemical Etched Copper Half-Shells with Support Pillar Array"
         },
         {
           "url": "/images/vapor-chamber-cross-section.jpg",
-          "title": "Cleaved Planar Copper Vapor Chamber Cavity Cross-Section",
-          "source": "Metrology Laboratory"
+          "title": "Cleaved Planar Copper Vapor Chamber Cavity Cross-Section"
         },
         {
           "url": "/images/references/vapor-chamber/phone-exploded-vc.jpg",
-          "title": "Smartphone Chassis Exploded View with Planar Vapor Spreader",
-          "source": "Hardware Architecture Teardowns"
+          "title": "Smartphone Chassis Exploded View with Planar Vapor Spreader"
         },
         {
           "url": "/images/vapor-chamber-exploded-stack.png",
-          "title": "Exploded Layer Stack: Copper Foil, Wick Mesh, and Support Columns",
-          "source": "CAD Teardown Archive"
+          "title": "Exploded Layer Stack: Copper Foil, Wick Mesh, and Support Columns"
         },
         {
           "url": "/images/references/vapor-chamber/etched-half-shells.webp",
-          "title": "Photochemically Etched Internal Vapor Spreader Half-Shell",
-          "source": "Photochemical Machining Lab"
+          "title": "Photochemically Etched Internal Vapor Spreader Half-Shell"
         },
         {
           "url": "https://www.mdpi.com/micromachines/micromachines-15-00627/article_deploy/html/images/micromachines-15-00627-g001.png",
-          "title": "Ultra-Thin Vapor Chamber with Composite Wick Sub-Assembly",
-          "source": "Micromachines Technical Archive"
+          "title": "Ultra-Thin Vapor Chamber with Composite Wick Sub-Assembly"
         },
         {
           "url": "https://static1.anpoimages.com/wordpress/wp-content/uploads/2024/01/oneplus-12-vapor-chamber-jre-teardown-1-3.jpg",
-          "title": "Flagship Smartphone Planar Vapor Chamber Physical Teardown",
-          "source": "Hardware Teardown Archive"
+          "title": "Flagship Smartphone Planar Vapor Chamber Physical Teardown"
         },
         {
           "url": "https://tonecooling.com/wp-content/uploads/2025/02/Phone-vapor-chamber.jpg",
-          "title": "Macro View of Smartphone Planar Vapor Spreader",
-          "source": "Thermal Engineering Archive"
+          "title": "Macro View of Smartphone Planar Vapor Spreader"
         },
         {
           "url": "https://www.hysonetch.com/photo/ps213817406-ultra_thin_etching_vapor_chambers_with_customizable_heat_transfer_capacity.jpg",
-          "title": "Photochemically Etched Thin Vapor Chamber Envelope",
-          "source": "Precision Micro-Etching Lab"
+          "title": "Photochemically Etched Thin Vapor Chamber Envelope"
         },
         {
           "url": "https://www.hysonetch.com/photo/ps213417093-ultra_thin_etching_vapor_chambers_for_superior_thermal_dissipation.jpg",
-          "title": "0.35 mm Ultra-Thin Etched Copper Vapor Chamber",
-          "source": "Precision Micro-Etching Lab"
+          "title": "0.35 mm Ultra-Thin Etched Copper Vapor Chamber"
         },
         {
           "url": "https://tmnetch.com/wp-content/uploads/2026/01/vapor-chambe-parts-1-1024x1024.jpg",
-          "title": "Precision Stamped Copper Half-Shell Sub-Assembly",
-          "source": "Industrial Etching Archive"
+          "title": "Precision Stamped Copper Half-Shell Sub-Assembly"
         }
       ],
       "cadSvg": "<svg viewBox=\"0 0 860 360\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full h-auto bg-[#141413] rounded-xl border border-[#383734]\">\n  <defs>\n    <!-- Technical CAD Minor & Major Grid -->\n    <pattern id=\"cadMinor-cad-4o9ac9\" width=\"15\" height=\"15\" patternUnits=\"userSpaceOnUse\">\n      <path d=\"M 15 0 L 0 0 0 15\" fill=\"none\" stroke=\"#1A1918\" stroke-width=\"0.6\"/>\n    </pattern>\n    <pattern id=\"cadMajor-cad-4o9ac9\" width=\"60\" height=\"60\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"60\" height=\"60\" fill=\"url(#cadMinor-cad-4o9ac9)\"/>\n      <path d=\"M 60 0 L 0 0 0 60\" fill=\"none\" stroke=\"#232220\" stroke-width=\"0.9\"/>\n    </pattern>\n\n    <!-- Metallic 45° ANSI Copper Hatch - Clean Spacing -->\n    <pattern id=\"hatch-copper-cad-4o9ac9\" width=\"12\" height=\"12\" patternTransform=\"rotate(45 0 0)\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"12\" height=\"12\" fill=\"#241712\"/>\n      <line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"12\" stroke=\"#D97757\" stroke-width=\"1.1\" stroke-opacity=\"0.35\"/>\n    </pattern>\n\n    <!-- Silicon Monolithic Crystalline Hatch -->\n    <pattern id=\"hatch-silicon-cad-4o9ac9\" width=\"10\" height=\"10\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"10\" height=\"10\" fill=\"#0C1A24\"/>\n      <path d=\"M 0 5 L 10 5 M 5 0 L 5 10\" stroke=\"#0284C7\" stroke-width=\"0.7\" stroke-opacity=\"0.4\"/>\n    </pattern>\n\n    <!-- Porous Sintered Spherical Powder Matrix - Calm Micro-Pore Texture -->\n    <pattern id=\"hatch-sintered-cad-4o9ac9\" width=\"16\" height=\"16\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"16\" height=\"16\" fill=\"#1C1613\"/>\n      <circle cx=\"4\" cy=\"4\" r=\"1.5\" fill=\"#D97757\" opacity=\"0.45\"/>\n      <circle cx=\"12\" cy=\"12\" r=\"1.2\" fill=\"#F59E0B\" opacity=\"0.4\"/>\n    </pattern>\n\n    <!-- Ferroelectric Sol-Gel PZT Dipole Hatch -->\n    <pattern id=\"hatch-piezo-cad-4o9ac9\" width=\"14\" height=\"14\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"14\" height=\"14\" fill=\"#191124\"/>\n      <path d=\"M 3 7 L 11 7 M 7 3 L 7 11\" stroke=\"#8B5CF6\" stroke-width=\"1.1\" stroke-opacity=\"0.5\"/>\n      <circle cx=\"7\" cy=\"7\" r=\"1.5\" fill=\"#C4B5FD\"/>\n    </pattern>\n\n    <!-- Dimension Arrowhead Markers -->\n    <marker id=\"arr-orange-end-cad-4o9ac9\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#D97757\"/>\n    </marker>\n    <marker id=\"arr-orange-start-cad-4o9ac9\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#D97757\"/>\n    </marker>\n    <marker id=\"arr-amber-end-cad-4o9ac9\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#F59E0B\"/>\n    </marker>\n    <marker id=\"arr-amber-start-cad-4o9ac9\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#F59E0B\"/>\n    </marker>\n    <marker id=\"arr-cyan-end-cad-4o9ac9\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#38BDF8\"/>\n    </marker>\n    <marker id=\"arr-cyan-start-cad-4o9ac9\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#38BDF8\"/>\n    </marker>\n    <marker id=\"arr-white-end-cad-4o9ac9\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#EDEDEB\"/>\n    </marker>\n    <marker id=\"arr-white-start-cad-4o9ac9\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#EDEDEB\"/>\n    </marker>\n    <marker id=\"arr-emerald-end-cad-4o9ac9\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#10B981\"/>\n    </marker>\n    <marker id=\"arr-emerald-start-cad-4o9ac9\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#10B981\"/>\n    </marker>\n    <marker id=\"arr-red-end-cad-4o9ac9\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#F87171\"/>\n    </marker>\n  </defs>\n\n  <rect width=\"100%\" height=\"100%\" fill=\"url(#cadMajor-cad-4o9ac9)\" />\n\n  <!-- 1. Header Information Strip (Clean title without redundant scale boilerplate) -->\n  <text x=\"24\" y=\"26\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"700\" fill=\"#D97757\" letter-spacing=\"0.05em\">\n    SECTION // PLANAR VAPOR CHAMBER ENVELOPE ARCHITECTURE\n  </text>\n\n  <!-- 2. Boundary External Loads (Single Centered Clean Load Vector) -->\n  \n\n  <!-- 3. Layer Stackup -->\n  <g>\n    \n        <rect x=\"146\" y=\"85\" width=\"480\" height=\"48\" fill=\"url(#hatch-copper-cad-4o9ac9)\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n      \n            <g>\n              <path d=\"M 226 85 Q 242 97 258 85 Z\" fill=\"url(#hatch-copper-cad-4o9ac9)\" stroke=\"#D97757\" stroke-width=\"1.5\"/>\n              <line x1=\"242\" y1=\"81\" x2=\"242\" y2=\"101\" stroke=\"#9E9C94\" stroke-width=\"0.8\" stroke-dasharray=\"4 2\"/>\n            </g>\n            <g>\n              <path d=\"M 514 85 Q 530 97 546 85 Z\" fill=\"url(#hatch-copper-cad-4o9ac9)\" stroke=\"#D97757\" stroke-width=\"1.5\"/>\n              <line x1=\"530\" y1=\"81\" x2=\"530\" y2=\"101\" stroke=\"#9E9C94\" stroke-width=\"0.8\" stroke-dasharray=\"4 2\"/>\n            </g>\n        <rect x=\"146\" y=\"133\" width=\"480\" height=\"95\" fill=\"#0D141F\" stroke=\"#38BDF8\" stroke-width=\"1.2\"/>\n      \n          <g>\n            <line x1=\"232.39999999999998\" y1=\"180.5\" x2=\"539.5999999999999\" y2=\"180.5\" stroke=\"#38BDF8\" stroke-width=\"1.5\" stroke-dasharray=\"5 3\" marker-end=\"url(#arr-cyan-end-cad-4o9ac9)\"/>\n            \n              <text x=\"385.99999999999994\" y=\"176.5\" text-anchor=\"middle\" font-family=\"'JetBrains Mono', monospace\" font-size=\"8\" font-weight=\"700\" fill=\"#38BDF8\">\n                LATENT HEAT TRANSPORT\n              </text>\n          </g>\n        <rect x=\"146\" y=\"228\" width=\"480\" height=\"47\" fill=\"url(#hatch-copper-cad-4o9ac9)\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n      \n  </g>\n\n  <!-- 4. Monolithic Support Columns (ColumnArray) spanning internal layers -->\n  \n\n  <!-- 5. Left Total Stackup Dimension Annotation -->\n  <g>\n    <line x1=\"116\" y1=\"85\" x2=\"140\" y2=\"85\" stroke=\"#9E9C94\" stroke-width=\"0.8\"/>\n    <line x1=\"116\" y1=\"275\" x2=\"140\" y2=\"275\" stroke=\"#9E9C94\" stroke-width=\"0.8\"/>\n    <line x1=\"128\" y1=\"89\" x2=\"128\" y2=\"271\" stroke=\"#EDEDEB\" stroke-width=\"1.2\" marker-start=\"url(#arr-white-start-cad-4o9ac9)\" marker-end=\"url(#arr-white-end-cad-4o9ac9)\"/>\n    <text x=\"122\" y=\"183.5\" text-anchor=\"end\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9.5\" font-weight=\"700\" fill=\"#EDEDEB\">\n      0.35 mm\n    </text>\n  </g>\n\n  <!-- 6. Right-Hand Clean Layer Leaders & Compact Metrics -->\n  <g>\n    \n      <g>\n        <line x1=\"630\" y1=\"109\" x2=\"648\" y2=\"109\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n        <circle cx=\"630\" cy=\"109\" r=\"2\" fill=\"#D97757\"/>\n        <text x=\"654\" y=\"112.5\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#D97757\" font-weight=\"700\">TOP COPPER</tspan><tspan fill=\"#9E9C94\"> • 0.08 mm</tspan></text>\n      </g>\n      <g>\n        <line x1=\"630\" y1=\"180.5\" x2=\"648\" y2=\"180.5\" stroke=\"#38BDF8\" stroke-width=\"1.2\"/>\n        <circle cx=\"630\" cy=\"180.5\" r=\"2\" fill=\"#38BDF8\"/>\n        <text x=\"654\" y=\"184\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#38BDF8\" font-weight=\"700\">VAPOR CORE</tspan><tspan fill=\"#9E9C94\"> • 0.19 mm</tspan></text>\n      </g>\n      <g>\n        <line x1=\"630\" y1=\"251.5\" x2=\"648\" y2=\"251.5\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n        <circle cx=\"630\" cy=\"251.5\" r=\"2\" fill=\"#D97757\"/>\n        <text x=\"654\" y=\"255\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#D97757\" font-weight=\"700\">BOTTOM COPPER</tspan><tspan fill=\"#9E9C94\"> • 0.08 mm</tspan></text>\n      </g>\n  </g>\n\n  <!-- 7. Bottom Pillar Metrology Dimensions (Orthogonal & Collision-Free) -->\n  \n</svg>"
@@ -87,68 +74,55 @@
       "id": "FIGURE_1",
       "placeholder": "{{ FIGURE_1 }}",
       "caption": "FIG 02 — SINTERED POWDER MICROSTRUCTURE: Micro-copper particle necking and bimodal capillary pore distribution.",
-      "source": "METALLURGY & SINTERING LAB",
       "selectedIndex": 0,
       "images": [
         {
           "url": "https://www.mdpi.com/materials/materials-16-04231/article_deploy/html/images/materials-16-04231-g012.png",
-          "title": "High-Magnification SEM Micrograph: Sintered Copper Powder Necking at 850°C",
-          "source": "Materials Science Microstructure Lab"
+          "title": "High-Magnification SEM Micrograph: Sintered Copper Powder Necking at 850°C"
         },
         {
           "url": "https://pub.mdpi-res.com/metals/metals-14-00386/article_deploy/html/images/metals-14-00386-g006.png?1711452199",
-          "title": "SEM Cross-Section of Biporous Capillary Wick Architecture",
-          "source": "Metallurgical Research Archive"
+          "title": "SEM Cross-Section of Biporous Capillary Wick Architecture"
         },
         {
           "url": "/images/references/vapor-chamber/etched-half-shells-hires.jpg",
-          "title": "Sintered Micro-Powder Coating on Etched Copper Baseplate",
-          "source": "Micro-Machining Archive"
+          "title": "Sintered Micro-Powder Coating on Etched Copper Baseplate"
         },
         {
           "url": "https://pub.mdpi-res.com/metals/metals-14-00386/article_deploy/html/images/metals-14-00386-g008.png?1711452204",
-          "title": "Micro-Porous Copper Particle Distribution and Pore Throat Matrix",
-          "source": "Metallurgical Research Archive"
+          "title": "Micro-Porous Copper Particle Distribution and Pore Throat Matrix"
         },
         {
           "url": "https://pub.mdpi-res.com/micromachines/micromachines-15-00627/article_deploy/html/images/micromachines-15-00627-g001.png?1715417361",
-          "title": "Multi-Scale Composite Sintered Copper Wick Structure",
-          "source": "Micromachines Technical Archive"
+          "title": "Multi-Scale Composite Sintered Copper Wick Structure"
         },
         {
           "url": "https://tonecooling.com/wp-content/uploads/2024/12/Vapor-Chamber-Copper-Mesh-1004x1024.jpg",
-          "title": "Macro Close-Up: Sintered Micro-Mesh Capillary Wick",
-          "source": "Thermal Management Archive"
+          "title": "Macro Close-Up: Sintered Micro-Mesh Capillary Wick"
         },
         {
           "url": "https://pub.mdpi-res.com/materials/materials-18-00979/article_deploy/html/images/materials-18-00979-g002.png",
-          "title": "SEM Cross-Section of Capillary Boiling Channels",
-          "source": "Materials Research Lab"
+          "title": "SEM Cross-Section of Capillary Boiling Channels"
         },
         {
           "url": "https://pub.mdpi-res.com/materials/materials-16-04231/article_deploy/html/images/materials-16-04231-g004.png",
-          "title": "Atomic Necking Diffusion Between Adjacent Spherical Copper Particles",
-          "source": "Sintering Metallurgy Lab"
+          "title": "Atomic Necking Diffusion Between Adjacent Spherical Copper Particles"
         },
         {
           "url": "/images/vapor-chamber-cross-section.jpg",
-          "title": "Cross-Section View: Capillary Powder Lining Inside Vacuum Cavity",
-          "source": "Metrology Laboratory"
+          "title": "Cross-Section View: Capillary Powder Lining Inside Vacuum Cavity"
         },
         {
           "url": "https://pub.mdpi-res.com/materials/materials-16-04231/article_deploy/html/images/materials-16-04231-g009.png",
-          "title": "Permeability Test Sample: Sintered Copper Powder Matrix",
-          "source": "Materials Science Microstructure Lab"
+          "title": "Permeability Test Sample: Sintered Copper Powder Matrix"
         },
         {
           "url": "/images/vapor-chamber-modern-teardown.jpg",
-          "title": "Macro Detail: Internal Capillary Wick Surface Texture",
-          "source": "Hardware Teardown Archive"
+          "title": "Macro Detail: Internal Capillary Wick Surface Texture"
         },
         {
           "url": "https://pub.mdpi-res.com/metals/metals-14-00386/article_deploy/html/images/metals-14-00386-g001.png?1711452185",
-          "title": "SEM Micrograph: Copper Micro-Particle Morphology Before Sintering",
-          "source": "Metallurgical Research Archive"
+          "title": "SEM Micrograph: Copper Micro-Particle Morphology Before Sintering"
         }
       ],
       "cadSvg": "<svg viewBox=\"0 0 860 360\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full h-auto bg-[#141413] rounded-xl border border-[#383734]\">\n  <defs>\n    <!-- Technical CAD Minor & Major Grid -->\n    <pattern id=\"cadMinor-cad-ohdxmt\" width=\"15\" height=\"15\" patternUnits=\"userSpaceOnUse\">\n      <path d=\"M 15 0 L 0 0 0 15\" fill=\"none\" stroke=\"#1A1918\" stroke-width=\"0.6\"/>\n    </pattern>\n    <pattern id=\"cadMajor-cad-ohdxmt\" width=\"60\" height=\"60\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"60\" height=\"60\" fill=\"url(#cadMinor-cad-ohdxmt)\"/>\n      <path d=\"M 60 0 L 0 0 0 60\" fill=\"none\" stroke=\"#232220\" stroke-width=\"0.9\"/>\n    </pattern>\n\n    <!-- Metallic 45° ANSI Copper Hatch - Clean Spacing -->\n    <pattern id=\"hatch-copper-cad-ohdxmt\" width=\"12\" height=\"12\" patternTransform=\"rotate(45 0 0)\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"12\" height=\"12\" fill=\"#241712\"/>\n      <line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"12\" stroke=\"#D97757\" stroke-width=\"1.1\" stroke-opacity=\"0.35\"/>\n    </pattern>\n\n    <!-- Silicon Monolithic Crystalline Hatch -->\n    <pattern id=\"hatch-silicon-cad-ohdxmt\" width=\"10\" height=\"10\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"10\" height=\"10\" fill=\"#0C1A24\"/>\n      <path d=\"M 0 5 L 10 5 M 5 0 L 5 10\" stroke=\"#0284C7\" stroke-width=\"0.7\" stroke-opacity=\"0.4\"/>\n    </pattern>\n\n    <!-- Porous Sintered Spherical Powder Matrix - Calm Micro-Pore Texture -->\n    <pattern id=\"hatch-sintered-cad-ohdxmt\" width=\"16\" height=\"16\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"16\" height=\"16\" fill=\"#1C1613\"/>\n      <circle cx=\"4\" cy=\"4\" r=\"1.5\" fill=\"#D97757\" opacity=\"0.45\"/>\n      <circle cx=\"12\" cy=\"12\" r=\"1.2\" fill=\"#F59E0B\" opacity=\"0.4\"/>\n    </pattern>\n\n    <!-- Ferroelectric Sol-Gel PZT Dipole Hatch -->\n    <pattern id=\"hatch-piezo-cad-ohdxmt\" width=\"14\" height=\"14\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"14\" height=\"14\" fill=\"#191124\"/>\n      <path d=\"M 3 7 L 11 7 M 7 3 L 7 11\" stroke=\"#8B5CF6\" stroke-width=\"1.1\" stroke-opacity=\"0.5\"/>\n      <circle cx=\"7\" cy=\"7\" r=\"1.5\" fill=\"#C4B5FD\"/>\n    </pattern>\n\n    <!-- Dimension Arrowhead Markers -->\n    <marker id=\"arr-orange-end-cad-ohdxmt\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#D97757\"/>\n    </marker>\n    <marker id=\"arr-orange-start-cad-ohdxmt\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#D97757\"/>\n    </marker>\n    <marker id=\"arr-amber-end-cad-ohdxmt\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#F59E0B\"/>\n    </marker>\n    <marker id=\"arr-amber-start-cad-ohdxmt\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#F59E0B\"/>\n    </marker>\n    <marker id=\"arr-cyan-end-cad-ohdxmt\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#38BDF8\"/>\n    </marker>\n    <marker id=\"arr-cyan-start-cad-ohdxmt\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#38BDF8\"/>\n    </marker>\n    <marker id=\"arr-white-end-cad-ohdxmt\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#EDEDEB\"/>\n    </marker>\n    <marker id=\"arr-white-start-cad-ohdxmt\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#EDEDEB\"/>\n    </marker>\n    <marker id=\"arr-emerald-end-cad-ohdxmt\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#10B981\"/>\n    </marker>\n    <marker id=\"arr-emerald-start-cad-ohdxmt\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#10B981\"/>\n    </marker>\n    <marker id=\"arr-red-end-cad-ohdxmt\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#F87171\"/>\n    </marker>\n  </defs>\n\n  <rect width=\"100%\" height=\"100%\" fill=\"url(#cadMajor-cad-ohdxmt)\" />\n\n  <!-- 1. Header Information Strip (Clean title without redundant scale boilerplate) -->\n  <text x=\"24\" y=\"26\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"700\" fill=\"#D97757\" letter-spacing=\"0.05em\">\n    SECTION // SINTERED COPPER POWDER WICK ARCHITECTURE\n  </text>\n\n  <!-- 2. Boundary External Loads (Single Centered Clean Load Vector) -->\n  \n\n  <!-- 3. Layer Stackup -->\n  <g>\n    \n        <rect x=\"131\" y=\"85\" width=\"473\" height=\"38\" fill=\"#0D141F\" stroke=\"#38BDF8\" stroke-width=\"1.2\"/>\n      \n          <g>\n            <line x1=\"201.95\" y1=\"104\" x2=\"533.05\" y2=\"104\" stroke=\"#38BDF8\" stroke-width=\"1.5\" stroke-dasharray=\"5 3\" marker-end=\"url(#arr-cyan-end-cad-ohdxmt)\"/>\n            \n              <text x=\"367.5\" y=\"100\" text-anchor=\"middle\" font-family=\"'JetBrains Mono', monospace\" font-size=\"8\" font-weight=\"700\" fill=\"#38BDF8\">\n                VAPOR ADVECTION\n              </text>\n          </g>\n        <rect x=\"131\" y=\"123\" width=\"473\" height=\"54\" fill=\"url(#hatch-sintered-cad-ohdxmt)\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n      \n          <g>\n            <line x1=\"533.05\" y1=\"150\" x2=\"201.95\" y2=\"150\" stroke=\"#38BDF8\" stroke-width=\"1.5\" stroke-dasharray=\"5 3\" marker-end=\"url(#arr-cyan-end-cad-ohdxmt)\"/>\n            \n              <text x=\"367.5\" y=\"146\" text-anchor=\"middle\" font-family=\"'JetBrains Mono', monospace\" font-size=\"8\" font-weight=\"700\" fill=\"#38BDF8\">\n                LIQUID RECIRCULATION\n              </text>\n          </g>\n        <rect x=\"131\" y=\"177\" width=\"473\" height=\"54\" fill=\"url(#hatch-sintered-cad-ohdxmt)\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n      \n        <rect x=\"131\" y=\"231\" width=\"473\" height=\"44\" fill=\"url(#hatch-copper-cad-ohdxmt)\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n      \n  </g>\n\n  <!-- 4. Monolithic Support Columns (ColumnArray) spanning internal layers -->\n  \n\n  <!-- 5. Left Total Stackup Dimension Annotation -->\n  <g>\n    <line x1=\"101\" y1=\"85\" x2=\"125\" y2=\"85\" stroke=\"#9E9C94\" stroke-width=\"0.8\"/>\n    <line x1=\"101\" y1=\"275\" x2=\"125\" y2=\"275\" stroke=\"#9E9C94\" stroke-width=\"0.8\"/>\n    <line x1=\"113\" y1=\"89\" x2=\"113\" y2=\"271\" stroke=\"#EDEDEB\" stroke-width=\"1.2\" marker-start=\"url(#arr-white-start-cad-ohdxmt)\" marker-end=\"url(#arr-white-end-cad-ohdxmt)\"/>\n    <text x=\"107\" y=\"183.5\" text-anchor=\"end\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9.5\" font-weight=\"700\" fill=\"#EDEDEB\">\n      0.16 mm\n    </text>\n  </g>\n\n  <!-- 6. Right-Hand Clean Layer Leaders & Compact Metrics -->\n  <g>\n    \n      <g>\n        <line x1=\"608\" y1=\"104\" x2=\"626\" y2=\"104\" stroke=\"#38BDF8\" stroke-width=\"1.2\"/>\n        <circle cx=\"608\" cy=\"104\" r=\"2\" fill=\"#38BDF8\"/>\n        <text x=\"632\" y=\"107.5\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#38BDF8\" font-weight=\"700\">VAPOR CORE</tspan><tspan fill=\"#9E9C94\"> • 0.05 mm</tspan></text>\n      </g>\n      <g>\n        <line x1=\"608\" y1=\"150\" x2=\"626\" y2=\"150\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n        <circle cx=\"608\" cy=\"150\" r=\"2\" fill=\"#D97757\"/>\n        <text x=\"632\" y=\"153.5\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#D97757\" font-weight=\"700\">FINE WICK</tspan><tspan fill=\"#9E9C94\"> • 0.035 mm</tspan></text>\n      </g>\n      <g>\n        <line x1=\"608\" y1=\"204\" x2=\"626\" y2=\"204\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n        <circle cx=\"608\" cy=\"204\" r=\"2\" fill=\"#D97757\"/>\n        <text x=\"632\" y=\"207.5\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#D97757\" font-weight=\"700\">COARSE WICK</tspan><tspan fill=\"#9E9C94\"> • 0.045 mm</tspan></text>\n      </g>\n      <g>\n        <line x1=\"608\" y1=\"253\" x2=\"626\" y2=\"253\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n        <circle cx=\"608\" cy=\"253\" r=\"2\" fill=\"#D97757\"/>\n        <text x=\"632\" y=\"256.5\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#D97757\" font-weight=\"700\">SUBSTRATE COPPER PLA</tspan><tspan fill=\"#9E9C94\"> • 0.08 mm</tspan></text>\n      </g>\n  </g>\n\n  <!-- 7. Bottom Pillar Metrology Dimensions (Orthogonal & Collision-Free) -->\n  \n</svg>"
@@ -157,63 +131,51 @@
       "id": "FIGURE_2",
       "placeholder": "{{ FIGURE_2 }}",
       "caption": "FIG 03 — INTERNAL COLUMN ARCHITECTURE: Half-etched support pillar matrix preventing atmospheric collapse under 1 bar pressure differential.",
-      "source": "STRUCTURAL METROLOGY ARCHIVE",
       "selectedIndex": 0,
       "images": [
         {
           "url": "/images/references/vapor-chamber/etched-half-shells-hires.jpg",
-          "title": "High-Resolution Photochemically Etched Internal Copper Support Columns",
-          "source": "Photochemical Etching Lab"
+          "title": "High-Resolution Photochemically Etched Internal Copper Support Columns"
         },
         {
           "url": "/images/vapor-chamber-modern-teardown.jpg",
-          "title": "Interior View of Micro-Machined Pillar Grid Inside Hollow Cavity",
-          "source": "Hardware Teardown Archive"
+          "title": "Interior View of Micro-Machined Pillar Grid Inside Hollow Cavity"
         },
         {
           "url": "/images/references/vapor-chamber/exploded-layer-stack.png",
-          "title": "Support Pillar Spacing and Vapor Cavity Clearance Profile",
-          "source": "Thermal Design Lab"
+          "title": "Support Pillar Spacing and Vapor Cavity Clearance Profile"
         },
         {
           "url": "/images/references/vapor-chamber/etched-half-shells.webp",
-          "title": "Etched Copper Half-Shell Profile and Pillar Pitch",
-          "source": "Precision Micro-Etching Lab"
+          "title": "Etched Copper Half-Shell Profile and Pillar Pitch"
         },
         {
           "url": "https://pub.mdpi-res.com/energies/energies-16-06464/article_deploy/html/images/energies-16-06464-g002.png?1694082100",
-          "title": "Internal Structural Pillar Grid and Vapor Flow Corridors",
-          "source": "Thermal Physics Archive"
+          "title": "Internal Structural Pillar Grid and Vapor Flow Corridors"
         },
         {
           "url": "https://www.hysonetch.com/photo/ps213817406-ultra_thin_etching_vapor_chambers_with_customizable_heat_transfer_capacity.jpg",
-          "title": "Chemical Etching: Monolithic Support Pillars on Copper Foil",
-          "source": "Precision Micro-Etching Lab"
+          "title": "Chemical Etching: Monolithic Support Pillars on Copper Foil"
         },
         {
           "url": "https://pub.mdpi-res.com/materials/materials-18-00979/article_deploy/html/images/materials-18-00979-g001.png",
-          "title": "Support Structure Geometry Resisting Atmospheric Crush Pressure",
-          "source": "Materials Science Archive"
+          "title": "Support Structure Geometry Resisting Atmospheric Crush Pressure"
         },
         {
           "url": "https://tmnetch.com/wp-content/uploads/2026/01/vapor-chambe-parts-1-1024x1024.jpg",
-          "title": "Half-Etched Copper Sheets Ready for Laser Seam Welding",
-          "source": "Industrial Etching Archive"
+          "title": "Half-Etched Copper Sheets Ready for Laser Seam Welding"
         },
         {
           "url": "https://www.hysonetch.com/photo/ps213417093-ultra_thin_etching_vapor_chambers_for_superior_thermal_dissipation.jpg",
-          "title": "Pillar Matrix Pitch Inspection Under Optical Comparator",
-          "source": "Metrology Laboratory"
+          "title": "Pillar Matrix Pitch Inspection Under Optical Comparator"
         },
         {
           "url": "https://tonecooling.com/wp-content/uploads/2024/12/noctua-vapor-chamber.jpg",
-          "title": "Interior Structural Reinforcement Columns Under Macro Lens",
-          "source": "Thermal Engineering Archive"
+          "title": "Interior Structural Reinforcement Columns Under Macro Lens"
         },
         {
           "url": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80&w=2000",
-          "title": "Fiber Laser Perimeter Hermetic Weld Seam Inspection",
-          "source": "Laser Optics Group"
+          "title": "Fiber Laser Perimeter Hermetic Weld Seam Inspection"
         }
       ],
       "cadSvg": "<svg viewBox=\"0 0 860 360\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full h-auto bg-[#141413] rounded-xl border border-[#383734]\">\n  <defs>\n    <!-- Technical CAD Minor & Major Grid -->\n    <pattern id=\"cadMinor-cad-jo0g3m\" width=\"15\" height=\"15\" patternUnits=\"userSpaceOnUse\">\n      <path d=\"M 15 0 L 0 0 0 15\" fill=\"none\" stroke=\"#1A1918\" stroke-width=\"0.6\"/>\n    </pattern>\n    <pattern id=\"cadMajor-cad-jo0g3m\" width=\"60\" height=\"60\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"60\" height=\"60\" fill=\"url(#cadMinor-cad-jo0g3m)\"/>\n      <path d=\"M 60 0 L 0 0 0 60\" fill=\"none\" stroke=\"#232220\" stroke-width=\"0.9\"/>\n    </pattern>\n\n    <!-- Metallic 45° ANSI Copper Hatch - Clean Spacing -->\n    <pattern id=\"hatch-copper-cad-jo0g3m\" width=\"12\" height=\"12\" patternTransform=\"rotate(45 0 0)\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"12\" height=\"12\" fill=\"#241712\"/>\n      <line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"12\" stroke=\"#D97757\" stroke-width=\"1.1\" stroke-opacity=\"0.35\"/>\n    </pattern>\n\n    <!-- Silicon Monolithic Crystalline Hatch -->\n    <pattern id=\"hatch-silicon-cad-jo0g3m\" width=\"10\" height=\"10\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"10\" height=\"10\" fill=\"#0C1A24\"/>\n      <path d=\"M 0 5 L 10 5 M 5 0 L 5 10\" stroke=\"#0284C7\" stroke-width=\"0.7\" stroke-opacity=\"0.4\"/>\n    </pattern>\n\n    <!-- Porous Sintered Spherical Powder Matrix - Calm Micro-Pore Texture -->\n    <pattern id=\"hatch-sintered-cad-jo0g3m\" width=\"16\" height=\"16\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"16\" height=\"16\" fill=\"#1C1613\"/>\n      <circle cx=\"4\" cy=\"4\" r=\"1.5\" fill=\"#D97757\" opacity=\"0.45\"/>\n      <circle cx=\"12\" cy=\"12\" r=\"1.2\" fill=\"#F59E0B\" opacity=\"0.4\"/>\n    </pattern>\n\n    <!-- Ferroelectric Sol-Gel PZT Dipole Hatch -->\n    <pattern id=\"hatch-piezo-cad-jo0g3m\" width=\"14\" height=\"14\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"14\" height=\"14\" fill=\"#191124\"/>\n      <path d=\"M 3 7 L 11 7 M 7 3 L 7 11\" stroke=\"#8B5CF6\" stroke-width=\"1.1\" stroke-opacity=\"0.5\"/>\n      <circle cx=\"7\" cy=\"7\" r=\"1.5\" fill=\"#C4B5FD\"/>\n    </pattern>\n\n    <!-- Dimension Arrowhead Markers -->\n    <marker id=\"arr-orange-end-cad-jo0g3m\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#D97757\"/>\n    </marker>\n    <marker id=\"arr-orange-start-cad-jo0g3m\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#D97757\"/>\n    </marker>\n    <marker id=\"arr-amber-end-cad-jo0g3m\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#F59E0B\"/>\n    </marker>\n    <marker id=\"arr-amber-start-cad-jo0g3m\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#F59E0B\"/>\n    </marker>\n    <marker id=\"arr-cyan-end-cad-jo0g3m\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#38BDF8\"/>\n    </marker>\n    <marker id=\"arr-cyan-start-cad-jo0g3m\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#38BDF8\"/>\n    </marker>\n    <marker id=\"arr-white-end-cad-jo0g3m\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#EDEDEB\"/>\n    </marker>\n    <marker id=\"arr-white-start-cad-jo0g3m\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#EDEDEB\"/>\n    </marker>\n    <marker id=\"arr-emerald-end-cad-jo0g3m\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#10B981\"/>\n    </marker>\n    <marker id=\"arr-emerald-start-cad-jo0g3m\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#10B981\"/>\n    </marker>\n    <marker id=\"arr-red-end-cad-jo0g3m\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#F87171\"/>\n    </marker>\n  </defs>\n\n  <rect width=\"100%\" height=\"100%\" fill=\"url(#cadMajor-cad-jo0g3m)\" />\n\n  <!-- 1. Header Information Strip (Clean title without redundant scale boilerplate) -->\n  <text x=\"24\" y=\"27\" font-family=\"'JetBrains Mono', monospace\" font-size=\"12.5\" font-weight=\"700\" fill=\"#D97757\" letter-spacing=\"0.05em\">\n    SECTION // VAPOR CHAMBER INTERNAL COLUMN ARCHITECTURE\n  </text>\n\n  <!-- 2. Boundary External Loads (Single Centered Clean Load Vector) -->\n  \n    <g>\n      <text x=\"378\" y=\"65\" text-anchor=\"middle\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11.5\" font-weight=\"700\" fill=\"#F87171\">\n        1.0 bar (101.3 kPa) • ATMOSPHERIC LOAD\n      </text>\n      <line x1=\"378\" y1=\"70\" x2=\"378\" y2=\"79\" stroke=\"#F87171\" stroke-width=\"1.5\" marker-end=\"url(#arr-red-end-cad-jo0g3m)\"/>\n    </g>\n\n  <!-- 3. Layer Stackup -->\n  <g>\n    \n        <rect x=\"138\" y=\"83\" width=\"480\" height=\"35\" fill=\"url(#hatch-copper-cad-jo0g3m)\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n      \n        <rect x=\"138\" y=\"118\" width=\"480\" height=\"26\" fill=\"url(#hatch-sintered-cad-jo0g3m)\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n      \n        <rect x=\"138\" y=\"144\" width=\"480\" height=\"53\" fill=\"#0D141F\" stroke=\"#38BDF8\" stroke-width=\"1.2\"/>\n      \n        <rect x=\"138\" y=\"197\" width=\"480\" height=\"26\" fill=\"url(#hatch-sintered-cad-jo0g3m)\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n      \n        <rect x=\"138\" y=\"223\" width=\"480\" height=\"36\" fill=\"url(#hatch-copper-cad-jo0g3m)\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n      \n  </g>\n\n  <!-- 4. Monolithic Support Columns (ColumnArray) spanning internal layers -->\n  \n    <g>\n      \n        <rect x=\"234.2\" y=\"118\" width=\"38\" height=\"105\" fill=\"url(#hatch-copper-cad-jo0g3m)\" stroke=\"#D97757\" stroke-width=\"1.5\"/>\n        <line x1=\"253.2\" y1=\"114\" x2=\"253.2\" y2=\"227\" stroke=\"#9E9C94\" stroke-width=\"0.8\" stroke-dasharray=\"4 2\"/>\n        <line x1=\"234.2\" y1=\"223\" x2=\"272.2\" y2=\"223\" stroke=\"#10B981\" stroke-width=\"2.2\"/>\n        \n        <rect x=\"359\" y=\"118\" width=\"38\" height=\"105\" fill=\"url(#hatch-copper-cad-jo0g3m)\" stroke=\"#D97757\" stroke-width=\"1.5\"/>\n        <line x1=\"378\" y1=\"114\" x2=\"378\" y2=\"227\" stroke=\"#9E9C94\" stroke-width=\"0.8\" stroke-dasharray=\"4 2\"/>\n        <line x1=\"359\" y1=\"223\" x2=\"397\" y2=\"223\" stroke=\"#10B981\" stroke-width=\"2.2\"/>\n        \n        <rect x=\"483.8\" y=\"118\" width=\"38\" height=\"105\" fill=\"url(#hatch-copper-cad-jo0g3m)\" stroke=\"#D97757\" stroke-width=\"1.5\"/>\n        <line x1=\"502.8\" y1=\"114\" x2=\"502.8\" y2=\"227\" stroke=\"#9E9C94\" stroke-width=\"0.8\" stroke-dasharray=\"4 2\"/>\n        <line x1=\"483.8\" y1=\"223\" x2=\"521.8\" y2=\"223\" stroke=\"#10B981\" stroke-width=\"2.2\"/>\n        \n    </g>\n\n  <!-- 5. Left Total Stackup Dimension Annotation -->\n  <g>\n    <line x1=\"106\" y1=\"83\" x2=\"132\" y2=\"83\" stroke=\"#9E9C94\" stroke-width=\"0.9\"/>\n    <line x1=\"106\" y1=\"259\" x2=\"132\" y2=\"259\" stroke=\"#9E9C94\" stroke-width=\"0.9\"/>\n    <line x1=\"120\" y1=\"87\" x2=\"120\" y2=\"255\" stroke=\"#EDEDEB\" stroke-width=\"1.3\" marker-start=\"url(#arr-white-start-cad-jo0g3m)\" marker-end=\"url(#arr-white-end-cad-jo0g3m)\"/>\n    <text x=\"114\" y=\"175.5\" text-anchor=\"end\" font-family=\"'JetBrains Mono', monospace\" font-size=\"12\" font-weight=\"700\" fill=\"#EDEDEB\">\n      0.35 mm\n    </text>\n  </g>\n\n  <!-- 6. Right-Hand Clean Layer Leaders & Compact Metrics -->\n  <g>\n    \n      <g>\n        <line x1=\"622\" y1=\"100.5\" x2=\"640\" y2=\"100.5\" stroke=\"#D97757\" stroke-width=\"1.3\"/>\n        <circle cx=\"622\" cy=\"100.5\" r=\"2.2\" fill=\"#D97757\"/>\n        <text x=\"646\" y=\"104.5\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11.5\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#D97757\" font-weight=\"700\">TOP COPPER</tspan><tspan fill=\"#9E9C94\"> • 0.08 mm</tspan></text>\n      </g>\n      <g>\n        <line x1=\"622\" y1=\"131\" x2=\"640\" y2=\"131\" stroke=\"#D97757\" stroke-width=\"1.3\"/>\n        <circle cx=\"622\" cy=\"131\" r=\"2.2\" fill=\"#D97757\"/>\n        <text x=\"646\" y=\"135\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11.5\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#D97757\" font-weight=\"700\">VAPOR CORE</tspan><tspan fill=\"#9E9C94\"> • 0.06 mm</tspan></text>\n      </g>\n      <g>\n        <line x1=\"622\" y1=\"170.5\" x2=\"640\" y2=\"170.5\" stroke=\"#38BDF8\" stroke-width=\"1.3\"/>\n        <circle cx=\"622\" cy=\"170.5\" r=\"2.2\" fill=\"#38BDF8\"/>\n        <text x=\"646\" y=\"174.5\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11.5\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#38BDF8\" font-weight=\"700\">VAPOR CORE</tspan><tspan fill=\"#9E9C94\"> • 0.09 mm</tspan></text>\n      </g>\n      <g>\n        <line x1=\"622\" y1=\"210\" x2=\"640\" y2=\"210\" stroke=\"#D97757\" stroke-width=\"1.3\"/>\n        <circle cx=\"622\" cy=\"210\" r=\"2.2\" fill=\"#D97757\"/>\n        <text x=\"646\" y=\"214\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11.5\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#D97757\" font-weight=\"700\">POROUS WICK</tspan><tspan fill=\"#9E9C94\"> • 0.06 mm</tspan></text>\n      </g>\n      <g>\n        <line x1=\"622\" y1=\"241\" x2=\"640\" y2=\"241\" stroke=\"#D97757\" stroke-width=\"1.3\"/>\n        <circle cx=\"622\" cy=\"241\" r=\"2.2\" fill=\"#D97757\"/>\n        <text x=\"646\" y=\"245\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11.5\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#D97757\" font-weight=\"700\">BOTTOM COPPER</tspan><tspan fill=\"#9E9C94\"> • 0.08 mm</tspan></text>\n      </g>\n  </g>\n\n  <!-- 7. Bottom Pillar Metrology Dimensions (Orthogonal & Collision-Free) -->\n  \n    <g>\n      \n      <!-- Pillar Width Dimension -->\n      <line x1=\"234.2\" y1=\"262\" x2=\"234.2\" y2=\"278\" stroke=\"#9E9C94\" stroke-width=\"0.9\" stroke-dasharray=\"2 2\"/>\n      <line x1=\"272.2\" y1=\"262\" x2=\"272.2\" y2=\"278\" stroke=\"#9E9C94\" stroke-width=\"0.9\" stroke-dasharray=\"2 2\"/>\n      <line x1=\"236.2\" y1=\"275\" x2=\"270.2\" y2=\"275\" stroke=\"#EDEDEB\" stroke-width=\"1.3\" marker-start=\"url(#arr-white-start-cad-jo0g3m)\" marker-end=\"url(#arr-white-end-cad-jo0g3m)\"/>\n      <text x=\"253.2\" y=\"288\" text-anchor=\"middle\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"700\" fill=\"#EDEDEB\" style=\"paint-order: stroke fill; stroke: #141413; stroke-width: 4px; stroke-linejoin: round;\">\n        Ø 0.35 mm\n      </text>\n      \n\n      \n      <!-- Pillar Array Pitch Dimension (Stepped cleanly below feature width dimension) -->\n      <line x1=\"253.2\" y1=\"293\" x2=\"253.2\" y2=\"308\" stroke=\"#F59E0B\" stroke-width=\"0.9\" stroke-dasharray=\"2 2\"/>\n      <line x1=\"378\" y1=\"293\" x2=\"378\" y2=\"308\" stroke=\"#F59E0B\" stroke-width=\"0.9\" stroke-dasharray=\"2 2\"/>\n      <line x1=\"255.2\" y1=\"305\" x2=\"376\" y2=\"305\" stroke=\"#F59E0B\" stroke-width=\"1.3\" marker-start=\"url(#arr-amber-start-cad-jo0g3m)\" marker-end=\"url(#arr-amber-end-cad-jo0g3m)\"/>\n      <text x=\"315.6\" y=\"318\" text-anchor=\"middle\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"700\" fill=\"#F59E0B\" style=\"paint-order: stroke fill; stroke: #141413; stroke-width: 4px; stroke-linejoin: round;\">\n        1.20 mm PITCH\n      </text>\n      \n    </g>\n</svg>"
@@ -222,68 +184,55 @@
       "id": "FIGURE_3",
       "placeholder": "{{ FIGURE_3 }}",
       "caption": "FIG 04 — INFRARED THERMOGRAPHY: Calibrated thermal imaging showing instantaneous heat spreading from 15W simulated SoC die hot spot.",
-      "source": "CALIBRATED THERMAL BENCH",
       "selectedIndex": 0,
       "images": [
         {
           "url": "/images/staged/vapor-chamber/flir-thermal-isotherm-map.jpg",
-          "title": "Calibrated Radiometric FLIR Thermal Camera Isotherm Mapping",
-          "source": "NIST-Traceable Thermal Bench"
+          "title": "Calibrated Radiometric FLIR Thermal Camera Isotherm Mapping"
         },
         {
           "url": "/images/references/vapor-chamber/phone-exploded-vc.jpg",
-          "title": "Die Hotspot Coupling to Smartphone Chassis Spreader",
-          "source": "Hardware Architecture Teardowns"
+          "title": "Die Hotspot Coupling to Smartphone Chassis Spreader"
         },
         {
           "url": "/images/vapor-chamber-modern-teardown.jpg",
-          "title": "Planar Copper Envelope on NIST-Traceable Thermal Bench",
-          "source": "Hardware Teardown Archive"
+          "title": "Planar Copper Envelope on NIST-Traceable Thermal Bench"
         },
         {
           "url": "https://pub.mdpi-res.com/micromachines/micromachines-15-00627/article_deploy/html/images/micromachines-15-00627-g003.png",
-          "title": "Thermal Resistance vs Heat Flux Isotherm Distribution",
-          "source": "Micromachines Technical Archive"
+          "title": "Thermal Resistance vs Heat Flux Isotherm Distribution"
         },
         {
           "url": "https://pub.mdpi-res.com/micromachines/micromachines-16-00571/article_deploy/html/images/micromachines-16-00571-g004.png?1747125149",
-          "title": "FLIR Radiometric Temperature Map Across Vapor Spreader Surface",
-          "source": "Thermal Metrology Lab"
+          "title": "FLIR Radiometric Temperature Map Across Vapor Spreader Surface"
         },
         {
           "url": "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?auto=format&fit=crop&q=80&w=2000",
-          "title": "Calibrated Infrared Radiometric Thermal Imaging Rig",
-          "source": "Thermal Imaging Laboratory"
+          "title": "Calibrated Infrared Radiometric Thermal Imaging Rig"
         },
         {
           "url": "https://pub.mdpi-res.com/energies/energies-17-03330/article_deploy/html/images/energies-17-03330-g001.png",
-          "title": "Transient Thermal Spreading Curves Under 50W Step Load",
-          "source": "Applied Thermodynamics Archive"
+          "title": "Transient Thermal Spreading Curves Under 50W Step Load"
         },
         {
           "url": "https://images.droidsans.com/wp-content/uploads/2025/11/VaporChamberFlow_2_1-1024x576.png",
-          "title": "Thermodynamic Heat Flux Flow and Vapor Expansion Vector Map",
-          "source": "Technical Diagram Archive"
+          "title": "Thermodynamic Heat Flux Flow and Vapor Expansion Vector Map"
         },
         {
           "url": "https://pub.mdpi-res.com/micromachines/micromachines-15-00627/article_deploy/html/images/micromachines-15-00627-g004.png",
-          "title": "Infrared Temperature Profile: Solid Copper vs Planar Vapor Chamber",
-          "source": "Thermal Metrology Lab"
+          "title": "Infrared Temperature Profile: Solid Copper vs Planar Vapor Chamber"
         },
         {
           "url": "https://tonecooling.com/wp-content/uploads/2025/02/Phone-vapor-chamber.jpg",
-          "title": "Steady-State Thermal Equilibrium Across Smartphone Mid-Frame",
-          "source": "Thermal Engineering Archive"
+          "title": "Steady-State Thermal Equilibrium Across Smartphone Mid-Frame"
         },
         {
           "url": "https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&q=80&w=2000",
-          "title": "Calorimeter Data Acquisition Rig for Two-Phase Heat Spreaders",
-          "source": "Calorimetry Metrology Lab"
+          "title": "Calorimeter Data Acquisition Rig for Two-Phase Heat Spreaders"
         },
         {
           "url": "/images/staged/vapor-chamber/heat-pipe-principle.jpg",
-          "title": "Two-Phase Fluid Circuit Dynamic Pressure Balance",
-          "source": "Fluid Dynamics Archive"
+          "title": "Two-Phase Fluid Circuit Dynamic Pressure Balance"
         }
       ],
       "cadSvg": "<svg viewBox=\"0 0 860 360\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full h-auto bg-[#141413] rounded-xl border border-[#383734]\">\n  <defs>\n    <!-- Technical CAD Minor & Major Grid -->\n    <pattern id=\"cadMinor-cad-xvp3qr\" width=\"15\" height=\"15\" patternUnits=\"userSpaceOnUse\">\n      <path d=\"M 15 0 L 0 0 0 15\" fill=\"none\" stroke=\"#1A1918\" stroke-width=\"0.6\"/>\n    </pattern>\n    <pattern id=\"cadMajor-cad-xvp3qr\" width=\"60\" height=\"60\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"60\" height=\"60\" fill=\"url(#cadMinor-cad-xvp3qr)\"/>\n      <path d=\"M 60 0 L 0 0 0 60\" fill=\"none\" stroke=\"#232220\" stroke-width=\"0.9\"/>\n    </pattern>\n\n    <!-- Metallic 45° ANSI Copper Hatch - Clean Spacing -->\n    <pattern id=\"hatch-copper-cad-xvp3qr\" width=\"12\" height=\"12\" patternTransform=\"rotate(45 0 0)\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"12\" height=\"12\" fill=\"#241712\"/>\n      <line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"12\" stroke=\"#D97757\" stroke-width=\"1.1\" stroke-opacity=\"0.35\"/>\n    </pattern>\n\n    <!-- Silicon Monolithic Crystalline Hatch -->\n    <pattern id=\"hatch-silicon-cad-xvp3qr\" width=\"10\" height=\"10\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"10\" height=\"10\" fill=\"#0C1A24\"/>\n      <path d=\"M 0 5 L 10 5 M 5 0 L 5 10\" stroke=\"#0284C7\" stroke-width=\"0.7\" stroke-opacity=\"0.4\"/>\n    </pattern>\n\n    <!-- Porous Sintered Spherical Powder Matrix - Calm Micro-Pore Texture -->\n    <pattern id=\"hatch-sintered-cad-xvp3qr\" width=\"16\" height=\"16\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"16\" height=\"16\" fill=\"#1C1613\"/>\n      <circle cx=\"4\" cy=\"4\" r=\"1.5\" fill=\"#D97757\" opacity=\"0.45\"/>\n      <circle cx=\"12\" cy=\"12\" r=\"1.2\" fill=\"#F59E0B\" opacity=\"0.4\"/>\n    </pattern>\n\n    <!-- Ferroelectric Sol-Gel PZT Dipole Hatch -->\n    <pattern id=\"hatch-piezo-cad-xvp3qr\" width=\"14\" height=\"14\" patternUnits=\"userSpaceOnUse\">\n      <rect width=\"14\" height=\"14\" fill=\"#191124\"/>\n      <path d=\"M 3 7 L 11 7 M 7 3 L 7 11\" stroke=\"#8B5CF6\" stroke-width=\"1.1\" stroke-opacity=\"0.5\"/>\n      <circle cx=\"7\" cy=\"7\" r=\"1.5\" fill=\"#C4B5FD\"/>\n    </pattern>\n\n    <!-- Dimension Arrowhead Markers -->\n    <marker id=\"arr-orange-end-cad-xvp3qr\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#D97757\"/>\n    </marker>\n    <marker id=\"arr-orange-start-cad-xvp3qr\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#D97757\"/>\n    </marker>\n    <marker id=\"arr-amber-end-cad-xvp3qr\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#F59E0B\"/>\n    </marker>\n    <marker id=\"arr-amber-start-cad-xvp3qr\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#F59E0B\"/>\n    </marker>\n    <marker id=\"arr-cyan-end-cad-xvp3qr\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#38BDF8\"/>\n    </marker>\n    <marker id=\"arr-cyan-start-cad-xvp3qr\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#38BDF8\"/>\n    </marker>\n    <marker id=\"arr-white-end-cad-xvp3qr\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#EDEDEB\"/>\n    </marker>\n    <marker id=\"arr-white-start-cad-xvp3qr\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#EDEDEB\"/>\n    </marker>\n    <marker id=\"arr-emerald-end-cad-xvp3qr\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#10B981\"/>\n    </marker>\n    <marker id=\"arr-emerald-start-cad-xvp3qr\" viewBox=\"0 0 10 10\" refX=\"2\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 10 1.5 L 1 5 L 10 8.5 z\" fill=\"#10B981\"/>\n    </marker>\n    <marker id=\"arr-red-end-cad-xvp3qr\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M 0 1.5 L 9 5 L 0 8.5 z\" fill=\"#F87171\"/>\n    </marker>\n  </defs>\n\n  <rect width=\"100%\" height=\"100%\" fill=\"url(#cadMajor-cad-xvp3qr)\" />\n\n  <!-- 1. Header Information Strip (Clean title without redundant scale boilerplate) -->\n  <text x=\"24\" y=\"26\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"700\" fill=\"#D97757\" letter-spacing=\"0.05em\">\n    SECTION // HIGH-FLUX THERMAL BENCH INSTRUMENTATION\n  </text>\n\n  <!-- 2. Boundary External Loads (Single Centered Clean Load Vector) -->\n  \n    <g>\n      <text x=\"392\" y=\"83\" text-anchor=\"middle\" font-family=\"'JetBrains Mono', monospace\" font-size=\"8.5\" font-weight=\"700\" fill=\"#EF4444\">\n        150 W/cm² • HEAT DISSIPATION FLUX\n      </text>\n      <line x1=\"392\" y1=\"89\" x2=\"392\" y2=\"99\" stroke=\"#EF4444\" stroke-width=\"1.4\" marker-end=\"url(#arr-red-end-cad-xvp3qr)\"/>\n    </g>\n\n  <!-- 3. Layer Stackup -->\n  <g>\n    \n        <rect x=\"152\" y=\"103\" width=\"480\" height=\"34\" fill=\"url(#hatch-silicon-cad-xvp3qr)\" stroke=\"#EF4444\" stroke-width=\"1.2\"/>\n      \n        <rect x=\"152\" y=\"137\" width=\"480\" height=\"22\" fill=\"url(#hatch-sintered-cad-xvp3qr)\" stroke=\"#F59E0B\" stroke-width=\"1.2\"/>\n      \n        <rect x=\"152\" y=\"159\" width=\"480\" height=\"78\" fill=\"url(#hatch-copper-cad-xvp3qr)\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n      \n          <g>\n            <line x1=\"392\" y1=\"198\" x2=\"224\" y2=\"198\" stroke=\"#38BDF8\" stroke-width=\"1.5\" stroke-dasharray=\"5 3\" marker-end=\"url(#arr-cyan-end-cad-xvp3qr)\"/>\n            \n              <text x=\"308\" y=\"194\" text-anchor=\"middle\" font-family=\"'JetBrains Mono', monospace\" font-size=\"8\" font-weight=\"700\" fill=\"#38BDF8\">\n                HEAT SPREADING\n              </text>\n          </g>\n          <g>\n            <line x1=\"392\" y1=\"198\" x2=\"560\" y2=\"198\" stroke=\"#38BDF8\" stroke-width=\"1.5\" stroke-dasharray=\"5 3\" marker-end=\"url(#arr-cyan-end-cad-xvp3qr)\"/>\n            \n              <text x=\"476\" y=\"194\" text-anchor=\"middle\" font-family=\"'JetBrains Mono', monospace\" font-size=\"8\" font-weight=\"700\" fill=\"#38BDF8\">\n                HEAT SPREADING\n              </text>\n          </g>\n        <rect x=\"152\" y=\"237\" width=\"480\" height=\"56\" fill=\"url(#hatch-copper-cad-xvp3qr)\" stroke=\"#38BDF8\" stroke-width=\"1.2\"/>\n      \n  </g>\n\n  <!-- 4. Monolithic Support Columns (ColumnArray) spanning internal layers -->\n  \n\n  <!-- 5. Left Total Stackup Dimension Annotation -->\n  <g>\n    <line x1=\"122\" y1=\"103\" x2=\"146\" y2=\"103\" stroke=\"#9E9C94\" stroke-width=\"0.8\"/>\n    <line x1=\"122\" y1=\"293\" x2=\"146\" y2=\"293\" stroke=\"#9E9C94\" stroke-width=\"0.8\"/>\n    <line x1=\"134\" y1=\"107\" x2=\"134\" y2=\"289\" stroke=\"#EDEDEB\" stroke-width=\"1.2\" marker-start=\"url(#arr-white-start-cad-xvp3qr)\" marker-end=\"url(#arr-white-end-cad-xvp3qr)\"/>\n    <text x=\"128\" y=\"201.5\" text-anchor=\"end\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9.5\" font-weight=\"700\" fill=\"#EDEDEB\">\n      2.82 mm\n    </text>\n  </g>\n\n  <!-- 6. Right-Hand Clean Layer Leaders & Compact Metrics -->\n  <g>\n    \n      <g>\n        <line x1=\"636\" y1=\"120\" x2=\"654\" y2=\"120\" stroke=\"#EF4444\" stroke-width=\"1.2\"/>\n        <circle cx=\"636\" cy=\"120\" r=\"2\" fill=\"#EF4444\"/>\n        <text x=\"660\" y=\"123.5\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#EF4444\" font-weight=\"700\">SILICON DIE</tspan><tspan fill=\"#9E9C94\"> • 0.15 mm</tspan></text>\n      </g>\n      <g>\n        <line x1=\"636\" y1=\"148\" x2=\"654\" y2=\"148\" stroke=\"#F59E0B\" stroke-width=\"1.2\"/>\n        <circle cx=\"636\" cy=\"148\" r=\"2\" fill=\"#F59E0B\"/>\n        <text x=\"660\" y=\"151.5\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#F59E0B\" font-weight=\"700\">TIM</tspan><tspan fill=\"#9E9C94\"> • 0.025 mm</tspan></text>\n      </g>\n      <g>\n        <line x1=\"636\" y1=\"198\" x2=\"654\" y2=\"198\" stroke=\"#D97757\" stroke-width=\"1.2\"/>\n        <circle cx=\"636\" cy=\"198\" r=\"2\" fill=\"#D97757\"/>\n        <text x=\"660\" y=\"201.5\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#D97757\" font-weight=\"700\">VC SPREADER</tspan><tspan fill=\"#9E9C94\"> • 0.35 mm</tspan></text>\n      </g>\n      <g>\n        <line x1=\"636\" y1=\"265\" x2=\"654\" y2=\"265\" stroke=\"#38BDF8\" stroke-width=\"1.2\"/>\n        <circle cx=\"636\" cy=\"265\" r=\"2\" fill=\"#38BDF8\"/>\n        <text x=\"660\" y=\"268.5\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" font-weight=\"600\" fill=\"#EDEDEB\"><tspan fill=\"#38BDF8\" font-weight=\"700\">COLD PLATE</tspan><tspan fill=\"#9E9C94\"> • 2.50 mm</tspan></text>\n      </g>\n  </g>\n\n  <!-- 7. Bottom Pillar Metrology Dimensions (Orthogonal & Collision-Free) -->\n  \n</svg>"

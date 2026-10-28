@@ -13,7 +13,6 @@
   </div>
   <figcaption>
     <span><strong>FIG 01 — CYCLOIDAL SPEED REDUCER TEARDOWN:</strong> Exploded teardown of a high-torque cycloidal drive showing the eccentric input bearing, dual epitrochoidal cam discs, perimeter ring pin rollers, and output torque carrier pins.</span>
-    <span class="source-tag">IMAGE: COMMONS TEARDOWN ARCHIVE</span>
   </figcaption>
 </figure>
 
@@ -187,7 +186,6 @@
   </div>
   <div class="schematic-caption">
     <span><strong>FIG 02 — EPITROCHOIDAL MESHING DYNAMICS:</strong> Transverse CAD cutaway of a cycloidal drive showing the eccentric cam drive, multi-pin rolling contact distribution across a 110° engagement arc, and output torque transfer pins.</span>
-    <span class="source-tag">SCHEMATIC: CAD ARCHIVE</span>
   </div>
 </div>
 
@@ -378,7 +376,6 @@
   </div>
   <div class="schematic-caption">
     <span><strong>FIG 03 — KINEMATIC STACK:</strong> Step-by-step mechanical energy conversion through an eccentric cycloidal stage, filtering out orbital translation to deliver pure low-speed high-torque rotation.</span>
-    <span class="source-tag">FLOWCHART 01</span>
   </div>
 </div>
 
