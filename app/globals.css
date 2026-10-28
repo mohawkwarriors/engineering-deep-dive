@@ -2,10 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+:root,
+[data-theme="dark"] {
   color-scheme: dark;
 
-  /* Theme tokens from published site */
+  /* Studio Dark Theme Tokens */
   --bg: #191918;
   --surface: #232220;
   --surface-hover: #2E2D2A;
@@ -16,7 +17,7 @@
   --accent-hover: #E88868;
   --card-inner: #1C1B19;
 
-  /* Subject category color badges */
+  /* Subject category color badges (Dark) */
   --sub-product-dives: #D97757;
   --sub-manufacturing: #3B82F6;
   --sub-design: #8B5CF6;
@@ -25,6 +26,31 @@
   --sub-thermal: #F43F5E;
   --sub-fluids: #06B6D4;
   --sub-electromechanical: #6366F1;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Warm Paper Light Theme Tokens */
+  --bg: #F9F8F6;
+  --surface: #EFECE6;
+  --surface-hover: #E4E0D8;
+  --text: #191918;
+  --muted: #6B6960;
+  --border: #D8D4CC;
+  --accent: #D97757;
+  --accent-hover: #C56645;
+  --card-inner: #FFFFFF;
+
+  /* Subject category color badges (Light) */
+  --sub-product-dives: #D97757;
+  --sub-manufacturing: #2563EB;
+  --sub-design: #7C3AED;
+  --sub-materials: #059669;
+  --sub-mechanisms: #D97706;
+  --sub-thermal: #E11D48;
+  --sub-fluids: #0891B2;
+  --sub-electromechanical: #4F46E5;
 }
 
 body {
@@ -65,13 +91,86 @@ h2 {
   color: var(--text);
   margin-top: 48px;
   margin-bottom: 16px;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 10px;
 }
 
 @media (min-width: 640px) {
   h2 {
     font-size: 30px;
+  }
+}
+
+/* Direction 1: Monospace Kicker Section Lockup */
+.section-header-wrap {
+  margin-top: 60px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+  margin-bottom: 20px;
+  scroll-margin-top: 96px;
+}
+
+@media (min-width: 640px) {
+  .section-header-wrap {
+    margin-top: 80px;
+    padding-top: 36px;
+    margin-bottom: 24px;
+  }
+}
+
+.section-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .section-kicker {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+}
+
+.section-title {
+  font-family: 'Newsreader', 'Instrument Serif', Georgia, serif;
+  font-size: 27px;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+@media (min-width: 640px) {
+  .section-title {
+    font-size: 34px;
+  }
+}
+
+/* Editorial Lede Paragraph: Elevated Presence for First Paragraph */
+.section-header-wrap + p,
+.article-body .section-header-wrap + p,
+.prose .section-header-wrap + p,
+.prose h2 + p {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+@media (min-width: 640px) {
+  .section-header-wrap + p,
+  .article-body .section-header-wrap + p,
+  .prose .section-header-wrap + p,
+  .prose h2 + p {
+    font-size: 18px;
   }
 }
 
@@ -96,6 +195,43 @@ h3 {
 
 p {
   margin-bottom: 18px;
+}
+
+/* Dynamic Tailwind Typography Theme Variables */
+.prose {
+  --tw-prose-body: var(--text);
+  --tw-prose-headings: var(--text);
+  --tw-prose-lead: var(--muted);
+  --tw-prose-links: var(--accent);
+  --tw-prose-bold: var(--text);
+  --tw-prose-counters: var(--muted);
+  --tw-prose-bullets: var(--muted);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--text);
+  --tw-prose-quote-borders: var(--accent);
+  --tw-prose-captions: var(--muted);
+  --tw-prose-code: var(--text);
+  --tw-prose-pre-code: var(--text);
+  --tw-prose-pre-bg: var(--surface);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+  --tw-prose-invert-body: var(--text);
+  --tw-prose-invert-headings: var(--text);
+  --tw-prose-invert-lead: var(--muted);
+  --tw-prose-invert-links: var(--accent);
+  --tw-prose-invert-bold: var(--text);
+  --tw-prose-invert-counters: var(--muted);
+  --tw-prose-invert-bullets: var(--muted);
+  --tw-prose-invert-hr: var(--border);
+  --tw-prose-invert-quotes: var(--text);
+  --tw-prose-invert-quote-borders: var(--accent);
+  --tw-prose-invert-captions: var(--muted);
+  --tw-prose-invert-code: var(--text);
+  --tw-prose-invert-pre-code: var(--text);
+  --tw-prose-invert-pre-bg: var(--surface);
+  --tw-prose-invert-th-borders: var(--border);
+  --tw-prose-invert-td-borders: var(--border);
+  color: var(--text);
 }
 
 /* Meta line and badges */

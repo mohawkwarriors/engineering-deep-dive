@@ -3,6 +3,7 @@ import "katex/dist/katex.min.css";
 import React from "react";
 import Link from "next/link";
 import type { Metadata, Viewport } from "next";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -28,8 +29,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                const stored = localStorage.getItem('theme');
+                if (stored === 'light' || stored === 'dark') {
+                  document.documentElement.setAttribute('data-theme', stored);
+                } else {
+                  document.documentElement.setAttribute('data-theme', 'dark');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -37,8 +52,8 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-[var(--bg)] text-[var(--text)] antialiased selection:bg-[var(--accent)]/20 selection:text-[var(--accent)] font-sans">
-        <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]/85 backdrop-blur-md">
+      <body className="min-h-screen flex flex-col bg-[var(--bg)] text-[var(--text)] antialiased selection:bg-[var(--accent)]/20 selection:text-[var(--accent)] font-sans transition-colors duration-200">
+        <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]/85 backdrop-blur-md transition-colors duration-200">
           <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
             <Link href="/" className="flex items-center gap-2 group">
               <span className="text-[var(--accent)] font-serif text-2xl leading-none">⌀</span>
@@ -46,7 +61,7 @@ export default function RootLayout({
                 THE HW INSIDER
               </span>
             </Link>
-            <nav className="flex items-center gap-4 text-xs font-mono text-[var(--muted)]">
+            <nav className="flex items-center gap-3 sm:gap-4 text-xs font-mono text-[var(--muted)]">
               <Link href="/" className="hover:text-[var(--text)] transition-colors">Current</Link>
               <Link href="/archive" className="hover:text-[var(--text)] transition-colors">Archive</Link>
               <Link
@@ -56,6 +71,9 @@ export default function RootLayout({
                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
                 Editor
               </Link>
+              <div className="pl-1 border-l border-[var(--border)]">
+                <ThemeToggle />
+              </div>
             </nav>
           </div>
         </header>

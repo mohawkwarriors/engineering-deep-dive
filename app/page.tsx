@@ -5,6 +5,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { mdxComponents } from "@/components/mdx-components";
 import { preprocessMathForMdx, cleanAndRenderArticleHtml } from "@/lib/mdx-utils";
 import { TangentPopoverHandler } from "@/components/TangentPopoverHandler";
+import { ArticleOutline } from "@/components/ArticleOutline";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -49,7 +50,7 @@ export default function HomePage() {
     : preprocessMathForMdx(content);
 
   return (
-    <article className="prose prose-invert max-w-none">
+    <article className="prose max-w-none text-[var(--text)]">
       <div className="border-b border-[var(--border)] pb-6 mb-8">
         <div className="flex items-center gap-2 font-mono text-xs text-[var(--accent)] uppercase tracking-widest mb-2.5">
           <span>ISSUE #{data.issue || issueNumber}</span>
@@ -66,18 +67,20 @@ export default function HomePage() {
         </p>
       </div>
 
-      <TangentPopoverHandler tangents={tangents}>
-        <div className="text-[var(--text)] leading-relaxed font-sans space-y-6">
-          {isHtml ? (
-            <div
-              className="article-body font-sans"
-              dangerouslySetInnerHTML={{ __html: safeContent }}
-            />
-          ) : (
-            <MDXRemote source={safeContent} components={mdxComponents} />
-          )}
-        </div>
-      </TangentPopoverHandler>
+      <ArticleOutline>
+        <TangentPopoverHandler tangents={tangents}>
+          <div className="text-[var(--text)] leading-relaxed font-sans space-y-6">
+            {isHtml ? (
+              <div
+                className="article-body font-sans"
+                dangerouslySetInnerHTML={{ __html: safeContent }}
+              />
+            ) : (
+              <MDXRemote source={safeContent} components={mdxComponents} />
+            )}
+          </div>
+        </TangentPopoverHandler>
+      </ArticleOutline>
 
       <div className="mt-12 pt-6 border-t border-[var(--border)] flex justify-between font-mono text-xs">
         <Link href="/archive" className="text-[var(--accent)] hover:underline">

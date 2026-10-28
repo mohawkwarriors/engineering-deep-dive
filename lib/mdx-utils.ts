@@ -80,5 +80,31 @@ export function cleanAndRenderArticleHtml(rawHtml: string): string {
     }
   });
 
+  // 4. Transform h2 headings into Monospace Kicker Lockup
+  out = out.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, (match, attrs, inner) => {
+    const rawText = inner.replace(/<[^>]+>/g, "").trim();
+    const numMatch = rawText.match(/^(?:Section\s+)?(\d+)[\.:]\s*(.+)$/i);
+    const idMatch = attrs.match(/id=["']([^"']+)["']/i);
+    const existingId = idMatch ? idMatch[1] : null;
+
+    if (numMatch) {
+      const num = String(parseInt(numMatch[1], 10)).padStart(2, "0");
+      const cleanTitle = inner.replace(/^(?:<[^>]+>)*\s*(?:Section\s+)?\d+[\.:]\s*/i, "").trim();
+      const targetId = existingId || `section-${num}`;
+      const cleanAttrs = attrs.replace(/\bid=["'][^"']+["']/i, "").trim();
+
+      return `<div class="section-header-wrap" id="${targetId}">
+  <div class="section-kicker">SECTION // ${num}</div>
+  <h2 class="section-title"${cleanAttrs ? " " + cleanAttrs : ""}>${cleanTitle}</h2>
+</div>`;
+    }
+
+    const targetId = existingId || "";
+    const cleanAttrs = attrs.replace(/\bid=["'][^"']+["']/i, "").trim();
+    return `<div class="section-header-wrap"${targetId ? ` id="${targetId}"` : ""}>
+  <h2 class="section-title"${cleanAttrs ? " " + cleanAttrs : ""}>${inner}</h2>
+</div>`;
+  });
+
   return out;
 }

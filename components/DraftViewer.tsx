@@ -1755,13 +1755,15 @@ export default function DraftViewer({
     const cleanHeading = sec.heading.replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "").trim();
 
     return (
-      <div key={`prod-sec-${sec.id || secIdx}`} className="mb-10">
-        <h2 className="font-serif text-2xl sm:text-3xl font-semibold tracking-tight text-[var(--text)] mt-10 mb-4 pb-2 border-b border-[var(--border)] flex items-baseline gap-2.5">
-          <span className="text-[var(--accent)] font-mono text-lg sm:text-xl font-bold">
-            {secIdx + 1}.
-          </span>
-          <span>{cleanHeading}</span>
-        </h2>
+      <div key={`prod-sec-${sec.id || secIdx}`} id={`section-${secIdx}`} className="mb-10">
+        <div className="section-header-wrap">
+          <div className="section-kicker">
+            <span>SECTION // {String(secIdx + 1).padStart(2, "0")}</span>
+          </div>
+          <h2 className="section-title">
+            {cleanHeading}
+          </h2>
+        </div>
 
         <div className="space-y-4 text-[15px] sm:text-base font-sans leading-relaxed text-[var(--text)]">
           {sec.content
