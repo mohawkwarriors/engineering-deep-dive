@@ -2484,6 +2484,28 @@ export default function DraftViewer({
             </button>
           </div>
 
+          {/* Centered Production Title Header (Above the overview) */}
+          <div className="w-full max-w-3xl mx-auto border-b border-[var(--border)] pb-6 mb-8">
+            <div className="flex items-center gap-2 font-mono text-xs text-[var(--accent)] uppercase tracking-widest mb-2.5">
+              <span>ISSUE #{activeDraft.filename?.replace(/\.json$/, "").toUpperCase() || "PREVIEW"}</span>
+              <span>•</span>
+              <span>{activeDraft.subject || activeDraft.category || "HARDWARE"}</span>
+              <span>•</span>
+              <span>{activeDraft.readTime || "12 MIN READ"}</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-medium tracking-tight text-[var(--text)] mb-3 leading-tight">
+              {editedTitle || activeDraft.title}
+            </h1>
+            <p
+              className="text-base sm:text-lg text-[var(--muted)] font-sans leading-relaxed"
+              dangerouslySetInnerHTML={{
+                __html: renderInlineKaTeXAndMarkdown(
+                  editedSubtitle || formatAnswerOverview(activeDraft.subtitle || "", editedTitle || activeDraft.title, activeDraft.title)
+                ),
+              }}
+            />
+          </div>
+
           {/* 3-Column Editorial Grid: Left Rail TOC + Centered Article + Right Rail Spacer */}
           <div className="xl:grid xl:grid-cols-[1fr_min(768px,100%)_1fr] items-start w-full">
             {/* Desktop Left Sidebar: Overview Navigation Outline (Sticky outside article margins) */}
@@ -2575,27 +2597,6 @@ export default function DraftViewer({
 
               {/* Production Article Layout matching app/issue/[id]/page.tsx */}
               <article className="prose max-w-none text-[var(--text)]">
-                <div className="border-b border-[var(--border)] pb-6 mb-8">
-                  <div className="flex items-center gap-2 font-mono text-xs text-[var(--accent)] uppercase tracking-widest mb-2.5">
-                    <span>ISSUE #{activeDraft.filename?.replace(/\.json$/, "").toUpperCase() || "PREVIEW"}</span>
-                    <span>•</span>
-                    <span>{activeDraft.subject || activeDraft.category || "HARDWARE"}</span>
-                    <span>•</span>
-                    <span>{activeDraft.readTime || "12 MIN READ"}</span>
-                  </div>
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-medium tracking-tight text-[var(--text)] mb-3 leading-tight">
-                    {editedTitle || activeDraft.title}
-                  </h1>
-                  <p
-                    className="text-base sm:text-lg text-[var(--muted)] font-sans leading-relaxed"
-                    dangerouslySetInnerHTML={{
-                      __html: renderInlineKaTeXAndMarkdown(
-                        editedSubtitle || formatAnswerOverview(activeDraft.subtitle || "", editedTitle || activeDraft.title, activeDraft.title)
-                      ),
-                    }}
-                  />
-                </div>
-
                 <div className="text-[var(--text)] leading-relaxed font-sans space-y-6">
                   {activeSections
                     .filter((sec) => !sec.hidden)

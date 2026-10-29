@@ -21,11 +21,10 @@ interface TrackedHeading {
 }
 
 export interface ArticleOutlineProps {
-  header?: React.ReactNode;
   children: React.ReactNode;
 }
 
-export function ArticleOutline({ header, children }: ArticleOutlineProps) {
+export function ArticleOutline({ children }: ArticleOutlineProps) {
   const [sections, setSections] = useState<SectionItem[]>([]);
   const [activeId, setActiveId] = useState<string>("");
   const [activeSectionId, setActiveSectionId] = useState<string>("");
@@ -203,13 +202,13 @@ export function ArticleOutline({ header, children }: ArticleOutlineProps) {
   return (
     <div className="w-full">
       {/* 
-        3-Column Editorial Grid:
-        - Column 1 (Left Margin): Contains the sticky Overview TOC outside the article margins.
-        - Column 2 (Center Column): The perfectly centered article (Title, Subtitle, and Body).
+        3-Column Editorial Grid (Starting after the title header):
+        - Column 1 (Left Margin): Sticky Overview TOC outside article margins, scrolling with user.
+        - Column 2 (Center Column): Perfectly centered article body, aligned with the title above.
         - Column 3 (Right Margin): Symmetrical spacer guaranteeing the Center Column remains centered.
       */}
       <div className="xl:grid xl:grid-cols-[1fr_min(768px,100%)_1fr] items-start w-full">
-        {/* Left Column: Left Margin containing Desktop Sticky Overview */}
+        {/* Left Column: Left Margin containing Desktop Sticky Overview starting after the title */}
         <div className="hidden xl:block justify-self-end w-60 pr-8">
           <aside className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pb-8 select-none scrollbar-thin">
             <div className="text-[11px] font-mono font-bold tracking-widest text-[var(--muted)] uppercase mb-3 px-2 flex items-center justify-between">
@@ -284,10 +283,8 @@ export function ArticleOutline({ header, children }: ArticleOutlineProps) {
           </aside>
         </div>
 
-        {/* Center Column: The Centered Article (Title, Subtitle, and Body) */}
+        {/* Center Column: The Centered Article Body (Aligned with Title Header Above) */}
         <div className="min-w-0 w-full max-w-3xl mx-auto" ref={contentRef}>
-          {header}
-
           {/* Mobile/Tablet Horizontal Section Navigator Pill Bar (Screen < xl) */}
           {sections.length > 1 && (
             <div className="xl:hidden mb-8 p-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-xs font-mono">
