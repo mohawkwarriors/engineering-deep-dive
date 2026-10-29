@@ -393,6 +393,10 @@ STRICT EDITORIAL REQUIREMENTS:
    - Title Standard: Use clean, curiosity-inducing, plain-English titles (e.g. "How Laptops Get Featherweight Metal Shells"). Avoid long, dense compound titles or heavy academic jargon.
    - Early Technology Definition & Comparison: In Section 1, immediately define the core technology in vivid, plain-English terms early on, and explicitly contrast why it beats traditional legacy methods.
    - De-Jargonized Section Headings: Clean, punchy headers leading with physical intuition (e.g. "2. The Slurpee State: Why Semi-Solid Metal Flows Like Soft-Serve").
+   - COMPACT SECTION TITLES FOR OVERVIEW NAVIGATION (ZERO CUTOFF):
+     * Keep section titles tight, punchy, and concise (ideally 3 to 7 words; strictly under 45 characters).
+     * Do NOT write run-on, verbose subtitles inside section headers (e.g. write "3. Engineering Teardowns" rather than "3. Product-by-Product Engineering Teardowns and Mechanical Dissections of Every Single Announced Device").
+     * This ensures that headings render cleanly and completely inside the sticky 240px Overview rail without truncating or wrapping awkwardly.
 3. SUBTITLE & EXECUTIVE SUMMARY (HIGH-LEVEL OVERVIEW - LIMIT STATS):
    - A captivating, single-sentence narrative hook highlighting the core mechanical tension or physical trade-off at a high level.
    - STRICTLY FORBIDDEN IN SUBTITLES/SUMMARIES: Do NOT cram raw technical stats, multi-variable equations, tolerance numbers, or dimension lists into the subtitle (e.g. NEVER write "Two-phase latent vaporization (h_fg = 2.26 × 10⁶ J/kg) across a 0.09 mm vacuum core achieves 8,000 W/m·K—utilizing 4.8 kPa...").

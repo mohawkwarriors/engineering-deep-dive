@@ -28,13 +28,15 @@
       "Topic-First, colon-separated architecture: '[Hardware Subject]: [Governing Physics / Failure Mode]'",
       "Active engineering verbs: 'Flattening', 'Surviving', 'Thixomolding', 'Preloading'",
       "Specific physical dimensions, load ratings, or metrics: e.g. '0.35 mm', '100g Shock Loads', '50-Bar'",
-      "Model headline after \"Vapor Chambers: Two-Phase Planar Fluidics and Micro-Pillar DFM\" (Topic-first engineering phrasing)"
+      "Model headline after \"Vapor Chambers: Two-Phase Planar Fluidics and Micro-Pillar DFM\" (Topic-first engineering phrasing)",
+      "Compact Section Headings (<45 chars / 3-7 words): Keep sub-section titles concise so they render completely without truncation in the 240px Overview navigation rail"
     ],
     "penalized_patterns": [
       "Vague consumer questions (e.g. 'Is It Really Worth It?')",
       "Sensationalist buzzwords without mechanism name (e.g. 'The Insane Secret of...')",
       "Generic software or brand comparisons (e.g. 'Company A vs Company B: Who Wins?')",
-      "Avoid headline structure like \"Why Vapor Chambers Work\": Original title was vague and lacked physical mechanisms"
+      "Avoid headline structure like \"Why Vapor Chambers Work\": Original title was vague and lacked physical mechanisms",
+      "Overly verbose section titles (>50 chars) that get cut off in sidebar navigation rails"
     ],
     "critiques": [
       {

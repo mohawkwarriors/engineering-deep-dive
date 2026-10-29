@@ -229,7 +229,7 @@ export function ArticleOutline({ children }: ArticleOutlineProps) {
                   <button
                     type="button"
                     onClick={() => scrollToHeading(sec.id)}
-                    className={`w-full text-left py-1.5 px-2 text-xs font-mono transition-all rounded-r block leading-snug group ${
+                    className={`w-full text-left py-1.5 px-2 text-[11px] font-mono transition-all rounded-r block leading-tight group ${
                       isDirectActive || (isSecActive && !hasSubsections)
                         ? "text-[var(--accent)] font-bold border-l-2 border-[var(--accent)] -ml-[12px] pl-2 bg-[var(--accent)]/10 shadow-sm"
                         : isSecActive
@@ -248,7 +248,7 @@ export function ArticleOutline({ children }: ArticleOutlineProps) {
                       >
                         {sec.num}
                       </span>
-                      <span className="line-clamp-2">{sec.title}</span>
+                      <span className="line-clamp-2 leading-snug">{sec.title}</span>
                     </div>
                   </button>
 
