@@ -2484,82 +2484,58 @@ export default function DraftViewer({
             </button>
           </div>
 
-          {/* Centered Production Title Header (Above the overview) */}
-          <div className="w-full max-w-3xl mx-auto border-b border-[var(--border)] pb-6 mb-8">
-            <div className="flex items-center gap-2 font-mono text-xs text-[var(--accent)] uppercase tracking-widest mb-2.5">
-              <span>ISSUE #{activeDraft.filename?.replace(/\.json$/, "").toUpperCase() || "PREVIEW"}</span>
-              <span>•</span>
-              <span>{activeDraft.subject || activeDraft.category || "HARDWARE"}</span>
-              <span>•</span>
-              <span>{activeDraft.readTime || "12 MIN READ"}</span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-medium tracking-tight text-[var(--text)] mb-3 leading-tight">
-              {editedTitle || activeDraft.title}
-            </h1>
-            <p
-              className="text-base sm:text-lg text-[var(--muted)] font-sans leading-relaxed"
-              dangerouslySetInnerHTML={{
-                __html: renderInlineKaTeXAndMarkdown(
-                  editedSubtitle || formatAnswerOverview(activeDraft.subtitle || "", editedTitle || activeDraft.title, activeDraft.title)
-                ),
-              }}
-            />
-          </div>
+          {/* Production 2-Column Editorial Grid matching app/issue/[id]/page.tsx */}
+          <div className="lg:grid lg:grid-cols-[240px_1fr] lg:gap-10 xl:gap-12 items-start w-full">
+            {/* Desktop Left Sidebar: Overview Navigation Outline (Sticky) */}
+            <aside className="hidden lg:block sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto pr-3 pb-8 select-none scrollbar-thin">
+              <div className="text-[11px] font-mono font-bold tracking-widest text-[var(--muted)] uppercase mb-3 px-1 flex items-center justify-between">
+                <span>OVERVIEW</span>
+                <span className="text-[10px] text-[var(--accent)] font-semibold">
+                  {activeSections.filter((s) => !s.hidden).length} SECTIONS
+                </span>
+              </div>
+              <nav className="border-l-2 border-[var(--border)] pl-2.5 space-y-1">
+                {activeSections
+                  .filter((s) => !s.hidden)
+                  .map((sec, secIdx) => {
+                    const targetId = `section-${secIdx}`;
+                    const isActive = activePreviewSectionId === targetId;
+                    const cleanHeading = sec.heading
+                      .replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "")
+                      .trim();
 
-          {/* 3-Column Editorial Grid: Left Rail TOC + Centered Article + Right Rail Spacer */}
-          <div className="xl:grid xl:grid-cols-[1fr_min(768px,100%)_1fr] items-start w-full">
-            {/* Desktop Left Sidebar: Overview Navigation Outline (Sticky outside article margins) */}
-            <div className="hidden xl:block justify-self-end w-60 pr-8">
-              <aside className="sticky top-24 self-start max-h-[calc(100vh-7rem)] overflow-y-auto pb-8 select-none scrollbar-thin">
-                <div className="text-[11px] font-mono font-bold tracking-widest text-[var(--muted)] uppercase mb-3 px-2 flex items-center justify-between">
-                  <span>OVERVIEW</span>
-                  <span className="text-[10px] text-[var(--accent)] font-semibold">
-                    {activeSections.filter((s) => !s.hidden).length} SECTIONS
-                  </span>
-                </div>
-                <nav className="border-l-2 border-[var(--border)] pl-2.5 space-y-1">
-                  {activeSections
-                    .filter((s) => !s.hidden)
-                    .map((sec, secIdx) => {
-                      const targetId = `section-${secIdx}`;
-                      const isActive = activePreviewSectionId === targetId;
-                      const cleanHeading = sec.heading
-                        .replace(/^(?:Section\s+\d+[:.]?\s*|\d+[\.:]\s*)/i, "")
-                        .trim();
+                    return (
+                      <button
+                        key={sec.id || secIdx}
+                        type="button"
+                        onClick={() => scrollToPreviewSection(secIdx)}
+                        className={`w-full text-left py-1.5 px-2 text-xs font-mono transition-all rounded-r block leading-snug group ${
+                          isActive
+                            ? "text-[var(--accent)] font-bold border-l-2 border-[var(--accent)] -ml-[12px] pl-2 bg-[var(--accent)]/10 shadow-sm"
+                            : "text-[var(--muted)] hover:text-[var(--text)] hover:bg-[var(--surface)] opacity-75 hover:opacity-100"
+                        }`}
+                        title={cleanHeading}
+                      >
+                        <div className="flex items-start gap-1.5">
+                          <span
+                            className={`font-bold shrink-0 ${
+                              isActive ? "text-[var(--accent)]" : "text-[var(--muted)] group-hover:text-[var(--text)]"
+                            }`}
+                          >
+                            {String(secIdx + 1).padStart(2, "0")}.
+                          </span>
+                          <span className="line-clamp-2">{cleanHeading}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+              </nav>
+            </aside>
 
-                      return (
-                        <button
-                          key={sec.id || secIdx}
-                          type="button"
-                          onClick={() => scrollToPreviewSection(secIdx)}
-                          className={`w-full text-left py-1.5 px-2 text-xs font-mono transition-all rounded-r block leading-snug group ${
-                            isActive
-                              ? "text-[var(--accent)] font-bold border-l-2 border-[var(--accent)] -ml-[12px] pl-2 bg-[var(--accent)]/10 shadow-sm"
-                              : "text-[var(--muted)] hover:text-[var(--text)] hover:bg-[var(--surface)]"
-                          }`}
-                          title={cleanHeading}
-                        >
-                          <div className="flex items-start gap-1.5">
-                            <span
-                              className={`font-bold shrink-0 ${
-                                isActive ? "text-[var(--accent)]" : "text-[var(--muted)] group-hover:text-[var(--text)]"
-                              }`}
-                            >
-                              {String(secIdx + 1).padStart(2, "0")}.
-                            </span>
-                            <span className="line-clamp-2">{cleanHeading}</span>
-                          </div>
-                        </button>
-                      );
-                    })}
-                </nav>
-              </aside>
-            </div>
-
-            {/* Main Production Article Column: Perfectly Centered */}
-            <div className="min-w-0 w-full max-w-3xl mx-auto">
-              {/* Mobile Horizontal Section Navigator Pill Bar (Screen < xl) */}
-              <div className="xl:hidden mb-8 p-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-xs font-mono">
+            {/* Main Production Article Column */}
+            <div className="min-w-0 w-full">
+              {/* Mobile Horizontal Section Navigator Pill Bar (Screen < lg) */}
+              <div className="lg:hidden mb-8 p-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-xs font-mono">
                 <div className="text-[10px] uppercase font-bold text-[var(--muted)] mb-2 flex items-center justify-between">
                   <span>OVERVIEW OUTLINE</span>
                   <span className="text-[var(--accent)]">
@@ -2584,7 +2560,7 @@ export default function DraftViewer({
                           onClick={() => scrollToPreviewSection(secIdx)}
                           className={`shrink-0 px-2.5 py-1 rounded-full border text-[11px] font-mono transition-all ${
                             isActive
-                              ? "border-[var(--accent)] bg-[var(--accent)]/20 text-[var(--accent)] font-bold"
+                              ? "bg-[var(--accent)] text-white border-[var(--accent)] font-bold shadow-sm"
                               : "border-[var(--border)] text-[var(--muted)] bg-[var(--card-inner)] hover:text-[var(--text)]"
                           }`}
                         >
@@ -2597,6 +2573,27 @@ export default function DraftViewer({
 
               {/* Production Article Layout matching app/issue/[id]/page.tsx */}
               <article className="prose max-w-none text-[var(--text)]">
+                <div className="border-b border-[var(--border)] pb-6 mb-8">
+                  <div className="flex items-center gap-2 font-mono text-xs text-[var(--accent)] uppercase tracking-widest mb-2.5">
+                    <span>ISSUE #{activeDraft.filename?.replace(/\.json$/, "").toUpperCase() || "PREVIEW"}</span>
+                    <span>•</span>
+                    <span>{activeDraft.subject || activeDraft.category || "HARDWARE"}</span>
+                    <span>•</span>
+                    <span>{activeDraft.readTime || "12 MIN READ"}</span>
+                  </div>
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-medium tracking-tight text-[var(--text)] mb-3 leading-tight">
+                    {editedTitle || activeDraft.title}
+                  </h1>
+                  <p
+                    className="text-base sm:text-lg text-[var(--muted)] font-sans leading-relaxed"
+                    dangerouslySetInnerHTML={{
+                      __html: renderInlineKaTeXAndMarkdown(
+                        editedSubtitle || formatAnswerOverview(activeDraft.subtitle || "", editedTitle || activeDraft.title, activeDraft.title)
+                      ),
+                    }}
+                  />
+                </div>
+
                 <div className="text-[var(--text)] leading-relaxed font-sans space-y-6">
                   {activeSections
                     .filter((sec) => !sec.hidden)
@@ -2609,9 +2606,6 @@ export default function DraftViewer({
                 </div>
               </article>
             </div>
-
-            {/* Right Column: Symmetrical spacer ensuring center alignment */}
-            <div className="hidden xl:block w-60 pl-8 pointer-events-none" aria-hidden="true" />
           </div>
         </div>
       ) : (

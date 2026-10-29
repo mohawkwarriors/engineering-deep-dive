@@ -31,7 +31,7 @@ export function ArticleOutline({ children }: ArticleOutlineProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const trackedHeadingsRef = useRef<TrackedHeading[]>([]);
 
-  // DOM heading extraction: scans both sections (h2 / .section-header-wrap) and subsections (h3)
+  // DOM heading extraction: scans both primary sections (h2 / .section-header-wrap) and subsections (h3)
   useEffect(() => {
     if (!contentRef.current) return;
 
@@ -59,7 +59,7 @@ export function ArticleOutline({ children }: ArticleOutlineProps) {
       const isSub = el.tagName === "H3";
 
       if (!isSub) {
-        // --- TOP-LEVEL SECTION (h2 or .section-header-wrap) ---
+        // --- PRIMARY SECTION (h2 or .section-header-wrap) ---
         let id = el.id;
         const innerH2 = el.querySelector("h2");
         if (!id && innerH2?.id) id = innerH2.id;
@@ -202,92 +202,90 @@ export function ArticleOutline({ children }: ArticleOutlineProps) {
   return (
     <div className="w-full">
       {/* 
-        3-Column Editorial Grid (Starting after the title header):
-        - Column 1 (Left Margin): Sticky Overview TOC outside article margins, scrolling with user.
-        - Column 2 (Center Column): Perfectly centered article body, aligned with the title above.
-        - Column 3 (Right Margin): Symmetrical spacer guaranteeing the Center Column remains centered.
+        Original Bespoke 2-Column Editorial Grid:
+        - Container: max-w-[1080px] centered on the page.
+        - Left Column (240px): Sticky luxury Overview Rail starting at the top baseline.
+        - Right Column (1fr): The entire article (Title, Subtitle, Figures, and Body).
       */}
-      <div className="xl:grid xl:grid-cols-[1fr_min(768px,100%)_1fr] items-start w-full">
-        {/* Left Column: Left Margin containing Desktop Sticky Overview starting after the title */}
-        <div className="hidden xl:block justify-self-end w-60 pr-8">
-          <aside className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pb-8 select-none scrollbar-thin">
-            <div className="text-[11px] font-mono font-bold tracking-widest text-[var(--muted)] uppercase mb-3 px-2 flex items-center justify-between">
-              <span>OVERVIEW</span>
-              <span className="text-[10px] text-[var(--accent)] font-semibold">
-                {sections.length} SECTIONS
-              </span>
-            </div>
+      <div className="lg:grid lg:grid-cols-[240px_1fr] lg:gap-10 xl:gap-12 items-start w-full">
+        {/* Left Column: Desktop Sticky Overview Navigator */}
+        <aside className="hidden lg:block sticky top-20 self-start max-h-[calc(100vh-6rem)] overflow-y-auto pr-3 pb-8 select-none scrollbar-thin">
+          <div className="text-[11px] font-mono font-bold tracking-widest text-[var(--muted)] uppercase mb-3 px-1 flex items-center justify-between">
+            <span>OVERVIEW</span>
+            <span className="text-[10px] text-[var(--accent)] font-semibold">
+              {sections.length} SECTIONS
+            </span>
+          </div>
 
-            <nav className="border-l-2 border-[var(--border)] pl-2.5 space-y-1">
-              {sections.map((sec, idx) => {
-                const isSecActive = activeSectionId === sec.id;
-                const isDirectActive = activeId === sec.id;
-                const hasSubsections = sec.subsections && sec.subsections.length > 0;
+          <nav className="border-l-2 border-[var(--border)] pl-2.5 space-y-1">
+            {sections.map((sec, idx) => {
+              const isSecActive = activeSectionId === sec.id;
+              const isDirectActive = activeId === sec.id;
+              const hasSubsections = sec.subsections && sec.subsections.length > 0;
 
-                return (
-                  <div key={sec.id || idx} className="space-y-0.5">
-                    {/* Primary Section Button */}
-                    <button
-                      type="button"
-                      onClick={() => scrollToHeading(sec.id)}
-                      className={`w-full text-left py-1.5 px-2 text-xs font-mono transition-all rounded-r block leading-snug group ${
-                        isDirectActive || (isSecActive && !hasSubsections)
-                          ? "text-[var(--accent)] font-bold border-l-2 border-[var(--accent)] -ml-[12px] pl-2 bg-[var(--accent)]/10 shadow-sm"
-                          : isSecActive
-                          ? "text-[var(--accent)] font-semibold"
-                          : "text-[var(--muted)] hover:text-[var(--text)] hover:bg-[var(--surface)]"
-                      }`}
-                      title={sec.title}
-                    >
-                      <div className="flex items-start gap-1.5">
-                        <span
-                          className={`font-bold shrink-0 ${
-                            isSecActive
-                              ? "text-[var(--accent)]"
-                              : "text-[var(--muted)] group-hover:text-[var(--text)]"
-                          }`}
-                        >
-                          {sec.num}
-                        </span>
-                        <span className="line-clamp-2">{sec.title}</span>
-                      </div>
-                    </button>
+              return (
+                <div key={sec.id || idx} className="space-y-0.5">
+                  {/* Primary Section Button */}
+                  <button
+                    type="button"
+                    onClick={() => scrollToHeading(sec.id)}
+                    className={`w-full text-left py-1.5 px-2 text-xs font-mono transition-all rounded-r block leading-snug group ${
+                      isDirectActive || (isSecActive && !hasSubsections)
+                        ? "text-[var(--accent)] font-bold border-l-2 border-[var(--accent)] -ml-[12px] pl-2 bg-[var(--accent)]/10 shadow-sm"
+                        : isSecActive
+                        ? "text-[var(--accent)] font-semibold"
+                        : "text-[var(--muted)] hover:text-[var(--text)] hover:bg-[var(--surface)] opacity-75 hover:opacity-100"
+                    }`}
+                    title={sec.title}
+                  >
+                    <div className="flex items-start gap-1.5">
+                      <span
+                        className={`font-bold shrink-0 ${
+                          isSecActive
+                            ? "text-[var(--accent)]"
+                            : "text-[var(--muted)] group-hover:text-[var(--text)]"
+                        }`}
+                      >
+                        {sec.num}
+                      </span>
+                      <span className="line-clamp-2">{sec.title}</span>
+                    </div>
+                  </button>
 
-                    {/* Subsections List (e.g. Individual product teardowns in Section 3) */}
-                    {hasSubsections && (
-                      <div className="ml-3 pl-2 border-l border-dashed border-[var(--border)] space-y-0.5 py-0.5 my-0.5">
-                        {sec.subsections!.map((sub) => {
-                          const isSubActive = activeId === sub.id;
-                          return (
-                            <button
-                              key={sub.id}
-                              type="button"
-                              onClick={() => scrollToHeading(sub.id)}
-                              className={`w-full text-left py-1 px-1.5 text-[11px] font-mono transition-all rounded block leading-tight truncate ${
-                                isSubActive
-                                  ? "text-[var(--accent)] font-semibold border-l-2 border-[var(--accent)] -ml-[10px] pl-[8px] bg-[var(--accent)]/10"
-                                  : "text-[var(--muted)] hover:text-[var(--text)] hover:bg-[var(--surface)]"
-                              }`}
-                              title={sub.title}
-                            >
-                              {sub.title}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </nav>
-          </aside>
-        </div>
+                  {/* Subsections List (e.g. Individual product teardowns in Section 3) */}
+                  {hasSubsections && (
+                    <div className="ml-3 pl-2.5 border-l border-dashed border-[var(--border)]/80 space-y-0.5 py-0.5 my-0.5">
+                      {sec.subsections!.map((sub) => {
+                        const isSubActive = activeId === sub.id;
+                        return (
+                          <button
+                            key={sub.id}
+                            type="button"
+                            onClick={() => scrollToHeading(sub.id)}
+                            className={`w-full text-left py-1 px-1.5 text-[11px] font-mono transition-all rounded block leading-tight truncate ${
+                              isSubActive
+                                ? "text-[var(--accent)] font-semibold border-l-2 border-[var(--accent)] -ml-[12px] pl-[10px] bg-[var(--accent)]/10"
+                                : "text-[var(--muted)] hover:text-[var(--text)] hover:bg-[var(--surface)] opacity-70 hover:opacity-100"
+                            }`}
+                            title={sub.title}
+                          >
+                            {sub.title}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
+        </aside>
 
-        {/* Center Column: The Centered Article Body (Aligned with Title Header Above) */}
-        <div className="min-w-0 w-full max-w-3xl mx-auto" ref={contentRef}>
-          {/* Mobile/Tablet Horizontal Section Navigator Pill Bar (Screen < xl) */}
+        {/* Right Column: Editorial Column containing Title, Figures, and Body */}
+        <div className="min-w-0 w-full" ref={contentRef}>
+          {/* Mobile/Tablet Horizontal Section Navigator Pill Bar (Screen < lg) */}
           {sections.length > 1 && (
-            <div className="xl:hidden mb-8 p-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-xs font-mono">
+            <div className="lg:hidden mb-8 p-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-xs font-mono">
               <div className="text-[10px] uppercase font-bold text-[var(--muted)] mb-2 flex items-center justify-between">
                 <span>OVERVIEW OUTLINE</span>
                 <span className="text-[var(--accent)]">{sections.length} SECTIONS</span>
@@ -344,9 +342,6 @@ export function ArticleOutline({ children }: ArticleOutlineProps) {
 
           {children}
         </div>
-
-        {/* Right Column: Symmetrical spacer to guarantee Center Column is mathematically centered */}
-        <div className="hidden xl:block w-60 pl-8 pointer-events-none" aria-hidden="true" />
       </div>
     </div>
   );
