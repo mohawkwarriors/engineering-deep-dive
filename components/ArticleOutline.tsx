@@ -254,7 +254,7 @@ export function ArticleOutline({ children }: ArticleOutlineProps) {
 
                   {/* Subsections List (e.g. Individual product teardowns in Section 3) */}
                   {hasSubsections && (
-                    <div className="ml-3 pl-2.5 border-l border-dashed border-[var(--border)]/80 space-y-0.5 py-0.5 my-0.5">
+                    <div className="ml-3 pl-2.5 border-l-2 border-[var(--border)] space-y-0.5 py-0.5 my-0.5">
                       {sec.subsections!.map((sub) => {
                         const isSubActive = activeId === sub.id;
                         return (
