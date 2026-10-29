@@ -54,7 +54,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col bg-[var(--bg)] text-[var(--text)] antialiased selection:bg-[var(--accent)]/20 selection:text-[var(--accent)] font-sans transition-colors duration-200">
         <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]/85 backdrop-blur-md transition-colors duration-200">
-          <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+          <div className="mx-auto flex h-14 max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-8">
             <Link href="/" className="flex items-center gap-2 group">
               <span className="text-[var(--accent)] font-serif text-2xl leading-none">⌀</span>
               <span className="font-serif text-xl tracking-tight text-[var(--text)] group-hover:text-[var(--accent)] transition-colors">
@@ -77,7 +77,7 @@ export default function RootLayout({
             </nav>
           </div>
         </header>
-        <main className="flex-1 mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
+        <main className="flex-1 mx-auto w-full max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8">
           {children}
         </main>
         <footer className="border-t border-[var(--border)] py-6 text-center font-mono text-xs text-[var(--muted)]">

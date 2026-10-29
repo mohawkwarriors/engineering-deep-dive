@@ -75,25 +75,27 @@ export default function IssuePage({ params }: { params: { id: string } }) {
     ? cleanAndRenderArticleHtml(content)
     : preprocessMathForMdx(content);
 
-  return (
-    <article className="prose max-w-none text-[var(--text)]">
-      <div className="border-b border-[var(--border)] pb-6 mb-8">
-        <div className="flex items-center gap-2 font-mono text-xs text-[var(--accent)] uppercase tracking-widest mb-2.5">
-          <span>ISSUE #{data.issue || params.id}</span>
-          <span>•</span>
-          <span>{data.subject}</span>
-          <span>•</span>
-          <span>{data.readTime}</span>
-        </div>
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-medium tracking-tight text-[var(--text)] mb-3">
-          {data.title}
-        </h1>
-        <p className="text-base sm:text-lg text-[var(--muted)] font-sans leading-relaxed">
-          {cleanRawLatex(data.subtitle)}
-        </p>
+  const articleHeader = (
+    <div className="border-b border-[var(--border)] pb-6 mb-8">
+      <div className="flex items-center gap-2 font-mono text-xs text-[var(--accent)] uppercase tracking-widest mb-2.5">
+        <span>ISSUE #{data.issue || params.id}</span>
+        <span>•</span>
+        <span>{data.subject}</span>
+        <span>•</span>
+        <span>{data.readTime}</span>
       </div>
+      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-medium tracking-tight text-[var(--text)] mb-3 leading-[1.15]">
+        {data.title}
+      </h1>
+      <p className="text-base sm:text-lg text-[var(--muted)] font-sans leading-relaxed">
+        {cleanRawLatex(data.subtitle)}
+      </p>
+    </div>
+  );
 
-      <ArticleOutline>
+  return (
+    <ArticleOutline header={articleHeader}>
+      <article className="prose max-w-none text-[var(--text)]">
         <TangentPopoverHandler tangents={tangents}>
           <div className="text-[var(--text)] leading-relaxed font-sans space-y-6">
             {isHtml ? (
@@ -106,14 +108,14 @@ export default function IssuePage({ params }: { params: { id: string } }) {
             )}
           </div>
         </TangentPopoverHandler>
-      </ArticleOutline>
 
-      <div className="mt-12 pt-6 border-t border-[var(--border)] flex justify-between font-mono text-xs">
-        <Link href="/archive" className="text-[var(--accent)] hover:underline">
-          ← Back to Archive
-        </Link>
-        <span className="text-[var(--muted)]">{data.date}</span>
-      </div>
-    </article>
+        <div className="mt-12 pt-6 border-t border-[var(--border)] flex justify-between font-mono text-xs">
+          <Link href="/archive" className="text-[var(--accent)] hover:underline">
+            ← Back to Archive
+          </Link>
+          <span className="text-[var(--muted)]">{data.date}</span>
+        </div>
+      </article>
+    </ArticleOutline>
   );
 }
