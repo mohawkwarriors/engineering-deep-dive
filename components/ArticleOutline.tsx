@@ -229,7 +229,7 @@ export function ArticleOutline({ children }: ArticleOutlineProps) {
                   <button
                     type="button"
                     onClick={() => scrollToHeading(sec.id)}
-                    className={`w-full text-left py-1.5 px-2 text-[11px] font-mono transition-all rounded-r block leading-tight group ${
+                    className={`w-full text-left py-1.5 px-2 text-[11px] font-mono transition-all rounded-r rounded-l-none block leading-tight group ${
                       isDirectActive || (isSecActive && !hasSubsections)
                         ? "text-[var(--accent)] font-bold border-l-2 border-[var(--accent)] -ml-[12px] pl-2 bg-[var(--accent)]/10 shadow-sm"
                         : isSecActive
@@ -262,7 +262,7 @@ export function ArticleOutline({ children }: ArticleOutlineProps) {
                             key={sub.id}
                             type="button"
                             onClick={() => scrollToHeading(sub.id)}
-                            className={`w-full text-left py-1 px-1.5 text-[11px] font-mono transition-all rounded block leading-tight truncate ${
+                            className={`w-full text-left py-1 px-1.5 text-[11px] font-mono transition-all rounded-r rounded-l-none block leading-tight truncate ${
                               isSubActive
                                 ? "text-[var(--accent)] font-semibold border-l-2 border-[var(--accent)] -ml-[12px] pl-[10px] bg-[var(--accent)]/10"
                                 : "text-[var(--muted)] hover:text-[var(--text)] hover:bg-[var(--surface)] opacity-70 hover:opacity-100"
