@@ -147,49 +147,56 @@
     "discipline": "Mechanisms",
     "topic": "Translating Rotary Motion into Precise Geneva Dwells",
     "summary": "Translating continuous uniform rotary motion into precise intermittent rotary dwell steps.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-11-02"
   },
   {
     "id": "B019",
     "discipline": "Manufacturing",
     "topic": "Solid-State Foil Scrubbing in Ultrasonic Tab Welding",
     "summary": "Solid-state acoustic scrubbing to bond copper and aluminum tab foils without melting.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-11-03"
   },
   {
     "id": "B020",
     "discipline": "Fluids",
     "topic": "Taming Cavitation Micro-Jets in Centrifugal Impellers",
     "summary": "Vapor bubble implosion micro-jets that pit and erode hardened stainless impellers.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-11-04"
   },
   {
     "id": "B021",
     "discipline": "Electromechanical",
     "topic": "Skewing Stator Teeth to Cancel Motor Cogging",
     "summary": "Skewing stator teeth and shaping permanent magnet arc profiles to achieve zero-ripple torque.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-11-05"
   },
   {
     "id": "B022",
     "discipline": "Design",
     "topic": "RSS Statistical Stacks vs Worst-Case Tolerancing",
     "summary": "Applying statistical root sum of squares versus deterministic limits across precision datum schemes.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-11-06"
   },
   {
     "id": "B023",
     "discipline": "Product Dives",
     "topic": "Voice Coil and SMA Stabilization in Dual-Axis OIS",
     "summary": "Integrating miniature shape-memory alloy wires and voice coils to stabilize optical sensor modules.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-11-07"
   },
   {
     "id": "B024",
     "discipline": "Materials",
     "topic": "Nitinol Pseudoelastic Phase Shifts Under Strain",
     "summary": "Reversible martensitic-austenitic phase shifts that recover massive strains up to 8%.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-11-08"
   },
   {
     "id": "B025",
