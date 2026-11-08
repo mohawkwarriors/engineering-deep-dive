@@ -203,49 +203,56 @@
     "discipline": "Manufacturing",
     "topic": "Vacuum-Assisted Gigacasting for Structural Underbodies",
     "summary": "Giga-casting automotive underbodies using vacuum-assisted aluminum high-integrity dies.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-11-09"
   },
   {
     "id": "B026",
     "discipline": "Thermal",
     "topic": "Direct Die Heat Collapse via Jet Impingement",
     "summary": "Blasting high-velocity micro-jets directly onto bare dies to collapse thermal boundary layers.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-11-10"
   },
   {
     "id": "B027",
     "discipline": "Mechanisms",
     "topic": "Elastic Buckling Thresholds in Bistable Mechanisms",
     "summary": "Exploiting elastic buckling beam thresholds to switch stable mechanical positions with zero sliding parts.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-11-11"
   },
   {
     "id": "B028",
     "discipline": "Design",
     "topic": "Gland Fill and Extrusion Limits in High-Pressure O-Rings",
     "summary": "Balancing elastomeric volume swell, squeeze percentage, and gland fill to prevent seal extrusion.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-11-12"
   },
   {
     "id": "B029",
     "discipline": "Fluids",
     "topic": "Arresting Water Hammer Waves with Bladder Dampers",
     "summary": "Managing acoustic shock pulses from fast-closing valves using elastomeric bladder surge arrestors.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-11-13"
   },
   {
     "id": "B030",
     "discipline": "Electromechanical",
     "topic": "Moving-Magnet Low-Inertia Galvanometer Mirrors",
     "summary": "Moving-magnet low-inertia rotors achieving sub-millisecond step-and-settle laser pointing.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-11-14"
   },
   {
     "id": "B031",
     "discipline": "Materials",
     "topic": "Skidding and Arcing Limits in 100,000 RPM Ceramic Bearings",
     "summary": "Eliminating electrical arcing and reducing centrifugal ball skidding in ultra-high-RPM EV motors.",
-    "status": "available"
+    "status": "staged",
+    "scheduledDate": "2026-11-15"
   },
   {
     "id": "B032",
